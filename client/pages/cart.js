@@ -82,7 +82,7 @@ const ViewCart = () => {
                     radius="lg"
                     alt={item.product_name}
                     className="object-cover h-20 my-1"
-                    src={`http://25.65.210.24:4001/public/images/product/${item.id}/1.png`}
+                    src={`http:/localhost:4001/public/images/product/${item.id}/1.png`}
                 /> 
             </section>
             <section className='mx-6'>

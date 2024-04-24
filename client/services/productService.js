@@ -6,7 +6,7 @@ const getProductById = async (id) => {
         if (!response.data.product) {
             throw new Error('Product not found');
         }
-        return response.data.product;
+        return response.data.product[0];
     } catch (error) {
         console.error('Error fetching product:', error.message);
         throw error;
@@ -33,9 +33,9 @@ const getAllProductsSearch = async (search) => {
     }
 };
 
-const getAllProductsByCategory = async (categoryId) => {
+const getAllProductsByCategory = async (id) => {
     try {
-        const response = await api.get(`/products/category/${categoryId}`);
+        const response = await api.get(`/products/category/${id}`);
         return response.data.products;
     } catch (error) {
         console.error('Error fetching products:', error.message);
@@ -123,6 +123,10 @@ const deleteProduct = async (id) => {
 
 const getImageCount = async (id) => {
     try {
+        if (!id) {
+            throw new Error('Product ID not provided');
+            return 0;
+        }
         const response = await api.get(`/products/img/count/${id}`);
         if (!response.data.count) {
             throw new Error('Image count not found');
@@ -131,7 +135,6 @@ const getImageCount = async (id) => {
         return response.data.count;
     } catch (error) {
         console.error('Error fetching image count:', error.message);
-        throw error;
     }
 }
 

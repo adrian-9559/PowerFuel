@@ -15,7 +15,7 @@ router.route('/:productId')
 router.route('/search/:input')
   .get(getProductsSearch);
 
-router.route('/category/:categoryId')
+router.route('/category/:id')
   .get(getProductsByCategory);
 
 router.route('/info')

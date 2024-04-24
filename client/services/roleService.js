@@ -1,88 +1,46 @@
-import api from './axios.js';
+import BaseService from './BaseService';
 
-const getRoleById = async (roleId) => {
-    let token = sessionStorage.getItem('token');
-    if (!token) {
-        throw new Error('No token found');
+class RoleService extends BaseService {
+    constructor() {
+        super('roles');
     }
-    const response = await api.get(`/roles/${roleId}`, {
-        headers: {
-            authorization: `Bearer ${token}`
+
+    async getRoleById(roleId) {
+        return this.getById(roleId);
+    }
+
+    async getUserRole(token) {
+        if (token) {
+            const response = await this.api.post(`/${this.resource}/userRole`, {}, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            });
+            return response.data.role_id;
         }
-    });
-    return response.data;
-};
 
-
-const getUserRole = async () => {
-    let token = sessionStorage.getItem('token');
-    if (token) {
-        const response = await api.post(`/roles/userRole`, {}, {
-            headers: {
-                authorization: `Bearer ${token}`
-            }
-        });
-     return response.data.role_id;
+        return null;
     }
 
-    return 10;
-    
-};
-
-const deleteRole = async (roleId) => {
-    let token = sessionStorage.getItem('token');
-    if (!token) {
-        throw new Error('No token found');
+    async deleteRole(roleId) {
+        return this.delete(roleId);
     }
-    const response = await api.delete(`/roles/${roleId}`, {
-        headers: {
-            authorization: `Bearer ${token}`
-        }
-    });
-    return response.data;
-};
 
-const getAllRoles = async (page = 1, limit = 10) => {
-    let token = sessionStorage.getItem('token');
-    if (!token) {
-        throw new Error('No token found');
+    async getAllRoles(page = 1, limit = 10) {
+        return this.getAll(page, limit);
     }
-    const response = await api.get(`/roles?page=${page}&limit=${limit}`, {
-        headers: {
-            authorization: `Bearer ${token}`
-        }
-    });
-    return response.data;
-};
-const updateRole = async (id, roleName) => {
-    try {
-        const response = await api.put(`/roles/${id}`, {
+
+    async updateRole(id, roleName) {
+        return this.update(id, {
             name: roleName,
         });
-        return response.data;
-    } catch (error) {
-        console.error('Error updating role:', error.message);
-        throw error;
     }
-};
 
-const addRole = async (roleName) => {
-    try {
-        const response = await api.post('/roles', {
+    async addRole(roleName) {
+        return this.create({
             name: roleName,
         });
-        return response.data;
-    } catch (error) {
-        console.error('Error creating role:', error.message);
-        throw error;
     }
-};
+}
 
-export { 
-    getRoleById,
-    getUserRole,
-    deleteRole,
-    getAllRoles,
-    updateRole,
-    addRole
-};
+export default new RoleService();

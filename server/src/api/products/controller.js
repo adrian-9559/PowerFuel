@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const model = require('./model');
+const model = require('../../model/productModel');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
@@ -70,8 +70,9 @@ const getProductsByCategory = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
-    const { categoryId } = req.params;
-    let products = await model.getProductsByCategory(categoryId);
+    const { id } = req.params;
+    console.log(id);
+    let products = await model.getProductsByCategory(id);
     if (!products) {
         res.status(404).json({ message: 'Products not found' });
     }
@@ -109,8 +110,9 @@ const getProductsInfo = async (req, res) => {
 };
 
 const getImageCount = async (req, res) => {
-    const { id } = req.params;
     try {
+        
+        const { id } = req.params;
         const directoryPath = path.join(appRoot, `/../public/images/product/${id}`);
         fs.readdir(directoryPath, (err, files) => {
             

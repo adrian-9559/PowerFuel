@@ -1,18 +1,18 @@
 // ProductImagesCarousel.js
 import React, { useState, useEffect } from 'react';
-import { getParentCategories } from '../../../services/categoryService';
-import {useRouter} from 'next/router';
+import CategoryService from '../../../services/categoryService';
+import { useRouter } from 'next/router';
 import { Button } from "@nextui-org/react";
 import { motion } from 'framer-motion';
 
 
 const SideMenu = ({productId}) => {
-    const { navigate } = useRouter();
+    const router = useRouter();
     const [categoriesParents, setCategoriesParents] = useState([]);
     const [showMenuLeft, setShowMenuLeft] = useState(false);
 
     const fetchParentCategories = async () => {
-        const categories = await getParentCategories();
+        const categories = await CategoryService.getParentCategories();
         setCategoriesParents(categories);
     };
 
@@ -80,14 +80,14 @@ const SideMenu = ({productId}) => {
                      </Button>
                  </motion.div>
                  <ul className="flex flex-col items-center mt-16">
-                     {categoriesParents && categoriesParents.map((category) => (
-                         <li className="w-full">
-                             <Button onClick={(e) => { e.stopPropagation(); navigate(`/product/category/${category.category_id}`); }} radius="none" className="bg-transparent w-full hover:bg-gray-200">
-                                 {category.category_name} {category.category_id}
-                             </Button>
-                         </li>
-                     ))}
-                 </ul>
+                    {categoriesParents && categoriesParents.map((category) => (
+                        <li className="w-full" key={category.category_id}>
+                            <Button onClick={(e) => { e.stopPropagation(); router.push(`/category/${category.category_id}`); }} radius="none" className="bg-transparent w-full hover:bg-gray-200">
+                                {category.category_name} {category.category_id}
+                            </Button>
+                        </li>
+                    ))}
+                </ul>
              </motion.div>
          </section>
      );

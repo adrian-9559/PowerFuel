@@ -1,10 +1,9 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { check, validationResult } = require('express-validator');
-const model = require('./model');
+const model = require('../../model/userModel');
+const { getRoleByUserId } = require('../../model/roleModel'); 
 
-
-const { getRoleByUserId }= require('../roles/model');
 
 const express = require('express');
 const session = require('express-session');
@@ -134,7 +133,7 @@ const getUserInfo = async (req, res) => {
         "first_name": user.UserInfo.first_name ,
         "last_name": user.UserInfo.last_name ,
         "dni": user.UserInfo.dni ,
-        "role_name":user.UserRole.Role.role_name 
+        "role_id":user.UserRoles.Role
     }));
 
     res.json(users);

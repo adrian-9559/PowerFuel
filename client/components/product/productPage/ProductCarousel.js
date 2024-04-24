@@ -32,7 +32,7 @@ const ProductCarousel = ({id}) => {
                     <div key={i} className={isThumbnail ? "w-16 h-16" : ""}>
                         <Skeleton isLoaded={id?true:false}>
                             <Image isZoomed
-                                src={`http://25.65.210.24:4001/public/images/product/${id}/${i}.png`}
+                                src={`http://localhost:4001/public/images/product/${id}/${i}.png`}
                                 alt={`Imagen ${i} del producto ${id}`}
                                 className="rounded shadow-lg object-cover cursor-pointer"
                                 onClick={() => handleImageClick(i - 1)}

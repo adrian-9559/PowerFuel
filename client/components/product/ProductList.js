@@ -25,23 +25,23 @@ const ProductList = () => {
 
     return (
         <main className='mt-4'>
-            <div className="container mx-auto flex flex-wrap justify-center items-center">
+            <section className="container mx-auto flex flex-wrap justify-center items-center">
                 {loading ? (
                     <Spinner />
                 ) : productos && productos.length > 0 ? (
                     productos.map((product) => (
-                        <div 
+                        <section 
                             key={product.product_id} 
                             onClick={() => router.push(`/product/${product.product_id}`)}
                             className="cursor-pointer m-2"
                         >
                             <ProductCard product={product} />
-                        </div>
+                        </section>
                     ))
                 ) : (
                     <p className="text-center">No se encontraron productos.</p>
                 )}
-            </div>
+            </section>
         </main>
     );
 };

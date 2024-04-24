@@ -1,4 +1,4 @@
-const model = require('./model');
+const model = require('../../model/roleModel');
 
 const getRoles = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
@@ -78,11 +78,4 @@ const deleteRoleById = async (req, res) => {
     }
 };
 
-module.exports = {
-    getRoles,
-    getRoleById,
-    addRole,
-    updateRoleById,
-    deleteRoleById,
-    getRoleByUserId,
-};
+module.exports = { getRoles, getRoleById, getRoleByUserId, addRole, updateRoleById, deleteRoleById };

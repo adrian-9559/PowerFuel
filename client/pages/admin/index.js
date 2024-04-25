@@ -1,92 +1,87 @@
 import React, { useState, useEffect } from 'react';
 import { Tabs, Tab, Button, Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, Pagination, Modal, ModalContent, ModalHeader, ModalFooter, ModalBody, useDisclosure } from "@nextui-org/react";
-import { getUserRole, getAllRoles, deleteRole } from '../../services/roleService';
-import { getAllUsersInfo, deleteUser } from '../../services/userService';
-import { getProductsInfo, deleteProduct } from '../../services/productService';
-import { getAllCategories, deleteCategory } from '../../services/categoryService';
+import UserService from '../../services/userService';
+import ProductService from '../../services/productService';
+import CategoryService from '../../services/categoryService';
+import RoleService from '../../services/roleService';
 import {AnimatePresence, motion } from 'framer-motion';
-import roleService from '../../services/roleService';
 
+const userService = new UserService();
+const productService = new ProductService();
+const categoryService = new CategoryService();
+const roleService = new RoleService();
 
 const ADMIN_ACTIONS = {
     '99': { // admin
         'usuarios': {
-            getInfo: getAllUsersInfo,
-            delete: deleteUser,
+            getInfo: userService.getAllUsersInfo,
+            delete: userService.deleteUser,
         },
         'roles': {
-            getInfo: getAllRoles,
-            delete: deleteRole
+            getInfo: roleService.getAllRoles,
+            delete: roleService.deleteRole
         },
         'productos': {
-            getInfo: getProductsInfo,
-            delete: deleteProduct,
+            getInfo: productService.getProductsInfo,
+            delete: productService.deleteProduct,
         },
         'categorias': {
-            getInfo: getAllCategories,
-            delete: deleteCategory,
+            getInfo: categoryService.getAllCategories,
+            delete: categoryService.deleteCategory,
         },
     },
     '96': { // managerAnalytics
         'usuarios': {
-            getInfo: getAllUsersInfo,
-            delete: deleteUser,
+            getInfo: userService.getAllUsersInfo,
+            delete: userService.deleteUser,
         },
         'roles': {
-            getInfo: getAllRoles,
-            delete: deleteRole
+            getInfo: roleService.getAllRoles,
+            delete: roleService.deleteRole
         },
         'productos': {
-            getInfo: getProductsInfo,
-            delete: deleteProduct,
+            getInfo: productService.getProductsInfo,
+            delete: productService.deleteProduct,
         },
         'categorias': {
-            getInfo: getAllCategories,
-            delete: deleteCategory,
+            getInfo: categoryService.getAllCategories,
+            delete: categoryService.deleteCategory,
         },
     },
     '94': { // managerOrder
-        'usuarios': {
-            getInfo: getAllUsersInfo,
-            delete: deleteUser,
-        },
-        'roles': {
-            getInfo: getAllRoles,
-            delete: deleteRole
-        },
         'productos': {
-            getInfo: getProductsInfo,
-            delete: deleteProduct,
+            getInfo: productService.getProductsInfo,
+            delete: productService.deleteProduct,
         },
         'categorias': {
-            getInfo: getAllCategories,
-            delete: deleteCategory,
+            getInfo: categoryService.getAllCategories,
+            delete: categoryService.deleteCategory,
         },
     },
     '97': {
         'productos': {
-            getInfo: getProductsInfo,
-            delete: deleteProduct,
+            getInfo: productService.getProductsInfo,
+            delete: productService.deleteProduct,
         },
         'categorias': {
-            getInfo: getAllCategories,
-            delete: deleteCategory,
+            getInfo: categoryService.getAllCategories,
+            delete: categoryService.deleteCategory,
         },
     },
     '95': { // managerSupport
         'usuarios': {
-            getInfo: getAllUsersInfo,
-            delete: deleteUser,
+            getInfo: userService.getAllUsersInfo,
+            delete: userService.deleteUser,
         },
         'roles': {
-            getInfo: getAllRoles,
-            delete: deleteRole
+            getInfo: roleService.getAllRoles,
+            delete: roleService.deleteRole
         },
     },
     '98': { // managerUser
         'usuarios': {
-            getInfo: getAllUsersInfo,
-            delete: deleteUser,
+            getInfo: userService.getAllUsersInfo,
+            delete: userService.deleteUser,
         },
     },
 };

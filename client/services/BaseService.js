@@ -1,7 +1,9 @@
 import api from './axios';
 
 class BaseService {
+
     constructor(resource) {
+
         this.resource = resource;
         this.api = api;
     }

@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { clearUser, setUser} from '../../../redux/userSlice';
 import { clearAdmin, setAdmin} from '../../../redux/adminSlice';
 import UserService from '../../../services/userService';
-import roleService from '../../../services/roleService';
+import RoleService from '../../../services/roleService';
 
 
 const UserMenu = ({onLogout}) => {
@@ -15,11 +15,36 @@ const UserMenu = ({onLogout}) => {
     const user = useSelector(state => state.user);
     const admin = useSelector(state => state.admin);
     const [isLoading, setIsLoading] = useState(false);
+    const [imageExists, setImageExists] = useState(true);
+    const userService = new UserService();
+    const roleService = new RoleService();
 
     useEffect(() => {
         fetchUserInfo();
         fetchUserRole();
     }, []);
+
+    useEffect(() => {
+        if (user) {
+            fetch(`http://localhost:4001/public/images/user/${user.user_id}/1.png`)
+                .then(res => {
+                    if (res.status === 404) {
+                        setImageExists(false);
+                    }
+                });
+        }
+    }, [user]);
+
+    const style = imageExists
+        ? {}
+        : {
+            backgroundColor: '#' + Math.floor(Math.random() * 16777215).toString(16),
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            color: '#fff',
+            fontSize: '1.5em'
+        };
 
     const handleLogout = () => {
         try {
@@ -35,7 +60,7 @@ const UserMenu = ({onLogout}) => {
     const fetchUserInfo = async () => {
         setIsLoading(true);
         try {
-            const userInfo = await UserService.getUserInfo(sessionStorage.getItem('token'));
+            const userInfo = await userService.getUserInfo(sessionStorage.getItem('token'));
             if(userInfo !== null && userInfo.user_id && userInfo.email && userInfo.first_name && userInfo.last_name && userInfo.dni){
                 dispatch(setUser(userInfo));
             }
@@ -65,11 +90,17 @@ const UserMenu = ({onLogout}) => {
         user === null || isLoading ? <Spinner size="large" /> :
             <Dropdown>
                 <DropdownTrigger>
-                    <Button radius="full" size="lg" isIconOnly>
-                        <Image className="object-cover h-full w-full" src='https://imgs.search.brave.com/q0dsGlGGXdT8ttbtcAuJB2NZ5jA9ZrdU5R_XIkta9wk/rs:fit:500:0:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy9k/L2Q3L01hcmlhbm9f/UmFqb3lfaW5fMjAx/OC5qcGc'></Image>
+                    <Button radius="full" size="lg" style={style} className='flex justify-center items-center pt-0' isIconOnly>
+                        {imageExists 
+                            ? <Image className="object-cover h-full w-full " src={`http://localhost:4001/public/images/user/${user.user_id}/1.png`} />
+                            : (user.first_name ? user.first_name.charAt(0) : '')
+                        }
                     </Button>
                 </DropdownTrigger>
-                <DropdownMenu aria-label="Profile Actions">
+                <DropdownMenu 
+                    aria-label="Profile Actions"
+                    closeOnSelect={false}
+                >
                     <DropdownItem key="profile" className="gap-2 h-14 bg-gray-200" textValue={user.email}>
                         <p className='font-bold'>Hola,</p>
                         <p className="font-bold">{user.email}</p>
@@ -81,7 +112,7 @@ const UserMenu = ({onLogout}) => {
                     
                     {admin === true ? (
                             <DropdownItem key="panel" textValue="panel" onClick={() => router.push('/admin/')}>
-                                <p>Panel de Administración</p>
+                                <p onClick={() => router.push('/admin/')}>Panel de Administración </p>
                             </DropdownItem>
                     ) : null}
                     <DropdownItem key="help_and_feedback" textValue="Help">

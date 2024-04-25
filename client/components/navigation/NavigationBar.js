@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
-import { Navbar, NavbarContent, NavbarItem, NavbarBrand, Button, Image } from "@nextui-org/react";
-
-import UserService from '../../services/userService';
-import { getUserRole } from '../../services/roleService';
+import { Navbar, NavbarContent, NavbarItem, NavbarBrand, Button, Image, user } from "@nextui-org/react";
 
 import { ThemeSwitch } from '../../components/theme-switch';
 import SideMenu from '../../components/navigation/partials/SideMenu';

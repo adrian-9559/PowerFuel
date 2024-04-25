@@ -1,23 +1,19 @@
-// ProductImagesCarousel.js
-import React from 'react';
-import { Modal, ModalContent, ModalHeader, ModalBody, Button, Input, useDisclosure } from '@nextui-org/react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Button, Input, Link, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Tabs, Tab, useDisclosure } from "@nextui-org/react";
+import { motion, AnimatePresence,  } from 'framer-motion';
 import UserService from '../../../services/userService';
-import { useRouter } from 'next/router';
-import { useDispatch, useSelector } from 'react-redux';
-import { setUser } from '../../../redux/userSlice';
-import { setAdmin } from '../../../redux/adminSlice';
-import roleService from '../../../services/roleService';
-
-
 
 const LoginMenu = ({ onLogin }) => {
-    const {isOpen, onOpen, onOpenChange} = useDisclosure();
-    const [credentials, setCredentials] = useState({email: '', password: ''});
-    const [error, setError] = useState('');
-    const router = useRouter();
-    const dispatch = useDispatch();
-    
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [credentials, setCredentials] = useState({ email: '', password: '' });
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [dni, setDni] = useState('');
+    const [selected, setSelected] = useState('login');
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         let token;
@@ -30,14 +26,13 @@ const LoginMenu = ({ onLogin }) => {
         }
     }, []);
 
-
     const handleLogin = async (event) => {
         event.preventDefault();
         try {
             const email = credentials.email;
             const password = credentials.password;
             const token = await UserService.loginUser(email, password);
-            
+
             if (token) {
                 onLogin(token);
             }
@@ -47,53 +42,151 @@ const LoginMenu = ({ onLogin }) => {
         }
     };
 
+    const handleRegister = async (e) => {
+        e.preventDefault();
+        if (password !== confirmPassword) {
+            setError('Passwords do not match');
+            return;
+        }
+
+        if (!email || !password || !firstName || !lastName || !dni) {
+            setError('Please fill in all required fields.');
+            return;
+        }
+
+        setLoading(true);
+        try {
+            await UserService.registerUser(email, password, firstName, lastName, dni);
+            router.push('/users/login');
+        } catch (error) {
+            if (error instanceof Error) {
+                setError(error.message);
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const handleChange = (event) => {
-        const {name, value} = event.target;
-        setCredentials({...credentials, [name]: value});
+        const { name, value } = event.target;
+        setCredentials({ ...credentials, [name]: value });
     }
+
+    const LoginForm = () => (
+        <motion.form 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onSubmit={handleLogin} 
+            className='flex flex-col w-full justify-between'
+        >
+            <div
+                className='flex flex-col w-full justify-between'
+            >
+                <Input
+                    name="email"
+                    type="email"
+                    label="Email"
+                    value={credentials.email}
+                    onChange={handleChange}
+                    className="w-full mb-4"
+                />
+                <Input
+                    name="password"
+                    type="password"
+                    label="Password"
+                    value={credentials.password}
+                    onChange={handleChange}
+                    className="w-full mb-4"
+                />
+            </div>
+            <Button type='submit' disabled={loading} className="w-full">{loading ? 'Cargando...' : 'Iniciar sesión'}</Button>
+        </motion.form>
+    );
+
+    const RegisterForm = () => (
+        <motion.form
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onSubmit={handleRegister} 
+            className='flex flex-col w-full justify-between'
+        >
+            <div className='flex flex-row w-full gap-4 justify-center'>
+                <div className="flex flex-col w-full md:w-1/2">
+                    <Input
+                        type="email"
+                        label="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="w-full mb-4"
+                    />
+                    <Input
+                        type="password"
+                        label="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="w-full mb-4"
+                    />
+                    <Input
+                        type="password"
+                        label="Confirm Password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        className="w-full mb-4"
+                    />
+                </div>
+                <div className="flex flex-col w-full md:w-1/2">
+                    <Input
+                        type="text"
+                        label="First Name"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        className="w-full mb-4"
+                    />
+                    <Input
+                        type="text"
+                        label="Last Name"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        className="w-full mb-4"
+                    />
+                    <Input
+                        type="text"
+                        label="DNI"
+                        value={dni}
+                        onChange={(e) => setDni(e.target.value)}
+                        className="w-full mb-4"
+                    />
+                </div>
+            </div>
+            <Button type='submit' disabled={loading} className="w-full">{loading ? 'Cargando...' : 'Registrarse'}</Button>
+        </motion.form>
+    );
 
     return (
         <>
-        <Button onClick={onOpen}>Iniciar sesión</Button>
-            <Modal  backdrop='opaque' isOpen={isOpen} onOpenChange={onOpenChange}>
-                <ModalContent>
-                    <ModalHeader className="flex flex-col gap-1 justify-center items-center">Iniciar sesión</ModalHeader>
-                    <ModalBody>
-                    <form className="flex flex-col p-8  login-container items-center justify-center" onSubmit={handleLogin}>
-                        <Input 
-                            name="email" 
-                            type="email" 
-                            label="Email" 
-                            value={credentials.email} 
-                            onChange={handleChange} 
-                            className="w-full mb-4" 
-                        />
-                        <Input 
-                            name="password" 
-                            type="password" 
-                            label="Password" 
-                            value={credentials.password} 
-                            onChange={handleChange} 
-                            className="w-full mb-4" 
-                        />
-                        <Button
-                            type="submit" 
-                            className="w-full px-4 py-2 mt-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
-                        >
-                            Iniciar sesión
-                        </Button>
-                        {error && <section className="mt-2 text-red-500">{error}</section>}
-                        <Button 
-                            color="none"
-                            onClick={() => router.push('/users/register')} 
-                            className="mt-3 mb-3 text-blue-500 cursor-pointer hover:text-blue-700"
-                        >
-                            ¿No tienes cuenta?
-                        </Button>
-                    </form>
-                    </ModalBody>
-                </ModalContent>
-            </Modal>
+        <Button onPress={onOpen}>Iniciar sesión</Button>
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange} className='p-8'>
+            <ModalContent>
+                {(onClose) => (
+                    <Tabs
+                    fullWidth
+                    size="md"
+                    aria-label="Tabs form"
+                    selectedKey={selected}
+                    onSelectionChange={setSelected}
+                  >
+                    <Tab key="login" title="Iniciar sesión" className='felx flex-col justify-center items-center'>
+                        <LoginForm />
+                    </Tab>
+                    <Tab key="sign-up" title="Registrarse" className='felx flex-col justify-center items-center'>
+                        <RegisterForm />
+                    </Tab>
+                  </Tabs>
+                )}
+            </ModalContent>
+        </Modal>
         </>
     );
 };

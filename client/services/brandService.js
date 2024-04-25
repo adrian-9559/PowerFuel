@@ -1,69 +1,35 @@
-import api from './axios.js';
+import api from "./axios";
 
-const getBrandById = async (id) => {
-    try {
+class BrandService{
+    async getBrandById(id) {
         const response = await api.get(`/brands/${id}`);
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching brand:', error.message);
-        throw error;
-    }
-};
-
-const getAllBrands = async (page = 1, limit = 10) => {
-    try {
-        const response = await api.get(`/brands?page=${page}&limit=${limit}`);
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching brands:', error.message);
-        throw error;
-    }
-};
-
-const getAllBrandsNoPagination = async () => {
-    try {
-        const response = await api.get('/brands');
         return response.data.data;
-    } catch (error) {
-        console.error('Error fetching brands:', error.message);
-        throw error;
     }
-};
 
-const addBrand = async (brand) => {
-    try {
-        const response = await api.post('/brands', brand);
-        return response.data;
-    } catch (error) {
-        console.error('Error adding brand:', error.message);
-        throw error;
+    async getAllBrands(page = 1, limit = 10) {
+        const response = await api.get(`/brands?page=${page}&limit=${limit}`);
+        return response.data.data;
     }
-};
 
-const updateBrand = async (id, brand) => {
-    try {
+    async getAllBrandsNoPagination() {
+        const response = await api.get(`/brands`);
+        return response.data.data;
+    }
+
+    async addBrand(brand) {
+        const response = await api.post(`/brands`, brand);
+        return response.data.data;
+    }
+
+    async updateBrand(id, brand) {
         const response = await api.put(`/brands/${id}`, brand);
-        return response.data;
-    } catch (error) {
-        console.error('Error updating brand:', error.message);
-        throw error;
+        return response.data.data;
     }
-};
 
-const deleteBrand = async (id) => {
-    try {
+    async deleteBrand(id) {
         const response = await api.delete(`/brands/${id}`);
-        return response.data;
-    } catch (error) {
-        console.error('Error deleting brand:', error.message);
-        throw error;
+        return response.data.data;
     }
-};
+}
 
-export { getBrandById, 
-        getAllBrands, 
-        addBrand, 
-        updateBrand, 
-        deleteBrand ,
-        getAllBrandsNoPagination
-};
+export default BrandService;

@@ -108,6 +108,7 @@ const CartMenu = () => {
                                 key={index} 
                                 textValue={item.id} 
                                 showDivider
+                                onClick={() => router.push(`/product/${item.id}`)}
                             >
                                 <section className='flex items-center mx-2 '>
                                     <section>
@@ -121,7 +122,7 @@ const CartMenu = () => {
                                     </section>
                                     <section className='mx-6'>
                                         <section className='items-center'>
-                                            <p className='font-semibold' onClick={() => router.push(`/product/${item.id}`)}>{item.name}</p>
+                                            <p className='font-semibold' >{item.name}</p>
                                         </section>
                                         <section className='flex w-64 justify-between items-center'>
                                         {

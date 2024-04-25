@@ -1,17 +1,15 @@
-import BaseService from './BaseService';
+import api from './axios';
 
-class RoleService extends BaseService {
-    constructor() {
-        super('roles');
-    }
+class RoleService{
 
     async getRoleById(roleId) {
-        return this.getById(roleId);
+        const response = await api.get(`/roles/${roleId}`);
+        return response.data;
     }
 
     async getUserRole(token) {
         if (token) {
-            const response = await this.api.post(`/${this.resource}/userRole`, {}, {
+            const response = await api.post(`/roles/userRole`, {}, {
                 headers: {
                     authorization: `Bearer ${token}`
                 }
@@ -23,24 +21,28 @@ class RoleService extends BaseService {
     }
 
     async deleteRole(roleId) {
-        return this.delete(roleId);
+        const response = await api.delete(`/roles/${roleId}`);
+        return response.data;
     }
 
     async getAllRoles(page = 1, limit = 10) {
-        return this.getAll(page, limit);
+        const response = await api.get(`/roles?page=${page}&limit=${limit}`);
+        return response.data;
     }
 
     async updateRole(id, roleName) {
-        return this.update(id, {
+        const response = await api.put(`/roles/${id}`, {
             name: roleName,
         });
+        return response.data;
     }
 
     async addRole(roleName) {
-        return this.create({
+        const response = await api.post(`/roles`, {
             name: roleName,
         });
+        return response.data;
     }
 }
 
-export default new RoleService();
+export default RoleService;

@@ -1,17 +1,13 @@
+import api from './axios';
+
 // UserService.js
-import BaseService from './BaseService';
 
-class UserService extends BaseService {
-    constructor() {
-        super('users');
-    }
-
+class UserService {
     async loginUser(email, password) {
-        const response = await this.api.post(`/${this.resource}/login`, {
+        const response = await api.post(`/users/login`, {
             email: email,
             current_password: password,
         });
-
 
         if (response.status === 401) {
             throw new Error('Incorrect credentials');
@@ -20,7 +16,7 @@ class UserService extends BaseService {
     }
 
     async registerUser(email, password, firstName, lastName, dni, roleId) {
-        const response = await this.create({
+        const response = await api.post(`/users`, {
             email: email,
             current_password: password,
             first_name: firstName,
@@ -38,7 +34,7 @@ class UserService extends BaseService {
     }
 
     async updateUser(id, email, password, firstName, lastName, dni, roleId) {
-        return this.update(id, {
+        return api.put(`/users/${id}`, {
             email: email,
             current_password: password,
             first_name: firstName,
@@ -49,7 +45,7 @@ class UserService extends BaseService {
     }
 
     async addUser(email, password, firstName, lastName, dni, roleId) {
-        return this.create({
+        return api.post(`/users`, {
             email: email,
             current_password: password,
             first_name: firstName,
@@ -61,7 +57,7 @@ class UserService extends BaseService {
 
     async getUserInfo(token) {
         if (token) {
-            const response = await this.api.post(`/${this.resource}/info`, {}, 
+            const response = await api.post(`/users/info`, {}, 
             {
                 headers: { 
                     authorization: `Bearer ${token}`
@@ -71,21 +67,20 @@ class UserService extends BaseService {
             return response.data[0];
         }
 
-
         return null;
     }
 
     async getAllUsersInfo(page = 1, limit = 10) {
-        return this.getAll(page, limit);
+        return api.get(`/users?page=${page}&limit=${limit}`);
     }
 
     async deleteUser(id) {
-        return this.delete(id);
+        return api.delete(`/users/${id}`);
     }
 
     async getUserById(id) {
-        return this.getById(id);
+        return api.get(`/users/${id}`);
     }
 }
 
-export default new UserService();
+export default UserService;

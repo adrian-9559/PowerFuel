@@ -18,19 +18,20 @@ const NavigationBar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('token');
         if (token) {
             setIsLoggedIn(true);
         }
     }, []);
 
     const handleLogin = (token) => {
-        localStorage.setItem('token', token);
+        sessionStorage.setItem('token', token);
         setIsLoggedIn(true);
     };
 
     const handleLogout = useCallback(() => {
         localStorage.clear();
+        sessionStorage.clear();
         setIsLoggedIn(false);
     });
     

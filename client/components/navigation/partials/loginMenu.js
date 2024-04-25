@@ -22,7 +22,7 @@ const LoginMenu = ({ onLogin }) => {
     useEffect(() => {
         let token;
         if (typeof window !== 'undefined') {
-            token = localStorage.getItem('token');
+            token = sessionStorage.getItem('token');
         }
 
         if (token) {

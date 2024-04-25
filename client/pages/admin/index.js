@@ -4,8 +4,9 @@ import { getUserRole, getAllRoles, deleteRole } from '../../services/roleService
 import { getAllUsersInfo, deleteUser } from '../../services/userService';
 import { getProductsInfo, deleteProduct } from '../../services/productService';
 import { getAllCategories, deleteCategory } from '../../services/categoryService';
-import { useNavigate } from 'react-router-dom';
 import {AnimatePresence, motion } from 'framer-motion';
+import roleService from '../../services/roleService';
+
 
 const ADMIN_ACTIONS = {
     '99': { // admin
@@ -93,8 +94,6 @@ const ADMIN_ACTIONS = {
 
 
 function AdminPanel() {
-    const navigate = useNavigate();
-
     const [adminType, setAdminType] = useState(null);
     const [dataItems, setDataItems] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
@@ -109,18 +108,19 @@ function AdminPanel() {
         if (!token) {
             window.location = '/users/login';
         } else {
-            getUserRole().then(role => {
-                if (ADMIN_ACTIONS[role]) {
-                    console.log(`User role:${role}`);
-                    setAdminType(role);
-                    setSelectedTab(Object.keys(ADMIN_ACTIONS[role])[0]);
+            roleService.getUserRole(token)
+                .then(role => {
+                    if (ADMIN_ACTIONS[role]) {
+                        console.log(`User role:${role}`);
+                        setAdminType(role);
+                        setSelectedTab(Object.keys(ADMIN_ACTIONS[role])[0]);
 
-                } else {
-                    console.error(`Invalid admin type:${role}`);
-                }
-            }).catch(error => {
-                console.error('Error getting user role:', error);
-                window.location = '/users/login';
+                    } else {
+                        console.error(`Invalid admin type:${role}`);
+                    }
+                }).catch(error => {
+                    console.error('Error getting user role:', error);
+                    window.location = '/users/login';
             });
         }
     }, []);
@@ -156,11 +156,11 @@ function AdminPanel() {
     const handleCreate = () => {
         
         if(selectedTab === 'roles'){
-            navigate('/admin/createRole');
+            router.push('/admin/createRole');
         } else if(selectedTab === 'categorias'){
-            navigate('/admin/createCategory');
+            router.push('/admin/createCategory');
         }else if(selectedTab === 'productos'){
-            navigate('/admin/createProduct');
+            router.push('/admin/createProduct');
         }
     };
 

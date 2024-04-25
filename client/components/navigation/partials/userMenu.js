@@ -35,7 +35,7 @@ const UserMenu = ({onLogout}) => {
     const fetchUserInfo = async () => {
         setIsLoading(true);
         try {
-            const userInfo = await UserService.getUserInfo(localStorage.getItem('token'));
+            const userInfo = await UserService.getUserInfo(sessionStorage.getItem('token'));
             if(userInfo !== null && userInfo.user_id && userInfo.email && userInfo.first_name && userInfo.last_name && userInfo.dni){
                 dispatch(setUser(userInfo));
             }
@@ -47,8 +47,10 @@ const UserMenu = ({onLogout}) => {
     };
     
     const fetchUserRole = async () => {
+        const token = sessionStorage.getItem('token');
         try {
-            const userRole = await roleService.getUserRole();
+            const userRole = await roleService.getUserRole(token);
+            console.log(userRole);
             if(userRole !== null)
                 dispatch(setAdmin(userRole !== 10));
             else
@@ -85,8 +87,8 @@ const UserMenu = ({onLogout}) => {
                     <DropdownItem key="help_and_feedback" textValue="Help">
                         Ayuda
                     </DropdownItem>
-                    <DropdownItem key="logout" textValue="Logout" color="danger" className='bg-red-200'>
-                        <section className='flex justify-center space-x-1 ' onClick={() => handleLogout()} >
+                    <DropdownItem key="logout" textValue="Logout" color="danger" className='bg-red-200' onClick={() => handleLogout()}>
+                        <section className='flex justify-center space-x-1 '>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
                             </svg>

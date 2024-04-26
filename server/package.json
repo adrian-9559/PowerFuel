@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/index.js --host 25.65.210.24 --port 4001"
+    "start": "nodemon src/index.js --host localhost --port 4001"
   },
   "keywords": [],
   "author": "",

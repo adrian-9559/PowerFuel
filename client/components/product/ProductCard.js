@@ -43,7 +43,7 @@ const ProductCard = ({ product }) => {
             className="w-64 h-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
             <CardBody className="overflow-visible p-0 relative h-full">
-                <section className='bg-cover bg-center h-full w-full relative' style={{ backgroundImage: `url(http://localhost:4001/public/images/product/${product.product_id}/1.png)` }}> 
+                <section className='bg-cover bg-center h-full w-full relative' style={{ backgroundImage: `url(http://25.65.210.24:4001/public/images/product/${product.product_id}/1.png)` }}> 
                     <section className="absolute bottom-2 left-2">
                         <Chip 
                             size="lg" 

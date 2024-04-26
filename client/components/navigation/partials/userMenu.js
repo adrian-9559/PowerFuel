@@ -5,6 +5,7 @@ import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Image, S
 import { useSelector, useDispatch } from 'react-redux';
 import { clearUser, setUser} from '../../../redux/userSlice';
 import { clearAdmin, setAdmin} from '../../../redux/adminSlice';
+import UserImage from '../../users/userImage';
 import UserService from '../../../services/userService';
 import RoleService from '../../../services/roleService';
 
@@ -15,36 +16,11 @@ const UserMenu = ({onLogout}) => {
     const user = useSelector(state => state.user);
     const admin = useSelector(state => state.admin);
     const [isLoading, setIsLoading] = useState(false);
-    const [imageExists, setImageExists] = useState(true);
-    const userService = new UserService();
-    const roleService = new RoleService();
 
     useEffect(() => {
         fetchUserInfo();
         fetchUserRole();
     }, []);
-
-    useEffect(() => {
-        if (user) {
-            fetch(`http://localhost:4001/public/images/user/${user.user_id}/1.png`)
-                .then(res => {
-                    if (res.status === 404) {
-                        setImageExists(false);
-                    }
-                });
-        }
-    }, [user]);
-
-    const style = imageExists
-        ? {}
-        : {
-            backgroundColor: '#' + Math.floor(Math.random() * 16777215).toString(16),
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            color: '#fff',
-            fontSize: '1.5em'
-        };
 
     const handleLogout = () => {
         try {
@@ -60,7 +36,7 @@ const UserMenu = ({onLogout}) => {
     const fetchUserInfo = async () => {
         setIsLoading(true);
         try {
-            const userInfo = await userService.getUserInfo(sessionStorage.getItem('token'));
+            const userInfo = await UserService.getUserInfo(sessionStorage.getItem('token'));
             if(userInfo !== null && userInfo.user_id && userInfo.email && userInfo.first_name && userInfo.last_name && userInfo.dni){
                 dispatch(setUser(userInfo));
             }
@@ -74,7 +50,7 @@ const UserMenu = ({onLogout}) => {
     const fetchUserRole = async () => {
         const token = sessionStorage.getItem('token');
         try {
-            const userRole = await roleService.getUserRole(token);
+            const userRole = await RoleService.getUserRole(token);
             console.log(userRole);
             if(userRole !== null)
                 dispatch(setAdmin(userRole !== 10));
@@ -90,11 +66,8 @@ const UserMenu = ({onLogout}) => {
         user === null || isLoading ? <Spinner size="large" /> :
             <Dropdown>
                 <DropdownTrigger>
-                    <Button radius="full" size="lg" style={style} className='flex justify-center items-center pt-0' isIconOnly>
-                        {imageExists 
-                            ? <Image className="object-cover h-full w-full " src={`http://localhost:4001/public/images/user/${user.user_id}/1.png`} />
-                            : (user.first_name ? user.first_name.charAt(0) : '')
-                        }
+                    <Button radius="full" size="lg" className='flex justify-center items-center pt-0' isIconOnly>
+                        <UserImage user={user}/>
                     </Button>
                 </DropdownTrigger>
                 <DropdownMenu 

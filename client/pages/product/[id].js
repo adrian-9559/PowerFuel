@@ -1,9 +1,9 @@
 // product.js
 import React, { useEffect, useState } from 'react';
-import { getProductById } from '../../services/productService';
-import { Skeleton} from "@nextui-org/react";
+import ProductService from '../../services/productService';
+import { Skeleton } from "@nextui-org/react";
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import {useRouter} from 'next/router';
+import { useRouter } from 'next/router';
 import NavigationBar from '../../components/navigation/NavigationBar';
 import QuantityInput from '../../components/product/productPage/QuantityInput';
 import ProductCarousel from '../../components/product/productPage/ProductCarousel';
@@ -18,7 +18,7 @@ const Product = () => {
         const fetchProducto = async () => {
             try {
                 setIsLoaded(false); // Muestra el esqueleto
-                const productData = await getProductById(id);
+                const productData = await ProductService.getProductById(id);
                     setProduct(productData);
                     setIsLoaded(true); 
             } catch (error) {

@@ -1,32 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import { Input, Button, Image, Link } from "@nextui-org/react";
-import { getUserInfo, updateUser } from '../../services/userService';
+import UserService from '../../services/userService';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 import SideMenu from '../../components/users/sideMenu';
+import DefaultLayout from '../../layouts/default';
+import UserImage from '../../components/users/userImage';
+import { clearUser, setUser} from '../../redux/userSlice';
+import { clearAdmin, setAdmin} from '../../redux/adminSlice';
+import { useSelector, useDispatch } from 'react-redux';
 
 const Config = () => {
-    const { navigate } = useRouter();
-    const [userData, setUserData] = useState({});
+    const dispatch = useDispatch();
+    const router = useRouter();
+    const user = useSelector(state => state.user) || {};
     const [isEditing, setIsEditing] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    
 
-    useEffect(() => {
-        getUserInfo()
-            .then(userInfo => {
-                if(userInfo) {
-                    setUserData(userInfo);
-                }else {
-                    navigate('/users/login');
-                }
-            })
-            .catch(error => console.error('Authentication Error:', error.message));
-    }, []);
+    const fetchUserInfo = async () => {
+        setIsLoading(true);
+        try {
+            const userInfo = await UserService.getUserInfo(sessionStorage.getItem('token'));
+            if(userInfo !== null && userInfo.user_id && userInfo.email && userInfo.first_name && userInfo.last_name && userInfo.dni){
+                dispatch(setUser(userInfo));
+            }
+        } catch (error) {
+            console.error('Ha ocurrido un error al obtener la información del usuario' ,error);
+            dispatch(setUser(null));
+        }
+        setIsLoading(false);
+    };
 
     const toggleEdit = async () => {
         setIsEditing(!isEditing);
         if(isEditing){
             try {
-                const response = await updateUser(userData.user_id, userData.email, userData.first_name, userData.last_name, userData.dni, userData.role_id);
+                const response = await UserService.updateUser(user.user_id, user.email, user.first_name, user.last_name, user.dni, user.role_id);
                 if (!response) {
                     throw new Error('Error updating user');
                 }
@@ -37,48 +47,54 @@ const Config = () => {
     }
 
     const handleChange = (field) => (e) => {
-        setUserData({...userData, [field]: e.target.value});
+        setuser({...user, [field]: e.target.value});
     }
 
+    useEffect(() => {
+        const token = sessionStorage.getItem('token');
+        if (!token) {
+            router.push('/');
+        }
+        fetchUserInfo();
+    }, [user]);
+
     return (
-        <section>
-            <SideMenu />
-            <main className='w-full flex flex-row justify-center pt-6'>
-                <motion.section
-                    className="max-w-4xl mx-auto mt-10 p-6 bg-gray-100 rounded-lg shadow-xl w-2/5 flex flex-col gap-5"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5 }}
-                >
-                        <section className='flex flex-row items-center gap-3'>
-                            <Image
-                                shadow="sm"
-                                radius="full"
-                                alt={userData.email}
-                                className="object-cover h-16 w-16"
-                                src='https://imgs.search.brave.com/q0dsGlGGXdT8ttbtcAuJB2NZ5jA9ZrdU5R_XIkta9wk/rs:fit:500:0:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy9k/L2Q3L01hcmlhbm9f/UmFqb3lfaW5fMjAx/OC5qcGc'
-                            />
-                            <p>{userData.email}</p>
-                        </section>
-                        <section className='flex flex-col gap-5 '>
-                            <section className='flex flex-col gap-3'>
-                                <Input type='text' className='w-full' value={userData.email} onChange={handleChange('email')} disabled={!isEditing} label="Email:"></Input>
+        <DefaultLayout>
+            <section>
+                <SideMenu />
+                <main className='w-full flex flex-row justify-center pt-6'>
+                    <motion.section
+                        className="max-w-4xl mx-auto mt-10 p-6 bg-gray-100 rounded-lg shadow-xl w-2/5 flex flex-col gap-5"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.5 }}
+                    >
+                            <section className='flex flex-row items-center gap-3'>
+                                <section className="w-16 h-16">
+                                    <UserImage user={user}/>
+                                </section>
+                                <p>{user.email}</p>
                             </section>
-                            <section className='flex flex-col gap-3'>
-                                <Input type='text' className='w-full' value={userData.first_name} onChange={handleChange('first_name')} disabled={!isEditing} label="Nombre:"></Input>
+                            <section className='flex flex-col gap-5 '>
+                                <section className='flex flex-col gap-3'>
+                                    <Input type='text' className='w-full' value={user.email} onChange={handleChange('email')} disabled={!isEditing} label="Email:"></Input>
+                                </section>
+                                <section className='flex flex-col gap-3'>
+                                    <Input type='text' className='w-full' value={user.first_name} onChange={handleChange('first_name')} disabled={!isEditing} label="Nombre:"></Input>
+                                </section>
+                                <section className='flex flex-col gap-3'>
+                                    <Input type='text' className='w-full' value={user.last_name} onChange={handleChange('last_name')} disabled={!isEditing} label="Apellido:"></Input>
+                                </section>
+                                <section className='flex flex-col gap-3'>
+                                    <Input type='text' className='w-full' value={user.dni} onChange={handleChange('dni')} disabled={!isEditing} label="DNI:"></Input>
+                                </section>
+                                <Button color={isEditing? 'primary' : 'default'} onClick={toggleEdit} className='w-full'>{isEditing ? 'Guardar' : 'Editar'}</Button>
                             </section>
-                            <section className='flex flex-col gap-3'>
-                                <Input type='text' className='w-full' value={userData.last_name} onChange={handleChange('last_name')} disabled={!isEditing} label="Apellido:"></Input>
-                            </section>
-                            <section className='flex flex-col gap-3'>
-                                <Input type='text' className='w-full' value={userData.dni} onChange={handleChange('dni')} disabled={!isEditing} label="DNI:"></Input>
-                            </section>
-                            <Button color={isEditing? 'primary' : 'default'} onClick={toggleEdit} className='w-full'>{isEditing ? 'Guardar' : 'Editar'}</Button>
-                        </section>
-                </motion.section>
-            </main>
-        </section>
+                    </motion.section>
+                </main>
+            </section>
+        </DefaultLayout>
     );
 }
 export default Config;

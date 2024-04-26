@@ -41,7 +41,7 @@ const NavigationBar = () => {
                 <NavbarContent>
                     <NavbarBrand className="mr-4 cursor-pointer" onClick={() => router.push('/')}>
                         <Image className="object-cover h-12 w-12"
-                            src="http://localhost:4001/public/images/logo/logo.png"
+                            src="http://25.65.210.24:4001/public/images/logo/logo.png"
                         />
                     </NavbarBrand>
                 </NavbarContent>

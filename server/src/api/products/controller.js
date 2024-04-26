@@ -81,9 +81,11 @@ const getProductsByCategory = async (req, res) => {
 };
 
 const getProductsInfo = async (req, res) => {
+    console.log("hola");
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
+
 
     let products = await model.getProducts(skip, limit);
     const total = await model.getProductsCount();
@@ -96,8 +98,8 @@ const getProductsInfo = async (req, res) => {
             "description": { display: "Descripción", value: product.description },
             "price": { display: "Precio", value: product.price },
             "stock_quantity": { display: "Cantidad en Stock", value: product.stock_quantity },
-            "category": { display: "Categoría", value: product.category.category_name }, // Changed this line
-            "brand": { display: "Marca", value: product.brand.brand_name },
+            "category": { display: "Categoría", value: product.Category.category_name },
+            "brand": { display: "Marca", value: product.Brand.brand_name },
             "status": { display: "Estado", value: product.status ? "Activo" : "Inactivo" },
         };
     });

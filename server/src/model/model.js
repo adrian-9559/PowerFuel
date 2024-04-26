@@ -96,7 +96,11 @@ UserRoles.init({
     role_id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        defaultValue: 10
+        defaultValue: 10,
+        references: {
+            model: 'Role',
+            key: 'role_id'
+        }
     },
 }, {
     sequelize,
@@ -178,24 +182,27 @@ Category.init({
 });
 
 Product.belongsTo(Brand, { foreignKey: 'id_brand' });
+Product.belongsTo(Category, { foreignKey: 'category_id' });
+
 Brand.hasMany(Product, { foreignKey: 'id_brand' });
 
+Category.hasMany(Product, { foreignKey: 'category_id' });
+
 Address.belongsTo(UserCredentials, { foreignKey: 'user_id' });
+
 UserCredentials.hasOne(Address, { foreignKey: 'user_id' });
+UserCredentials.hasMany(UserRoles, { foreignKey: 'user_id' });
+UserCredentials.hasMany(OldPasswords, { foreignKey: 'user_id' });
+UserCredentials.hasOne(UserInfo, { foreignKey: 'user_id' });
+
+UserInfo.belongsTo(UserCredentials, { foreignKey: 'user_id' });
+
+OldPasswords.belongsTo(UserCredentials, { foreignKey: 'user_id' });
 
 UserRoles.belongsTo(UserCredentials, { foreignKey: 'user_id' });
 UserRoles.belongsTo(Role, { foreignKey: 'role_id' });
-UserCredentials.hasMany(UserRoles, { foreignKey: 'user_id' });
+
 Role.hasMany(UserRoles, { foreignKey: 'role_id' });
-
-OldPasswords.belongsTo(UserCredentials, { foreignKey: 'user_id' });
-UserCredentials.hasMany(OldPasswords, { foreignKey: 'user_id' });
-
-UserInfo.belongsTo(UserCredentials, { foreignKey: 'user_id' });
-UserCredentials.hasOne(UserInfo, { foreignKey: 'user_id' });
-
-Product.belongsTo(Category, { foreignKey: 'category_id' });
-Category.hasMany(Product, { foreignKey: 'category_id' });
 
 
 

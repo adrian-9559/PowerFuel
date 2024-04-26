@@ -100,10 +100,13 @@ const getUsers = async (req, res) => {
 const loginUser = async (req, res) => {
     try {
         const { email, current_password } = req.body;
+        console.log(email??"none");
+        console.log(current_password??"none");
         if (!email || !current_password) {
             return res.status(400).json({ message: 'Email and password are required' });
         }
         const user = await model.getUserByEmail(email);
+
         if (user && await bcrypt.compare(current_password, user.current_password)) {
             const token = generateToken(user.user_id);
             res.status(200).json({ message: 'Login successful', token });

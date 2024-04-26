@@ -32,4 +32,4 @@ class BrandService{
     }
 }
 
-export default BrandService;
+export default new BrandService();

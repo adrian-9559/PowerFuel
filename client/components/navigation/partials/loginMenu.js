@@ -5,7 +5,6 @@ import UserService from '../../../services/userService';
 
 const LoginMenu = ({ onLogin }) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    const [credentials, setCredentials] = useState({ email: '', password: '' });
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -14,12 +13,10 @@ const LoginMenu = ({ onLogin }) => {
     const [dni, setDni] = useState('');
     const [selected, setSelected] = useState('login');
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
     useEffect(() => {
-        let token;
-        if (typeof window !== 'undefined') {
-            token = sessionStorage.getItem('token');
-        }
+        const token = typeof window !== 'undefined' ? window.sessionStorage.getItem('token') : null;
 
         if (token) {
             onOpenChange(false);
@@ -29,9 +26,10 @@ const LoginMenu = ({ onLogin }) => {
     const handleLogin = async (event) => {
         event.preventDefault();
         try {
-            const email = credentials.email;
-            const password = credentials.password;
-            const token = await UserService.loginUser(email, password);
+            const emailInput = email;
+            const passwordInput = password;
+
+            const token = await UserService.loginUser(emailInput, passwordInput);
 
             if (token) {
                 onLogin(token);
@@ -67,17 +65,9 @@ const LoginMenu = ({ onLogin }) => {
         }
     };
 
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        setCredentials({ ...credentials, [name]: value });
-    }
-
     const LoginForm = () => (
-        <motion.form 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onSubmit={handleLogin} 
+        <form
+            onSubmit={handleLogin}
             className='flex flex-col w-full justify-between'
         >
             <div
@@ -87,34 +77,32 @@ const LoginMenu = ({ onLogin }) => {
                     name="email"
                     type="email"
                     label="Email"
-                    value={credentials.email}
-                    onChange={handleChange}
+                    defaultValue={email}
                     className="w-full mb-4"
+                    onChange={(e) => setEmail(e.target.value)}
                 />
                 <Input
                     name="password"
                     type="password"
                     label="Password"
-                    value={credentials.password}
-                    onChange={handleChange}
+                    defaultValue={password}
                     className="w-full mb-4"
+                    onChange={(e) => setPassword(e.target.value)}
                 />
             </div>
             <Button type='submit' disabled={loading} className="w-full">{loading ? 'Cargando...' : 'Iniciar sesión'}</Button>
-        </motion.form>
+        </form>
     );
 
     const RegisterForm = () => (
-        <motion.form
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onSubmit={handleRegister} 
+        <form
+            onSubmit={handleRegister}
             className='flex flex-col w-full justify-between'
         >
             <div className='flex flex-row w-full gap-4 justify-center'>
                 <div className="flex flex-col w-full md:w-1/2">
                     <Input
+                        isRequired
                         type="email"
                         label="Email"
                         value={email}
@@ -122,6 +110,7 @@ const LoginMenu = ({ onLogin }) => {
                         className="w-full mb-4"
                     />
                     <Input
+                        isRequired
                         type="password"
                         label="Password"
                         value={password}
@@ -129,6 +118,7 @@ const LoginMenu = ({ onLogin }) => {
                         className="w-full mb-4"
                     />
                     <Input
+                        isRequired
                         type="password"
                         label="Confirm Password"
                         value={confirmPassword}
@@ -138,6 +128,7 @@ const LoginMenu = ({ onLogin }) => {
                 </div>
                 <div className="flex flex-col w-full md:w-1/2">
                     <Input
+                        isRequired
                         type="text"
                         label="First Name"
                         value={firstName}
@@ -145,6 +136,7 @@ const LoginMenu = ({ onLogin }) => {
                         className="w-full mb-4"
                     />
                     <Input
+                        isRequired
                         type="text"
                         label="Last Name"
                         value={lastName}
@@ -152,6 +144,7 @@ const LoginMenu = ({ onLogin }) => {
                         className="w-full mb-4"
                     />
                     <Input
+                        isRequired
                         type="text"
                         label="DNI"
                         value={dni}
@@ -161,7 +154,7 @@ const LoginMenu = ({ onLogin }) => {
                 </div>
             </div>
             <Button type='submit' disabled={loading} className="w-full">{loading ? 'Cargando...' : 'Registrarse'}</Button>
-        </motion.form>
+        </form>
     );
 
     return (
@@ -186,6 +179,9 @@ const LoginMenu = ({ onLogin }) => {
                   </Tabs>
                 )}
             </ModalContent>
+            <ModalFooter>
+                <p className="text-red">{error}</p>
+            </ModalFooter>
         </Modal>
         </>
     );

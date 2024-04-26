@@ -10,10 +10,9 @@ const SideMenu = ({productId}) => {
     const router = useRouter();
     const [categoriesParents, setCategoriesParents] = useState([]);
     const [showMenuLeft, setShowMenuLeft] = useState(false);
-    const categoryService = new CategoryService();
 
     const fetchParentCategories = async () => {
-        const categories = await categoryService.getParentCategories();
+        const categories = await CategoryService.getParentCategories();
         setCategoriesParents(categories);
     };
 

@@ -3,8 +3,7 @@ import { useRouter } from 'next/router';
 import { Button } from "@nextui-org/react";
 
 const SideMenu = () => {
-    const { navigate } = useRouter();
-
+    const router = useRouter();
     return (
         <nav className='fixed h-full flex flex-col items-start border-r border-gray-300 pt-4 w-auto'>
             <section className='flex flex-row items-center px-3 gap-1 font-medium'>
@@ -13,7 +12,7 @@ const SideMenu = () => {
             <section className='hover:bg-slate-200 w-full'>
                 <Button 
                     color="none"
-                    onClick={() => navigate('/users/config')} 
+                    onClick={() =>  router.push('/users/config')} 
                     className='flex flex-row items-center px-3 gap-1'
                     startContent={
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
@@ -28,7 +27,7 @@ const SideMenu = () => {
             <section className='hover:bg-slate-200 w-full'>
                 <Button
                     color="none"
-                    onClick={() => navigate('/users/address')} 
+                    onClick={() => router.push('/users/address')} 
                     className='flex flex-row items-center px-3 gap-1'
                     startContent={
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-5 h-5">
@@ -42,7 +41,7 @@ const SideMenu = () => {
             <section className='hover:bg-slate-200 w-full'>
                 <Button 
                     color="none"
-                    onClick={() => navigate('/users/payment')} 
+                    onClick={() => router.push('/users/payment')} 
                     className='flex flex-row items-center px-3 gap-1'
                     startContent={
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-5 h-5">
@@ -56,7 +55,7 @@ const SideMenu = () => {
             <section className='hover:bg-slate-200 w-full'>
                 <Button 
                     color="none"
-                    onClick={() => navigate('/users/orders')} 
+                    onClick={() => router.push('/users/orders')} 
                     className='flex flex-row items-center px-3 gap-1'
                     startContent={
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-5 h-5">

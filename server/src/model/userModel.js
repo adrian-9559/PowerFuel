@@ -97,12 +97,16 @@ class model {
             limit: limit,
             include: [
                 { model: UserInfo, required: true, attributes: ['first_name', 'last_name', 'dni'] },
-                { model: UserRoles, required: true, attributes: ['role_id'], include: [{ model: Role, required: true, attributes: ['role_name'] }] }
+                { 
+                    model: UserRoles, 
+                    required: true, 
+                    attributes: ['role_id'], 
+                    include: [{ model: Role, required: true, attributes: ['role_name'] }] 
+                }
             ]
         });
     
         return users;
-    
     };
     
     getUsersCount = () => UserCredentials.count();

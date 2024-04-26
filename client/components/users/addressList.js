@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { getAddressByUserId } from '../../services/addressService';
+import AddressService from '../../services/addressService';
 
 const AddressList = () => {
     const [addressList, setAddressList] = useState([]);
+    const token = typeof window !== 'undefined' ? sessionStorage.getItem('token') : null;
 
     useEffect(() => {
-        fetch(getAddressByUserId())
-            .then(response => response.json())
-            .then(data => setAddressList(data))
-            .catch(err => console.log(err));
+        AddressService.getAddressByUserId(token).then((response) => {
+            setAddressList(response.data);
+        });
     }, []);
 
     return (
         <section>
             <h1>Lista de direcciones de envio</h1>
             <ul>
-                {addressList.map(address => (
+                {addressList ? addressList.map(address => (
                     <li key={address.address_id}>
                         <section>{address.street}</section>
                         <section>{address.city}</section>
@@ -24,7 +24,9 @@ const AddressList = () => {
                         <section>{address.province}</section>
                         <section>{address.phone_number}</section>
                     </li>
-                ))}
+                ) ) : (
+                    <li>No hay direcciones de envio</li>
+                )}
             </ul>
         </section>
     );

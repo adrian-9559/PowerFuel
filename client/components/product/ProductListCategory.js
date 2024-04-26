@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ProductCard from './ProductCard';
 import { Spinner } from '@nextui-org/react';
 import { useRouter } from 'next/router';
-import { getAllProductsByCategory } from '../../services/productService';
+import CategoryService from '../../services/productService';
 
 const ProductListCategory = ({id}) => {
     const [productos, setProductos] = useState([]);
@@ -11,7 +11,7 @@ const ProductListCategory = ({id}) => {
     useEffect(() => {
         const fetchProductos = async () => {
             try {
-                const data = await getAllProductsByCategory(id); // Usa el servicio
+                const data = await CategoryService.getAllProductsByCategory(id);
                 setProductos(data);
                 setLoading(false);
             } catch (error) {

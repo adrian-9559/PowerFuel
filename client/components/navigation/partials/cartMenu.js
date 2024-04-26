@@ -2,7 +2,7 @@ import React, { useState, useEffect, use }from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dropdown, DropdownMenu, DropdownItem, DropdownTrigger, Button, Badge, Select, SelectItem, Image } from "@nextui-org/react";
 import { setCart as setCartAction } from '../../../redux/cartSlice';
-import { getProductById } from '../../../services/productService';
+import productService from '../../../services/productService';
 import { useRouter } from 'next/router';
 
 const CartMenu = () => {
@@ -26,7 +26,7 @@ const CartMenu = () => {
         
         const updatedCart = await Promise.all(cart.map(async item => {
             try {
-                const product = await getProductById(item.id);
+                const product = await productService.getProductById(item.id);
                 return {...item, name: product.product_name, price: product.price};
     
             } catch (error) {
@@ -117,7 +117,7 @@ const CartMenu = () => {
                                             radius="lg"
                                             alt={item.product_name}
                                             className="object-cover h-20 my-1 z-1"
-                                            src={`http://localhost:4001/public/images/product/${item.id}/1.png`}
+                                            src={`http://25.65.210.24:4001/public/images/product/${item.id}/1.png`}
                                         /> 
                                     </section>
                                     <section className='mx-6'>

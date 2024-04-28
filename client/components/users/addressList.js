@@ -3,7 +3,6 @@ import AddressService from '@services/addressService';
 
 const AddressList = () => {
     const [addressList, setAddressList] = useState([]);
-    const token = typeof window !== 'undefined' ? sessionStorage.getItem('token') : null;
 
     useEffect(() => {
         AddressService.getAddressByUserId(token).then((response) => {

@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/router';
-import { Navbar, NavbarContent, NavbarItem, NavbarBrand, Button, Image, user } from "@nextui-org/react";
+import React, { useState, useEffect, useCallback, useContext } from 'react';
+import { Navbar, NavbarContent, NavbarItem, NavbarBrand, Image } from "@nextui-org/react";
+import { useAppContext } from "@context/AppContext";
+
 
 import { ThemeSwitch } from '@components/theme-switch';
 import SideMenu from '@components/navigation/partials/SideMenu';
@@ -9,28 +10,11 @@ import UserMenu from '@components/navigation/partials/userMenu';
 import CartMenu from '@components/navigation/partials/cartMenu';
 import LoginMenu from '@components/navigation/partials/loginMenu';
 
+
+
 const NavigationBar = () => {
-    const router = useRouter();
-
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-    useEffect(() => {
-        const token = sessionStorage.getItem('token');
-        if (token) {
-            setIsLoggedIn(true);
-        }
-    }, []);
-
-    const handleLogin = (token) => {
-        sessionStorage.setItem('token', token);
-        setIsLoggedIn(true);
-    };
-
-    const handleLogout = useCallback(() => {
-        localStorage.clear();
-        sessionStorage.clear();
-        setIsLoggedIn(false);
-    });
+    const { router } = useAppContext();
+    const { isLoggedIn } = useAppContext();
     
     return (
         <header>
@@ -58,9 +42,9 @@ const NavigationBar = () => {
                     <NavbarItem>
                         {isLoggedIn ? 
                             (
-                                <UserMenu onLogout={handleLogout}/> 
+                                <UserMenu/> 
                             ) : (
-                                <LoginMenu onLogin={handleLogin}/>
+                                <LoginMenu/>
                             )
                         }
                     </NavbarItem>

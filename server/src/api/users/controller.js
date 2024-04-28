@@ -1,34 +1,17 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { check, validationResult } = require('express-validator');
 const model = require('./userModel');
-const { getRoleByUserId } = require('../roles/roleModel'); 
 
-
-const express = require('express');
-const session = require('express-session');
-const app = express();
-
-require('dotenv').config();
-
-const userValidationRules = () => [
-    check('email').isEmail(),
-    check('current_password').isLength({ min: 5 })
-];
 
 
 const generateToken = (userId) => jwt.sign({ userId }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
 
 const registerUser = async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
 
     const { email, current_password, first_name, last_name, dni } = req.body;
     
-    if (!current_password) {
-        return res.status(400).json({ message: 'Password is required' });
+    if (!email || !current_password || !first_name || !last_name || !dni) {
+        return res.status(400).json({ message: 'All fields are required' });
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -159,7 +142,6 @@ const getTableColumns = async (req,res) => {
 };
 
 module.exports =  {
-    userValidationRules,
     registerUser,
     deleteUserById,
     updateUserById,

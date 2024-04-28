@@ -1,64 +1,31 @@
-import React, { useState, useEffect, use }from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useEffect }from 'react';
 import { Dropdown, DropdownMenu, DropdownItem, DropdownTrigger, Button, Badge, Select, SelectItem, Image } from "@nextui-org/react";
-import { setCart as setCartAction } from '../../../redux/cartSlice';
-import productService from '../../../services/productService';
+import productService from '@services/productService';
 import { useRouter } from 'next/router';
+import { useAppContext } from "@context/AppContext";
+
 
 const CartMenu = () => {
-    const dispatch = useDispatch();
-    const cartInfo = useSelector(state => state.cart);
-    const router = useRouter();
-    const [cart, setCart] = useState(cartInfo);
-
-    useEffect(() => {
-        setCart(cartInfo);
-    }, [cartInfo]);
-
-    useEffect(() => {
-        handleViewCart();
-    }, []);
-    
-    const handleViewCart = async () => {
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        cart = cart.filter(item => item.quantity >= 1);
-        localStorage.setItem('cart', JSON.stringify(cart));
-        
-        const updatedCart = await Promise.all(cart.map(async item => {
-            try {
-                const product = await productService.getProductById(item.id);
-                return {...item, name: product.product_name, price: product.price};
-    
-            } catch (error) {
-                console.error('Failed to fetch product:', error);
-                return item;
-            }
-        }));
-        
-        dispatch(setCartAction(updatedCart));
-        setCart(cartInfo);
-    }
+    const { cart, setCart, router } = useAppContext();
     
     const handleDeleteCart = () => {
-        localStorage.removeItem('cart');
         setCart([]);
     }
     
     const handleQuantityChange = (id, quantity) => {
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let cartAux = cart
     
-        cart = cart.map(item => item.id === id ? {...item, quantity: parseInt(quantity)} : item);
+        cartAux = cartAux.map(item => item.product_id === id ? {...item, quantity: parseInt(quantity)} : item);
     
-        localStorage.setItem('cart', JSON.stringify(cart));
-        handleViewCart();
+        setCart(cartAux);
     }
     
     const handleDeleteCartProduct = (id) => {
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        cart = cart.filter(item => item.id !== id);
-        localStorage.setItem('cart', JSON.stringify(cart));
-        setCart(cart);
-        handleViewCart();
+        let cartAux = cart
+        cartAux = cartAux.filter(item => item.product_id !== id);
+
+
+        setCart(cartAux);
     }
     
     function getTotalPrice() {
@@ -78,7 +45,7 @@ const CartMenu = () => {
         <Dropdown>
             <Badge content={cart?cart.length:0}  color="primary">
                 <DropdownTrigger>
-                    <Button isIconOnly onClick={handleViewCart} >
+                    <Button isIconOnly>
                         <svg xmlns="http://www.w3.org/2000/svg" height="10" width="11.25" viewBox="0 0 576 512">
                             <path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/>
                         </svg>
@@ -106,9 +73,9 @@ const CartMenu = () => {
                     cart.map((item, index) => (
                             <DropdownItem
                                 key={index} 
-                                textValue={item.id} 
+                                textValue={item.product_id} 
                                 showDivider
-                                onClick={() => router.push(`/product/${item.id}`)}
+                                onClick={() => router.push(`/product/${item.product_id}`)}
                             >
                                 <section className='flex items-center mx-2 '>
                                     <section>
@@ -117,7 +84,7 @@ const CartMenu = () => {
                                             radius="lg"
                                             alt={item.product_name}
                                             className="object-cover h-20 my-1 z-1"
-                                            src={`http://${process.env.NEXT_PUBLIC_AXIOS_HOST}:${process.env.NEXT_PUBLIC_AXIOS_PORT}/public/images/product/${item.id}/1.png`}
+                                            src={`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/product/${item.product_id}/1.png`}
                                         /> 
                                     </section>
                                     <section className='mx-6'>
@@ -128,13 +95,13 @@ const CartMenu = () => {
                                         {
                                         item.quantity > 9 ? (
                                             <section className='flex justify-center mb-4 space-x-2'>
-                                                <Button isIconOnly onClick={() => handleQuantityChange(item.id, item.quantity - 1)}>
+                                                <Button isIconOnly onClick={() => handleQuantityChange(item.product_id, item.quantity - 1)}>
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
                                                     </svg>
                                                 </Button>
                                                 <Input className={`min-w-8 max-w-${item.quantity.toString().length * 2 + 6} m-0`} value={item.quantity.toString()} readOnly/>
-                                                <Button isIconOnly onClick={() => handleQuantityChange(item.id, item.quantity + 1)}>
+                                                <Button isIconOnly onClick={() => handleQuantityChange(item.product_id, item.quantity + 1)}>
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                                     </svg>
@@ -143,7 +110,7 @@ const CartMenu = () => {
                                         ) : (
                                             <Select
                                                 className='w-1/3 my-1 text-center'
-                                                onChange={(e) => handleQuantityChange(item.id, e.target.value)} 
+                                                onChange={(e) => handleQuantityChange(item.product_id, e.target.value)} 
                                                 aria-label="Quantity Select"
                                                 selectedKeys={item.quantity.toString()}
                                             >
@@ -161,7 +128,7 @@ const CartMenu = () => {
                                             variant="light"
                                             onClick={(event) => {
                                                 event.stopPropagation();
-                                                handleDeleteCartProduct(item.id, event);
+                                                handleDeleteCartProduct(item.product_id, event);
                                             }}
                                             className=''
                                             isIconOnly

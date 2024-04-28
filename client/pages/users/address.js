@@ -1,10 +1,10 @@
 import React from 'react';
 import { Input, Button } from "@nextui-org/react";
 import { motion } from 'framer-motion';
-import SideMenu from '../../components/users/sideMenu';
-import { addAddress } from '../../services/addressService';
-import AddressesList from '../../components/users/addressList';
-import DefaultLayout from '../../layouts/default';
+import SideMenu from '@components/users/sideMenu';
+import { addAddress } from '@services/addressService';
+import AddressesList from '@components/users/addressList';
+import DefaultLayout from '@layouts/default';
 
 const Address = () => {
     const [street, setStreet] = React.useState('');

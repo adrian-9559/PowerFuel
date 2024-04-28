@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Input, Button } from "@nextui-org/react";
 import { motion } from 'framer-motion';
-import SideMenu from '../../components/users/sideMenu';
+import SideMenu from '@components/users/sideMenu';
 
 const AddCreditCard = () => {
     const [cardNumber, setCardNumber] = useState('');

@@ -3,19 +3,9 @@ import { Button, Input, Modal, ModalContent, ModalFooter, Tabs, Tab, useDisclosu
 import LoginForm from './partials/loginForm';
 import RegisterForm from './partials/registerForm';
 
-const LoginMenu = ({ onLogin }) => {
+const LoginMenu = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [selected, setSelected] = useState('login');
-    const [error, setError] = useState('');
-
-
-    useEffect(() => {
-        const token = typeof window !== 'undefined' ? window.sessionStorage.getItem('token') : null;
-
-        if (token) {
-            onOpenChange(false);
-        }
-    }, []);
 
     return (
         <>
@@ -31,16 +21,16 @@ const LoginMenu = ({ onLogin }) => {
                     onSelectionChange={setSelected}
                   >
                     <Tab key="login" title="Iniciar sesión" className='felx flex-col justify-center items-center'>
-                        <LoginForm onLogin={onLogin} />
+                        <LoginForm/>
                     </Tab>
                     <Tab key="register" title="Registrarse" className='felx flex-col justify-center items-center'>
-                        <RegisterForm onRegister={onLogin} />
+                        <RegisterForm/>
                     </Tab>
                   </Tabs>
                 )}
             </ModalContent>
             <ModalFooter>
-                <p className="text-red">{error}</p>
+                <p className="text-red">{"hola"}</p>
             </ModalFooter>
         </Modal>
         </>

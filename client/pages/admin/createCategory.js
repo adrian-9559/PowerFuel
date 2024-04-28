@@ -3,15 +3,15 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { addCategory, getParentCategories, getChildCategories } from '../../services/categoryService'; // Import the service to add a category
+import { useAppContext } from '../../context/AppContext';
 
 const CreateCategory = () => {
-    const navigate = useNavigate();
     const [nameCategory, setName] = useState('');
     const [parentCategory, setParentCategory] = useState('');
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
     const [parentCategories, setParentCategories] = useState([]);
     const [childCategoriesLevels, setChildCategoriesLevels] = useState([]);
+    const { router } = useAppContext();
 
     useEffect(() => {
         const fetchParentCategories = async () => {
@@ -38,7 +38,7 @@ const CreateCategory = () => {
             };
     
             await addCategory(category); // Use the service to add a category
-            navigate('/admin');
+            router.push('/admin');
         } catch (error) {
             setError(error.message);
         } finally {
@@ -105,7 +105,7 @@ const CreateCategory = () => {
                 </AnimatePresence>
                 <section className="mb-4">
                     <Button type='submit' disabled={loading} className="w-full">{loading ? 'Cargando...' : 'Crear Categoría'}</Button>
-                    <Button type='button' color="danger" onClick={() => navigate('/admin')} className="w-full mt-4">Cancelar</Button>
+                    <Button type='button' color="danger" onClick={() => router.push('/admin')} className="w-full mt-4">Cancelar</Button>
                 </section>
             </form>
         </motion.main>

@@ -1,14 +1,14 @@
 import { Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import { motion, AnimatePresence } from 'framer-motion';
 import { addProduct } from '../../services/productService';
 import { getParentCategories, getChildCategories } from '../../services/categoryService';
 import { getAllBrandsNoPagination } from '../../services/brandService';
-import NavigationBar from '../../components/navigation/NavigationBar';
+import { useAppContext } from '../../context/AppContext';
+
 
 const CreateProduct = () => {
-    const router = useRouter();
+    const { router } = useAppContext();
     const [nameProduct, setName] = useState('');
     const [descriptionProduct, setDescription] = useState('');
     const [stockProduct, setStock] = useState(1);

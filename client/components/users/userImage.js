@@ -1,11 +1,17 @@
 // UserImage.js
 import React, { useEffect, useState } from 'react';
-import { Image, Button } from "@nextui-org/react";
+import { Image } from "@nextui-org/react";
 
 const UserImage = ({user}) => {
-    const [hasError, setHasError] = useState(false);
-    const token = typeof window !== 'undefined' ? window.sessionStorage.getItem('token') : null;
-    const [image, setImage] = useState(false);;
+    const [image, setImage] = useState(false);
+    
+    const [style, setStyle] = useState({
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        color: '#fff',
+        fontSize: '1.5em'
+    });
 
     const hashCode = (str) => {
         let hash = 0;
@@ -27,14 +33,13 @@ const UserImage = ({user}) => {
         return intToRGB(hashCode(token));
     };
 
-    const style = {
-        backgroundColor: getProfileColor(),
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        color: '#fff',
-        fontSize: '1.5em'
-    };
+    useEffect(() => {
+        setStyle({
+            ...style,
+            backgroundColor: getProfileColor(),
+        });
+    }, [token]);
+
     
     useEffect(() => {
         if (user) {

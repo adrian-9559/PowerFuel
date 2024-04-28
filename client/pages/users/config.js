@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Input, Button, Image, Link } from "@nextui-org/react";
-import UserService from '../../services/userService';
+import UserService from '@services/userService';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
-import SideMenu from '../../components/users/sideMenu';
-import DefaultLayout from '../../layouts/default';
-import UserImage from '../../components/users/userImage';
-import { clearUser, setUser} from '../../redux/userSlice';
-import { clearAdmin, setAdmin} from '../../redux/adminSlice';
+import SideMenu from '@components/users/sideMenu';
+import DefaultLayout from '@layouts/default';
+import UserImage from '@components/users/userImage';
+import { clearUser, setUser} from '@redux/userSlice';
+import { clearAdmin, setAdmin} from '@redux/adminSlice';
 import { useSelector, useDispatch } from 'react-redux';
 
 const Config = () => {

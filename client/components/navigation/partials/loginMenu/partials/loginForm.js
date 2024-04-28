@@ -2,12 +2,13 @@
 import React, { useState } from 'react';
 import { Button, Input } from "@nextui-org/react";
 import UserService from '@services/userService';
+import { useAppContext } from '@context/AppContext';
 
-const LoginForm = ({ onLogin }) => {
+const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
+    const  { setIsLoggedIn } = useAppContext();
 
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -16,13 +17,11 @@ const LoginForm = ({ onLogin }) => {
             const passwordInput = password;
 
             const token = await UserService.loginUser(emailInput, passwordInput);
+            localStorage.setItem('token', token);
+            setIsLoggedIn(true);
 
-            if (token) {
-                onLogin(token);
-            }
         } catch (error) {
             console.error(error);
-            setError('Incorrect username or password');
         }
     };
 

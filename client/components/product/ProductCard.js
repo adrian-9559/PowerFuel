@@ -1,20 +1,12 @@
 import { Card, CardBody, CardFooter, Button, Chip} from "@nextui-org/react";
-//import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { setCart as setCartAction } from '@redux/cartSlice';
-import { useDispatch } from 'react-redux';
-import { useRouter } from "next/router";
+import { useAppContext } from '@context/AppContext';
+
 
 const ProductCard = ({ product }) => {
-    const router = useRouter();
+    const { cart, setCart } = useAppContext();
     const [isHovered, setIsHovered] = useState(false);
-    const dark = localStorage.getItem('theme') === 'dark' ? true : false;
-    const dispatch = useDispatch();
-
-
-    const handleClick = () => {
-        //navigate(`/product/${product.product_id}`);
-    };
+    const { router } = useAppContext();
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
@@ -23,20 +15,18 @@ const ProductCard = ({ product }) => {
     };
 
     const addToCart = (event) => {
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        const productInCart = cart.find(item => item.id === product.product_id);
-
-        productInCart ? productInCart.quantity++ : cart.push({ id: product.product_id, quantity: 1 });
-
-        localStorage.setItem('cart', JSON.stringify(cart));
-
-        dispatch(setCartAction(JSON.parse(localStorage.getItem('cart')) || []));
+        const cartItem = cart.find(item => item.product_id === product.product_id);
+        if (cartItem) {
+            cartItem.quantity += 1;
+            setCart([...cart]);
+        } else {
+            setCart([...cart, { ...product, quantity: 1 }]);
+        }
     };
 
     return (
         <Card  
             tabIndex="0" 
-            onPress={handleClick} 
             onKeyDown={handleKeyDown} 
             onMouseEnter={() => setIsHovered(true)} 
             onMouseLeave={() => setIsHovered(false)} 

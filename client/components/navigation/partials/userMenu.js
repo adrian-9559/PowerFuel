@@ -1,18 +1,14 @@
 // UserMenu.js
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router'
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Image, Spinner } from "@nextui-org/react";
-import { useSelector, useDispatch } from 'react-redux';
-import { clearUser, setUser} from '../../../redux/userSlice';
-import { clearAdmin, setAdmin} from '../../../redux/adminSlice';
 import UserImage from '../../users/userImage';
-import UserService from '../../../services/userService';
-import RoleService from '../../../services/roleService';
+import UserService from '@services/userService';
+import RoleService from '@services/roleService';
+import { useAppContext } from '@context/AppContext';
 
 
 const UserMenu = ({onLogout}) => {
-    const router = useRouter();
-    const dispatch = useDispatch();
+    const { router } = useAppContext();
     const user = useSelector(state => state.user);
     const admin = useSelector(state => state.admin);
     const [isLoading, setIsLoading] = useState(false);

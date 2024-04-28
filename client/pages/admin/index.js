@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Tabs, Tab, Button, Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, Pagination, Modal, ModalContent, ModalHeader, ModalFooter, ModalBody, useDisclosure } from "@nextui-org/react";
-import UserService from '../../services/userService';
-import ProductService from '../../services/productService';
-import CategoryService from '../../services/categoryService';
-import RoleService from '../../services/roleService';
+import UserService from '@services/userService';
+import ProductService from '@services/productService';
+import CategoryService from '@services/categoryService';
+import RoleService from '@services/roleService';
 import {AnimatePresence, motion } from 'framer-motion';
-import DefaultLayout from '../../layouts/default';
-import { useRouter } from 'next/router';
+import DefaultLayout from '@layouts/default';
+import { useAppContext } from '@context/index';
+
 const ADMIN_ACTIONS = {
     '99': { // admin
         'usuarios': {
@@ -85,7 +86,6 @@ const ADMIN_ACTIONS = {
 
 
 function AdminPanel() {
-    const router = useRouter();
     const [adminType, setAdminType] = useState(null);
     const [dataItems, setDataItems] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
@@ -94,6 +94,7 @@ function AdminPanel() {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [columns, setColumns] = useState();
     const [selectedRows, setSelectedRows] = useState([]);
+    const { router } = useAppContext();
 
     useEffect(() => {
         const token = sessionStorage.getItem('token');

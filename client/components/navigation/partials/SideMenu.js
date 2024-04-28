@@ -1,13 +1,13 @@
 // ProductImagesCarousel.js
 import React, { useState, useEffect } from 'react';
-import CategoryService from '../../../services/categoryService';
-import { useRouter } from 'next/router';
 import { Button } from "@nextui-org/react";
 import { motion } from 'framer-motion';
+import CategoryService from '@services/categoryService';
+import { useAppContext } from '@context/AppContext';
 
 
 const SideMenu = ({productId}) => {
-    const router = useRouter();
+    const { router } = useAppContext();
     const [categoriesParents, setCategoriesParents] = useState([]);
     const [showMenuLeft, setShowMenuLeft] = useState(false);
 

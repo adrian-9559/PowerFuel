@@ -2,40 +2,40 @@
 import React, { useState } from 'react';
 import { Button, Input } from "@nextui-org/react";
 import UserService from '@services/userService';
+import { useAppContext } from '@context/AppContext';
 
-const RegisterForm = ({ onRegister }) => {
+const RegisterForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [dni, setDni] = useState('');
+    const { router } = useAppContext();
+
 
     const handleRegister = async (e) => {
         e.preventDefault();
-        if (password !== confirmPassword) {
-            setError('Passwords do not match');
-            return;
-        }
-
-        if (!email || !password || !firstName || !lastName || !dni) {
-            setError('Please fill in all required fields.');
-            return;
-        }
-
-        setLoading(true);
         try {
-            await UserService.registerUser(email, password, firstName, lastName, dni);
-            router.push('/users/login');
-        } catch (error) {
-            if (error instanceof Error) {
-                setError(error.message);
+            setLoading(true);
+            const user = {
+                email,
+                password,
+                confirmPassword,
+                firstName,
+                lastName,
+                dni
+            };
+            const response = await UserService.registerUser(user);
+            if (response) {
+                router.push('/login');
             }
-        } finally {
-            setLoading(false);
+        } catch (error) {
+            console.error(error);
+            setError('Error registering user');
         }
+        setLoading(false);
     };
 
     return (
@@ -45,22 +45,24 @@ const RegisterForm = ({ onRegister }) => {
         >
             <div className='flex flex-row w-full gap-4 justify-center'>
                 <div className="flex flex-col w-full md:w-1/2">
-                    <Input
-                        isRequired
-                        type="email"
-                        label="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="w-full mb-4"
-                    />
-                    <Input
-                        isRequired
-                        type="password"
-                        label="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="w-full mb-4"
-                    />
+                <Input
+                    isRequired
+                    type="email"
+                    label="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full mb-4"
+                    autoComplete="username"
+                />
+                <Input
+                    isRequired
+                    type="password"
+                    label="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full mb-4"
+                    autoComplete="current-password"
+                />
                     <Input
                         isRequired
                         type="password"
@@ -68,6 +70,7 @@ const RegisterForm = ({ onRegister }) => {
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         className="w-full mb-4"
+                        autoComplete="new-password"
                     />
                 </div>
                 <div className="flex flex-col w-full md:w-1/2">

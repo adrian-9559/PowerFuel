@@ -16,11 +16,12 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@services/*": ["/services/*"],
-      "@components/*": ["/components/*"],
-      "@pages/*": ["/pages/*"],
-      "@redux/*": ["/redux/*"],
-
+      "@services/*": ["services/*"],
+      "@components/*": ["components/*"],
+      "@pages/*": ["pages/*"],
+      "@context/*": ["context/*"],
+      "@layouts/*": ["layouts/*"],
+      "@config/*": ["config/*"],
       
     }
   },

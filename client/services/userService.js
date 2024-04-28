@@ -8,10 +8,6 @@ class UserService {
             email: email,
             current_password: password,
         });
-
-        if (response.status === 401) {
-            throw new Error('Incorrect credentials');
-        }
         return response.data.token;
     }
 
@@ -55,19 +51,10 @@ class UserService {
         });
     }
 
-    async getUserInfo(token) {
-        if (token) {
-            const response = await api.post(`/users/info`, {}, 
-            {
-                headers: { 
-                    authorization: `Bearer ${token}`
-                } 
-            });
+    async getUserInfo() {
+        const response = await api.post(`/users/info`);
 
-            return response.data[0];
-        }
-
-        return null;
+        return response.data[0];
     }
 
     async getAllUsersInfo(page = 1, limit = 10) {

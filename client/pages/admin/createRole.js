@@ -1,14 +1,13 @@
 import { Button, Input } from "@nextui-org/react";
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { addRole } from '../../services/roleService'; // Import the service to add a role
+import { useAppContext } from '../../context/AppContext';
 
 const CreateRole = () => {
-    const navigate = useNavigate();
     const [nameRole, setName] = useState('');
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const { router } = useAppContext();
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -54,7 +53,7 @@ const CreateRole = () => {
                 </section>
                 <section className="mb-4">
                     <Button type='submit' disabled={loading} className="w-full">{loading ? 'Cargando...' : 'Crear Role'}</Button>
-                    <Button type='button' color="danger" onClick={() => navigate('/admin')} className="w-full mt-4">Cancelar</Button>
+                    <Button type='button' color="danger" onClick={() => router.push('/admin')} className="w-full mt-4">Cancelar</Button>
                 </section>
             </form>
         </motion.main>

@@ -1,15 +1,15 @@
 // product.js
 import React, { useEffect, useState } from 'react';
-import ProductService from '../../services/productService';
+import ProductService from '@services/productService';
 import { Skeleton } from "@nextui-org/react";
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { useRouter } from 'next/router';
-import NavigationBar from '../../components/navigation/NavigationBar';
-import QuantityInput from '../../components/product/productPage/QuantityInput';
-import ProductCarousel from '../../components/product/productPage/ProductCarousel';
+import NavigationBar from '@components/navigation/NavigationBar';
+import QuantityInput from '@components/product/productPage/QuantityInput';
+import ProductCarousel from '@components/product/productPage/ProductCarousel';
 
 const Product = () => {
-    const router = useRouter();
+    const { router } = useAppContext();
     const { id } = router.query
     const [product, setProduct] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);

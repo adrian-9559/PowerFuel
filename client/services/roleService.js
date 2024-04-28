@@ -7,17 +7,9 @@ class RoleService{
         return response.data;
     }
 
-    async getUserRole(token) {
-        if (token) {
-            const response = await api.post(`/roles/userRole`, {}, {
-                headers: {
-                    authorization: `Bearer ${token}`
-                }
-            });
-            return response.data.role_id;
-        }
-
-        return null;
+    async getUserRole() {
+        const response = await api.post(`/roles/userRole`);
+        return response.data.role_id;
     }
 
     async deleteRole(roleId) {

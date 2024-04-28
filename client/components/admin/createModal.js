@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Input, Button, Modal, Textarea } from "@nextui-org/react";
+import { Button, Modal, Textarea } from "@nextui-org/react";
 
 function DynamicForm({ initialData, onSave, visible, setVisible }) {
     const [formData, setFormData] = useState(initialData || {});

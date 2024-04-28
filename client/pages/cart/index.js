@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
-import { getProductById } from '../services/productService';
+import ProductService from '@services/productService';
 import { Button, Image, Input, Select, SelectItem } from "@nextui-org/react";
-import DefaultLayout from '../layouts/default';
-import useRouter from 'next/router';
+import DefaultLayout from '@layouts/default';
 
 
 const ViewCart = () => {
-    const router = useRouter;
+    const { router } = useAppContext();
     const [cart, setCart] = useState();
 
     const handleViewCart = async () => {
@@ -16,7 +15,7 @@ const ViewCart = () => {
         
         const updatedCart = await Promise.all(cart.map(async item => {
             try {
-                const product = await getProductById(item.id);
+                const product = await ProductService.getProductById(item.id);
                 return {...item, name: product.product_name, price: product.price};
             } catch (error) {
                 console.error('Failed to fetch product:', error);
@@ -82,7 +81,7 @@ const ViewCart = () => {
                     radius="lg"
                     alt={item.product_name}
                     className="object-cover h-20 my-1"
-                    src={`http:/localhost:4001/public/images/product/${item.id}/1.png`}
+                    src={`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/product/${item.id}/1.png`}
                 /> 
             </section>
             <section className='mx-6'>

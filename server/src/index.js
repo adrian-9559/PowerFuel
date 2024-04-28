@@ -1,6 +1,8 @@
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
 const routes = require('./routes');
+require('dotenv').config();
+
 
 // Función para inicializar la aplicación Express
 function startExpress() {

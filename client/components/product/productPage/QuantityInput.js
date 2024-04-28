@@ -1,10 +1,10 @@
 // ProductImagesCarousel.js
 import React, {useState } from 'react';
 import {Button, Input } from "@nextui-org/react";
+import { useAppContext } from '@context/AppContext';
 
 const QuantityInput = ({id}) => {
-
-    
+    const { cart, setCart } = useAppContext();
     const [countProduct, setCountProduct] = useState(1);
 
     const handlePlusClick = () => {
@@ -20,12 +20,12 @@ const QuantityInput = ({id}) => {
 
 
     const addToCart = () => {
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        const productInCart = cart.find(item => item.id === id);
+        let cartAux = cart;
+        const productInCart = cartAux.find(item => item.product_id === id);
 
-        productInCart ? productInCart.quantity += countProduct : cart.push({ id: id, quantity: countProduct });
+        productInCart ? productInCart.quantity += countProduct : cartAux.push({ product_id: id, quantity: countProduct });
 
-        localStorage.setItem('cart', JSON.stringify(cart));
+        setCart(cartAux);
     };
 
     return (

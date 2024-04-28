@@ -1,4 +1,4 @@
-const model = require('../../model/roleModel');
+const model = require('./roleModel');
 
 const getRoles = async (req, res) => {
     const page = parseInt(req.query.page) || 1;

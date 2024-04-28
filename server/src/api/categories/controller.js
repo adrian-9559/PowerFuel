@@ -1,4 +1,4 @@
-const model = require('../../model/categoryModel');
+const model = require('./categoryModel');
 
 const handleInternalServerError = (res, error) => {
     console.error(error);

@@ -1,7 +1,7 @@
 import { Card, CardBody, CardFooter, Button, Chip} from "@nextui-org/react";
 //import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { setCart as setCartAction } from '../../redux/cartSlice';
+import { setCart as setCartAction } from '@redux/cartSlice';
 import { useDispatch } from 'react-redux';
 import { useRouter } from "next/router";
 
@@ -43,7 +43,7 @@ const ProductCard = ({ product }) => {
             className="w-64 h-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
             <CardBody className="overflow-visible p-0 relative h-full">
-                <section className='bg-cover bg-center h-full w-full relative' style={{ backgroundImage: `url(http://25.65.210.24:4001/public/images/product/${product.product_id}/1.png)` }}> 
+                <section className='bg-cover bg-center h-full w-full relative' style={{ backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/product/${product.product_id}/1.png)` }}> 
                     <section className="absolute bottom-2 left-2">
                         <Chip 
                             size="lg" 

@@ -1,4 +1,4 @@
-const { UserCredentials, UserInfo, UserRoles, Role } = require('./model');
+const { UserCredentials, UserInfo, UserRoles, Role } = require('../../model/model');
 
 
 class model {
@@ -63,7 +63,7 @@ class model {
         }
     
     
-        return await getUserByEmail(user.email);
+        return await this.getUserByEmail(user.email);
     };
     
     deleteUser = async (userId) => {

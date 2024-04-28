@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://25.65.210.24:4001/api',
+  baseURL: `${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/api`,
 });
 
 api.interceptors.response.use(

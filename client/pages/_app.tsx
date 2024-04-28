@@ -6,6 +6,7 @@ import { fontSans, fontMono } from "@/config/fonts";
 import {useRouter} from 'next/router';
 import { Provider } from "react-redux";
 import "@/styles/globals.css";
+require('dotenv').config();
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();

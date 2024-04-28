@@ -1,6 +1,7 @@
-const { Brand } = require('./model');
-const { Category } = require('./model');
-const { Product } = require('./model');
+const { Brand } = require('../../model/model');
+const { Category } = require('../../model/model');
+const { Product } = require('../../model/model');
+const { Op } = require('sequelize');
 
 
 class model {
@@ -34,6 +35,17 @@ class model {
         return products;
     };
     
+    async getChildCategories(categoryIds) {
+        let childCategories = [];
+        for (let id of categoryIds) {
+            let category = await Category.findOne({ where: { parent_category_id: id } });
+            if (category) {
+                childCategories.push(category.category_id);
+            }
+        }
+        return childCategories;
+    }
+    
     getProductsSearch = async (search) => {
         const skip = 0;
         const limit = 10;
@@ -66,8 +78,7 @@ class model {
             if (categories.length > 0) {
                 const categoryIds = categories.map(category => category.category_id).filter(id => id !== undefined);
                 if (categoryIds.length > 0) {
-                    const childCategories = await getChildCategories(categoryIds);
-                    console.log(childCategories);
+                    const childCategories = await this.getChildCategories(categoryIds);
                     products.push(... await Product.findAll({
                         where: {
                             '$Category.category_id$': {
@@ -84,22 +95,6 @@ class model {
             }
     
         return products;
-    }
-    
-    getChildCategories = async (categoryIds) => {
-        let childCategories = [];
-        for (let categoryId of categoryIds) {
-            const children = await Category.findAll({
-                where: {
-                    parent_category_id: categoryId
-                }
-            });
-            childCategories.push(...children.map(child => child.category_id));
-            if (children.length > 0) {
-                childCategories.push(...await getChildCategories(children.map(child => child.category_id)));
-            }
-        }
-        return childCategories;
     }
     
     insertProduct = async (product) => {

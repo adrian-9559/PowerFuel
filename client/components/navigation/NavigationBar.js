@@ -2,12 +2,12 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { Navbar, NavbarContent, NavbarItem, NavbarBrand, Button, Image, user } from "@nextui-org/react";
 
-import { ThemeSwitch } from '../../components/theme-switch';
-import SideMenu from '../../components/navigation/partials/SideMenu';
-import SearchBar from '../../components/navigation/partials/SearchBar';
-import UserMenu from './partials/userMenu';
-import CartMenu from './partials/cartMenu';
-import LoginMenu from './partials/loginMenu';
+import { ThemeSwitch } from '@components/theme-switch';
+import SideMenu from '@components/navigation/partials/SideMenu';
+import SearchBar from '@components/navigation/partials/SearchBar';
+import UserMenu from '@components/navigation/partials/userMenu';
+import CartMenu from '@components/navigation/partials/cartMenu';
+import LoginMenu from '@components/navigation/partials/loginMenu';
 
 const NavigationBar = () => {
     const router = useRouter();
@@ -41,7 +41,7 @@ const NavigationBar = () => {
                 <NavbarContent>
                     <NavbarBrand className="mr-4 cursor-pointer" onClick={() => router.push('/')}>
                         <Image className="object-cover h-12 w-12"
-                            src="http://25.65.210.24:4001/public/images/logo/logo.png"
+                            src={`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/logo/logo.png`}
                         />
                     </NavbarBrand>
                 </NavbarContent>

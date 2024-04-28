@@ -1,4 +1,4 @@
-const { Brand } = require('./model');
+const { Brand } = require('../../model/model');
 
 class model {
     async insertBrand(brand) {

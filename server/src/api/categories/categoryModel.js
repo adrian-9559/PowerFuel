@@ -1,4 +1,4 @@
-const { Category } = require('../model/model');
+const { Category } = require('../../model/model');
 
 class model {
     addCategory = async (category) => {

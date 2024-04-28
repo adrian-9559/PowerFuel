@@ -1,11 +1,11 @@
 // SearchBar.js
 import React from 'react';
 import { Input } from "@nextui-org/react";
-import { getAllProductsSearch } from "../../../services/productService";
+import ProductService from '@services/productService';
 
 const searchProduct = (data) => {
     if(data && data != null && data != undefined && data != '') {
-        getAllProductsSearch(data)
+        ProductService.getAllProductsSearch(data)
             .then((response) => {
                 console.log(response);
             }

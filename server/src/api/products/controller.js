@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const model = require('../../model/productModel');
+const model = require('./productModel');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');

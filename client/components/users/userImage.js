@@ -38,7 +38,7 @@ const UserImage = ({user}) => {
     
     useEffect(() => {
         if (user) {
-            fetch(`http://25.65.210.24:4001/public/images/user/${user.user_id}/1.png`)
+            fetch(`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/user/${user.user_id}/1.png`)
                 .then((response) => {
                     if (!response.ok || response.status === 404) {
                         throw new Error('Network response was not ok');
@@ -60,7 +60,7 @@ const UserImage = ({user}) => {
             {image ? (  
                 <Image 
                     className="object-cover h-full w-full " 
-                    src={`http://25.65.210.24:4001/public/images/user/${user.user_id}/1.png`} 
+                    src={`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/user/${user.user_id}/1.png`} 
                     alt="User Image"
                     radius="full"
                 />

@@ -1,8 +1,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { check, validationResult } = require('express-validator');
-const model = require('../../model/userModel');
-const { getRoleByUserId } = require('../../model/roleModel'); 
+const model = require('./userModel');
+const { getRoleByUserId } = require('../roles/roleModel'); 
 
 
 const express = require('express');

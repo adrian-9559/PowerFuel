@@ -117,7 +117,7 @@ const CartMenu = () => {
                                             radius="lg"
                                             alt={item.product_name}
                                             className="object-cover h-20 my-1 z-1"
-                                            src={`http://25.65.210.24:4001/public/images/product/${item.id}/1.png`}
+                                            src={`http://${process.env.NEXT_PUBLIC_AXIOS_HOST}:${process.env.NEXT_PUBLIC_AXIOS_PORT}/public/images/product/${item.id}/1.png`}
                                         /> 
                                     </section>
                                     <section className='mx-6'>

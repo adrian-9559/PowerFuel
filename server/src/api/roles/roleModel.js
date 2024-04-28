@@ -1,5 +1,5 @@
 
-const { Role, UserRoles } = require('./model');
+const { Role, UserRoles } = require('../../model/model');
 
 class model {
     insertRole = async (role) => {

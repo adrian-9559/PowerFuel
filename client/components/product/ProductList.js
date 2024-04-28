@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ProductCard from './ProductCard';
 import { Spinner } from '@nextui-org/react';
 import { useRouter } from 'next/router';
-import ProductService from '../../services/productService';
+import ProductService from '@services/productService';
 
 const ProductList = () => {
     const [productos, setProductos] = useState([]);

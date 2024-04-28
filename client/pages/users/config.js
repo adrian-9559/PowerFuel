@@ -16,6 +16,7 @@ const Config = () => {
     const user = useSelector(state => state.user) || {};
     const [isEditing, setIsEditing] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [userInfo, setUserInfo] = useState(user);
     
 
     const fetchUserInfo = async () => {
@@ -47,7 +48,7 @@ const Config = () => {
     }
 
     const handleChange = (field) => (e) => {
-        setuser({...user, [field]: e.target.value});
+        setUserInfo({...user, [field]: e.target.value});
     }
 
     useEffect(() => {
@@ -78,16 +79,16 @@ const Config = () => {
                             </section>
                             <section className='flex flex-col gap-5 '>
                                 <section className='flex flex-col gap-3'>
-                                    <Input type='text' className='w-full' value={user.email} onChange={handleChange('email')} disabled={!isEditing} label="Email:"></Input>
+                                    <Input type='text' className='w-full' defaultValue={user.email} onChange={handleChange('email')} disabled={!isEditing} label="Email:"></Input>
                                 </section>
                                 <section className='flex flex-col gap-3'>
-                                    <Input type='text' className='w-full' value={user.first_name} onChange={handleChange('first_name')} disabled={!isEditing} label="Nombre:"></Input>
+                                    <Input type='text' className='w-full' defaultValue={user.first_name} onChange={handleChange('first_name')} disabled={!isEditing} label="Nombre:"></Input>
                                 </section>
                                 <section className='flex flex-col gap-3'>
-                                    <Input type='text' className='w-full' value={user.last_name} onChange={handleChange('last_name')} disabled={!isEditing} label="Apellido:"></Input>
+                                    <Input type='text' className='w-full' defaultValue={user.last_name} onChange={handleChange('last_name')} disabled={!isEditing} label="Apellido:"></Input>
                                 </section>
                                 <section className='flex flex-col gap-3'>
-                                    <Input type='text' className='w-full' value={user.dni} onChange={handleChange('dni')} disabled={!isEditing} label="DNI:"></Input>
+                                    <Input type='text' className='w-full' defaultValue={user.dni} onChange={handleChange('dni')} disabled={!isEditing} label="DNI:"></Input>
                                 </section>
                                 <Button color={isEditing? 'primary' : 'default'} onClick={toggleEdit} className='w-full'>{isEditing ? 'Guardar' : 'Editar'}</Button>
                             </section>

@@ -26,7 +26,7 @@ function CartItem({ item }) {
     });
 
   return (
-    <section className='flex items-center mx-2 '>
+    <section className='flex items-center'>
       <section>
         <Image
           shadow="sm"

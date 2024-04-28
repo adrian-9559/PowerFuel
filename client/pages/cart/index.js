@@ -5,7 +5,7 @@ import ProductService from '@services/productService';
 import AddressService from '@services/addressService';
 import DefaultLayout from '@layouts/default';
 import { useAppContext } from '@context/AppContext';
-import CheckOut from '../../components/cart/';
+import CheckOut from '@components/cart/checkout';
 import CartItem from '@components/cart/cartItem';
 
 const ViewCart = () => {
@@ -78,7 +78,7 @@ const ViewCart = () => {
                             </Button>                            
                         }
                     </section>
-                    <section className="w-full flex flex-row justify-center">
+                    <section className="w-full flex flex-col justify-center items-center">
                         {cart && cart.length > 0 ? cart.map((item, index) => <CartItem key={index} item={item} />) : <p>Vacío</p>}
                     </section>
                     {cart && cart.length > 0 && (

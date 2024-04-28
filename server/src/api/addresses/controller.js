@@ -49,15 +49,17 @@ const getAddresses = async (req, res) => {
         throw new Error('Not found');
     }
 
-    res.json({addresses});
+    res.json(addresses);
 };
 
 const getAddressesByUserId = async (req, res) => {
-    const addresses = await model.getAddressesByUserId(req.params.userId);
+    const userId = req.params.userId?? req.user.userId;
+    
+    const addresses = await model.getAddressesByUserId(userId);
     if (!addresses) {
         throw new Error('Not found');
     }
-    res.json({addresses});
+    res.json(addresses);
 };
 
 module.exports = {

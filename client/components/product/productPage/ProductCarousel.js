@@ -16,11 +16,16 @@ const ProductCarousel = ({id}) => {
     };
     
     useEffect(() => {
-        ProductService.getImageCount(id).then(setImageCount);
-        if (imageCount > 0) {
-            setIsLoaded(true);
-        }   
-    }, [id, imageCount]);
+        if (id) {
+            ProductService.getImageCount(id)
+                .then(count => {
+                    setImageCount(count);
+                    if (count > 0) {
+                        setIsLoaded(true);
+                    }
+                });
+        }
+    }, [id]);
 
     
 

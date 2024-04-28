@@ -10,11 +10,11 @@ import UserMenu from '@components/navigation/partials/userMenu';
 import CartMenu from '@components/navigation/partials/cartMenu';
 import LoginMenu from '@components/navigation/partials/loginMenu';
 
-
+import { useRouter } from 'next/router';
 
 const NavigationBar = () => {
-    const { router } = useAppContext();
     const { isLoggedIn } = useAppContext();
+    const router = useRouter();
     
     return (
         <header>

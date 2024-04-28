@@ -1,12 +1,13 @@
 import { Card, CardBody, CardFooter, Button, Chip} from "@nextui-org/react";
 import { useState } from 'react';
 import { useAppContext } from '@context/AppContext';
+import { useRouter } from 'next/router';
 
 
 const ProductCard = ({ product }) => {
     const { cart, setCart } = useAppContext();
     const [isHovered, setIsHovered] = useState(false);
-    const { router } = useAppContext();
+    const router = useRouter();
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {

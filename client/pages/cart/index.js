@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react';
+import { Button, Image, Input, Select, SelectItem, Modal, useDisclosure } from "@nextui-org/react";
+import { useRouter } from 'next/router';
 import ProductService from '@services/productService';
-import { Button, Image, Input, Select, SelectItem } from "@nextui-org/react";
+import AddressService from '@services/addressService';
 import DefaultLayout from '@layouts/default';
-
+import { useAppContext } from '@context/AppContext';
+import CheckOut from '../../components/cart/';
+import CartItem from '@components/cart/cartItem';
 
 const ViewCart = () => {
-    const { router } = useAppContext();
-    const [cart, setCart] = useState();
+    const { cart, setCart } = useAppContext();
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const router = useRouter();
 
     const handleViewCart = async () => {
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -26,31 +31,25 @@ const ViewCart = () => {
         setCart(updatedCart);
     }
 
-    useEffect(() => {
-        handleViewCart();
-    } ,[]);
-
     const handleDeleteCart = () => {
-        localStorage.removeItem('cart');
         setCart([]);
     }
 
     const handleQuantityChange = (id, quantity) => {
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let cartAux = cart
     
-        cart = cart.map(item => item.id === id ? {...item, quantity: parseInt(quantity)} : item);
+        cartAux = cartAux.map(item => item.product_id === id ? {...item, quantity: parseInt(quantity)} : item);
     
-        localStorage.setItem('cart', JSON.stringify(cart));
-        handleViewCart();
+        setCart(cartAux);
     }
     
     const handleDeleteCartProduct = (id) => {
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        cart = cart.filter(item => item.id !== id);
-        localStorage.setItem('cart', JSON.stringify(cart));
-        setCart(cart);
-        handleViewCart();
-    }
+        let cartAux = cart
+        cartAux = cartAux.filter(item => item.product_id !== id);
+
+
+        setCart(cartAux);
+    };
 
     function getTotalPrice() {
         let total = 0;
@@ -64,80 +63,6 @@ const ViewCart = () => {
         total = total.toFixed(2);
         return total;
     }
-
-    const QuantityButton = ({ onClick, children }) => (
-        <Button isIconOnly onClick={onClick}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                {children}
-            </svg>
-        </Button>
-    );
-
-    const CartItem = ({ item }) => (
-        <section className='flex flex-row justify-center items-center w-full hover:bg-gray-100' onClick={() => router.push(`/product/${item.id}`)}>
-            <section>
-                <Image
-                    shadow="sm"
-                    radius="lg"
-                    alt={item.product_name}
-                    className="object-cover h-20 my-1"
-                    src={`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/product/${item.id}/1.png`}
-                /> 
-            </section>
-            <section className='mx-6'>
-                <section className='items-center'>
-                    <p className='font-semibold'>{item.name}</p>
-                </section>
-                <section className='flex justify-between items-center'>
-                    {item.quantity > 9 ? (
-                        <section className='flex justify-center mb-4 space-x-2'>
-                            <QuantityButton onClick={() => handleQuantityChange(item.id, item.quantity - 1)}>
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
-                            </QuantityButton>
-                            <Input className={`min-w-8 max-w-${item.quantity.toString().length * 2 + 6} m-0`} value={item.quantity.toString()} readOnly/>
-                            <QuantityButton onClick={() => handleQuantityChange(item.id, item.quantity + 1)}>
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                            </QuantityButton>
-                        </section>
-                    ) : (
-                        <Select
-                            className='w-1/3 my-1 text-center'
-                            onChange={(e) => handleQuantityChange(item.id, e.target.value)} 
-                            aria-label="Quantity Select"
-                            selectedKeys={item.quantity.toString()}
-                        >
-                            {[...Array(9).keys()].map((i) => <SelectItem key={(i+1).toString()} value={(i+1).toString()} textValue={(i+1).toString()}>{i+1}</SelectItem>)}
-                            <SelectItem key="10" value="10" textValue="10">+10</SelectItem>
-                        </Select>
-                    )}
-                    <p>{(item.price * item.quantity??0).toFixed(2)} €</p>
-                </section>
-            </section>
-            <section className='items-center'>
-                <Button
-                    color="danger"
-                    variant="light"
-                    onClick={(event) => {
-                        event.stopPropagation();
-                        handleDeleteCartProduct(item.id, event);
-                    }}
-                    className=''
-                    isIconOnly
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-4 h-4"
-                    >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-                    </svg>
-                </Button>
-            </section>
-        </section>
-    );
 
     return (
         <DefaultLayout>
@@ -157,12 +82,10 @@ const ViewCart = () => {
                         {cart && cart.length > 0 ? cart.map((item, index) => <CartItem key={index} item={item} />) : <p>Vacío</p>}
                     </section>
                     {cart && cart.length > 0 && (
-                        <Button className='items-center bg-green-200 hover:bg-green-500 mt-5 w-full' color='success'onClick={() => router.push('/')}>
-                            <section className='flex justify-between mx-2'>
-                                <p>Pagar:</p>
-                                <p className='font-semibold'>{getTotalPrice()} €</p>
-                            </section>
-                        </Button>
+                        <section className='flex justify-between mx-2'>
+                            <CheckOut />
+                            <p className='font-semibold'>{getTotalPrice()} €</p>
+                        </section>
                     )}
                 </section>
             </main>

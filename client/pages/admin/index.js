@@ -6,7 +6,7 @@ import CategoryService from '@services/categoryService';
 import RoleService from '@services/roleService';
 import {AnimatePresence, motion } from 'framer-motion';
 import DefaultLayout from '@layouts/default';
-import { useAppContext } from '@context/index';
+import { useRouter } from 'next/router';
 
 const ADMIN_ACTIONS = {
     '99': { // admin
@@ -94,7 +94,7 @@ function AdminPanel() {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [columns, setColumns] = useState();
     const [selectedRows, setSelectedRows] = useState([]);
-    const { router } = useAppContext();
+    const router = useRouter();
 
     useEffect(() => {
         const token = sessionStorage.getItem('token');

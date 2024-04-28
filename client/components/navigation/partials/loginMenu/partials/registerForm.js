@@ -20,20 +20,18 @@ const RegisterForm = () => {
         try {
             setLoading(true);
             const user = {
-                email,
-                password,
-                confirmPassword,
-                firstName,
-                lastName,
-                dni
+                email: email,
+                current_password: password,
+                first_name: firstName,
+                last_name: lastName,
+                dni: dni
             };
             const response = await UserService.registerUser(user);
             if (response) {
-                router.push('/login');
+                router.push('/');
             }
         } catch (error) {
             console.error(error);
-            setError('Error registering user');
         }
         setLoading(false);
     };
@@ -49,7 +47,7 @@ const RegisterForm = () => {
                     isRequired
                     type="email"
                     label="Email"
-                    value={email}
+                    defaultValue={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full mb-4"
                     autoComplete="username"
@@ -58,7 +56,7 @@ const RegisterForm = () => {
                     isRequired
                     type="password"
                     label="Password"
-                    value={password}
+                    defaultValue={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="w-full mb-4"
                     autoComplete="current-password"
@@ -67,7 +65,7 @@ const RegisterForm = () => {
                         isRequired
                         type="password"
                         label="Confirm Password"
-                        value={confirmPassword}
+                        defaultValue={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         className="w-full mb-4"
                         autoComplete="new-password"
@@ -78,7 +76,7 @@ const RegisterForm = () => {
                         isRequired
                         type="text"
                         label="First Name"
-                        value={firstName}
+                        defaultValue={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
                         className="w-full mb-4"
                     />
@@ -86,7 +84,7 @@ const RegisterForm = () => {
                         isRequired
                         type="text"
                         label="Last Name"
-                        value={lastName}
+                        defaultValue={lastName}
                         onChange={(e) => setLastName(e.target.value)}
                         className="w-full mb-4"
                     />
@@ -94,7 +92,7 @@ const RegisterForm = () => {
                         isRequired
                         type="text"
                         label="DNI"
-                        value={dni}
+                        defaultValue={dni}
                         onChange={(e) => setDni(e.target.value)}
                         className="w-full mb-4"
                     />

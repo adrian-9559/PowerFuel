@@ -1,9 +1,8 @@
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { addCategory, getParentCategories, getChildCategories } from '../../services/categoryService'; // Import the service to add a category
-import { useAppContext } from '../../context/AppContext';
+import { useRouter } from 'next/router';
 
 const CreateCategory = () => {
     const [nameCategory, setName] = useState('');
@@ -11,7 +10,7 @@ const CreateCategory = () => {
     const [loading, setLoading] = useState(false);
     const [parentCategories, setParentCategories] = useState([]);
     const [childCategoriesLevels, setChildCategoriesLevels] = useState([]);
-    const { router } = useAppContext();
+    const router = useRouter();
 
     useEffect(() => {
         const fetchParentCategories = async () => {

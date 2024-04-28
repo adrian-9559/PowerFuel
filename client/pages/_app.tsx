@@ -4,7 +4,7 @@ import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { fontSans, fontMono } from "@config/fonts";
 import {useRouter} from 'next/router';
 import { AppProvider } from "@context/AppContext";
-import "@/styles/globals.css";
+import "@styles/globals.css";
 require('dotenv').config();
 
 export default function App({ Component, pageProps }: AppProps) {

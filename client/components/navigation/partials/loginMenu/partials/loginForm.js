@@ -17,7 +17,7 @@ const LoginForm = () => {
             const passwordInput = password;
 
             const token = await UserService.loginUser(emailInput, passwordInput);
-            localStorage.setItem('token', token);
+            sessionStorage.setItem('token', token);
             setIsLoggedIn(true);
 
         } catch (error) {

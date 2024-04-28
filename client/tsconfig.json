@@ -22,6 +22,7 @@
       "@context/*": ["context/*"],
       "@layouts/*": ["layouts/*"],
       "@config/*": ["config/*"],
+      "@styles/*": ["styles/*"],
       
     }
   },

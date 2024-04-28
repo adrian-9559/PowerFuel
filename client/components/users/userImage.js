@@ -30,7 +30,7 @@ const UserImage = ({user}) => {
     };
     
     const getProfileColor = () => {
-        return intToRGB(hashCode(token));
+        return intToRGB(hashCode(sessionStorage.getItem('token')));
     };
 
     useEffect(() => {
@@ -38,7 +38,7 @@ const UserImage = ({user}) => {
             ...style,
             backgroundColor: getProfileColor(),
         });
-    }, [token]);
+    }, []);
 
     
     useEffect(() => {

@@ -5,18 +5,13 @@ import UserImage from '../../users/userImage';
 import UserService from '@services/userService';
 import RoleService from '@services/roleService';
 import { useAppContext } from '@context/AppContext';
+import { useRouter } from 'next/router';
 
 
 const UserMenu = ({onLogout}) => {
-    const { router } = useAppContext();
-    const user = useSelector(state => state.user);
-    const admin = useSelector(state => state.admin);
+    const { user, isAdmin } = useAppContext();
     const [isLoading, setIsLoading] = useState(false);
-
-    useEffect(() => {
-        fetchUserInfo();
-        fetchUserRole();
-    }, []);
+    const router = useRouter();
 
     const handleLogout = () => {
         try {
@@ -34,7 +29,6 @@ const UserMenu = ({onLogout}) => {
         try {
             const userInfo = await UserService.getUserInfo(sessionStorage.getItem('token'));
             if(userInfo !== null && userInfo.user_id && userInfo.email && userInfo.first_name && userInfo.last_name && userInfo.dni){
-                dispatch(setUser(userInfo));
             }
         } catch (error) {
             console.error('Ha ocurrido un error al obtener la información del usuario' ,error);
@@ -79,7 +73,7 @@ const UserMenu = ({onLogout}) => {
                     </DropdownItem>
                     <DropdownItem key="team_settings" textValue="Delivered" showDivider>Pedidos</DropdownItem>
                     
-                    {admin === true ? (
+                    {isAdmin ? (
                             <DropdownItem key="panel" textValue="panel" onClick={() => router.push('/admin/')}>
                                 <p onClick={() => router.push('/admin/')}>Panel de Administración </p>
                             </DropdownItem>

@@ -3,11 +3,12 @@ import React, { useState, useEffect } from 'react';
 import { Button } from "@nextui-org/react";
 import { motion } from 'framer-motion';
 import CategoryService from '@services/categoryService';
-import { useAppContext } from '@context/AppContext';
+import { useRouter } from 'next/router';
+
 
 
 const SideMenu = ({productId}) => {
-    const { router } = useAppContext();
+    const router = useRouter();
     const [categoriesParents, setCategoriesParents] = useState([]);
     const [showMenuLeft, setShowMenuLeft] = useState(false);
 

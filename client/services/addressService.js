@@ -11,7 +11,8 @@ class AddressService{
         return response.data;
     }
 
-    async getAddressByUserId(userId) {
+    async getAddressByUserId(userId=null) {
+
         const response = await api.get(`/address/user/${userId}`);
         return response.data;
     }

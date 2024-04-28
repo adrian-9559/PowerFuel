@@ -11,14 +11,11 @@ class UserService {
         return response.data.token;
     }
 
-    async registerUser(email, password, firstName, lastName, dni, roleId) {
+    async registerUser(user) {
+        console.log("Usuario", user);
+
         const response = await api.post(`/users`, {
-            email: email,
-            current_password: password,
-            first_name: firstName,
-            last_name: lastName,
-            dni: dni,
-            role_id: roleId,
+            user
         });
 
         if (!response.data) {
@@ -29,14 +26,9 @@ class UserService {
         return response.data;
     }
 
-    async updateUser(id, email, password, firstName, lastName, dni, roleId) {
+    async updateUser(user) {
         return api.put(`/users/${id}`, {
-            email: email,
-            current_password: password,
-            first_name: firstName,
-            last_name: lastName,
-            dni: dni,
-            role_id: roleId,
+            user
         });
     }
 

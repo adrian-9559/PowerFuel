@@ -9,7 +9,7 @@ import QuantityInput from '@components/product/productPage/QuantityInput';
 import ProductCarousel from '@components/product/productPage/ProductCarousel';
 
 const Product = () => {
-    const { router } = useAppContext();
+    const router = useRouter();
     const { id } = router.query
     const [product, setProduct] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);

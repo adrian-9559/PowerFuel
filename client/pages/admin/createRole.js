@@ -1,13 +1,13 @@
 import { Button, Input } from "@nextui-org/react";
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { addRole } from '../../services/roleService'; // Import the service to add a role
-import { useAppContext } from '../../context/AppContext';
+import { addRole } from '@services/roleService';
+import { useRouter } from 'next/router';
 
 const CreateRole = () => {
     const [nameRole, setName] = useState('');
     const [loading, setLoading] = useState(false);
-    const { router } = useAppContext();
+    const router = useRouter();
 
     const handleRegister = async (e) => {
         e.preventDefault();

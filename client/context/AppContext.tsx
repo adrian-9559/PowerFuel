@@ -2,6 +2,7 @@
 
 import React, { createContext, useState, useEffect, useContext, ReactNode } from 'react';
 import UserService from '@services/userService';
+import RoleService from '@services/roleService';
 import { useRouter } from 'next/router';
 
 // Definir la forma de la información del usuario y del carrito
@@ -25,11 +26,15 @@ const AppContext = createContext({
   setUser: (user: User | null) => {},
   cart: [] as CartItem[],
   setCart: (cart: CartItem[]) => {},
+  isAdmin: false,
+  setIsAdmin: (value: boolean) => {},
+  router: null as any,
 });
 
 // Crear el proveedor de contexto
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [cart, setCart] = useState<CartItem[]>([]);
   const router = useRouter();
@@ -53,8 +58,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     if (isLoggedIn) {
       const fetchUserInfo = async () => {
         const userInfo = await UserService.getUserInfo();
-        console.log(userInfo);
+        const userRole = await RoleService.getUserRole();
         setUser(userInfo);
+        setIsAdmin(userRole !== 10);
       };
   
       fetchUserInfo();
@@ -62,7 +68,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   }, [isLoggedIn]);
 
   return (
-    <AppContext.Provider value={{ isLoggedIn, setIsLoggedIn, user, setUser, cart, setCart }}>
+    <AppContext.Provider value={{ isLoggedIn, setIsLoggedIn, user, setUser, cart, setCart, isAdmin, setIsAdmin }}>
       {children}
     </AppContext.Provider>
   );

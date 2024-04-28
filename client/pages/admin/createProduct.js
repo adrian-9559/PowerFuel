@@ -1,14 +1,13 @@
 import { Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { addProduct } from '../../services/productService';
-import { getParentCategories, getChildCategories } from '../../services/categoryService';
-import { getAllBrandsNoPagination } from '../../services/brandService';
-import { useAppContext } from '../../context/AppContext';
+import ProductService from '@services/productService';
+import CategoryService from '@services/categoryService';
+import BrandService from '@services/brandService';
+import { useRouter } from 'next/router';
 
 
 const CreateProduct = () => {
-    const { router } = useAppContext();
     const [nameProduct, setName] = useState('');
     const [descriptionProduct, setDescription] = useState('');
     const [stockProduct, setStock] = useState(1);
@@ -21,16 +20,17 @@ const CreateProduct = () => {
     const [parentCategories, setParentCategories] = useState([]);
     const [images, setImages] = useState(null);
     const [childCategoriesLevels, setChildCategoriesLevels] = useState([]);
+    const router = useRouter();
 
 
     useEffect(() => {
         const fetchParentCategories = async () => {
-            const categories = await getParentCategories();
+            const categories = await CategoryService.getParentCategories();
             setParentCategories(categories);
         };
 
         const fetchBrands = async () => {
-            const brands = await getAllBrandsNoPagination();
+            const brands = await BrandService.getAllBrandsNoPagination();
             setBrands(brands);
         };
         
@@ -70,7 +70,7 @@ const CreateProduct = () => {
     };
 
     const handleParentCategoryChange = async (e) => {
-        const childCategories = await getChildCategories(e.target.value);
+        const childCategories = await CategoryService.getChildCategories(e.target.value);
         if (childCategories.length === 0) {
             setCategory(e.target.value);  // Solo actualiza categoryProduct si la categoría seleccionada no tiene categorías hijas
             console.log(e.target.value);
@@ -81,7 +81,7 @@ const CreateProduct = () => {
     };
 
     const handleChildCategoryChange = async (e, level) => {
-        const newChildCategories = await getChildCategories(e.target.value);
+        const newChildCategories = await CategoryService.getChildCategories(e.target.value);
         if (newChildCategories.length === 0) {
             setCategory(e.target.value);  // Solo actualiza categoryProduct si la categoría seleccionada no tiene categorías hijas
         }else{

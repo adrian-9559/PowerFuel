@@ -33,8 +33,8 @@ const getRoleById = async (req, res) => {
 };
 
 const getRoleByUserId = async (req, res) => {
-    const userId = req.user.userId;
     try {
+        const userId = req.user.userId;
         const role = await model.getRoleByUserId(userId);
 
         res.json(role);

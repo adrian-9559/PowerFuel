@@ -9,6 +9,7 @@ const generateToken = (userId) => jwt.sign({ userId }, process.env.JWT_SECRET_KE
 const registerUser = async (req, res) => {
 
     const { email, current_password, first_name, last_name, dni } = req.body;
+
     
     if (!email || !current_password || !first_name || !last_name || !dni) {
         return res.status(400).json({ message: 'All fields are required' });
@@ -39,8 +40,9 @@ const deleteUserById = async (req, res) => {
 };
 
 const updateUserById = async (req, res) => {
-    const { userId } = req.params;
-    const user = await model.updateUser(userId, req.body);
+    const userId= req.params.userId??req.user.userId;
+    const userAux = req.body.user;
+    const user = await model.updateUser(userId, userAux);
     if (!user) {
         throw new Error('Not found');
     }

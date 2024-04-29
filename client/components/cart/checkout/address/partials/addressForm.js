@@ -1,60 +1,69 @@
 import React, { useState } from 'react';
+import {Input, Button} from '@nextui-org/react';
+import AddressService from '@services/addressService';
 
-const AddressForm = () => {
-    const [address, setAddress] = useState('');
+const AddressForm = ({setShowForm}) => {
+    const [street, setStreet] = useState('');
+    const [city, setCity] = useState('');
+    const [country, setCountry] = useState('');
+    const [zip, setZip] = useState('');
+    const [province, setProvince] = useState('');
+    const [phone_number, setPhone] = useState('');
 
-    const handleAddressChange = (e) => {
-        setAddress(e.target.value);
+    const stateSetters = {
+        street: setStreet,
+        city: setCity,
+        country: setCountry,
+        zip: setZip,
+        province: setProvince,
+        phone_number: setPhone
     };
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        if(isInvalidDireccion || isInvalidCodigoPostal || isInvalidCiudad || isInvalidProvincia || isInvalidPais || isInvalidTelefono) {
-            alert("Por favor, rellene todos los campos correctamente");
-            return;
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        const setState = stateSetters[name];
+        if (setState) {
+            setState(value);
         }
+    };
 
-        // Crea un objeto address con los valores del formulario
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         const address = {
             street,
-            portalNumber,
-            floorDoor,
-            addressLine2,
-            zip,
             city,
-            province,
             country,
+            zip,
+            province,
             phone_number
         };
-
         try {
-            // Llama al servicio addAddress
-            const newAddress = await addAddress(address);
-            console.log('Nueva dirección añadida:', newAddress);
+            const response = await AddressService.addAddress(address);
+            setShowForm(response?false:true);
         } catch (error) {
-            console.error('Error al añadir la dirección:', error);
+            console.error("Ha ocurrido un error al añadir la dirección", error);
         }
     }
 
     return (
-        <form onSubmit={handleSubmit} className='flex flex-col gap-4 justify-content'>
-                        <section className="flex flex-row justify-center gap-4 items-center">
-                            <section className="flex flex-col justify-center gap-4 items-center">
-                                <Input label="Dirección:" value={street} onChange={e => setStreet(e.target.value)} color={getColor(street, !isInvalidDireccion)} errorMessage={isInvalidDireccion && "Por favor, introduce una dirección válida"}/>
-                                <Input label="Portal / Número:" value={portalNumber} onChange={e => setPortalNumber(e.target.value)}/>
-                                <Input label="Piso y Puerta (Opcional):" value={floorDoor} onChange={e => setFloorDoor(e.target.value)}/>
-                                <Input label="Dirección Línea 2 (Opcional):" value={addressLine2} onChange={e => setAddressLine2(e.target.value)} /> {/* Nuevo campo para address_line2 */}
-                            </section>
-                            <sction className="flex flex-col justify-center gap-4 items-center">
-                                <Input label="Código Postal:" value={zip} onChange={e => setZip(e.target.value)} color={getColor(zip, !isInvalidCodigoPostal)} errorMessage={isInvalidCodigoPostal && "Por favor, introduce un código postal válido"}/>
-                                <Input label="Ciudad:" value={city} onChange={e => setCity(e.target.value)} color={getColor(city, !isInvalidCiudad)} errorMessage={isInvalidCiudad && "Por favor, introduce una ciudad válida"}/>
-                                <Input label="Provincia:" value={province} onChange={e => setProvince(e.target.value)} color={getColor(province, !isInvalidProvincia)} errorMessage={isInvalidProvincia && "Por favor, introduce una provincia válida"}/>
-                                <Input label="País:" value={country} onChange={e => setCountry(e.target.value)} color={getColor(country, !isInvalidPais)} errorMessage={isInvalidPais && "Por favor, introduce un país válido"}/>
-                            </sction>
-                        </section>
-                        <Input label="Teléfono:" value={phone_number} onChange={e => setPhone(e.target.value)} color={getColor(phone_number, !isInvalidTelefono)} errorMessage={isInvalidTelefono && "Por favor, introduce un teléfono válido"}/>
-                        <Button color="primary" auto onClick={handleSubmit}>Añadir dirección</Button>
-                    </form>
+        <section>
+            <h2 className="text-2xl font-bold">Añadir dirección</h2>
+            <form onSubmit={handleSubmit} className='flex flex-col gap-4 justify-content'>
+                <section className="flex flex-row justify-center gap-4 items-center">
+                    <section className="flex flex-col justify-center gap-4 items-center">
+                        <Input name="street" label="Dirección:" defaultValue={street} onChange={handleChange} />
+                        <Input name="city" label="Ciudad:" defaultValue={city} onChange={handleChange} />
+                        <Input name="zip" label="Código Postal:" defaultValue={zip} onChange={handleChange}/>
+                    </section>
+                    <section className="flex flex-col justify-center gap-4 items-center">
+                        <Input name="province" label="Provincia/Estado:" defaultValue={province} onChange={handleChange} />
+                        <Input name="country" label="País:" defaultValue={country} onChange={handleChange} />
+                        <Input name="phone_number" label="Teléfono:" defaultValue={phone_number} onChange={handleChange} />
+                    </section>
+                </section>
+                <Button color="primary" auto onClick={handleSubmit}>Añadir dirección</Button>
+            </form>
+        </section>
     );
 };
 

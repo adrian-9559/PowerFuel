@@ -7,11 +7,11 @@ const model = require('./userModel');
 const generateToken = (userId) => jwt.sign({ userId }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
 
 const registerUser = async (req, res) => {
+    const newUser = req.body.user;
+    const { email, current_password, first_name, last_name, dni } = newUser;
 
-    const { email, current_password, first_name, last_name, dni } = req.body;
 
-    
-    if (!email || !current_password || !first_name || !last_name || !dni) {
+    if (!newUser.email || !newUser.current_password || !newUser.first_name || !newUser.last_name || !newUser.dni) {
         return res.status(400).json({ message: 'All fields are required' });
     }
 
@@ -20,7 +20,8 @@ const registerUser = async (req, res) => {
         return res.status(500).json({ message: 'Failed to generate salt' });
     }
 
-    const newUser = { email, current_password, first_name, last_name, dni};
+    
+
     newUser.current_password = await bcrypt.hash(newUser.current_password, salt);
     const user = await model.addUser(newUser);
     

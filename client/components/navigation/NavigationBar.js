@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { Navbar, NavbarContent, NavbarItem, NavbarBrand, Image } from "@nextui-org/react";
 import { useAppContext } from "@context/AppContext";
-
-
 import { ThemeSwitch } from '@components/theme-switch';
 import SideMenu from '@components/navigation/partials/SideMenu';
 import SearchBar from '@components/navigation/partials/SearchBar';
 import UserMenu from '@components/navigation/partials/userMenu';
 import CartMenu from '@components/navigation/partials/cartMenu';
-import LoginMenu from '@components/navigation/partials/loginMenu';
+import AuthMenu from '@components/auth/authMenu';
 
 import { useRouter } from 'next/router';
 
@@ -44,7 +42,7 @@ const NavigationBar = () => {
                             (
                                 <UserMenu/> 
                             ) : (
-                                <LoginMenu/>
+                                <AuthMenu/>
                             )
                         }
                     </NavbarItem>

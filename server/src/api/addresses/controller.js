@@ -53,8 +53,7 @@ const getAddresses = async (req, res) => {
 };
 
 const getAddressesByUserId = async (req, res) => {
-    const userId = req.params.userId?? req.user.userId;
-    
+    const userId = req.params.userId==="null"?req.user.userId:req.params.userId;
     const addresses = await model.getAddressesByUserId(userId);
     if (!addresses) {
         throw new Error('Not found');

@@ -8,6 +8,7 @@ import { useAppContext } from "@context/AppContext";
 
 const CartMenu = () => {
     const { cart, setCart } = useAppContext();
+    const [total, setTotal] = useState(0);
     const router = useRouter();
     
     const handleDeleteCart = () => {
@@ -16,16 +17,14 @@ const CartMenu = () => {
     
     function getTotalPrice() {
         let total = 0;
-    
-        if(cart.length > 0) {
-            for (let item of cart) {
-                total += item.price * item.quantity;
-            }
-        }
-    
-        total = total.toFixed(2);
-        return total;
+        cart.map(item => total += item.price * item.quantity);
+        total = parseFloat(total.toFixed(2));
+        setTotal(total);
     }
+
+    useEffect(() => {
+        getTotalPrice();
+    }, [cart]);
     
     return (
         <Dropdown>
@@ -44,8 +43,8 @@ const CartMenu = () => {
                 closeOnSelect={false}
             >
                 {cart && cart.length > 0 &&
-                    <DropdownItem key="cart" className="gap-2 sticky top-0 bg-white z-10 hover:bg-white" textValue='Cart'>
-                        <section className='flex justify-between items-center '>
+                    <DropdownItem key="cart" className="gap-2 sticky top-0 bg-white z-10 hover:bg-white dark:bg-dark" textValue='Cart'>
+                        <section className='flex justify-between items-center dark:bg-dark'>
                             <p className="font-bold">Carrito</p>
                             <Button color="danger" variant="light" onClick={handleDeleteCart} isIconOnly isEnabled>
                                 <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" viewBox="0 0 448 512">
@@ -75,7 +74,7 @@ const CartMenu = () => {
                     <DropdownItem key="checkout" className='items-center bg-green-200 hover:bg-green-500 sticky bottom-0 z-10' color='success' textValue="checkout" onClick={() => router.push('/cart')}>
                         <section className='flex justify-between mx-2'>
                             <p>Revisar pedido:</p>
-                            <p className='font-semibold'>{getTotalPrice()} €</p>
+                            <p className='font-semibold'>{total} €</p>
                         </section>
                     </DropdownItem>
                 )}

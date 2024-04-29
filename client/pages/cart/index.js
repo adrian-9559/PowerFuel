@@ -11,64 +11,40 @@ import CartItem from '@components/cart/cartItem';
 const ViewCart = () => {
     const { cart, setCart } = useAppContext();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [total, setTotal] = useState(0);
     const router = useRouter();
-
-    const handleViewCart = async () => {
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        cart = cart.filter(item => item.quantity >= 1);
-        localStorage.setItem('cart', JSON.stringify(cart));
-        
-        const updatedCart = await Promise.all(cart.map(async item => {
-            try {
-                const product = await ProductService.getProductById(item.id);
-                return {...item, name: product.product_name, price: product.price};
-            } catch (error) {
-                console.error('Failed to fetch product:', error);
-                return item;
-            }
-        }));
-        
-        setCart(updatedCart);
-    }
 
     const handleDeleteCart = () => {
         setCart([]);
     }
 
     const handleQuantityChange = (id, quantity) => {
-        let cartAux = cart
     
-        cartAux = cartAux.map(item => item.product_id === id ? {...item, quantity: parseInt(quantity)} : item);
+        cart.map(item => item.product_id === id ? {...item, quantity: parseInt(quantity)} : item);
     
-        setCart(cartAux);
+        setCart(cart);
     }
     
     const handleDeleteCartProduct = (id) => {
-        let cartAux = cart
-        cartAux = cartAux.filter(item => item.product_id !== id);
-
-
-        setCart(cartAux);
+        setCart(cart.filter(item => item.product_id !== id));
     };
 
     function getTotalPrice() {
         let total = 0;
-
-        if(cart.length > 0) {
-            for (let item of cart) {
-                total += item.price * item.quantity;
-            }
-        }
-
-        total = total.toFixed(2);
-        return total;
+        cart.map(item => total += item.price * item.quantity);
+        total = parseFloat(total.toFixed(2));
+        setTotal(total);
     }
+
+    useEffect(() => {
+        getTotalPrice();
+    }, [cart]);
 
     return (
         <DefaultLayout>
             <main className='flex flex-col items-center justify-center p-4'>
                 <section className='w-full max-w-4xl p-8 bg-white rounded-lg shadow-md grid flex-col md:flex-row'>
-                    <section className='flex h-10 flex-row justify-center items-center bg-gray-300 mb-2 rounded-lg'>
+                    <section className='flex h-10 flex-row bg-gray-300 mb-2 rounded-lg w-full justify-between items-center mx-2'>
                         <p className="font-bold">Carrito</p>
                         {cart && cart.length > 0 &&
                             <Button color="danger" className='h-8' variant="light" onClick={handleDeleteCart} isIconOnly isEnabled>
@@ -83,8 +59,7 @@ const ViewCart = () => {
                     </section>
                     {cart && cart.length > 0 && (
                         <section className='flex justify-between mx-2'>
-                            <CheckOut />
-                            <p className='font-semibold'>{getTotalPrice()} €</p>
+                            <CheckOut total={total}/>
                         </section>
                     )}
                 </section>

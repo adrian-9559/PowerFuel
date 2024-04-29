@@ -45,6 +45,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       if (storedCart) {
         setCart(JSON.parse(storedCart));
       }
+
+      const token = sessionStorage.getItem('token');
+      if (token) {
+        setIsLoggedIn(true);
+      }
     }
   }, []);
   

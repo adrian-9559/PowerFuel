@@ -3,9 +3,8 @@ const { UserCredentials, UserInfo, UserRoles, Role } = require('../../model/mode
 
 class model {
     addUser = async (user) => {
-        if (!user.email || !user.current_password || !user.first_name || !user.last_name || !user.dni) {
-            throw new Error('Missing required fields');
-        }
+        
+        console.log(user);
     
         const newUserCredentials = await UserCredentials.create({ email: user.email, current_password: user.current_password });
         await UserInfo.create({
@@ -14,17 +13,19 @@ class model {
             last_name: user.last_name,
             dni: user.dni
         });
+
     
         if (user.role_id) {
             await UserRoles.create({
                 user_id: newUserCredentials.user_id,
+                role_id: user.role_id
             });
         }else{
             await UserRoles.create({
                 user_id: newUserCredentials.user_id,
-                role_id: user.role_id
             });
         }
+
         
         return newUserCredentials.user_id;
     };

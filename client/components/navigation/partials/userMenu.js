@@ -8,20 +8,17 @@ import { useAppContext } from '@context/AppContext';
 import { useRouter } from 'next/router';
 
 
-const UserMenu = ({onLogout}) => {
-    const { user, isAdmin } = useAppContext();
+const UserMenu = () => {
+    const { user, isAdmin, isLoggedIn ,
+        setIsLoggedIn } = useAppContext();
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
 
+
     const handleLogout = () => {
-        try {
-            onLogout();
-            setIsLoading(true);
-            dispatch(clearUser());
-            dispatch(clearAdmin());
-        } catch (error) {
-            console.error('Cierre de sesión fallido:', error);
-        }
+        sessionStorage.removeItem('token');
+        setIsLoggedIn(false);
+        router.push('/');
     };
 
     const fetchUserInfo = async () => {

@@ -3,8 +3,10 @@ import React, { useState } from 'react';
 import { Button, Input } from "@nextui-org/react";
 import UserService from '@services/userService';
 import { useAppContext } from '@context/AppContext';
+import { useRouter } from 'next/router';
 
 const LoginForm = () => {
+    const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -19,6 +21,7 @@ const LoginForm = () => {
             const token = await UserService.loginUser(emailInput, passwordInput);
             sessionStorage.setItem('token', token);
             setIsLoggedIn(true);
+            router.push('/');
 
         } catch (error) {
             console.error(error);

@@ -21,7 +21,12 @@ class model {
         if (!address) {
             return null;
         }
-        return await Address.create(address);
+        try{
+            const result = await Address.create(address);
+            return result.address_id;
+        } catch (error) {
+            return null;
+        }
     };
     
     modifyAddress = async (addressId, address) => {

@@ -27,6 +27,7 @@ const RegisterForm = () => {
                 dni: dni
             };
             const response = await UserService.registerUser(user);
+            console.log(response);
             if (response) {
                 router.push('/');
             }

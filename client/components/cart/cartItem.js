@@ -6,24 +6,13 @@ import ProductService from "@services/productService";
 function CartItem({ item }) {
     const { cart, setCart } = useAppContext();
     const handleQuantityChange = (id, quantity) => {
-        let cartAux = cart
-    
-        cartAux = cartAux.map(item => item.product_id === id ? {...item, quantity: parseInt(quantity)} : item);
-    
-        setCart(cartAux);
+        cart.map(item => item.product_id === id ? {...item, quantity: parseInt(quantity)} : item);
+        setCart(cart);
     }
     
     const handleDeleteCartProduct = (id) => {
-        let cartAux = cart
-        cartAux = cartAux.filter(item => item.product_id !== id);
-
-
-        setCart(cartAux);
+        setCart(cart.filter(item => item.product_id !== id));
     };
-
-    useEffect(() => {
-      console.log('item', item);
-    });
 
   return (
     <section className='flex items-center'>

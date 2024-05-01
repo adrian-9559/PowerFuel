@@ -161,6 +161,7 @@ CREATE TABLE IF NOT EXISTS `user_address` (
   `zip` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `province` varchar(255) DEFAULT NULL,
   `phone_number` int DEFAULT NULL,
+  `is_default` TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`address_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `user_address_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_credentials` (`user_id`) ON DELETE CASCADE

@@ -1,16 +1,16 @@
-const { Address } = require('../../model/model');
+const { UserAddress } = require('../../model/model');
 
 class model {
     getAddresses = async () => {
-        return await Address.findAll();
+        return await UserAddress.findAll();
     };
     
-    getAddress = async (addressId) => {
-        return await Address.findByPk(addressId);
+    getAddress = async (AddressId) => {
+        return await UserAddress.findByPk(AddressId);
     };
     
     getAddressesByUserId = async (userId) => {
-        return await Address.findAll({
+        return await UserAddress.findAll({
             where: {
                 user_id: userId
             }
@@ -22,31 +22,42 @@ class model {
             return null;
         }
         try{
-            const result = await Address.create(address);
+            const result = await UserAddress.create(address);
             return result.address_id;
         } catch (error) {
             return null;
         }
     };
     
-    modifyAddress = async (addressId, address) => {
-        const updatedAddress = await Address.findByPk(addressId);
-    
-        if (updatedAddress) {
-            await updatedAddress.update(address);
+    updateAddress = async (addressId, editedAddress) => {
+        const updatedaddress = await UserAddress.findByPk(addressId);
+        if (updatedaddress) {
+            await UserAddress.update(editedAddress, {
+                where: {
+                    address_id: addressId
+                }
+            });
+            return updatedaddress;
         }
+        return null;
     };
     
     deleteAddress = async (addressId) => {
         if (!addressId) {
             return false;
         }
-        const result = await Address.destroy({
+        const result = await UserAddress.destroy({
             where: {
                 address_id: addressId
             }
         });
         return result > 0;
+    };
+
+    setDefaultAddress = async (userId, addressId) => {
+        await UserAddress.update({ is_default: 0 }, { where: { user_id: userId , is_default: 1} });
+        const result= await UserAddress.update({ is_default: 1 }, { where: { address_id: addressId } });
+        return result;
     };
 }
 

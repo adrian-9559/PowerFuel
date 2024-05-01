@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Modal, ModalContent, Button, useDisclosure, Badge } from "@nextui-org/react";
 import AddImageForm from "@components/users/editUserImage/partials/addImageForm";
 
-const EditUserImage = ({ children , setImageURL}) => {
+const EditUserImage = ({ children }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
 
@@ -30,7 +30,7 @@ const EditUserImage = ({ children , setImageURL}) => {
         </Badge>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} className="p-8">
             <ModalContent>
-                <AddImageForm onOpenChange={onOpenChange} setImageURL={setImageURL}/>
+                <AddImageForm onOpenChange={onOpenChange}/>
             </ModalContent>
             </Modal>
         </section>

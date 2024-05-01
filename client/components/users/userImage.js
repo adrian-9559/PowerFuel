@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Image, Avatar } from "@nextui-org/react";
 
-const UserImage = ({user, imageURL}) => {
+const UserImage = ({user}) => {
     const [image, setImage] = useState(true);
     const [URLImage, setURLImage] = useState();
 
@@ -43,21 +43,12 @@ const UserImage = ({user, imageURL}) => {
         
     }, [setImage]);
 
-    useEffect(() => {
-        if(imageURL){
-            setImage(true);
-        } else {
-            setImage(false);
-        }
-    }
-    , [imageURL]);
-
     return (
         <section style={style} className='w-full h-full rounded-full'>
             {image ? (  
                 <Avatar 
                 className="object-cover h-full w-full" 
-                src={imageURL??`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/user/${user.user_id}/1.png`}
+                src={`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/user/${user.user_id}/1.png`}
                 radius="full"
             />
                 ) : user.first_name && user.last_name ?  (

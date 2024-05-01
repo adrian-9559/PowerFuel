@@ -19,8 +19,8 @@ Brand.init({
     timestamps: false
 });
 
-class Address extends Model { }
-Address.init({
+class UserAddress extends Model { }
+UserAddress.init({
     address_id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -40,6 +40,10 @@ Address.init({
     country: DataTypes.STRING,
     zip: DataTypes.STRING,
     phone_number: DataTypes.STRING,
+    is_default: {
+        type: DataTypes.TINYINT,
+        defaultValue: 0
+    }
 }, {
     sequelize,
     modelName: 'Address',
@@ -191,8 +195,8 @@ Category.init({
 
 // Relaciones
 UserCredentials.hasOne(UserInfo, { foreignKey: 'user_id' });
-UserCredentials.hasMany(Address, { foreignKey: 'user_id' });
-Address.belongsTo(UserCredentials, { foreignKey: 'user_id' });
+UserCredentials.hasMany(UserAddress, { foreignKey: 'user_id' });
+UserAddress.belongsTo(UserCredentials, { foreignKey: 'user_id' });
 Product.belongsTo(Brand, { foreignKey: 'id_brand' });
 Product.belongsTo(Category, { foreignKey: 'category_id' });
 Category.hasMany(Product, { foreignKey: 'category_id' });
@@ -209,7 +213,7 @@ OldPasswords.belongsTo(UserCredentials, { foreignKey: 'user_id' });
 // Exporta los modelos
 module.exports = {
     Brand,
-    Address,
+    UserAddress,
     Product,
     Role,
     UserRoles,

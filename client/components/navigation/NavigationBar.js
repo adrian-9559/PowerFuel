@@ -7,6 +7,7 @@ import SearchBar from '@components/navigation/partials/SearchBar';
 import UserMenu from '@components/navigation/partials/userMenu';
 import CartMenu from '@components/navigation/partials/cartMenu';
 import AuthMenu from '@components/auth/authMenu';
+import NotificationMenu from '@components/navigation/partials/notificationMenu';
 
 import { useRouter } from 'next/router';
 
@@ -33,6 +34,9 @@ const NavigationBar = () => {
                 </NavbarContent>
                 <NavbarContent>
                     <CartMenu/>
+                    {isLoggedIn &&
+                        <NotificationMenu/>
+                    }
                 </NavbarContent>
                 <NavbarItem>
                     <ThemeSwitch/>

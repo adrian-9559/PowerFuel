@@ -31,17 +31,14 @@ const LoginForm = () => {
     return (
         <form
             onSubmit={handleLogin}
-            className='flex flex-col w-full justify-between'
+            className='flex flex-col w-full justify-between gap-5'
         >
-            <div
-                className='flex flex-col w-full justify-between'
-            >
                 <Input
+                    fullWidth
                     name="email"
                     type="email"
                     label="Email"
                     defaultValue={email}
-                    className="w-full mb-4"
                     onChange={(e) => setEmail(e.target.value)}
                 />
                 <Input
@@ -49,10 +46,8 @@ const LoginForm = () => {
                     type="password"
                     label="Password"
                     defaultValue={password}
-                    className="w-full mb-4"
                     onChange={(e) => setPassword(e.target.value)}
                 />
-            </div>
             <Button type='submit' disabled={loading} className="w-full">{loading ? 'Cargando...' : 'Iniciar sesión'}</Button>
         </form>
     );

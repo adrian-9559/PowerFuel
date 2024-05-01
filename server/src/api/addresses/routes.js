@@ -1,5 +1,5 @@
 const express = require('express');
-const { addAddress, getAddresses, getAddressById, modifyAddressById, deleteAddressById, getAddressesByUserId } = require('./controller');
+const { addAddress, getAddresses, getAddressById, updateAddress, deleteAddressById, getAddressesByUserId, setDefaultAddress } = require('./controller');
 
 const router = express.Router();
 
@@ -9,8 +9,12 @@ router.route('/')
 
 router.route('/:addressId')
     .get(getAddressById)
-    .put(modifyAddressById)
+    .put(updateAddress)
     .delete(deleteAddressById);
+
+
+router.route('/default/:addressId')
+    .put(setDefaultAddress);
 
 router.route('/user/:userId')
     .get(getAddressesByUserId);

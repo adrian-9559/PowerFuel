@@ -33,6 +33,11 @@ class AddressService{
         const response = await api.delete(`/address/${id}`);
         return response.data;
     }
+
+    async setDefaultAddress(addressId) {
+        const response = await api.put(`/address/default/${addressId}`);
+        return response.data;
+    }
 }
 
 export default new AddressService();

@@ -21,9 +21,9 @@ const deleteAddressById = async (req, res) => {
     res.json({ message: 'Address deleted successfully' });
 };
 
-const modifyAddressById = async (req, res) => {
+const updateAddress = async (req, res) => {
     const { addressId } = req.params;
-    const address = await model.modifyAddress(addressId, req.body);
+    const address = await model.updateAddress(addressId, req.body);
     if (!address) {
         throw new Error('Not found');
     }
@@ -61,11 +61,24 @@ const getAddressesByUserId = async (req, res) => {
     res.json(addresses);
 };
 
+const setDefaultAddress = async (req, res) => {
+    const { addressId } = req.params;
+    const userId = req.user.userId;
+    console.log('userId', userId);
+    console.log('addressId', addressId);
+    const response = await model.setDefaultAddress(userId, addressId);
+    if (!response) {
+        res.status(404).json({ message: 'Address not found' });
+    }
+    res.json({ message: 'Default address set successfully' });
+};
+
 module.exports = {
     addAddress,
     getAddresses,
     getAddressById,
     getAddressesByUserId,
-    modifyAddressById,
-    deleteAddressById
+    updateAddress,
+    deleteAddressById,
+    setDefaultAddress
 };

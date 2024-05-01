@@ -18,7 +18,6 @@ const Config = () => {
     const [first_name , setFirst_name] = useState();
     const [last_name , setLast_name] = useState();
     const [dni , setDni] = useState();
-    const [imageURL, setImageURL] = useState("");
 
     const toggleEdit = async () => {
         setIsEditing(!isEditing);
@@ -73,13 +72,6 @@ const Config = () => {
 
         return () => clearTimeout(checkLoginStatus);
     }, [isLoggedIn]);
-
-    useEffect(() => {
-        if (user) {
-            setImageURL(`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/user/${user.user_id}/1.png`);
-        }
-    }, [imageURL]);
-
     return (
         <DefaultLayout>
             <section>
@@ -96,8 +88,8 @@ const Config = () => {
                         <section className="w-16 h-16 ">
                             <Skeleton isLoaded={!isLoading} className="rounded-lg h-auto py-2">
                                 {user && 
-                                    <EditUserImage setImageURL={setImageURL}>
-                                        <UserImage user={user} imageURL={imageURL}/>
+                                    <EditUserImage>
+                                        <UserImage user={user}/>
                                     </EditUserImage>
                                 }
                             </Skeleton>

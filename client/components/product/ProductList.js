@@ -25,7 +25,7 @@ const ProductList = () => {
 
     return (
         <main className='mt-4'>
-            <section className="container mx-auto flex flex-wrap justify-center items-center">
+            <section className="mx-auto flex flex-wrap justify-center items-center">
                 {loading ? (
                     <Spinner />
                 ) : productos && productos.length > 0 ? (

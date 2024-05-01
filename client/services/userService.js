@@ -67,6 +67,7 @@ class UserService {
                 'Content-Type': 'multipart/form-data'
             }
         });
+        
         return response;
     }
 }

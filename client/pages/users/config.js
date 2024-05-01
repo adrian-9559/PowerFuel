@@ -97,7 +97,7 @@ const Config = () => {
                             <Skeleton isLoaded={!isLoading} className="rounded-lg h-auto py-2">
                                 {user && 
                                     <EditUserImage setImageURL={setImageURL}>
-                                        <UserImage user={user} ImageURL={ImageURL}/>
+                                        <UserImage user={user} imageURL={imageURL}/>
                                     </EditUserImage>
                                 }
                             </Skeleton>

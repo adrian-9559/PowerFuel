@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Button, Input } from "@nextui-org/react";
 import UserService from '@services/userService';
-import { useAppContext } from '@context/AppContext';
+import { useRouter } from 'next/router';
 
 const RegisterForm = () => {
     const [email, setEmail] = useState('');
@@ -12,7 +12,7 @@ const RegisterForm = () => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [dni, setDni] = useState('');
-    const { router } = useAppContext();
+    const router = useRouter();
 
 
     const handleRegister = async (e) => {

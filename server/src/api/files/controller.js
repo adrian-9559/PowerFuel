@@ -56,7 +56,7 @@ const uploadUser = (req, res) => {
     const userId = req.user.userId;
     const newPath = path.join(appRoot, `/../public/images/user/${userId}` );
     const file = req.files.image;
-
+    
     const filename = `1.png`;
 
     if (!fs.existsSync(newPath)) {

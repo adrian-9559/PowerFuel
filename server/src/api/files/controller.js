@@ -1,10 +1,14 @@
 const fs = require('fs');
 const path = require('path');
 
-const upload = (req, res) => {
+const uploadProduct = (req, res) => {
     const productId = req.params.id;
+    console.log(productId);
+    console.log(req.params); 
     const newPath = path.join(appRoot, '/../public/images/product/', productId);
+
     const files = req.files.images;
+    console.log(files);
 
     let fileIndex = 1;
 
@@ -48,7 +52,29 @@ const deleteImages = (req, res) => {
     }
 };
 
+const uploadUser = (req, res) => {
+    const userId = req.user.userId;
+    const newPath = path.join(appRoot, `/../public/images/user/${userId}` );
+    const file = req.files.image;
+
+    const filename = `1.png`;
+
+    if (!fs.existsSync(newPath)) {
+        fs.mkdirSync(newPath, { recursive: true });
+    }
+
+    file.mv(path.join(newPath, filename), (err) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Error uploading image');
+        } else {
+            res.status(200).send('Image uploaded successfully');
+        }
+    });
+} 
+
 module.exports = {
-    upload,
+    uploadProduct,
+    uploadUser,
     deleteImages
 };

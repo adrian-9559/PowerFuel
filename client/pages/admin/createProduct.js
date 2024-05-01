@@ -60,7 +60,7 @@ const CreateProduct = () => {
                 images: images
             };
     
-            await addProduct(product);
+            await ProductService.addProduct(product);
             router.push('/admin');
         } catch (error) {
             setError(error.message);

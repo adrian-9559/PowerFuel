@@ -8,6 +8,7 @@ const addProduct = async (req, res) => {
     const newProduct = req.body;
     try {
         const product = await model.insertProduct(newProduct);
+
         res.json(product);
     } catch (error) {
         console.error('Error adding the product:', error);
@@ -81,7 +82,6 @@ const getProductsByCategory = async (req, res) => {
 };
 
 const getProductsInfo = async (req, res) => {
-    console.log("hola");
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;

@@ -11,15 +11,11 @@ router.route('/:userId')
     .delete(deleteUserById)
     .put(updateUserById)
     .get(getUserById);
-    
 
 router.route('/info')
     .post(getUserInfo);
 
 router.route('/login') 
     .post(loginUser);
-
-router.route('/columns')
-    .post(getTableColumns);
 
 module.exports = router;

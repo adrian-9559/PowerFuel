@@ -58,8 +58,14 @@ Product.init({
     description: DataTypes.TEXT,
     price: DataTypes.DECIMAL(10, 2),
     stock_quantity: DataTypes.INTEGER,
-    id_brand: DataTypes.INTEGER,
-    category_id: DataTypes.INTEGER,
+    id_brand: {
+        type: DataTypes.INTEGER,
+        references: { model: 'Brand', key: 'id_brand' }
+    },
+    category_id: {
+        type: DataTypes.INTEGER,
+        references: { model: 'Category', key: 'category_id' }
+    },
     status: {
         type: DataTypes.ENUM('enable', 'disable'),
         allowNull: false,
@@ -91,16 +97,14 @@ class UserRoles extends Model { }
 UserRoles.init({
     user_id: {
         type: DataTypes.INTEGER,
-        primaryKey: true
+        primaryKey: true,
+        references: { model: 'UserCredentials', key: 'user_id' }
     },
     role_id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         defaultValue: 10,
-        references: {
-            model: 'Role',
-            key: 'role_id'
-        }
+        references: { model: 'Role', key: 'role_id' }
     },
 }, {
     sequelize,
@@ -118,7 +122,8 @@ UserCredentials.init({
     },
     email: {
         type: DataTypes.STRING,
-        unique: true
+        unique: true,
+        primaryKey: true
     },
     current_password: DataTypes.STRING,
 }, {
@@ -173,7 +178,10 @@ Category.init({
         autoIncrement: true
     },
     category_name: DataTypes.STRING,
-    parent_category_id: DataTypes.INTEGER
+    parent_category_id: {
+        type: DataTypes.INTEGER,
+        references: { model: 'Category', key: 'category_id' }
+    },
 }, {
     sequelize,
     modelName: 'Category',
@@ -181,29 +189,21 @@ Category.init({
     timestamps: false
 });
 
+// Relaciones
+UserCredentials.hasOne(UserInfo, { foreignKey: 'user_id' });
+UserCredentials.hasMany(Address, { foreignKey: 'user_id' });
+Address.belongsTo(UserCredentials, { foreignKey: 'user_id' });
 Product.belongsTo(Brand, { foreignKey: 'id_brand' });
 Product.belongsTo(Category, { foreignKey: 'category_id' });
-
-Brand.hasMany(Product, { foreignKey: 'id_brand' });
-
 Category.hasMany(Product, { foreignKey: 'category_id' });
-
-Address.belongsTo(UserCredentials, { foreignKey: 'user_id' });
-
-UserCredentials.hasOne(Address, { foreignKey: 'user_id' });
+UserCredentials.belongsToMany(Role, { through: UserRoles, foreignKey: 'user_id' });
+Role.belongsToMany(UserCredentials, { through: UserRoles, foreignKey: 'role_id' });
 UserCredentials.hasMany(UserRoles, { foreignKey: 'user_id' });
-UserCredentials.hasMany(OldPasswords, { foreignKey: 'user_id' });
-UserCredentials.hasOne(UserInfo, { foreignKey: 'user_id' });
-
-UserInfo.belongsTo(UserCredentials, { foreignKey: 'user_id' });
-
-OldPasswords.belongsTo(UserCredentials, { foreignKey: 'user_id' });
-
 UserRoles.belongsTo(UserCredentials, { foreignKey: 'user_id' });
-UserRoles.belongsTo(Role, { foreignKey: 'role_id' });
-
 Role.hasMany(UserRoles, { foreignKey: 'role_id' });
-
+UserRoles.belongsTo(Role, { foreignKey: 'role_id' });
+UserCredentials.hasMany(OldPasswords, { foreignKey: 'user_id' });
+OldPasswords.belongsTo(UserCredentials, { foreignKey: 'user_id' });
 
 
 // Exporta los modelos

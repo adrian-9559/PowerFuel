@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { useAppContext } from '@context/AppContext';
 import { useRouter } from 'next/router';
 
-
 const ProductCard = ({ product }) => {
     const { cart, setCart } = useAppContext();
     const [isHovered, setIsHovered] = useState(false);

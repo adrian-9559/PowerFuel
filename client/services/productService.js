@@ -38,12 +38,15 @@ class ProductService {
         formData.append('price', product.price);
         formData.append('category_id', product.category_id);
         formData.append('id_brand', product.brand);
-    
+
         const response = await api.post(`/products`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
+            
         });
+    
+        this.uploadImages(response.data, product.images);
     
         return response.data;
     }
@@ -64,6 +67,21 @@ class ProductService {
             throw new Error('Image count not found');
         }
         return response.data.count;
+    }
+
+    async uploadImages(id, images) {
+        const formData = new FormData();
+        for (let i = 0; i < images.length; i++) {
+            formData.append('images', images[i]);
+        }
+
+        const response = await api.post(`/files/uploadProduct/${id}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+        });
+
+        return response.data;
     }
 }
 

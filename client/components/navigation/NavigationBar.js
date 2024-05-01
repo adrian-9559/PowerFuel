@@ -11,9 +11,10 @@ import AuthMenu from '@components/auth/authMenu';
 import { useRouter } from 'next/router';
 
 const NavigationBar = () => {
-    const { isLoggedIn } = useAppContext();
+    const { isLoggedIn, user } = useAppContext();
     const router = useRouter();
-    
+
+
     return (
         <header>
             <Navbar isBordered className='flex flex-wrap items-center justify-center'>

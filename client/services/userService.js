@@ -12,8 +12,6 @@ class UserService {
     }
 
     async registerUser(user) {
-        console.log("Usuario", user);
-
         const response = await api.post(`/users`, {
             user
         });
@@ -27,7 +25,7 @@ class UserService {
     }
 
     async updateUser(user) {
-        return api.put(`/users/${id}`, {
+        return api.put(`/users/${user.user_id}`, {
             user
         });
     }
@@ -45,12 +43,12 @@ class UserService {
 
     async getUserInfo() {
         const response = await api.post(`/users/info`);
-
         return response.data[0];
     }
 
     async getAllUsersInfo(page = 1, limit = 10) {
-        return api.get(`/users?page=${page}&limit=${limit}`);
+        const response = await api.get(`/users?page=${page}&limit=${limit}`);
+        return response.data;
     }
 
     async deleteUser(id) {
@@ -59,6 +57,17 @@ class UserService {
 
     async getUserById(id) {
         return api.get(`/users/${id}`);
+    }
+
+    async setUserImage(image) {
+        const formData = new FormData();
+        formData.append('image', image);
+        const response = await api.post(`/files/uploadUser`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        return response;
     }
 }
 

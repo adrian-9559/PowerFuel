@@ -1,9 +1,10 @@
 import React from 'react';
 import { Button } from "@nextui-org/react";
-import { useAppContext } from '@context/AppContext';
+import { useRouter } from 'next/router';
 
 const SideMenu = () => {
-    const { router } = useAppContext();
+    const router = useRouter();
+
     return (
         <nav className='fixed h-full flex flex-col items-start border-r border-gray-300 pt-4 w-auto'>
             <section className='flex flex-row items-center px-3 gap-1 font-medium'>

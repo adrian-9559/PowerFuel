@@ -61,7 +61,7 @@ const UserMenu = () => {
                     aria-label="Profile Actions"
                     closeOnSelect={false}
                 >
-                    <DropdownItem key="profile" className="gap-2 h-14 bg-gray-200" textValue={user.email}>
+                    <DropdownItem key="profile" className='dark:bg-gray-800 dark:text-white dark:border-gray-800 dark:shadow-lg bg-gray-200 text-black border-gray-200 shadow-lg' textValue={user.email}>
                         <p className='font-bold'>Hola,</p>
                         <p className="font-bold">{user.email}</p>
                     </DropdownItem>
@@ -78,8 +78,8 @@ const UserMenu = () => {
                     <DropdownItem key="help_and_feedback" textValue="Help">
                         Ayuda
                     </DropdownItem>
-                    <DropdownItem key="logout" textValue="Logout" color="danger" className='bg-red-200' onClick={() => handleLogout()}>
-                        <section className='flex justify-center space-x-1 '>
+                    <DropdownItem key="logout" textValue="Logout" color="danger" className='bg-red-400' onClick={() => handleLogout()}>
+                        <section className='flex justify-center space-x-1 items-center'>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
                             </svg>

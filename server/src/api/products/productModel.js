@@ -3,7 +3,6 @@ const { Category } = require('../../model/model');
 const { Product } = require('../../model/model');
 const { Op } = require('sequelize');
 
-
 class model {
     getProductsByCategory = async (skip = 0, limit = 10, categoryId) => {
         skip = parseInt(skip);
@@ -98,7 +97,6 @@ class model {
     }
     
     insertProduct = async (product) => {
-        console.log(product);   
         const newProduct = await Product.create({
             product_name: product.product_name,
             description: product.description,

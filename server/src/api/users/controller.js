@@ -1,8 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const model = require('./userModel');
-
-
+const filesUpload = require('../files/controller');
 
 const generateToken = (userId) => jwt.sign({ userId }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
 
@@ -19,8 +18,6 @@ const registerUser = async (req, res) => {
     if (!salt) {
         return res.status(500).json({ message: 'Failed to generate salt' });
     }
-
-    
 
     newUser.current_password = await bcrypt.hash(newUser.current_password, salt);
     const user = await model.addUser(newUser);
@@ -66,15 +63,16 @@ const getUsers = async (req, res) => {
     let users = await model.getUsers(skip, limit);
     const total = await model.getUsersCount();
 
-    users = users.map(user => ({
-        "id": user.user_id,
-        "user_id": { display: "ID de Usuario", value: user.user_id },
-        "email": { display: "Correo Electrónico", value: user.email },
-        "first_name": { display: "Nombre", value: user.UserInfo.first_name },
-        "last_name": { display: "Apellido", value: user.UserInfo.last_name },
-        "dni": { display: "DNI", value: user.UserInfo.dni },
-        "role_name": { display: "Nombre de Rol", value: user.UserRole.Role.role_name }
-    }));
+    users = users.map(user => ({  
+            "id": user.user_id,
+            "user_id": {display: "ID Usuario", value: user.user_id}
+            ,"email": {display: "Correo", value: user.email}
+            ,"first_name": {display: "Nombre", value: user.UserInfo.first_name}
+            ,"last_name": {display: "Apellido", value: user.UserInfo.last_name}
+            ,"dni": {display: "DNI", value: user.UserInfo.dni}
+            ,"role_name": {display: "Rol", value: user.Roles[0].role_name}
+        })
+    ); 
 
     res.json({
         total,
@@ -122,26 +120,10 @@ const getUserInfo = async (req, res) => {
         "first_name": user.UserInfo.first_name ,
         "last_name": user.UserInfo.last_name ,
         "dni": user.UserInfo.dni ,
-        "role_id":user.UserRoles.Role
+        "role_id": user.Roles // Access the Role model directly
     }));
 
     res.json(users);
-};
-
-const getTableColumns = async (req,res) => {
-    let columns = await model.getTableColumns();
-
-    columns = columns.map(column => ({
-        "user_id": "ID de Usuario",
-        "email": "Correo Electrónico",
-        "first_name": "Nombre",
-        "last_name": "Apellido",
-        "dni": "DNI",
-        "role_name": "Nombre de Rol"
-    }));
-
-
-    res.json({columns});
 };
 
 module.exports =  {
@@ -151,8 +133,7 @@ module.exports =  {
     getUserById,
     getUsers,
     loginUser,
-    getUserInfo,
-    getTableColumns
+    getUserInfo
 };
 
 

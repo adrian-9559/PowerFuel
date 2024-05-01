@@ -91,7 +91,7 @@ class model {
             });
     };
     
-    getUsers = async (skip = 0, limit = 10, userId) => {
+    getUsers = async (skip = 0, limit = 10, userId=null) => {
         const users = await UserCredentials.findAll({
             where: userId ? { user_id: userId } : {},
             offset: skip,
@@ -99,10 +99,10 @@ class model {
             include: [
                 { model: UserInfo, required: true, attributes: ['first_name', 'last_name', 'dni'] },
                 { 
-                    model: UserRoles, 
+                    model: Role, 
                     required: true, 
-                    attributes: ['role_id'], 
-                    include: [{ model: Role, required: true, attributes: ['role_name'] }] 
+                    attributes: ['role_id', 'role_name'],
+                    through: { model: UserRoles, attributes: [] } // Include the UserRoles model in the through option
                 }
             ]
         });

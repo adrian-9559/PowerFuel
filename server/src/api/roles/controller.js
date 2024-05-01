@@ -21,6 +21,7 @@ const getRoles = async (req, res) => {
     });
 };
 
+
 const getRoleById = async (req, res) => {
     const { roleId } = req.params;
     try {

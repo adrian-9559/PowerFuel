@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Input, Button, Image, Link , Skeleton } from "@nextui-org/react";
+import { Input, Button, Image, Link , Skeleton, Badge } from "@nextui-org/react";
 import UserService from '@services/userService';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
@@ -7,17 +7,18 @@ import SideMenu from '@components/users/sideMenu';
 import DefaultLayout from '@layouts/default';
 import UserImage from '@components/users/userImage';
 import { useAppContext } from '@context/AppContext';
+import EditUserImage from '@components/users/editUserImage';
 
 const Config = () => {
     const router = useRouter();
     const [isEditing, setIsEditing] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const { user, setUser, isLoggedIn} = useAppContext();
     const [email , setEmail] = useState();
     const [first_name , setFirst_name] = useState();
     const [last_name , setLast_name] = useState();
     const [dni , setDni] = useState();
-
+    const [imageURL, setImageURL] = useState("");
 
     const toggleEdit = async () => {
         setIsEditing(!isEditing);
@@ -34,20 +35,6 @@ const Config = () => {
     }
 
     useEffect(() => {
-        if(!isLoggedIn) router.push('/');
-
-        if(!user){
-            
-            setIsLoading(true);
-            UserService.getUserInfo().then((response) => {
-                setUser(response);
-                setIsLoading(false);
-            });
-        }
-
-    }, []);
-
-    useEffect(() => {
         if (user) {
             if (user.email !== email) {
                 setEmail(user.email);
@@ -62,8 +49,8 @@ const Config = () => {
                 setDni(user.dni);
             }
         }
+        setIsLoading(false);
     }, [user]);
-
 
     const handdleChange = (e) => {
         const { name, value } = e.target;
@@ -72,6 +59,26 @@ const Config = () => {
             [name]: value
         }));
     }
+
+    useEffect(() => {
+        const checkLoginStatus = setTimeout(() => {
+            if (!isLoggedIn) {
+                console.log("El q me importa:" , isLoggedIn);
+                router.push('/');
+            } else {
+                setIsLoading(false);
+            }
+        }, 1000);
+    
+
+        return () => clearTimeout(checkLoginStatus);
+    }, [isLoggedIn]);
+
+    useEffect(() => {
+        if (user) {
+            setImageURL(`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/user/${user.user_id}/1.png`);
+        }
+    }, [imageURL]);
 
     return (
         <DefaultLayout>
@@ -85,12 +92,16 @@ const Config = () => {
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.5 }}
                     >
-                        <section className='flex flex-row items-center gap-3'>
-                            <section className="w-16 h-16">
-                                <Skeleton isLoaded={!isLoading} className="rounded-lg h-auto py-2">
-                                    {user && <UserImage user={user}/>}
-                                </Skeleton>
-                            </section>
+                        <section className='flex flex-row items-center gap-3 px-10'>
+                        <section className="w-16 h-16 ">
+                            <Skeleton isLoaded={!isLoading} className="rounded-lg h-auto py-2">
+                                {user && 
+                                    <EditUserImage setImageURL={setImageURL}>
+                                        <UserImage user={user} ImageURL={ImageURL}/>
+                                    </EditUserImage>
+                                }
+                            </Skeleton>
+                        </section>
                             <Skeleton isLoaded={!isLoading} className="rounded-lg h-auto py-2">
                                 <p>{email}</p>
                             </Skeleton>

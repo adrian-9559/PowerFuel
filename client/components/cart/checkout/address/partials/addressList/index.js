@@ -23,7 +23,7 @@ const AddressList = ({addressList, handleDelete, handleEdit}) => {
 
     return (
         <section className="flex flex-col justify-center items-center">
-            <h2 className="text-2xl font-bold">Añadir dirección</h2>
+            <h2 className="text-2xl font-bold">Seleccionar dirección</h2>
             <RadioGroup 
                 defaultValue={defaultAddress} 
                 onValueChange={setSelectedAddress}

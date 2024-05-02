@@ -47,11 +47,11 @@ const AddressMenu = () => {
     }
 
     return (
-        <section className="flex flex-col justify-center items-center">
+        <section className="flex flex-col justify-center items-center w-96">
             {isLoggedIn ? (
                 <section>
                     {!showForm && UserAddress?.length > 0 && (
-                        <section className="flex flex-col justify-center items-center">
+                        <section className="flex flex-col justify-center items-center gap-4">
                             <AddressList 
                                 addressList={UserAddress}
                                 handleDelete={handleDelete}
@@ -61,12 +61,12 @@ const AddressMenu = () => {
                                 onPress={handleAddAddress}
                                 className="w-full"
                             >
-                                Añadir dirección
+                                Selecionar dirección
                             </Button>
                         </section>
                     )}
                     {showForm &&(
-                        <section className="flex flex-col gap-1">
+                        <section className="flex flex-col justify-center items-center gap-4">
                             <AddressForm setShowForm={setShowForm} editAddress={editAddress} setEditAddress={setEditAddress}/>
                             {UserAddress?.length !== 0 && (
                                 <Button onPress={() => setShowForm(false)} className="w-full">Cancelar</Button>

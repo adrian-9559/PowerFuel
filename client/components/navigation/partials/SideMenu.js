@@ -59,7 +59,7 @@ const SideMenu = ({productId}) => {
                  initial={{ x: '-100%' }}
                  animate={{ x: showMenuLeft ? '0%' : '-100%' }}
                  transition={{duration: 0.5}}
-                 className="fixed top-0 left-0 w-64 z-50 h-screen max-w-full shadow-right bg-white"
+                 className="fixed top-0 left-0 w-64 z-50 h-screen max-w-full shadow-2xl bg-white border-r border-gray-200"
                  onClick={(e) => e.stopPropagation()}
              >
                  <motion.div

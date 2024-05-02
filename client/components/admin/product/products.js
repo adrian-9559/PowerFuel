@@ -1,5 +1,0 @@
-const Product = () => {
-
-}
-
-return Product;

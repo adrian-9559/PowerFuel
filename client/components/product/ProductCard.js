@@ -1,11 +1,14 @@
-import { Card, CardBody, CardFooter, Button, Chip} from "@nextui-org/react";
+import { Card, CardBody, CardFooter, Button, Chip, Spinner} from "@nextui-org/react";
 import { useState } from 'react';
 import { useAppContext } from '@context/AppContext';
 import { useRouter } from 'next/router';
+import { motion } from 'framer-motion';
 
 const ProductCard = ({ product }) => {
     const { cart, setCart } = useAppContext();
+    const [isAdded, setIsAdded] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
 
     const handleKeyDown = (event) => {
@@ -15,6 +18,7 @@ const ProductCard = ({ product }) => {
     };
 
     const addToCart = (event) => {
+        setIsLoading(true);
         const cartItem = cart.find(item => item.product_id === product.product_id);
         if (cartItem) {
             cartItem.quantity += 1;
@@ -22,6 +26,10 @@ const ProductCard = ({ product }) => {
         } else {
             setCart([...cart, { ...product, quantity: 1 }]);
         }
+        
+        setIsAdded(true);
+        setTimeout(() => setIsLoading(false), 1000);
+        setTimeout(() => {setIsAdded(false)}, 2000);
     };
 
     return (
@@ -55,9 +63,31 @@ const ProductCard = ({ product }) => {
                         onFocus={() => setIsHovered(true)}
                         onBlur={() => setIsHovered(false)}
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 576 512">
-                            <path d="M253.3 35.1c6.1-11.8 1.5-26.3-10.2-32.4s-26.3-1.5-32.4 10.2L117.6 192H32c-17.7 0-32 14.3-32 32s14.3 32 32 32L83.9 463.5C91 492 116.6 512 146 512H430c29.4 0 55-20 62.1-48.5L544 256c17.7 0 32-14.3 32-32s-14.3-32-32-32H458.4L365.3 12.9C359.2 1.2 344.7-3.4 332.9 2.7s-16.3 20.6-10.2 32.4L404.3 192H171.7L253.3 35.1zM192 304v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16s16 7.2 16 16zm96-16c8.8 0 16 7.2 16 16v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16zm128 16v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16s16 7.2 16 16z"/>
-                        </svg>
+                        <motion.div
+                            key={isAdded ? 'added' : 'not-added'}
+                            initial={{ opacity: 0, scale: 0.7, rotate: 0}}
+                            animate={{ opacity: 1, scale: 1 , rotate: isAdded ? 360 : 0}}
+                            exit={{ opacity: 0, scale: 0.7 , rotate:0}}
+                            transition={{ duration: 0.5 }}
+                            className="flex justify-center items-center"
+                        >
+                            {isLoading ? (
+                                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity="0.25"/>
+                                    <path fill="currentColor" d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z">
+                                        <animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/>
+                                    </path>
+                                </svg>
+                            ) : isAdded ? (
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
+                                </svg>
+                            ) : (
+                                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 576 512">
+                                    <path d="M253.3 35.1c6.1-11.8 1.5-26.3-10.2-32.4s-26.3-1.5-32.4 10.2L117.6 192H32c-17.7 0-32 14.3-32 32s14.3 32 32 32L83.9 463.5C91 492 116.6 512 146 512H430c29.4 0 55-20 62.1-48.5L544 256c17.7 0 32-14.3 32-32s-14.3-32-32-32H458.4L365.3 12.9C359.2 1.2 344.7-3.4 332.9 2.7s-16.3 20.6-10.2 32.4L404.3 192H171.7L253.3 35.1zM192 304v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16s16 7.2 16 16zm96-16c8.8 0 16 7.2 16 16v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16zm128 16v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16s16 7.2 16 16z"/>
+                                </svg>
+                            )}
+                        </motion.div>
                     </Button>
                 </section>
             </CardBody>

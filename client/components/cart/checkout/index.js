@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, ModalContent,Button , useDisclosure} from "@nextui-org/react";
+import { Modal, ModalContent,Button , useDisclosure, ModalHeader} from "@nextui-org/react";
 import AddressMenu from '@components/cart/checkout/address';
 
 const CheckOut = ({total}) => {
@@ -12,7 +12,8 @@ const CheckOut = ({total}) => {
                 <p className='font-semibold'>{total} €</p>            
             </Button>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} className='p-8'>
-                <ModalContent>
+                <ModalHeader className="flex flex-col gap-1">Pagar</ModalHeader>
+                <ModalContent className='flex flex-col justify-center items-center'>
                     <AddressMenu />
                 </ModalContent>
             </Modal>

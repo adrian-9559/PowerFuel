@@ -10,5 +10,6 @@ router.use('/api/categories', require('./api/categories/routes'));
 router.use('/api/brands', require('./api/brands/routes'));
 router.use('/api/files', require('./api/files/routes'));
 router.use('/api/address', require('./api/addresses/routes'));
+router.use('/api/payments', require('./api/payments/routes'));
 
 module.exports = router;

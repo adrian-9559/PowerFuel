@@ -8,7 +8,7 @@ import AuthTabs from '@components/auth/authMenu/partials/authTabs';
 import AddressList from '@components/cart/checkout/address/partials/addressList';
 import AddressForm from '@components/cart/checkout/address/partials/addressForm';
 
-const AddressMenu = () => {
+const AddressMenu = ({handleSelectAddress}) => {
     const router = useRouter();
     const [ UserAddress, SetUserAddress ] = useState([]);
     const [ showForm, setShowForm ] = useState(false);
@@ -52,17 +52,24 @@ const AddressMenu = () => {
                 <section>
                     {!showForm && UserAddress?.length > 0 && (
                         <section className="flex flex-col justify-center items-center gap-4">
+                        <h2 className="text-2xl font-bold">Seleccionar dirección</h2>
+                            <section className='flex flex-row justify-end items-center w-full p-0'>
+                                <Button 
+                                    onPress={handleAddAddress} 
+                                    isIconOnly
+                                    className='m-o'
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                    </svg>
+                                </Button>
+                            </section>
                             <AddressList 
                                 addressList={UserAddress}
                                 handleDelete={handleDelete}
                                 handleEdit={handleEdit}
+                                handleSelectAddress={handleSelectAddress}
                             />
-                            <Button 
-                                onPress={handleAddAddress}
-                                className="w-full"
-                            >
-                                Selecionar dirección
-                            </Button>
                         </section>
                     )}
                     {showForm &&(

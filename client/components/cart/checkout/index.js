@@ -1,9 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, ModalContent,Button , useDisclosure, ModalHeader} from "@nextui-org/react";
+import React, { useState, useEffect, use } from 'react';
+import { Button, Modal, ModalContent, ModalFooter, ModalHeader, useDisclosure, ModalBody } from '@nextui-org/react';
 import AddressMenu from '@components/cart/checkout/address';
+import PaymentMenu from '@components/cart/checkout/paymentMethod';
+
+
 
 const CheckOut = ({total}) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [selectedAddress, setSelectedAddress] = useState(null);
+    const [selectedPayment, setSelectedPayment] = useState(null);
+    const [currentStep, setCurrentStep] = useState(1);
+
+    const handleSelectAddress = (address) => {
+        setSelectedAddress(address);
+        console.log("selectedAddress", selectedAddress);
+    }
+
+    const handleSelectPayment = (payment) => {
+        setSelectedPayment(payment);
+        console.log("selectedPayment", selectedPayment);
+    }
+
+    const handleContinue = (volver=false) => {
+        if(!volver) {
+            setCurrentStep(2);
+        }else{
+            setCurrentStep(1);
+        }
+    }
 
     return (
         <section className='w-full'>
@@ -14,7 +38,24 @@ const CheckOut = ({total}) => {
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} className='p-8'>
                 <ModalHeader className="flex flex-col gap-1">Pagar</ModalHeader>
                 <ModalContent className='flex flex-col justify-center items-center'>
-                    <AddressMenu />
+                    {currentStep === 1 && (
+                        <AddressMenu 
+                            handleSelectAddress={handleSelectAddress}
+                        />
+                    )}
+                    {currentStep === 2 && (
+                        <PaymentMenu 
+                            handleSelectPayment={handleSelectPayment}
+                        />
+                    )}
+                    <ModalFooter className='w-full'>
+                        {currentStep === 1 && (
+                            <Button fullWidth color="default" onPress={() => handleContinue()}>Continuar</Button>
+                        )}
+                        {currentStep === 2 && (
+                            <Button fullWidth color="default" onPress={() => handleContinue(true)}>Volver</Button>
+                        )}
+                    </ModalFooter>
                 </ModalContent>
             </Modal>
         </section>

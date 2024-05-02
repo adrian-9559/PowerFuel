@@ -3,30 +3,24 @@ import React, { useState, useEffect } from 'react';
 import AddressItem from './partials/addressItem';
 import { RadioGroup, Radio , cn} from '@nextui-org/react';
 
-const AddressList = ({addressList, handleDelete, handleEdit}) => {
+const AddressList = ({addressList, handleDelete, handleEdit, handleSelectAddress}) => {
     const [defaultAddress, setDefaultAddress] = useState(null);
     const [selectedAddress, setSelectedAddress] = useState(null);
 
     useEffect(() => {
         const defaultAddress = addressList.find(address => address.is_default);
         if (defaultAddress) {
-            console.log("defaultAddress",defaultAddress);
             setDefaultAddress(defaultAddress.address_id);
         }
     }, [defaultAddress]);
 
-    useEffect(() => {
-        if (selectedAddress) {
-            console.log("selectedAddress",selectedAddress);
-        }
-    }, [selectedAddress]);
+    
 
     return (
         <section className="flex flex-col justify-center items-center">
-            <h2 className="text-2xl font-bold">Seleccionar dirección</h2>
             <RadioGroup 
                 defaultValue={defaultAddress} 
-                onValueChange={setSelectedAddress}
+                onValueChange={(value) => {handleSelectAddress(value)}}
 
             >
                 {addressList.map((address) => (

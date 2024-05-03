@@ -17,19 +17,22 @@ const ProductCard = ({ product }) => {
         }
     };
 
-    const addToCart = (event) => {
+    const addToCart = () => {
         setIsLoading(true);
-        const cartItem = cart.find(item => item.product_id === product.product_id);
-        if (cartItem) {
-            cartItem.quantity += 1;
-            setCart([...cart]);
-        } else {
-            setCart([...cart, { ...product, quantity: 1 }]);
-        }
-        
-        setIsAdded(true);
-        setTimeout(() => setIsLoading(false), 1000);
-        setTimeout(() => {setIsAdded(false)}, 2000);
+        setIsHovered(true);
+        setTimeout(() => {
+            setIsLoading(false);
+            setIsAdded(true);
+            const cartItem = cart.find(item => item.product_id === product.product_id);
+            if (cartItem) {
+                cartItem.quantity += 1;
+                setCart([...cart]);
+            } else {
+                setCart([...cart, { ...product, quantity: 1 }]);
+            }
+            setTimeout(() => setIsAdded(false), 1000);
+            setIsHovered(false);
+        }, 1000);
     };
 
     return (
@@ -37,7 +40,7 @@ const ProductCard = ({ product }) => {
             tabIndex="0" 
             onKeyDown={handleKeyDown} 
             onMouseEnter={() => setIsHovered(true)} 
-            onMouseLeave={() => setIsHovered(false)} 
+            onMouseLeave={() => !isLoading && setIsHovered(false)} 
             className="w-64 h-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
             <CardBody className="overflow-visible p-0 relative h-full">
@@ -57,18 +60,18 @@ const ProductCard = ({ product }) => {
                     </section>
                     <Button 
                         radius="full" 
-                        className={`absolute bottom-2 right-2 text-black z-10 transition-opacity duration-2000 ${isHovered ? 'opacity-100' : 'opacity-0'}`} 
+                        className={`absolute bottom-2 right-2 text-black z-10 transition-opacity duration-2000 ${(isHovered || isAdded) ? 'opacity-100' : 'opacity-0'}`} 
                         isIconOnly 
                         onPress={addToCart}
                         onFocus={() => setIsHovered(true)}
-                        onBlur={() => setIsHovered(false)}
+                        onBlur={() => !isLoading && setIsHovered(false)}
                     >
                         <motion.div
                             key={isAdded ? 'added' : 'not-added'}
-                            initial={{ opacity: 0, scale: 0.7, rotate: 0}}
-                            animate={{ opacity: 1, scale: 1 , rotate: isAdded ? 360 : 0}}
-                            exit={{ opacity: 0, scale: 0.7 , rotate:0}}
-                            transition={{ duration: 0.5 }}
+                            initial={{ opacity: 0, scale: 0.7}}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.7 }}
+                            transition={{ duration: 0.2 }}
                             className="flex justify-center items-center"
                         >
                             {isLoading ? (
@@ -79,8 +82,8 @@ const ProductCard = ({ product }) => {
                                     </path>
                                 </svg>
                             ) : isAdded ? (
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-4 h-4">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                                 </svg>
                             ) : (
                                 <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 576 512">

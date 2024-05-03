@@ -5,10 +5,11 @@ import ProductService from "@services/productService";
 
 function CartItem({ item }) {
     const { cart, setCart } = useAppContext();
+
     const handleQuantityChange = (id, quantity) => {
-        cart.map(item => item.product_id === id ? {...item, quantity: parseInt(quantity)} : item);
-        setCart(cart);
-    }
+    const newCart = cart.map(item => item.product_id === id ? {...item, quantity: parseInt(quantity)} : item);
+    setCart(newCart);
+}
     
     const handleDeleteCartProduct = (id) => {
         setCart(cart.filter(item => item.product_id !== id));

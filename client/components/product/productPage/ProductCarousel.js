@@ -1,5 +1,5 @@
 // ProductImagesCarousel.js
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import { Skeleton, Image } from "@nextui-org/react";
 import ProductService from '@services/productService';

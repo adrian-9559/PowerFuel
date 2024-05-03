@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Input } from "@nextui-org/react";
 import { useAppContext } from '@context/AppContext';
 
-const QuantityInput = ({ id }) => {
+const QuantityInput = ({ product }) => {
     const { cart, setCart } = useAppContext();
     const [countProduct, setCountProduct] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
@@ -19,23 +19,21 @@ const QuantityInput = ({ id }) => {
             setCountProduct(1);
     };
 
-    const addToCart = async () => {
+    const addToCart = () => {
         setIsLoading(true);
-        let cartAux = cart;
-        const productInCart = cartAux.find(item => item.product_id === id);
-
-        productInCart ? productInCart.quantity += countProduct : cartAux.push({ product_id: id, quantity: countProduct });
-
-        setCart(cartAux);
-        
-        setTimeout(() => setIsLoading(false), 1000);
-
-        setIsAdded(true);
-
-        // Reset the button after 3 seconds
         setTimeout(() => {
-            setIsAdded(false);
-        }, 3000);
+            setIsLoading(false);
+            setIsAdded(true);
+            let cartAux = cart;
+            const productInCart = cartAux.find(item => item.product_id === product.product_id);
+            if (productInCart) {
+                productInCart.quantity += countProduct;
+            } else {
+                cartAux.push({ ...product, quantity: countProduct });
+            }
+            setCart([...cartAux]);
+            setTimeout(() => setIsAdded(false), 1000);
+        }, 1000);
     };
 
     return (
@@ -60,7 +58,11 @@ const QuantityInput = ({ id }) => {
                                     <animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/>
                                 </path>
                             </svg>
-                 : isAdded ? "Añadido al carrito correctamente"
+                 : isAdded ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-4 h-4">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                    </svg>
+                 )
                  : "Añadir al carrito"}
             </Button>
         </section>

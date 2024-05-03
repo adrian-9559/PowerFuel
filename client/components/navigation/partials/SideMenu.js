@@ -83,7 +83,7 @@ const SideMenu = ({productId}) => {
                  <ul className="flex flex-col items-center mt-16">
                     {categoriesParents && categoriesParents.map((category) => (
                         <li className="w-full" key={category.category_id}>
-                            <Button onClick={(e) => { e.stopPropagation(); router.push(`/category/${category.category_id}`); }} radius="none" className="bg-transparent w-full hover:bg-gray-200">
+                            <Button onClick={(e) => { e.stopPropagation(); router.push(`/category/${category.category_id}`); }} radius="none" className="w-full" color='default'>
                                 {category.category_name} {category.category_id}
                             </Button>
                         </li>

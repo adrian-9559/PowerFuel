@@ -1,46 +1,27 @@
-const stripe = require('stripe')('pk_test_51P5QR3Iqj90TtX55bRu7F6whFW26fRauivAnkLbY1T2DznQWrJIsETlHhYwtKOwj4kIhCZ4joaJQ5DicdSDV1RkS00YqYPtqr4');
+const stripe = require('stripe')('sk_test_51P5QR3Iqj90TtX55z91nDeNdwkwNqgDntRABpqklGubEOnrtfEsR2M6YivU8ithiAG0EktidG1W2F50YYIVHG0LL00ste7Tm41');
 
-createPayment = async (req, res) => {
+const confirmPayment = async (req, res) => {
+  const { amount } = req.body;
+
+  console.log(amount);
+  console.log(req.body);
+
   try {
-    let {status} = await stripe.charges.create({
-      amount: 2000, // cantidad a cobrar, en centavos
-      currency: "usd",
-      description: "Descripción del cargo",
-      source: req.body.id
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: amount, // Convertir a céntimos
+      currency: "eur",
     });
-
-    res.json({status});
+    res.send({
+      clientSecret: paymentIntent.client_secret,
+    });
   } catch (err) {
-    res.status(500).end();
+    console.error(err.message);
+    res.status(500).send({
+      error: err.message,
+    });
   }
-};
-
-createCustomer = async (req, res) => {
-    try {
-      const customer = await stripe.customers.create({
-        email: req.body.email,
-      });
-  
-      res.json({customer_id: customer.id});
-    } catch (err) {
-      res.status(500).end();
-    }
-  };
-  
-  addCard = async (req, res) => {
-    try {
-      const card = await stripe.customers.createSource(req.body.customer_id, {
-        source: req.body.token,
-      });
-  
-      res.json({card});
-    } catch (err) {
-      res.status(500).end();
-    }
-  };
+}
 
 module.exports = {
-    createPayment,
-    createCustomer,
-    addCard
-    };
+  confirmPayment
+};

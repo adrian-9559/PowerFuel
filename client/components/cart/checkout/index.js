@@ -1,4 +1,4 @@
-import React, { useState, useEffect, use } from 'react';
+import { useState, useEffect, use } from 'react';
 import { Button, Modal, ModalContent, ModalFooter, ModalHeader, useDisclosure, ModalBody } from '@nextui-org/react';
 import AddressMenu from '@components/cart/checkout/address';
 import PaymentMenu from '@components/cart/checkout/paymentMethod';
@@ -28,6 +28,12 @@ const CheckOut = ({total}) => {
             setCurrentStep(1);
         }
     }
+
+    useEffect(() => {
+        setCurrentStep(1);
+        setSelectedAddress(null);
+        setSelectedPayment(null);
+    },[isOpen]);
 
     return (
         <section className='w-full'>

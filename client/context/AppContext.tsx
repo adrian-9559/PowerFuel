@@ -37,27 +37,31 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [isClient, setIsClient] = useState(false); // Nueva variable de estado
   const router = useRouter();
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const storedCart = localStorage.getItem('cart');
-      if (storedCart) {
-        setCart(JSON.parse(storedCart));
-      }
+    setIsClient(true); // Establecer isClient a true cuando el cliente toma el control
+    const storedCart = localStorage.getItem('cart');
+    if (storedCart) {
+      setCart(JSON.parse(storedCart));
+    }
 
-      const token = sessionStorage.getItem('token');
-      if (token) {
-        setIsLoggedIn(true);
-      }
+    const token = sessionStorage.getItem('token');
+    if (token) {
+      setIsLoggedIn(true);
     }
   }, []);
   
   useEffect(() => {
-    if (cart.length > 0 && typeof window !== 'undefined') {
+    if (cart.length > 0 && isClient) { // Solo actualizar localStorage si estamos en el cliente
       localStorage.setItem('cart', JSON.stringify(cart));
     }
-  }, [cart]);
+
+    if(cart.length === 0 && isClient) {
+      localStorage.removeItem('cart');
+    }
+  }, [cart, isClient]);
 
   useEffect(() => {
     if (isLoggedIn) {

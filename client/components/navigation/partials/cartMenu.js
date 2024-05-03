@@ -1,36 +1,77 @@
-import React, { useState, useEffect }from 'react';
-import { Dropdown, DropdownMenu, DropdownItem, DropdownTrigger, Button, Badge, Select, SelectItem, Image } from "@nextui-org/react";
+    import React, { useState, useEffect, useRef }from 'react';
+import { Dropdown, DropdownMenu, DropdownItem, DropdownTrigger, Button, Badge, useDisclosure, user} from "@nextui-org/react";
 import productService from '@services/productService';
 import CartItem from '@components/cart/cartItem';
 import { useRouter } from 'next/router';
 import { useAppContext } from "@context/AppContext";
+import { on } from 'events';
 
 
 const CartMenu = () => {
     const { cart, setCart } = useAppContext();
+    const [cartAux, setCartAux] = useState(cart?[...cart]:[]);
     const [total, setTotal] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isFirstLoad, setIsFirstLoad] = useState(true); // Nueva variable de estado
     const router = useRouter();
-    
+    const { isOpen, onOpen, onOpenChange } = useDisclosure(false);
+
+
     const handleDeleteCart = () => {
         setCart([]);
+        if(isOpen)
+            onOpenChange(false);
     }
     
     function getTotalPrice() {
-        let total = 0;
-        cart.map(item => total += item.price * item.quantity);
-        total = parseFloat(total.toFixed(2));
-        setTotal(total);
+        const total = cart?.reduce((acc, item) => acc + (item.price * item.quantity), 0) ?? 0;
+        setTotal(parseFloat(total.toFixed(2)));
+    }
+    
+    function quantityHasChanged(newCart, oldCart) {
+        for(let i = 0; i < newCart.length; i++) {
+            const oldItem = oldCart.find(item => item.product_id === newCart[i].product_id);
+            if(!oldItem || oldItem.quantity !== newCart[i].quantity) {
+                return true;
+            }
+        }
+        return false;
     }
 
     useEffect(() => {
+        setIsLoading(true);
         getTotalPrice();
+        setTimeout(() => {
+            setIsLoading(false);
+            if(!isFirstLoad && !isOpen && cart && cart.length > 0 && (quantityHasChanged(cartAux, cart) || cartAux.length !== cart.length))
+                onOpenChange(true);
+            if(isFirstLoad) setIsFirstLoad(false); // Cambiar el estado después de la primera carga
+        }, 750);
     }, [cart]);
+
     
     return (
-        <Dropdown>
-            <Badge content={cart?cart.length:0}  color="primary">
+        <Dropdown isOpen={isOpen} onOpenChange={onOpenChange} >
+        <Badge content={isLoading ? (
+                <svg 
+                    className="w-2   h-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity="0.25"/>
+                    <path fill="currentColor" d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z">
+                        <animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/>
+                    </path>
+                </svg>
+            ) : 
+                cart?cart.length:0
+            }  
+            color="primary" 
+            isInvisible={cart && cart.length === 0}
+            >
                 <DropdownTrigger>
-                    <Button isIconOnly>
+                    <Button isIconOnly onPress={onOpen}>
                         <svg xmlns="http://www.w3.org/2000/svg" height="10" width="11.25" viewBox="0 0 576 512">
                             <path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/>
                         </svg>

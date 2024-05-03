@@ -1,30 +1,30 @@
-// AddressList.js
 import React, { useState, useEffect } from 'react';
 import AddressItem from './partials/addressItem';
 import { RadioGroup, Radio , cn} from '@nextui-org/react';
 
 const AddressList = ({addressList, handleDelete, handleEdit, handleSelectAddress}) => {
-    const [defaultAddress, setDefaultAddress] = useState(null);
     const [selectedAddress, setSelectedAddress] = useState(null);
 
     useEffect(() => {
         const defaultAddress = addressList.find(address => address.is_default);
         if (defaultAddress) {
-            setDefaultAddress(defaultAddress.address_id);
+            setSelectedAddress(defaultAddress.address_id);
         }
-    }, [defaultAddress]);
+    }, [addressList]);
 
-    
+    const handleValueChange = (value) => {
+        setSelectedAddress(value);
+        handleSelectAddress(value);
+    }
 
     return (
         <section className="flex flex-col justify-center items-center">
             <RadioGroup 
-                defaultValue={defaultAddress} 
-                onValueChange={(value) => {handleSelectAddress(value)}}
-
+                value={selectedAddress} 
+                onValueChange={handleValueChange}
             >
                 {addressList.map((address) => (
-                    <Radio 
+                    <Radio
                         key={address.address_id}
                         value={address.address_id}
                         classNames={{

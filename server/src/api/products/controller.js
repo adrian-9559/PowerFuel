@@ -36,7 +36,7 @@ const modifyProductById = async (req, res) => {
 
 const getProductById = async (req, res) => {
     try {
-        const product = await model.getProducts(null, null, req.params.productId);
+        const product = await model.getProducts(0, 1, req.params.productId);
         if (!product) {
             return res.status(404).json({ message: 'Product not found' });
         }
@@ -48,7 +48,7 @@ const getProductById = async (req, res) => {
 };
 
 const getProducts = async (req, res) => {
-    const products = await model.getProducts();
+    const products = await model.getProducts(0, 10);
     if (!products) {
         throw new Error('Not found');
     }
@@ -72,8 +72,7 @@ const getProductsByCategory = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
     const { id } = req.params;
-    console.log(id);
-    let products = await model.getProductsByCategory(id);
+    let products = await model.getProductsByCategory(skip, limit, id);
     if (!products) {
         res.status(404).json({ message: 'Products not found' });
     }

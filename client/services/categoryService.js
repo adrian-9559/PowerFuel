@@ -10,15 +10,15 @@ class CategoryService {
         }
     };
 
-     async getAllCategories(page = 1, limit = 10) {
-        try {
-            const response = await api.get(`/categories?page=${page}&limit=${limit}`);
-            return response.data;
-        } catch (error) {
-            console.error('Error fetching categories:', error.message);
-        }
+    async getCategories(page = null, limit = null) {
+       try {
+          const url = `/categories${page ? `?page=${page}` : ''}${limit ? `&limit=${limit}` : ''}`;
+          const response = await api.get(url);
+          return response.data;
+       } catch (error) {
+          console.error('Error fetching categories:', error.message);
+       }
     };
-
      async addCategory(category) {
         try {
             const response = await api.post('/categories', category);

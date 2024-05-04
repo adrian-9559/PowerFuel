@@ -26,7 +26,7 @@ const ADMIN_ACTIONS = {
             delete: ProductService.deleteProduct,
         },
         'categorias': {
-            getInfo: CategoryService.getAllCategories,
+            getInfo: CategoryService.getCategories,
             delete: CategoryService.deleteCategory,
         },
     },
@@ -44,7 +44,7 @@ const ADMIN_ACTIONS = {
             delete: ProductService.deleteProduct,
         },
         'categorias': {
-            getInfo: CategoryService.getAllCategories,
+            getInfo: CategoryService.getCategories,
             delete: CategoryService.deleteCategory,
         },
     },
@@ -54,7 +54,7 @@ const ADMIN_ACTIONS = {
             delete: ProductService.deleteProduct,
         },
         'categorias': {
-            getInfo: CategoryService.getAllCategories,
+            getInfo: CategoryService.getCategories,
             delete: CategoryService.deleteCategory,
         },
     },
@@ -64,7 +64,7 @@ const ADMIN_ACTIONS = {
             delete: ProductService.deleteProduct,
         },
         'categorias': {
-            getInfo: CategoryService.getAllCategories,
+            getInfo: CategoryService.getCategories,
             delete: CategoryService.deleteCategory,
         },
     },

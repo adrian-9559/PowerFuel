@@ -26,7 +26,7 @@ class ProductService {
     }
 
     async getProductsInfo(page = 1, limit = 10) {
-        const response = await api.post(`/products/info?page=${page}&limit=${limit}`);
+        const response = await api.get(`/products/info?page=${page}&limit=${limit}`);
         return response.data;
     }
 

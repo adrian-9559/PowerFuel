@@ -30,12 +30,12 @@ class model {
         }
     };
     
-    getCategories = async (skip = 0, limit = 10, categoryId) => {
+    getCategories = async (skip = null, limit = null, categoryId) => {
         try {
                 const categories = await Category.findAll({
                     where: categoryId ? {category_id: categoryId} : {},
-                    limit: limit,
-                    offset: skip
+                    limit: limit? limit : null,
+                    offset: skip? skip : null
                 });
                 return categories;
     

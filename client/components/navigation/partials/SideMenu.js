@@ -49,7 +49,7 @@ const SideMenu = ({productId}) => {
 
 
     return (
-        <section>
+        <section className='container'>
              <Button isIconOnly onClick={toggleMenuLeft}>
                  <svg xmlns="http://www.w3.org/2000/svg" height="10" width="8.75" viewBox="0 0 448 512">
                      <path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/>
@@ -83,7 +83,12 @@ const SideMenu = ({productId}) => {
                  <ul className="flex flex-col items-center mt-16">
                     {categoriesParents && categoriesParents.map((category) => (
                         <li className="w-full" key={category.category_id}>
-                            <Button onClick={(e) => { e.stopPropagation(); router.push(`/category/${category.category_id}`); }} radius="none" className="w-full" color='default'>
+                            <Button 
+                                onClick={(e) => { router.push(`/category/${category.category_id}`); }} 
+                                radius="none" 
+                                className="w-full" 
+                                color='default'
+                            >
                                 {category.category_name} {category.category_id}
                             </Button>
                         </li>

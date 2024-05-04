@@ -22,8 +22,12 @@ class model {
     };
     
     getProducts = async (skip = 0, limit = 10, productId) => {
+        skip = parseInt(skip);
+        limit = parseInt(limit);
         const products = await Product.findAll({
             where: productId ? { product_id: productId } : {},
+            offset: skip,
+            limit: limit,
             include: [{
                 model: Category
             }, {

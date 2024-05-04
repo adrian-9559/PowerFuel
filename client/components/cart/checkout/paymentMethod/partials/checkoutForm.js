@@ -1,6 +1,6 @@
 import { Button } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
+import { useStripe, useElements, PaymentElement, CardElement } from "@stripe/react-stripe-js";
 import { useRouter } from "next/router";
 import Completion from "./completion";
 import PaymentService from "@services/paymentService";
@@ -19,7 +19,7 @@ const CheckoutForm = () => {
     e.preventDefault();
   
     setIsProcessing(true);
-
+  
     const calculateTotal = (cart) => {
       let total = 0;
       cart?.forEach(item => {
@@ -27,24 +27,24 @@ const CheckoutForm = () => {
       });
       return total * 100;
     }
-
+  
     try {
       const clientSecret = await PaymentService.createPaymentIntent(calculateTotal(cart));
-
+  
       const { error } = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
-          card: elements.getElement(CardElement),
+          card: elements.getElement(PaymentElement),
         },
-      });
-
+      });c
+  
       if (error) {
-        setMessage("Ha ocurrido un error:")
+        setMessage(error)
         console.error(error);
       } else {
         setIsCompleted(true);
       }
     } catch (error) {
-      setMessage("Ha ocurrido un error:")
+      setMessage(error)
       console.error(error);
     }
   
@@ -53,7 +53,7 @@ const CheckoutForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <CardElement />
+      <PaymentElement />
       <Button fullWidth type="submit" disabled={isProcessing}>
         {isProcessing ? "Procesando..." : "Pagar"}
       </Button>

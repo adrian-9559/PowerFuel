@@ -1,4 +1,4 @@
-    import React, { useState, useEffect, useRef }from 'react';
+    import React, { useState, useEffect }from 'react';
 import { Dropdown, DropdownMenu, DropdownItem, DropdownTrigger, Button, Badge, useDisclosure, user} from "@nextui-org/react";
 import CartItem from '@components/cart/cartItem';
 import { useRouter } from 'next/router';
@@ -14,7 +14,6 @@ const CartMenu = () => {
     const [isFirstLoad, setIsFirstLoad] = useState(true); // Nueva variable de estado
     const router = useRouter();
     const { isOpen, onOpen, onOpenChange } = useDisclosure(false);
-    const dropdownRef = useRef(null);
 
 
     const handleDeleteCart = () => {
@@ -52,7 +51,6 @@ const CartMenu = () => {
     
     return (
         <Dropdown 
-            ref={dropdownRef}
             isOpen={isOpen}
             onOpenChange={onOpenChange} 
             showArrow 
@@ -108,14 +106,15 @@ const CartMenu = () => {
                 {cart && cart.length > 0 ? (
                     cart.map((item, index) => (
                         <DropdownItem
+                            key={item.product_id}
                             color='none'
                             textValue={item.product_id} 
                             showDivider
                             onClick={() => router.push(`/product/${item.product_id}`)}
-                        >                <AnimatePresence>
-
-                            <CartItem item={item}/>
-                </AnimatePresence>
+                        >                
+                            <AnimatePresence>
+                                <CartItem item={item}/>
+                            </AnimatePresence>
                         </DropdownItem>
                     ))
                     ) : (

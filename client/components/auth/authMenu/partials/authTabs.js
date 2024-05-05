@@ -38,7 +38,7 @@ const AuthTabs = () => {
 
     return (
     <section
-        className='w-96 h-96 flex flex-col gap-4 justify-top items-center p-0 overflow-hidden'
+        className='w-96 h-96 flex flex-col gap-4 justify-top items-center overflow-hidden'
     >
         <Tabs
             fullWidth
@@ -54,7 +54,7 @@ const AuthTabs = () => {
         >
             {selectedTab === 'login' && (
                 <motion.div
-                    className='absolute top-24 left-16 right-16 w-auto h-auto flex flex-col gap-4 justify-center items-center p-0 overflow-hidden'
+                    className='absolute top-24 left-16 right-16 w-auto h-auto flex flex-col gap-4 justify-center items-center p-2 overflow-hidden'
                     key="loginMotion"
                     initial="outLeft"
                     animate="inLeft"
@@ -71,7 +71,7 @@ const AuthTabs = () => {
             )}
             {selectedTab === 'register' && (
                 <motion.div                      
-                    className='absolute top-24 left-16 right-16 w-auto h-auto flex flex-col gap-4 justify-center items-center p-0 overflow-hidden'
+                    className='absolute top-24 left-16 right-16 w-auto h-auto flex flex-col gap-4 justify-center items-center p-2 overflow-hidden'
                     key="registerMotion"
                     initial="outRight"
                     animate="inRight"

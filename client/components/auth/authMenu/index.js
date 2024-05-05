@@ -8,7 +8,7 @@ const LoginMenu = () => {
     return (
         <motion.section layout>
             <Button onPress={onOpen}>Iniciar sesión</Button>
-            <Modal isOpen={isOpen} onClose={onClose} className='p-8 overflow-hidden'>
+            <Modal isOpen={isOpen} onClose={onClose} className='p-8 overflow-hidden' backdrop="blur">
                 <ModalContent className="w-20%">
                     <AuthTabs/>
                 </ModalContent>

@@ -1,10 +1,8 @@
 // AddressMenu.js
 import React, { useState, useEffect } from 'react';
 import { Button, Modal, ModalContent, ModalFooter, Tabs, Tab } from '@nextui-org/react';
-import { useAppContext } from '@context/AppContext';
 import { useRouter } from 'next/router';
 import AddressService from '@services/addressService';
-import AuthTabs from '@components/auth/authMenu/partials/authTabs';
 import AddressList from '@components/cart/checkout/address/partials/addressList';
 import AddressForm from '@components/cart/checkout/address/partials/addressForm';
 
@@ -13,7 +11,6 @@ const AddressMenu = ({handleSelectAddress}) => {
     const [ UserAddress, SetUserAddress ] = useState([]);
     const [ showForm, setShowForm ] = useState(false);
     const [ editAddress, setEditAddress ] = useState(null);
-    const { isLoggedIn } = useAppContext();
 
     const fetchAddress = async () => {
         console.log('fetching address');
@@ -25,7 +22,7 @@ const AddressMenu = ({handleSelectAddress}) => {
     };
 
     useEffect(() => {
-        if(isLoggedIn && !showForm){
+        if(!showForm){
             fetchAddress();
         }
     }, [showForm]);
@@ -48,7 +45,6 @@ const AddressMenu = ({handleSelectAddress}) => {
 
     return (
         <section className="flex flex-col justify-center items-center w-96">
-            {isLoggedIn ? (
                 <section>
                     {!showForm && UserAddress?.length > 0 && (
                         <section className="flex flex-col justify-center items-center gap-4">
@@ -81,9 +77,6 @@ const AddressMenu = ({handleSelectAddress}) => {
                         </section>
                     )}
                 </section>
-            ) : (
-                <AuthTabs/>
-            )}
         </section>
     );
 };

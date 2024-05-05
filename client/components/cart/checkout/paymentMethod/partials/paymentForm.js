@@ -32,9 +32,8 @@ const PaymentForm = () => {
       <EmbeddedCheckoutProvider
         stripe={stripePromise}
         options={options}
-        style={{height: '100%', width: '100%'}}
       >
-        <EmbeddedCheckout />
+        <EmbeddedCheckout className=""/>
       </EmbeddedCheckoutProvider>
     </div>
   )

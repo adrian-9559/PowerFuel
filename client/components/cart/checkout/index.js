@@ -1,13 +1,16 @@
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, Modal, ModalContent, ModalFooter, ModalHeader, useDisclosure, ModalBody } from '@nextui-org/react';
 import AddressMenu from '@components/cart/checkout/address';
 import PaymentMenu from '@components/cart/checkout/paymentMethod';
+import AuthTabs from '@components/auth/authMenu/partials/authTabs';
+import { useAppContext } from '@context/AppContext';
 
 const CheckOut = ({total}) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [selectedAddress, setSelectedAddress] = useState(null);
     const [selectedPayment, setSelectedPayment] = useState(null);
     const [currentStep, setCurrentStep] = useState(1);
+    const { isLoggedIn } = useAppContext();
 
     const handleSelectAddress = (address) => {
         setSelectedAddress(address);
@@ -39,24 +42,25 @@ const CheckOut = ({total}) => {
                 <p>Pagar</p>
                 <p className='font-semibold'>{total} €</p>            
             </Button>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} className='p-8'>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} className='p-8' backdrop="blur">
                 <ModalHeader className="flex flex-col gap-1">Pagar</ModalHeader>
                 <ModalContent className='flex flex-col justify-center items-center'>
-                    {currentStep === 1 && (
+                    {!isLoggedIn && <AuthTabs />}
+                    {isLoggedIn && currentStep === 1 && (
                         <AddressMenu 
                             handleSelectAddress={handleSelectAddress}
                         />
                     )}
-                    {currentStep === 2 && (
+                    {isLoggedIn && currentStep === 2 && (
                         <PaymentMenu 
                             handleSelectPayment={handleSelectPayment}
                         />
                     )}
                     <ModalFooter className='w-full'>
-                        {currentStep === 1 && (
+                        {isLoggedIn && currentStep === 1 && (
                             <Button fullWidth color="default" onPress={() => handleContinue()}>Continuar</Button>
                         )}
-                        {currentStep === 2 && (
+                        {isLoggedIn && currentStep === 2 && (
                             <Button fullWidth color="default" onPress={() => handleContinue(true)}>Volver</Button>
                         )}
                     </ModalFooter>

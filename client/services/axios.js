@@ -24,7 +24,7 @@ api.interceptors.request.use(config => {
 
 api.interceptors.response.use(response => response, error => {
   // Mostrar un mensaje de error
-  alert('An error occurred a: ' + error.message);
+  alert('An error occurred: ' + error.message);
   return Promise.reject(error);
 });
 

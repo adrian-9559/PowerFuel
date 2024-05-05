@@ -4,6 +4,7 @@ import CartItem from '@components/cart/cartItem';
 import { useRouter } from 'next/router';
 import { useAppContext } from "@context/AppContext";
 import { AnimatePresence } from 'framer-motion';
+import ProductService from '@services/productService';
 
 
 const CartMenu = () => {
@@ -22,8 +23,18 @@ const CartMenu = () => {
             onOpenChange(false);
     }
     
-    function getTotalPrice() {
-        const total = cart?.reduce((acc, item) => acc + (item.price * item.quantity), 0) ?? 0;
+    async function getTotalPrice() {
+        let total = 0;
+        for (const item of cart) {
+            try {
+                const productData = await ProductService.getProductById(item.product_id);
+                if (productData) {
+                    total += productData.price * item.quantity;
+                }
+            } catch (error) {
+                console.error('Error fetching product:', error.message);
+            }
+        }
         setTotal(parseFloat(total.toFixed(2)));
     }
     
@@ -47,6 +58,11 @@ const CartMenu = () => {
             if(isFirstLoad) setIsFirstLoad(false); // Cambiar el estado después de la primera carga
         }, 750);
     }, [cart]);
+
+    const handleReviewOrder = () => {
+        onOpenChange(false);
+        router.push('/cart')
+    }
 
     
     return (
@@ -123,7 +139,7 @@ const CartMenu = () => {
                         </DropdownItem>
                     )}
                 {cart && cart.length > 0 && (
-                    <DropdownItem key="checkout" className='items-center bg-green-200 hover:bg-green-500 sticky bottom-0 z-10' color='success' textValue="checkout" onClick={() => router.push('/cart')}>
+                    <DropdownItem key="checkout" className='items-center bg-green-200 hover:bg-green-500 sticky bottom-0 z-10' color='success' textValue="checkout" onClick={handleReviewOrder}>
                         <section className='flex justify-between mx-2'>
                             <p>Revisar pedido:</p>
                             <p className='font-semibold'>{total} €</p>

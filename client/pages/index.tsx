@@ -8,9 +8,7 @@ import CategoryList from '@components/category/categoryList';
 const HomePage = () => {
     return (
         <NextUIProvider>
-            <DefaultLayout>
-                <CategoryList />
-            </DefaultLayout>
+            <CategoryList />
         </NextUIProvider>
     );
 };

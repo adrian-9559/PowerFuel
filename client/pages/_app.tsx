@@ -6,15 +6,20 @@ import {useRouter} from 'next/router';
 import { AppProvider } from "@context/AppContext";
 import "@styles/globals.css";
 require('dotenv').config();
+import DefaultLayout from '@layouts/default';
 
 export default function App({ Component, pageProps }: AppProps) {
 	const router = useRouter();
+
+
   
 	return (
 	  <NextUIProvider navigate={router.push}>
 		  <NextThemesProvider>
 			<AppProvider>
-			  <Component {...pageProps} />
+				<DefaultLayout>
+			  		<Component {...pageProps} />
+			  	</DefaultLayout>
 			</AppProvider>
 		  </NextThemesProvider>
 	  </NextUIProvider>

@@ -3,8 +3,6 @@ import { Button, Modal, ModalContent, ModalFooter, ModalHeader, useDisclosure, M
 import AddressMenu from '@components/cart/checkout/address';
 import PaymentMenu from '@components/cart/checkout/paymentMethod';
 
-
-
 const CheckOut = ({total}) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [selectedAddress, setSelectedAddress] = useState(null);

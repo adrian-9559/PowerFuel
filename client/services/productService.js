@@ -4,10 +4,10 @@ class ProductService {
 
     async getProductById(id) {
         const response = await api.get(`/products/${id}`);
-        if (!response.data.product) {
+        if (!response.data) {
             throw new Error('Product not found');
         }
-        return response.data.product[0];
+        return response.data;
     }
 
     async getAllProducts() {
@@ -26,7 +26,10 @@ class ProductService {
     }
 
     async getProductsInfo(page = 1, limit = 10) {
-        const response = await api.get(`/products/info?page=${page}&limit=${limit}`);
+        const response = await api.post(`/products/info`, {
+            page,
+            limit
+        });
         return response.data;
     }
 

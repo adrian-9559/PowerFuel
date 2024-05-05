@@ -1,5 +1,4 @@
 import ProductListCategory from '@components/category/ProductListCategory';
-import DefaultLayout from '@layouts/default';
 import { useRouter } from 'next/router';
 
 const Category = () => {
@@ -7,13 +6,9 @@ const Category = () => {
     const { id } = router.query;
 
     return (
-        <>
-            <DefaultLayout>
-                <main>
-                    <ProductListCategory id={id} />
-                </main>
-            </DefaultLayout>
-        </>
+        <main>
+            <ProductListCategory id={id} />
+        </main>
     );
 };
 

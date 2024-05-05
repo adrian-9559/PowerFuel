@@ -1,10 +1,8 @@
 import React from 'react';
 import { Input, Button } from "@nextui-org/react";
-import { motion } from 'framer-motion';
 import SideMenu from '@components/users/sideMenu';
 import { addAddress } from '@services/addressService';
 import AddressesList from '@components/users/addressList';
-import DefaultLayout from '@layouts/default';
 
 const Address = () => {
     const [street, setStreet] = React.useState('');
@@ -32,20 +30,14 @@ const Address = () => {
     const isInvalidTelefono = !validateTelefono(phone_number);
     
     return (
-        <DefaultLayout>
-            <section>
-                <SideMenu />
-                <motion.main
-                    className="max-w-4xl mx-auto p-6 bg-gray-100 rounded-lg shadow-xl w-2/5"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5 }}
-                >
-                    <p>Hola</p>
-                </motion.main>
-            </section>
-        </DefaultLayout>
+        <section>
+            <SideMenu />
+            <main
+                className="max-w-4xl mx-auto p-6 bg-gray-100 rounded-lg shadow-xl w-2/5"
+            >
+                <p>Hola</p>
+            </main>
+        </section>
     );
 }
 

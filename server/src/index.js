@@ -3,7 +3,6 @@ const numCPUs = require('os').cpus().length;
 const routes = require('./routes');
 require('dotenv').config();
 
-
 // Función para inicializar la aplicación Express
 function startExpress() {
     const express = require('express');
@@ -50,8 +49,6 @@ function startExpress() {
         }
         next();
     });
-
-    
 
     // Usar el middleware routes
     app.use(routes);

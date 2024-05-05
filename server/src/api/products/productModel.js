@@ -107,7 +107,7 @@ class model {
             price: product.price,
             stock_quantity: product.stock_quantity,
             id_brand: product.id_brand,
-            category_id: product.category_id, // Add this line
+            category_id: product.category_id, 
         });
     
         return newProduct.product_id;

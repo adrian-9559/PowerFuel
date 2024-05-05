@@ -1,6 +1,5 @@
 import { Button, Input } from "@nextui-org/react";
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { addRole } from '@services/roleService';
 import { useRouter } from 'next/router';
 
@@ -33,12 +32,8 @@ const CreateRole = () => {
     };
 
     return (
-        <motion.main
+        <main
             className="max-w-4xl mx-auto mt-10 p-6 bg-gray-100 rounded-lg shadow-xl"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
         >
             <h1 className="text-2xl font-bold mb-4">Crear Role</h1>
             <form onSubmit={handleRegister}>
@@ -56,7 +51,7 @@ const CreateRole = () => {
                     <Button type='button' color="danger" onClick={() => router.push('/admin')} className="w-full mt-4">Cancelar</Button>
                 </section>
             </form>
-        </motion.main>
+        </main>
     );
 }
 

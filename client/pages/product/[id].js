@@ -31,41 +31,38 @@ const Product = () => {
     }, [id]);
 
     return (
-        <>
-            <NavigationBar/>
-            <main>
-                <section className='flex flex-col items-center justify-center p-4 rounded-lg bg-white'>
-                    <section className='w-full max-w-4xl p-8 flex flex-row'>
-                        <ProductCarousel
-                            id={id}
-                        />
-                        <section className='w-full md:w-1/2 md:pl-8'>
-                            <section className='w-full max-w-4xl rounded-lg flex items-center'>
-                                <Skeleton isLoaded={isLoaded} className="rounded-lg h-auto py-2">
-                                    <h1 className='text-3xl font-bold text-gray-700'>{product?.product_name}</h1>
-                                </Skeleton>
-                            </section>
-                            <section className='mb-4'>
-                                <h2 className='text-xl font-semibold text-gray-700'>{"Precio:"}</h2>
-                                <Skeleton isLoaded={isLoaded} className="rounded-lg h-auto py-2 mt-2">
-                                    <p className='text-gray-600'>{product?.price} €</p>
-                                </Skeleton>
-                            </section>
-                            <QuantityInput
-                                product={product}
-                            />
+        <main>
+            <section className='flex flex-col items-center justify-center p-4 rounded-lg bg-white'>
+                <section className='w-full max-w-4xl p-8 flex flex-row'>
+                    <ProductCarousel
+                        id={id}
+                    />
+                    <section className='w-full md:w-1/2 md:pl-8'>
+                        <section className='w-full max-w-4xl rounded-lg flex items-center'>
+                            <Skeleton isLoaded={isLoaded} className="rounded-lg h-auto py-2">
+                                <h1 className='text-3xl font-bold text-gray-700'>{product?.product_name}</h1>
+                            </Skeleton>
                         </section>
-                    </section>
-                    <section className='w-full max-w-4xl p-8'>
-                        <h2 className='text-xl font-semibold text-gray-700'>{"Descripción:"}</h2>
-                        
-                        <Skeleton isLoaded={isLoaded} className="rounded-lg h-auto py-2">
-                            <p className='text-gray-600'>{product?.description}</p>
-                        </Skeleton>
+                        <section className='mb-4'>
+                            <h2 className='text-xl font-semibold text-gray-700'>{"Precio:"}</h2>
+                            <Skeleton isLoaded={isLoaded} className="rounded-lg h-auto py-2 mt-2">
+                                <p className='text-gray-600'>{product?.price} €</p>
+                            </Skeleton>
+                        </section>
+                        <QuantityInput
+                            product={product}
+                        />
                     </section>
                 </section>
-            </main>
-        </>
+                <section className='w-full max-w-4xl p-8'>
+                    <h2 className='text-xl font-semibold text-gray-700'>{"Descripción:"}</h2>
+                    
+                    <Skeleton isLoaded={isLoaded} className="rounded-lg h-auto py-2">
+                        <p className='text-gray-600'>{product?.description}</p>
+                    </Skeleton>
+                </section>
+            </section>
+        </main>
     );
 };
 

@@ -24,14 +24,13 @@ const QuantityInput = ({ product }) => {
         setTimeout(() => {
             setIsLoading(false);
             setIsAdded(true);
-            let cartAux = cart;
-            const productInCart = cartAux.find(item => item.product_id === product.product_id);
-            if (productInCart) {
-                productInCart.quantity += countProduct;
+            const cartItem = cart.find(item => item.product_id === product.product_id);
+            if (cartItem) {
+                cartItem.quantity += 1;
+                setCart([...cart]);
             } else {
-                cartAux.push({ ...product, quantity: countProduct });
+                setCart([...cart, {product_id: product.product_id, quantity: 1 }]);
             }
-            setCart([...cartAux]);
             setTimeout(() => setIsAdded(false), 1000);
         }, 1000);
     };

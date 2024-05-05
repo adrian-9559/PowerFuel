@@ -28,7 +28,7 @@ const ProductCard = ({ product }) => {
                 cartItem.quantity += 1;
                 setCart([...cart]);
             } else {
-                setCart([...cart, { ...product, quantity: 1 }]);
+                setCart([...cart, {product_id: product.product_id, quantity: 1 }]);
             }
             setTimeout(() => setIsAdded(false), 1000);
             setIsHovered(false);

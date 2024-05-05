@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 import { Navbar, NavbarContent, NavbarItem, NavbarBrand, Image } from "@nextui-org/react";
 import { useAppContext } from "@context/AppContext";
 import { ThemeSwitch } from '@components/theme-switch';

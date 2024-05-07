@@ -35,12 +35,13 @@ export default function DefaultLayout({
     <div className="relative flex flex-col h-screen">
       <NavigationBar />
       <motion.main
-        key={router.route} // Cambia la clave cuando cambia la ruta
-        variants={variants} // Pasa las variantes de la animación
-        initial="hidden" // Estado inicial
-        animate="show" // Anima al estado "show" cuando se monta
-        exit="exit" // Anima al estado "exit" cuando se desmonta
-      >
+          key={router.route} // Cambia la clave cuando cambia la ruta
+          variants={variants} // Pasa las variantes de la animación
+          initial="hidden" // Estado inicial
+          animate="show" // Anima al estado "show" cuando se monta
+          exit="exit" // Anima al estado "exit" cuando se desmonta
+          style={{ flexGrow: 1 }} // Añade flex-grow: 1 para que siempre esté abajo
+        >
         {children}
       </motion.main>
       <footer className="bg-zinc-50 text-center text-surface/75 dark:bg-neutral-700 dark:text-white/75 lg:text-left">

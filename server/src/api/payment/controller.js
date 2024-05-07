@@ -22,7 +22,7 @@ const createCheckoutSession = async (req, res) => {
         line_items: [...products],
         mode: 'payment',
         ui_mode: 'embedded',
-        return_url: 'http://25.65.210.24:3000/cart'
+        return_url: 'http://localhost:3000/cart'
     });
 
     res.send({clientSecret: session.client_secret});

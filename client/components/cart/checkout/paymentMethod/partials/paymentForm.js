@@ -14,7 +14,7 @@ const PaymentForm = () => {
     const {cart} = useAppContext();
   const fetchClientSecret = useCallback(() => {
     // Create a Checkout Session
-    return fetch("http://25.65.210.24:4001/api/payment/create-checkout-session",{
+    return fetch(`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/api/payment/create-checkout-session`,{
       method: "POST",
       headers: {
       "Content-Type": "application/json"

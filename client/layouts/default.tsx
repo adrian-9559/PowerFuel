@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import NavigationBar from "@components/navigation/NavigationBar";
+import Footer from "@components/footer/Footer";
 
 export default function DefaultLayout({
   children,
@@ -42,8 +43,8 @@ export default function DefaultLayout({
       >
         {children}
       </motion.main>
-      <footer className="w-full flex items-center justify-center py-3">
-        {/* footer content */}
+      <footer className="bg-zinc-50 text-center text-surface/75 dark:bg-neutral-700 dark:text-white/75 lg:text-left">
+        <Footer />
       </footer>
     </div>
   );

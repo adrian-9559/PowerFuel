@@ -8,6 +8,9 @@ router.route('/')
     .post(async (req, res) => {
         try {
             const user = await registerUser(req.body.user);
+            if (!user) {
+                return res.status(400).json({ message: 'error registering the user'});
+            }
             res.json(user);
         } catch (error) {
             console.error('Error registering the user:', error);

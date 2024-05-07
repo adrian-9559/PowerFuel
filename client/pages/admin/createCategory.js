@@ -1,7 +1,7 @@
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { addCategory, getParentCategories, getChildCategories } from '../../services/categoryService'; // Import the service to add a category
+import CategoryService from '../../services/categoryService'; // Import the service to add a category
 import { useRouter } from 'next/router';
 
 const CreateCategory = () => {
@@ -14,7 +14,7 @@ const CreateCategory = () => {
 
     useEffect(() => {
         const fetchParentCategories = async () => {
-            const categories = await getParentCategories();
+            const categories = await CategoryService.getParentCategories();
             setParentCategories(categories);
         };
         
@@ -36,8 +36,8 @@ const CreateCategory = () => {
                 // Add other category attributes here
             };
     
-            await addCategory(category); // Use the service to add a category
-            router.push('/admin');
+            await CategoryService.addCategory(category); // Use the service to add a category
+            router.push('/admin?tab=categorias');
         } catch (error) {
             setError(error.message);
         } finally {
@@ -46,13 +46,13 @@ const CreateCategory = () => {
     };
 
     const handleParentCategoryChange = async (e) => {
-        const childCategories = await getChildCategories(e.target.value);
+        const childCategories = await CategoryService.getChildCategories(e.target.value);
         setParentCategory(e.target.value);
         setChildCategoriesLevels([childCategories]);  // Reinicia childCategoriesLevels y añade el primer nivel de categorías hijas
     };
 
     const handleChildCategoryChange = async (e, level) => {
-        const newChildCategories = await getChildCategories(e.target.value);
+        const newChildCategories = await CategoryService.getChildCategories(e.target.value);
         setParentCategory(e.target.value);
         setChildCategoriesLevels(prevState => {
             const newState = [...prevState];
@@ -104,7 +104,7 @@ const CreateCategory = () => {
                 </AnimatePresence>
                 <section className="mb-4">
                     <Button type='submit' disabled={loading} className="w-full">{loading ? 'Cargando...' : 'Crear Categoría'}</Button>
-                    <Button type='button' color="danger" onClick={() => router.push('/admin')} className="w-full mt-4">Cancelar</Button>
+                    <Button type='button' color="danger" onClick={() => router.push('/admin?tab=categorias')} className="w-full mt-4">Cancelar</Button>
                 </section>
             </form>
         </motion.main>

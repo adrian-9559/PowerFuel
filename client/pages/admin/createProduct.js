@@ -61,7 +61,7 @@ const CreateProduct = () => {
             };
     
             await ProductService.addProduct(product);
-            router.push('/admin');
+            router.push('/admin?tab=productos');
         } catch (error) {
             setError(error.message);
         } finally {
@@ -146,7 +146,7 @@ const CreateProduct = () => {
                 </section>
                 <section className="mb-4">
                     <Button type='submit' disabled={loading} className="w-full">{loading ? 'Cargando...' : 'Crear Producto'}</Button>
-                    <Button type='button' color="danger" onClick={() => router.push('/admin')} className="w-full mt-4">Cancelar</Button>
+                    <Button type='button' color="danger" onClick={() => router.push('/admin?tab=productos')} className="w-full mt-4">Cancelar</Button>
                 </section>
             </form>
         </main>

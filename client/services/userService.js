@@ -30,17 +30,6 @@ class UserService {
         });
     }
 
-    async addUser(email, password, firstName, lastName, dni, roleId) {
-        return api.post(`/users`, {
-            email: email,
-            current_password: password,
-            first_name: firstName,
-            last_name: lastName,
-            dni: dni,
-            role_id: roleId,
-        });
-    }
-
     async getUserInfo() {
         const response = await api.post(`/users/info`);
         return response.data[0];

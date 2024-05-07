@@ -31,7 +31,7 @@ class RoleService{
 
     async addRole(roleName) {
         const response = await api.post(`/roles`, {
-            name: roleName,
+            role_name: roleName,
         });
         return response.data;
     }

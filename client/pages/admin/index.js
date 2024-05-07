@@ -85,13 +85,12 @@ const ADMIN_ACTIONS = {
     },
 };
 
-
-
 function AdminPanel() {
+    const { tab } = useRouter().query;
     const [adminType, setAdminType] = useState(null);
     const [dataItems, setDataItems] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
-    const [selectedTab, setSelectedTab] = useState(null);
+    const [selectedTab, setSelectedTab] = useState(tab??null);
     const [page, setPage] = useState(1);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [columns, setColumns] = useState();
@@ -114,7 +113,10 @@ function AdminPanel() {
                 .then(role => {
                     if (ADMIN_ACTIONS[role]) {
                         setAdminType(role);
-                        setSelectedTab(Object.keys(ADMIN_ACTIONS[role])[0]);
+                        // Sólo establece selectedTab si tab no está definido
+                        if (!tab) {
+                            setSelectedTab(Object.keys(ADMIN_ACTIONS[role])[0]);
+                        }
                     } else {
                         console.error(`Invalid admin type:${role}`);
                         router.push('/'); // Redirige a "/" si el tipo de administrador no se encuentra en ADMIN_ACTIONS
@@ -156,6 +158,10 @@ function AdminPanel() {
         setPage(1);
     }, [selectedTab]);
 
+    useEffect(() => {
+        setSelectedTab(tab);
+    }, [tab]);
+
     const handleCreate = () => {
         if(selectedTab === 'roles'){
             router.push('/admin/createRole');
@@ -163,6 +169,8 @@ function AdminPanel() {
             router.push('/admin/createCategory');
         }else if(selectedTab === 'productos'){
             router.push('/admin/createProduct');
+        }else if(selectedTab === 'usuarios'){
+            router.push('/admin/createUser');
         }
     };
 
@@ -190,17 +198,29 @@ function AdminPanel() {
         onOpen();
     };
 
-    return (
-        <main className="flex justify-center items-center">
-            {isLoading ? (
-                <div className="flex justify-center items-center min-h-screen">
-                    <Spinner size="large" />
-                </div>
-            ) : (
-                <div className="flex flex-col items-center my-10 min-h-screen w-[1000px] px-4 md:px-0">
-                    <Tabs
+
+    const handleEditClick = (id) => {
+        if(selectedTab === 'roles'){
+            router.push(`/admin/editRole/${id}`);
+        } else if(selectedTab === 'categorias'){
+            router.push(`/admin/editCategory/${id}`);
+        }else if(selectedTab === 'productos'){
+            router.push(`/admin/editProduct/${id}`);
+        }else if(selectedTab === 'usuarios'){
+            router.push(`/admin/editUser/${id}`);
+        }
+    };
+
+    const onEditClick = (row) => {
+        if(selectedTab === 'roles'){
+            router.push(`/admin/editRole/${row._id}`);
+        } else if(selectedTab === 'categorias'){
+            router.push(`/admin/editCategory/${row._id}`);
+        }else if(selectedTab === 'productos'){
+            router.push(`/admin/editProduct/${row._id}`);
+        }else if(selectedTab === 'usuarios'){
+            router.p<Tabs
                         key={adminType}
-                        aria-label="Admin Tabs"
                         selectedKey={selectedTab}
                         onSelectionChange={setSelectedTab}
                     >
@@ -213,8 +233,20 @@ function AdminPanel() {
                             />
                         ))}
                     </Tabs>
+                        selectedKey={selectedTab}
+                        onSelec handleEditClick={handleEditClick} ionChange={setSelectedTab}
+                    >
+                        {adminType && Object.keys(ADMIN_ACTIONS[adminType]).map(tab => (
+                            <Tab
+                                key={tab}
+                                value={tab}
+                                title={tab}
+                                aria-label={`Admin Tab ${tab}`}
+                            />
+                        ))}
+                    </Tabs>
                     <AdminButtons handleCreate={handleCreate} handleDelete={handleDelete} selectedRows={selectedRows} />
-                    <AdminTable dataItems={dataItems} columns={columns} selectedRows={selectedRows} setSelectedRows={setSelectedRows} totalPages={totalPages} page={page} setPage={setPage} />
+                    <AdminTable onEditClick={onEditClick} dataItems={dataItems} columns={columns} selectedRows={selectedRows} setSelectedRows={setSelectedRows} totalPages={totalPages} page={page} setPage={setPage} />
                     <AdminModal isOpen={isOpen} onOpenChange={onOpenChange} handleConfirmDelete={handleConfirmDelete} />
                 </div>
             )}

@@ -3,6 +3,7 @@ const { Role, UserRoles } = require('../../model/model');
 
 class model {
     insertRole = async (role) => {
+        console.log(role);
         try {
             const newRole = await Role.create({
                 role_name: role.role_name

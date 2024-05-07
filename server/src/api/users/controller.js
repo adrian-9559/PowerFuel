@@ -8,6 +8,9 @@ const generateToken = (userId) => jwt.sign({ userId }, process.env.JWT_SECRET_KE
 const registerUser = async (user) => {
     const { email, current_password, first_name, last_name, dni } = user;
 
+    if (!email || !current_password || !first_name || !last_name || !dni)
+        return null;
+
     const salt = await bcrypt.genSalt(10);
     user.current_password = await bcrypt.hash(user.current_password, salt);
     const newUser = await model.addUser(user);

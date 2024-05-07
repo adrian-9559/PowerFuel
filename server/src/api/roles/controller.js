@@ -60,7 +60,7 @@ const updateRoleById = async (req, res) => {
     const { roleId } = req.params;
     const updatedRole = req.body;
     try {
-        await updateRole(roleId, updatedRole);
+        await model.updateRole(roleId, updatedRole);
         res.json({ role_id: roleId, ...updatedRole });
     } catch (error) {
         console.error(error);
@@ -71,7 +71,7 @@ const updateRoleById = async (req, res) => {
 const deleteRoleById = async (req, res) => {
     const { roleId } = req.params;
     try {
-        await deleteRole(roleId);
+        await model.deleteRole(roleId);
         res.status(200).json({ message: 'Role deleted successfully' });
     } catch (error) {
         console.error(error);

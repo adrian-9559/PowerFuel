@@ -11,6 +11,7 @@ const CreateCategory = () => {
     const [parentCategories, setParentCategories] = useState([]);
     const [childCategoriesLevels, setChildCategoriesLevels] = useState([]);
     const router = useRouter();
+    const {id} = router.query;
 
     useEffect(() => {
         const fetchParentCategories = async () => {
@@ -45,6 +46,39 @@ const CreateCategory = () => {
         }
     };
 
+
+    useEffect(() => {
+        const fetchCategoryAndParents = async () => {
+            let category = await CategoryService.getCategoryById(id);
+            setName(category.category_name);
+    
+            let parentCategoriesChain = [];
+            while (category.parent_category_id) {
+                category = await CategoryService.getCategoryById(category.parent_category_id);
+                parentCategoriesChain.unshift(category);
+            }
+    
+            // Set the first parent category
+            if (parentCategoriesChain.length > 0) {
+                setParentCategory(parentCategoriesChain[0].category_id);
+            }
+    
+            // Set the child categories for each parent category
+            for (let i = 0; i < parentCategoriesChain.length - 1; i++) {
+                const childCategories = await CategoryService.getChildCategories(parentCategoriesChain[i].category_id);
+                setChildCategoriesLevels(prevState => {
+                    const newState = [...prevState];
+                    newState[i] = childCategories;
+                    return newState.slice(0, i + 1);
+                });
+            }
+        };
+    
+        if (id) {
+            fetchCategoryAndParents();
+        }
+    }, [id]);
+
     const handleParentCategoryChange = async (e) => {
         const childCategories = await CategoryService.getChildCategories(e.target.value);
         setParentCategory(e.target.value);
@@ -72,17 +106,18 @@ const CreateCategory = () => {
             <h1 className="text-2xl font-bold mb-4">Crear Categoría</h1>
             <form onSubmit={handleRegister}>
                 <section className="mb-4">
-                    <Input 
-                        type='text' 
-                        label='Nombre de la categoría' 
-                        value={nameCategory} 
-                        onChange={(e) => setName(e.target.value)} 
-                        onClear={() => setName('')}
-                    />
-                </section>
-                <section className="mb-4">
-                    <Select name='category' label='Categoría de la Categoría' onChange={handleParentCategoryChange} data-filled>
-                        {parentCategories.map((category) => (<SelectItem key={category.category_id} value={category.category_id}>{category.category_name}</SelectItem>))}
+                    <Select 
+                        name='category' 
+                        label='Categoría de la Categoría' 
+                        onChange={handleParentCategoryChange} 
+                        selectedKeys={[parentCategory]} 
+                        data-filled
+                    >
+                        {parentCategories.map((category) => (
+                            <SelectItem key={category.category_id} value={category.category_id}>
+                                {category.category_name}
+                            </SelectItem>
+                        ))}
                     </Select>
                 </section>
                 <AnimatePresence>
@@ -94,14 +129,34 @@ const CreateCategory = () => {
                                 animate={{ opacity: 1, height: "auto" }}
                                 exit={{ opacity: 0, height: 0 }}
                                 transition={{ duration: 0.225 }}
-                                className="mb-4">
-                                <Select name={`childCategory${index}`} label='Subcategoría de la Categoría' onChange={(e) => handleChildCategoryChange(e, index + 1)}>
-                                    {childCategories.map((category) => (<SelectItem key={category.category_id} value={category.category_id}>{category.category_name}</SelectItem>))}
+                                className="mb-4"
+                            >
+                                <Select 
+                                    name={`childCategory${index}`} 
+                                    label='Subcategoría de la Subcategoría' 
+                                    onChange={(e) => handleChildCategoryChange(e, index + 1)}
+                                    selectedKeys={[childCategoriesLevels[index][0]?.category_id]}  // Asume que la primera categoría hija está seleccionada por defecto
+                                >
+                                    {childCategories.map((category) => (
+                                        <SelectItem key={category.category_id} value={category.category_id}>
+                                            {category.category_name}
+                                        </SelectItem>
+                                    ))}
                                 </Select>
                             </motion.section>
                         )
                     ))}
                 </AnimatePresence>
+                
+                <section className="mb-4">
+                    <Input 
+                        type='text' 
+                        label='Nombre de la categoría' 
+                        value={nameCategory}
+                        onChange={(e) => setName(e.target.value)} 
+                        onClear={() => setName('')}
+                    />
+                </section>
                 <section className="mb-4">
                     <Button type='submit' disabled={loading} className="w-full">{loading ? 'Cargando...' : 'Crear Categoría'}</Button>
                     <Button type='button' color="danger" onClick={() => router.push('/admin?tab=categorias')} className="w-full mt-4">Cancelar</Button>

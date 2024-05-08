@@ -198,59 +198,38 @@ function AdminPanel() {
         onOpen();
     };
 
-
-    const handleEditClick = (id) => {
+    const onEditClick = (id) => {
         if(selectedTab === 'roles'){
-            router.push(`/admin/editRole/${id}`);
+            router.push(`/admin/createRole?id=${id}`);
         } else if(selectedTab === 'categorias'){
-            router.push(`/admin/editCategory/${id}`);
+            router.push(`/admin/createCategory?id=${id}`);
         }else if(selectedTab === 'productos'){
-            router.push(`/admin/editProduct/${id}`);
+            router.push(`/admin/createProduct?id=${id}`);
         }else if(selectedTab === 'usuarios'){
-            router.push(`/admin/editUser/${id}`);
+            router.push(`/admin/createUser?id=${id}`);
         }
-    };
+    }   
 
-    const onEditClick = (row) => {
-        if(selectedTab === 'roles'){
-            router.push(`/admin/editRole/${row._id}`);
-        } else if(selectedTab === 'categorias'){
-            router.push(`/admin/editCategory/${row._id}`);
-        }else if(selectedTab === 'productos'){
-            router.push(`/admin/editProduct/${row._id}`);
-        }else if(selectedTab === 'usuarios'){
-            router.p<Tabs
-                        key={adminType}
-                        selectedKey={selectedTab}
-                        onSelectionChange={setSelectedTab}
-                    >
-                        {adminType && Object.keys(ADMIN_ACTIONS[adminType]).map(tab => (
-                            <Tab
-                                key={tab}
-                                value={tab}
-                                title={tab}
-                                aria-label={`Admin Tab ${tab}`}
-                            />
-                        ))}
-                    </Tabs>
-                        selectedKey={selectedTab}
-                        onSelec handleEditClick={handleEditClick} ionChange={setSelectedTab}
-                    >
-                        {adminType && Object.keys(ADMIN_ACTIONS[adminType]).map(tab => (
-                            <Tab
-                                key={tab}
-                                value={tab}
-                                title={tab}
-                                aria-label={`Admin Tab ${tab}`}
-                            />
-                        ))}
-                    </Tabs>
-                    <AdminButtons handleCreate={handleCreate} handleDelete={handleDelete} selectedRows={selectedRows} />
-                    <AdminTable onEditClick={onEditClick} dataItems={dataItems} columns={columns} selectedRows={selectedRows} setSelectedRows={setSelectedRows} totalPages={totalPages} page={page} setPage={setPage} />
-                    <AdminModal isOpen={isOpen} onOpenChange={onOpenChange} handleConfirmDelete={handleConfirmDelete} />
-                </div>
-            )}
-        </main>
+    return (
+        <section className='w-full h-full flex flex-col justify-center items-center p-8 px-56'>
+            <Tabs
+                key={adminType}
+                selectedKey={selectedTab}
+                onSelectionChange={setSelectedTab}
+            >
+                {adminType && Object.keys(ADMIN_ACTIONS[adminType]).map(tab => (
+                    <Tab
+                        key={tab}
+                        value={tab}
+                        title={tab}
+                        aria-label={`Admin Tab ${tab}`}
+                    />
+                ))}
+            </Tabs>
+            <AdminButtons handleCreate={handleCreate} handleDelete={handleDelete} selectedRows={selectedRows} />
+            <AdminTable onEditClick={onEditClick} dataItems={dataItems} columns={columns} selectedRows={selectedRows} setSelectedRows={setSelectedRows} totalPages={totalPages} page={page} setPage={setPage} />
+            <AdminModal isOpen={isOpen} onOpenChange={onOpenChange} handleConfirmDelete={handleConfirmDelete} />
+        </section>
     );
 }
 

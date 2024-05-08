@@ -37,7 +37,7 @@ const getCategoryById = async (req, res) => {
     const { categoryId } = req.params;
     try {
         const category = await model.getCategories(null, null , categoryId);
-        res.json({category});
+        res.json(category);
     } catch (error) {
         handleInternalServerError(res, error);
     }

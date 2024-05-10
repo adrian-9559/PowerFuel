@@ -4,7 +4,7 @@ class RoleService{
 
     async getRoleById(roleId) {
         const response = await api.get(`/roles/${roleId}`);
-        return response.data;
+        return response.data[0];
     }
 
     async getUserRole() {
@@ -24,7 +24,7 @@ class RoleService{
 
     async updateRole(id, roleName) {
         const response = await api.put(`/roles/${id}`, {
-            name: roleName,
+            role_name: roleName, // changed from 'name' to 'role_name'
         });
         return response.data;
     }

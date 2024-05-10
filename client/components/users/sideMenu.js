@@ -2,18 +2,17 @@ import React from 'react';
 import { Button } from "@nextui-org/react";
 import { useRouter } from 'next/router';
 
-const SideMenu = () => {
+const SideMenu = ({setSelectedOption}) => {
     const router = useRouter();
 
     return (
-        <nav className='fixed h-full flex flex-col items-start border-r border-gray-300 pt-4 w-auto'>
+        <nav className='h-full ml-5 mr-20 border-r border-gray-300 pt-4 w-80'>
             <section className='flex flex-row items-center px-3 gap-1 font-medium'>
                 <p>Mi cuenta</p>
             </section>
-            <section className='hover:bg-slate-200 w-full'>
+            <section className='hover:bg-slate-200 w-full' onClick={() => setSelectedOption('DataUser')} >
                 <Button 
                     color="none"
-                    onClick={() =>  router.push('/users/config')} 
                     className='flex flex-row items-center px-3 gap-1'
                     startContent={
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
@@ -25,10 +24,9 @@ const SideMenu = () => {
                     Mis datos
                 </Button>
             </section>
-            <section className='hover:bg-slate-200 w-full'>
+            <section className='hover:bg-slate-200 w-full' onClick={() => setSelectedOption('AddressList')}>
                 <Button
                     color="none"
-                    onClick={() => router.push('/users/address')} 
                     className='flex flex-row items-center px-3 gap-1'
                     startContent={
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-5 h-5">
@@ -39,10 +37,9 @@ const SideMenu = () => {
                     Mis direcciones
                 </Button>
             </section>
-            <section className='hover:bg-slate-200 w-full'>
+            <section className='hover:bg-slate-200 w-full' onClick={() => setSelectedOption('AddressList')}>
                 <Button 
                     color="none"
-                    onClick={() => router.push('/users/payment')} 
                     className='flex flex-row items-center px-3 gap-1'
                     startContent={
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-5 h-5">
@@ -53,10 +50,9 @@ const SideMenu = () => {
                     Mis tarjetas
                 </Button>
             </section>
-            <section className='hover:bg-slate-200 w-full'>
+            <section className='hover:bg-slate-200 w-full' onClick={() => setSelectedOption('AddressList')}>
                 <Button 
                     color="none"
-                    onClick={() => router.push('/users/orders')} 
                     className='flex flex-row items-center px-3 gap-1'
                     startContent={
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-5 h-5">

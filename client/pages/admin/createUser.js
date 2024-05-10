@@ -4,33 +4,10 @@ import UserService from '@services/userService';
 import RoleService from '@services/roleService';
 import { useRouter } from 'next/router';
 
-const CreateUser = ({ userIdToEdit }) => {
+const CreateUser = () => {
     const router = useRouter();
+    const {id} = router.query;
     const [roles, setRoles] = useState([]);
-
-    useEffect(() => {
-        if(userIdToEdit){
-            const fetchUser = async () => {
-                try {
-                    const response = await UserService.getUserById(userIdToEdit);
-                    handleChange(response.data);
-                } catch (error) {
-                    console.log(error);
-                }
-            }
-            fetchUser();
-        }
-        const fetchRoles = async () => {
-            try {
-                const response = await RoleService.getAllRoles();
-                setRoles(response.data);
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        fetchRoles();
-    }, []);
-
     const [user, setUser] = useState({
         email:  '',
         current_password:  '',
@@ -39,6 +16,43 @@ const CreateUser = ({ userIdToEdit }) => {
         dni: '',
         role: ''
     });
+
+    useEffect(() => {
+    const id = router.query.id;
+    
+    if(id){
+        const fetchUser = async () => {
+            try {
+                const response = await UserService.getUserById(id);
+                console.log(response.data);
+                const { email, current_password, UserInfo, Roles } = response.data[0];
+                const { first_name, last_name, dni } = UserInfo;
+                const role = Roles[0].role_id;
+                setUser(prevUser => ({
+                    ...prevUser,
+                    email,
+                    current_password,
+                    first_name,
+                    last_name,
+                    dni,
+                    role
+                }));
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchUser();
+    }
+    const fetchRoles = async () => {
+        try {
+            const response = await RoleService.getAllRoles();
+            setRoles(response.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    fetchRoles();
+}, [id]);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -62,7 +76,7 @@ const CreateUser = ({ userIdToEdit }) => {
                 <Input
                     name="email"
                     placeholder="Email"
-                    defaultValue={user.email}
+                    value={user.email}
                     onChange={handleChange}
                     aria-label="Email"
                     required
@@ -70,15 +84,16 @@ const CreateUser = ({ userIdToEdit }) => {
                 <Input
                     name="current_password"
                     placeholder="Contraseña"
-                    defaultValue={user.current_password}
+                    value={user.current_password}
                     onChange={handleChange}
                     aria-label="Contraseña"
                     required
                 />
+                
                 <Input
                     name="first_name"
                     placeholder="Nombre"
-                    defaultValue={user.first_name}
+                    value={user.first_name}
                     onChange={handleChange}
                     aria-label="Nombre"
                     required
@@ -86,7 +101,7 @@ const CreateUser = ({ userIdToEdit }) => {
                 <Input
                     name="last_name"
                     placeholder="Apellidos"
-                    defaultValue={user.last_name}
+                    value={user.last_name}
                     onChange={handleChange}
                     aria-label="Apellidos"
                     required
@@ -94,7 +109,7 @@ const CreateUser = ({ userIdToEdit }) => {
                 <Input
                     name="dni"
                     placeholder="DNI"
-                    defaultValue={user.dni}
+                    value={user.dni}
                     onChange={handleChange}
                     aria-label="DNI"
                     required
@@ -102,7 +117,7 @@ const CreateUser = ({ userIdToEdit }) => {
                 <Select
                     name="role"
                     placeholder="Role"
-                    defaultValue={user.role}
+                    value={user.role}
                     onChange={handleChange}
                     aria-label="Role"
                     required

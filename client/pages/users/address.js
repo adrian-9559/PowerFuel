@@ -2,7 +2,7 @@ import React from 'react';
 import { Input, Button } from "@nextui-org/react";
 import SideMenu from '@components/users/sideMenu';
 import { addAddress } from '@services/addressService';
-import AddressesList from '@components/users/addressList';
+import AddressesList from '@components/users/address/addressList';
 
 const Address = () => {
     const [street, setStreet] = React.useState('');

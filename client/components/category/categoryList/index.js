@@ -39,7 +39,7 @@ const CategoryList = () => {
     }
 
     return (
-        <main className='mt-4 mx-48'>
+        <main className='mx-48'>
             <section className='flex flex-col gap-4 px-4'>
                 {categories.map((category) => {
                     const color = hashToColor(stringToHash(category.category_name.value));

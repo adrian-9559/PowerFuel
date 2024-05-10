@@ -31,6 +31,8 @@ class model {
     };
     
     updateUser = async (userId, user) => {
+        console.log(user);
+        console.log(userId);
         try{
         
             await UserCredentials.update({

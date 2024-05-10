@@ -81,7 +81,7 @@ const getUserInfo = async (userId) => {
         "first_name": user.UserInfo.first_name ,
         "last_name": user.UserInfo.last_name ,
         "dni": user.UserInfo.dni ,
-        "role_id": user.Roles // Access the Role model directly
+        "role_id": user.Roles[0].role_id // Access the Role model directly
     }));
 
     return users;

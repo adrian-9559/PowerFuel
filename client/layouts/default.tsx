@@ -32,7 +32,7 @@ export default function DefaultLayout({
   };
 
   return (
-    <div className="relative flex flex-col h-screen">
+    <div className="relative flex flex-col h-screen gap-8">
       <NavigationBar />
       <motion.main
           key={router.route} // Cambia la clave cuando cambia la ruta

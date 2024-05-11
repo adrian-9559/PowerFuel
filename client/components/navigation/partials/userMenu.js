@@ -71,8 +71,8 @@ const UserMenu = () => {
                     <DropdownItem key="team_settings" textValue="Delivered" showDivider>Pedidos</DropdownItem>
                     
                     {isAdmin ? (
-                            <DropdownItem key="panel" textValue="panel" onClick={() => router.push('/admin/')}>
-                                <p onClick={() => router.push('/admin/')}>Panel de Administración </p>
+                            <DropdownItem key="panel" textValue="panel" onClick={() => router.push('/administrador/')}>
+                                <p onClick={() => router.push('/administrador/')}>Panel de Administración </p>
                             </DropdownItem>
                     ) : null}
                     <DropdownItem key="help_and_feedback" textValue="Help">

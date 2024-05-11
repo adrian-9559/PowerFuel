@@ -29,12 +29,6 @@ class UserService {
             user
         });
     }
-
-    async getUserInfo() {
-        const response = await api.post(`/users/info`);
-        return response.data[0];
-    }
-
     async getAllUsersInfo(page = 1, limit = 10) {
         const response = await api.get(`/users?page=${page}&limit=${limit}`);
         return response.data;

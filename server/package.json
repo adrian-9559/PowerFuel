@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js --host localhost --port 4001",
+    "dev": "nodemon src/index.js --port 4001",
     "build": "echo 'Aquí puedes poner comandos para construir tu proyecto, si los hay'",
     "lint": "eslint ."
   },

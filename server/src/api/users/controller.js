@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const model = require('./userModel');
 const filesUpload = require('../files/controller');
+const { createStripeCustomer } = require('../payment/controller');
 
 const generateToken = (userId) => jwt.sign({ userId }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
 
@@ -13,6 +14,16 @@ const registerUser = async (user) => {
 
     const salt = await bcrypt.genSalt(10);
     user.current_password = await bcrypt.hash(user.current_password, salt);
+
+    // Create a Stripe customer for the user
+    try {
+        const stripeCustomer = await createStripeCustomer(email, first_name + ' ' + last_name);
+        user.stripeCustomerId = stripeCustomer.id;
+    } catch (error) {
+        console.error('Failed to create Stripe customer:', error);
+        throw error;
+    }
+
     const newUser = await model.addUser(user);
     
     return newUser;
@@ -29,11 +40,22 @@ const updateUserById = async (userId, user) => {
 };
 
 const getUserById = async (userId) => {
-    const user = await model.getUsers(null, null, userId);
+    let user = await model.getUsers(null, null, userId);
+
+    user =  user.map(user => ({
+        "user_id": user.user_id ,
+        "email": user.email ,
+        "first_name": user.UserInfo.first_name ,
+        "last_name": user.UserInfo.last_name ,
+        "dni": user.UserInfo.dni ,
+        "role_id": user.Roles[0].role_id,
+        "role_name": user.Roles[0].role_name
+    }));
+
     return user;
 };
 
-const getUsers = async (limit, page, userId) => {
+const getUsers = async (limit, page ) => {
     const parsedLimit = parseInt(limit);
     const parsedPage = parseInt(page);
     const skip = (parsedPage - 1) * parsedLimit;
@@ -42,21 +64,20 @@ const getUsers = async (limit, page, userId) => {
     
     const total = await model.getUsersCount();
 
-    users = users.map(user => ({  
-            "id": user.user_id,
-            "user_id": {display: "ID Usuario", value: user.user_id},
-            "email": {display: "Correo", value: user.email},
-            "first_name": {display: "Nombre", value: user.UserInfo.first_name},
-            "last_name": {display: "Apellido", value: user.UserInfo.last_name},
-            "dni": {display: "DNI", value: user.UserInfo.dni},
-            "role_name": {display: "Rol", value: user.Roles[0].role_name}
-        })
-    ); 
+    users =  users.map(user => ({
+        "user_id": user.user_id ,
+        "email": user.email ,
+        "first_name": user.UserInfo.first_name ,
+        "last_name": user.UserInfo.last_name ,
+        "dni": user.UserInfo.dni ,
+        "role_id": user.Roles[0].role_id,
+        "role_name": user.Roles[0].role_name
+    }));
 
     return {
         total,
         pages: Math.ceil(total / limit),
-        data: users
+        users
     };
 };
 
@@ -71,28 +92,11 @@ const loginUser = async (email, current_password) => {
     }
 };
 
-const getUserInfo = async (userId) => {
-
-    const user = await model.getUsers(null, null, userId);
-
-    users =  user.map(user => ({
-        "user_id": user.user_id ,
-        "email": user.email ,
-        "first_name": user.UserInfo.first_name ,
-        "last_name": user.UserInfo.last_name ,
-        "dni": user.UserInfo.dni ,
-        "role_id": user.Roles[0].role_id // Access the Role model directly
-    }));
-
-    return users;
-};
-
 module.exports =  {
     registerUser,
     deleteUserById,
     updateUserById,
     getUserById,
     getUsers,
-    loginUser,
-    getUserInfo
+    loginUser
 };

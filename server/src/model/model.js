@@ -130,6 +130,7 @@ UserCredentials.init({
         primaryKey: true
     },
     current_password: DataTypes.STRING,
+    stripe_customer_id: DataTypes.STRING,
 }, {
     sequelize,
     modelName: 'UserCredentials',

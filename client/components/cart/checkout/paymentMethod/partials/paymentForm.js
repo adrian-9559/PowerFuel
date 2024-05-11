@@ -1,28 +1,18 @@
-import React, {useCallback} from 'react';
+import React, {useEffect, useCallback} from 'react';
 import {loadStripe} from '@stripe/stripe-js';
 import {
   EmbeddedCheckoutProvider,
   EmbeddedCheckout
 } from '@stripe/react-stripe-js';
 import { useAppContext } from '@context/AppContext';
+import PaymentService from '@services/paymentService'; // Asegúrate de usar la ruta correcta
 
-// Make sure to call `loadStripe` outside of a component’s render to avoid
-// recreating the `Stripe` object on every render.
 const stripePromise = loadStripe('pk_test_51P5QR3Iqj90TtX55bRu7F6whFW26fRauivAnkLbY1T2DznQWrJIsETlHhYwtKOwj4kIhCZ4joaJQ5DicdSDV1RkS00YqYPtqr4');
 
 const PaymentForm = () => {
-    const {cart} = useAppContext();
-  const fetchClientSecret = useCallback(() => {
-    // Create a Checkout Session
-    return fetch(`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/api/payment/create-checkout-session`,{
-      method: "POST",
-      headers: {
-      "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ cart })
-    })
-      .then((res) => res.json())
-      .then((data) => data.clientSecret);
+  const {cart} = useAppContext();
+  const fetchClientSecret = useCallback(async () => {
+    return await PaymentService.createCheckoutSession(cart);
   }, []);
 
   const options = {fetchClientSecret};

@@ -10,7 +10,6 @@ const Config = () => {
     const { user, setUser, isLoggedIn} = useAppContext();
     const [isLoading, setIsLoading] = useState(true);
     const [selectedOption, setSelectedOption] = useState('DataUser');
-    
 
     useEffect(() => {
         const checkLoginStatus = setTimeout(() => {
@@ -24,6 +23,7 @@ const Config = () => {
     
         return () => clearTimeout(checkLoginStatus);
     }, [isLoggedIn]);
+
     return (
         <section className='flex h-full items-stretch'>
             <SideMenu setSelectedOption={setSelectedOption} />

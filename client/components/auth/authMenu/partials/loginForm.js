@@ -40,6 +40,7 @@ const LoginForm = () => {
                     label="Email"
                     defaultValue={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    autoComplete="email"
                 />
                 <Input
                     name="password"
@@ -47,6 +48,7 @@ const LoginForm = () => {
                     label="Password"
                     defaultValue={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    autoComplete="current-password"
                 />
             <Button type='submit' disabled={loading} className="w-full">{loading ? 'Cargando...' : 'Iniciar sesión'}</Button>
         </form>

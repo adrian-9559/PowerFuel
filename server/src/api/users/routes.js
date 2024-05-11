@@ -1,6 +1,6 @@
 // routes.js
 const express = require('express');
-const { registerUser, deleteUserById, updateUserById, getUserById, getUsers, loginUser, getUserInfo } = require('./controller');
+const { registerUser, deleteUserById, updateUserById, getUserById, getUsers, loginUser } = require('./controller');
 
 const router = express.Router();
 
@@ -19,8 +19,8 @@ router.route('/')
     })
     .get(async (req, res) => {
         try {
-            const users = await getUsers(req.query.limit, req.query.page, req.user.userId);
-            res.json(users);
+            const data = await getUsers(req.query.limit, req.query.page);
+            res.send(data);
         } catch (error) {
             console.error('Error getting the users:', error);
             res.status(500).json({ message: 'Error getting the users' });
@@ -62,17 +62,6 @@ router.route('/:userId')
         } catch (error) {
             console.error('Error getting the user:', error);
             res.status(500).json({ message: 'Error getting the user' });
-        }
-    });
-
-router.route('/info')
-    .post(async (req, res) => {
-        try {
-            const user = await getUserInfo(req.user.userId);
-            res.json(user);
-        } catch (error) {
-            console.error('Error getting the user info:', error);
-            res.status(500).json({ message: 'Error getting the user info' });
         }
     });
 

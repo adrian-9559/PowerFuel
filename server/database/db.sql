@@ -177,6 +177,7 @@ CREATE TABLE IF NOT EXISTS `user_credentials` (
   `user_id` int NOT NULL AUTO_INCREMENT,
   `email` varchar(50) NOT NULL,
   `current_password` varchar(255) DEFAULT NULL,
+  `stripe_customer_id` varchar(255) DEFAULT NULL;
   PRIMARY KEY (`user_id`,`email`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

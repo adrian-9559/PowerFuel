@@ -66,9 +66,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (isLoggedIn) {
       const fetchUserInfo = async () => {
-        const userInfo = await UserService.getUserInfo();
+        const userInfo = await UserService.getUserById();
         const userRole = await RoleService.getUserRole();
-        setUser(userInfo);
+        console.log(userInfo);
+        setUser(userInfo.data);
         setIsAdmin(userRole !== 10);
       };
   

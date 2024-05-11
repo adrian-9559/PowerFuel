@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useContext } from 'react';
+import React, { useState, useCallback, useContext ,useEffect } from 'react';
 import { Navbar, NavbarContent, NavbarItem, NavbarBrand, Image } from "@nextui-org/react";
 import { useAppContext } from "@context/AppContext";
 import { ThemeSwitch } from '@components/theme-switch';
@@ -14,7 +14,6 @@ import { useRouter } from 'next/router';
 const NavigationBar = () => {
     const { isLoggedIn, user } = useAppContext();
     const router = useRouter();
-
 
     return (
         <header>

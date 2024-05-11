@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Modal, ModalContent, ModalFooter, ModalHeader, useDisclosure, ModalBody } from '@nextui-org/react';
 import AddressMenu from '@components/cart/checkout/address';
 import PaymentMenu from '@components/cart/checkout/paymentMethod';

@@ -1,5 +1,7 @@
-// En stripe/controller.js
+// stripe/controller.js
+
 const stripe = require('stripe')('sk_test_51P5QR3Iqj90TtX55z91nDeNdwkwNqgDntRABpqklGubEOnrtfEsR2M6YivU8ithiAG0EktidG1W2F50YYIVHG0LL00ste7Tm41');
+
 
 const createStripeCustomer = async (email, name) => {
     return await stripe.customers.create({ email, name });
@@ -23,9 +25,20 @@ const createCheckoutSession = async (customerId, products) => {
     });
 };
 
+const getCustomerPaymentMethods = async (customerId) => {
+    const paymentMethods = await stripe.paymentMethods.list({
+        customer: customerId,
+        type: 'card',
+      });
+
+    console.log(paymentMethods);
+    return paymentMethods;
+};
+
 module.exports = {
     createStripeCustomer,
     getCustomer,
     getCustomerCharges,
     createCheckoutSession,
+    getCustomerPaymentMethods
 }

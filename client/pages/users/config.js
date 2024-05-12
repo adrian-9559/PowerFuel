@@ -4,6 +4,7 @@ import { useAppContext } from '@context/AppContext';
 import SideMenu from '@components/users/sideMenu';
 import DataUser from '@components/users/dataUser';
 import AddressList from '@components/users/address/addressList';
+import PaymentList from '@components/users/payment/paymentList';
 
 const Config = () => {
     const router = useRouter();
@@ -29,6 +30,7 @@ const Config = () => {
             <SideMenu setSelectedOption={setSelectedOption} />
             {selectedOption === 'DataUser' && <DataUser />}
             {selectedOption === 'AddressList' && <AddressList />}
+            {selectedOption === 'PaymentList' && <PaymentList />}
         </section>
     );
 }

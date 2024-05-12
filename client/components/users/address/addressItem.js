@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 const AddressItem = ({ address }) => {
     return (
-        <div className="card">
+        <li className="card">
             <div className="card-body">
                 <h5 className="card-title">{address.street}</h5>
                 <p className="card-text">{address.city}</p>
@@ -11,7 +11,7 @@ const AddressItem = ({ address }) => {
                 <p className="card-text">{address.zip}</p>
                 <p className="card-text">{address.phone_number}</p>
             </div>
-        </div>
+        </li>
     )
 }
 

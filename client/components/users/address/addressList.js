@@ -17,12 +17,12 @@ const AddressList = () => {
     return (
         <main className="py-5">
             <h1 className="font-bold text-3xl">Lista de direcciones de envio</h1>
-            <section>
+            <ul>
                 {addressList && addressList.map((address, index) => (
                     <AddressItem key={index} address={address} />
                 ))} 
                 {!addressList && <p>No hay direcciones de envío</p>}
-            </section>
+            </ul>
         </main>
     );
 }

@@ -49,13 +49,13 @@ const getUserById = async (userId) => {
         "last_name": user.UserInfo.last_name ,
         "dni": user.UserInfo.dni ,
         "role_id": user.Roles[0].role_id,
-        "role_name": user.Roles[0].role_name
+        "role_name": user.Roles[0].role_name,
+        "stripe_customer_id": user.stripe_customer_id
     }));
-
     return user;
 };
 
-const getUsers = async (limit, page ) => {
+const getUsers = async (limit, page) => {
     const parsedLimit = parseInt(limit);
     const parsedPage = parseInt(page);
     const skip = (parsedPage - 1) * parsedLimit;
@@ -71,7 +71,8 @@ const getUsers = async (limit, page ) => {
         "last_name": user.UserInfo.last_name ,
         "dni": user.UserInfo.dni ,
         "role_id": user.Roles[0].role_id,
-        "role_name": user.Roles[0].role_name
+        "role_name": user.Roles[0].role_name,
+        "stripe_customer_id": user.stripe_customer_id
     }));
 
     return {

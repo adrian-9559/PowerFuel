@@ -71,6 +71,12 @@ class model {
     };
     
     deleteUser = async (userId) => {
+
+        const user = await UserCredentials.findOne(
+            {
+                where: { user_id: userId }
+            });
+
         await UserRoles.destroy(
             {
                 where: { user_id: userId }
@@ -83,6 +89,8 @@ class model {
             {
                 where: { user_id: userId }
             });
+
+       return user;
     };
     
     getUserByEmail = async (email) => {

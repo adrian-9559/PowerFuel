@@ -35,6 +35,7 @@ function startExpress() {
     }));
 
     app.use((req, res, next) => {
+        console.log('URL:', req.url);
         let token = req.headers['authorization'];
         if (token) {
             token = token.split('Bearer ')[1];

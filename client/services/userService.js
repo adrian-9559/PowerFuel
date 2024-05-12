@@ -35,11 +35,11 @@ class UserService {
     }
 
     async deleteUser(id) {
-        return api.delete(`/users/${id}`);
+        return await api.delete(`/users/${id}`);
     }
 
-    async getUserById(id) {
-        return api.get(`/users/${id}`);
+    async getUserById(id=null) {
+        return await api.get(`/users/${id}`);
     }
 
     async setUserImage(image) {

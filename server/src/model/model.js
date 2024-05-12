@@ -71,9 +71,9 @@ Product.init({
         references: { model: 'Category', key: 'category_id' }
     },
     status: {
-        type: DataTypes.ENUM('enable', 'disable'),
+        type: DataTypes.ENUM('Enabled', 'Disabled'),
         allowNull: false,
-        defaultValue: 'enable'
+        defaultValue: 'Disabled'
     }
 }, {
     sequelize,
@@ -131,6 +131,11 @@ UserCredentials.init({
     },
     current_password: DataTypes.STRING,
     stripe_customer_id: DataTypes.STRING,
+    status: {
+        type: DataTypes.ENUM,
+        values: ['Active', 'Inactive', 'Suspended'],
+        defaultValue: 'Active'
+    }
 }, {
     sequelize,
     modelName: 'UserCredentials',

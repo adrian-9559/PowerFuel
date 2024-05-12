@@ -1,82 +1,57 @@
 const model = require('./roleModel');
 
-const getRoles = async (req, res) => {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    const skip = (page - 1) * limit;
-
-    let roles = await model.getRoles(skip, limit);
-    const total = await model.getRolesCount();
-
-    roles =  roles.map(role => ({
-        "id": role.role_id,
-        "role_id": { display: "ID de Rol", value: role.role_id },
-        "role_name": { display: "Nombre de Rol", value: role.role_name },
+const getRoleById = async (roleId) => {
+    
+    let role = await model.getRoles(roleId);
+    console.log(role);
+    role =  role.map(role => ({
+        "role_id": role.role_id ,
+        "role_name": role.role_name ,
     }));
 
-    res.json({
+    return role[0];
+};
+
+const getRoles = async (limit, page) => {
+    const parsedLimit = parseInt(limit);
+    const parsedPage = parseInt(page);
+    const skip = (parsedPage - 1) * parsedLimit;
+
+    let roles = await model.getRoles(null, skip, parsedLimit);
+    
+    const total = await model.getRolesCount();
+
+
+    roles =  roles.map(role => ({
+        "role_id": role.role_id ,
+        "role_name": role.role_name ,
+    }));
+
+    return {
         total,
         pages: Math.ceil(total / limit),
-        data: roles
-    });
+        roles
+    };
 };
 
-
-const getRoleById = async (req, res) => {
-    const { roleId } = req.params;
-    try {
-        const role = await model.getRoles(null, null, roleId);
-        res.json(role);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Internal Server Error' });
-    }
+const addRole = async (role) => {
+    const newRole = await model.insertRole(role);
+    return newRole;
 };
 
-const getRoleByUserId = async (req, res) => {
-    try {
-        const userId = req.user.userId;
-        const role = await model.getRoleByUserId(userId);
-
-        res.json(role);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Internal Server Error' });
-    }
+const updateRoleById = async (roleId, role) => {
+    const updatedRole = await model.updateRole(roleId, role);
+    return updatedRole;
 };
 
-const addRole = async (req, res) => {
-    const newRole = req.body;
-    try {
-        const roleId = await model.insertRole(newRole);
-        res.json({ role_id: roleId, ...newRole });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Internal Server Error' });
-    }
+const deleteRoleById = async (roleId) => {
+    const deletedRole = await model.deleteRole(roleId);
+    return deletedRole;
 };
 
-const updateRoleById = async (req, res) => {
-    const { roleId } = req.params;
-    const updatedRole = req.body;
-    try {
-        await model.updateRole(roleId, updatedRole);
-        res.json({ role_id: roleId, ...updatedRole });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Internal Server Error' });
-    }
+const getRoleByUserId = async (userId) => {
+    const role = await model.getRoleByUserId(userId);
+    return role;
 };
 
-const deleteRoleById = async (req, res) => {
-    const { roleId } = req.params;
-    try {
-        await model.deleteRole(roleId);
-        res.status(200).json({ message: 'Role deleted successfully' });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Internal Server Error' });
-    }
-};
-
-module.exports = { getRoles, getRoleById, getRoleByUserId, addRole, updateRoleById, deleteRoleById };
+module.exports = { getRoles, getRoleById, addRole, updateRoleById, deleteRoleById, getRoleByUserId };

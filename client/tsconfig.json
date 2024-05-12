@@ -23,7 +23,7 @@
       "@layouts/*": ["layouts/*"],
       "@config/*": ["config/*"],
       "@styles/*": ["styles/*"],
-      "@icons/*": ["public/icons/*"],
+      "@icons/*": ["icons/*"],
       
     }
   },

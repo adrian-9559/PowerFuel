@@ -62,7 +62,7 @@ const getProductsInfo = async (page, limit) => {
                 "stock_quantity": { display: "Cantidad en Stock", value: product.stock_quantity },
                 "category": { display: "Categoría", value: product.Category.category_name },
                 "brand": { display: "Marca", value: product.Brand.brand_name },
-                "status": { display: "Estado", value: product.status ? "Activo" : "Inactivo" },
+                "status": { display: "Estado", value: product.status},
             };
         });
     }

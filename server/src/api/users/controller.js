@@ -4,7 +4,7 @@ const model = require('./userModel');
 const filesUpload = require('../files/controller');
 const { createStripeCustomer } = require('../payment/controller');
 
-const generateToken = (userId) => jwt.sign({ userId }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
+const generateToken = (userId) => jwt.sign({ userId }, process.env.JWT_SECRET_KEY, { expiresIn: '8h' });
 
 const registerUser = async (user) => {
     const { email, current_password, first_name, last_name, dni } = user;
@@ -50,9 +50,10 @@ const getUserById = async (userId) => {
         "dni": user.UserInfo.dni ,
         "role_id": user.Roles[0].role_id,
         "role_name": user.Roles[0].role_name,
-        "stripe_customer_id": user.stripe_customer_id
+        "stripe_customer_id": user.stripe_customer_id,
+        "status": user.status
     }));
-    return user;
+    return user[0];
 };
 
 const getUsers = async (limit, page) => {
@@ -72,7 +73,8 @@ const getUsers = async (limit, page) => {
         "dni": user.UserInfo.dni ,
         "role_id": user.Roles[0].role_id,
         "role_name": user.Roles[0].role_name,
-        "stripe_customer_id": user.stripe_customer_id
+        "stripe_customer_id": user.stripe_customer_id,
+        "status": user.status
     }));
 
     return {

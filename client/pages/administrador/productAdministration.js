@@ -1,57 +1,61 @@
 import React, { useState, useEffect } from 'react';
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip, getKeyValue, Button} from "@nextui-org/react";
-import UserService from '@services/userService';
+import ProductService from '@services/productService';
 import DeleteIcon from '@icons/DeleteIcon';
 import EyeIcon from '@icons/EyeIcon';
 import EditIcon from '@icons/EditIcon';
 
 const statusColorMap = {
-    Active: "success",
-    Inactive: "danger",
-    Suspended: "warning",
+    Enabled: "success",
+    Disabled: "danger",
 };  
 
-const UserAdministration = () => {
-    const [Users, setUsers] = useState([]);
+const ProductoAdministration = () => {
+    const [Products, setProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const fetchUserData = async () => {
-            const response = await UserService.getAllUsersInfo();
-            setUsers(response.users??[]);
+        const fetchProductData = async () => {
+            const response = await ProductService.getAllProducts();
+            setProducts(response??[]);
+            console.log(Products);      
             setIsLoading(false);
         }
-        fetchUserData();
+        fetchProductData();
     }, []);
 
-    const deleteUser = async (userId) => {
+    const deleteProduct = async (productId) => {
         try {
-            await UserService.deleteUser(userId);
-            setUsers(Users.filter(user => user.user_id !== userId));
+            await ProductService.deleteProduct(productId);
+            setProducts(Products.filter(product => product.product_id !== productId));
         } catch (error) {
-            console.error('Failed to delete user: ', error);
+            console.error('Failed to delete product: ', error);
         }
     };
+
 
     return (
         <section>
             <section>
-                <h1 className="text-center text-2xl font-bold">Listado de Usuarios</h1>
+                <h1 className="text-center text-2xl font-bold">Listado de Productos</h1>
             </section>
             <Table 
-                aria-label='Tabla de usuarios'  
+                aria-label='Tabla de productos'  
                 selectionMode="multiple"
                 className="w-full h-full"
             >
                 <TableHeader>
                     <TableColumn>
-                        <p>Usuario</p>
+                        <p>Producto</p>
                     </TableColumn>
                     <TableColumn>
-                        <p>DNI</p>
+                        <p>Marca</p>
                     </TableColumn>
                     <TableColumn>
-                        <p>Role</p>
+                        <p>Categoría</p>
+                    </TableColumn>
+                    <TableColumn>
+                        <p>Precio</p>
                     </TableColumn>
                     <TableColumn>
                         <p>Estado</p>
@@ -61,29 +65,35 @@ const UserAdministration = () => {
                     </TableColumn>
                 </TableHeader>
                 <TableBody>
-                    {Users.map((user, index) => (
+                    {Products.map((product, index) => (
                         <TableRow key={index}>
                             <TableCell>
                                 <User
-                                    avatarProps={{radius: "lg", src: `${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/user/${user.user_id}/1.png`}}
-                                    description={user.email}
-                                    name={user.first_name + " " + user.last_name}
+                                    avatarProps={{radius: "lg", src: `${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/product/${product.product_id}/1.png`}}
+                                    description={`Id del Producto: ${product.product_id}`}
+                                    name={product.product_name}
                                 >
-                                    {user.email}
+                                    {product.product_name}
                                 </User>
                             </TableCell>
                             <TableCell>
-                                <p>{user.dni}</p>
-                            </TableCell>
-                            <TableCell>
                                 <section className="flex flex-col">
-                                    <p className="text-bold text-sm capitalize">{user.role_name}</p>
-                                    <p className="text-bold text-sm capitalize text-default-400">Id Role: {user.role_id}</p>
+                                    <p className="text-bold text-sm capitalize">{product.Brand.brand_name}</p>
+                                    <p className="text-bold text-sm capitalize text-default-400">Id Marca: {product.id_brand}</p>
                                 </section>
                             </TableCell>
                             <TableCell>
-                                <Chip className="capitalize" color={statusColorMap[user.status]} size="sm" variant="flat">
-                                    {user.status}
+                                <section className="flex flex-col">
+                                    <p className="text-bold text-sm capitalize">{product.Category.category_name}</p>
+                                    <p className="text-bold text-sm capitalize text-default-400">Id Categoría: {product.Category.category_id}</p>
+                                </section>
+                            </TableCell>
+                            <TableCell>
+                                <p className="text-bold text-sm capitalize">{product.price} €</p>
+                            </TableCell>
+                            <TableCell>
+                                <Chip className="capitalize" color={statusColorMap[product.status]} size="sm" variant="flat">
+                                    {product.status}
                                 </Chip>
                             </TableCell>
                             <TableCell>
@@ -98,8 +108,8 @@ const UserAdministration = () => {
                                             <EditIcon color="green"/>
                                         </Button>
                                     </Tooltip>
-                                    <Tooltip color="danger" content="Delete user">
-                                        <Button isIconOnly color="danger" variant="light" none className="text-lg text-danger cursor-pointer active:opacity-50" onClick={() => deleteUser(user.user_id)}>
+                                    <Tooltip color="danger" content="Delete product">
+                                        <Button isIconOnly color="danger" variant="light" none className="text-lg text-danger cursor-pointer active:opacity-50" onClick={() => deleteProduct(product.product_id)}>
                                             <DeleteIcon color="red"/>
                                         </Button>
                                     </Tooltip>
@@ -113,4 +123,4 @@ const UserAdministration = () => {
     );
 };
 
-export default UserAdministration;
+export default ProductoAdministration;

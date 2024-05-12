@@ -67,8 +67,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     if (isLoggedIn) {
       const fetchUserInfo = async () => {
         const userInfo = await UserService.getUserById();
-        const userRole = await RoleService.getUserRole();
-        console.log(userInfo);
+        const userRole = await RoleService.getRoleByUserId();
         setUser(userInfo.data);
         setIsAdmin(userRole !== 10);
       };

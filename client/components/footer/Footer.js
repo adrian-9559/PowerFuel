@@ -3,8 +3,8 @@ import React from 'react';
 const Footer = () => {
     
     return (
-        <>
-            <section className="flex items-center justify-center border-b-2 border-t-2 border-neutral-200 p-6 dark:border-white/10 lg:justify-between mt-30">
+        <footer className="text-center text-surface/75 lg:text-left">
+            <section className="flex items-center justify-center border-b-2 border-t-2 border-neutral-200 p-6 dark:border-white/10 lg:justify-between ">
                 <section className="me-12 hidden lg:block">
                     <span>Redes Sociales:</span>
                 </section>
@@ -188,7 +188,7 @@ const Footer = () => {
                 <span>© 2024 Copyright: </span> 
                 <a className="font-semibold" href="https://tw-elements.com/">PowerFuel</a>
             </section>
-        </>
+      </footer>
     );
 }
 

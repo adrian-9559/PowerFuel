@@ -49,7 +49,7 @@ class CategoryService {
      async getParentCategories() {
         try {
             const response = await api.get('/categories/parent');
-            return response.data.categories;
+            return response.data;
         } catch (error) {
             console.error('Error fetching parent categories:', error.message);
         }

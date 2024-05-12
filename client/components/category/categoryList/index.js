@@ -11,8 +11,7 @@ const CategoryList = () => {
 
     React.useEffect(() => {
         CategoryService.getCategories().then((response) => {
-            
-            setCategories(response.data);
+            setCategories(response.categories);
         });
     }
     , []);
@@ -41,16 +40,16 @@ const CategoryList = () => {
     return (
         <main className='mx-48'>
             <section className='flex flex-col gap-4 px-4'>
-                {categories.map((category) => {
-                    const color = hashToColor(stringToHash(category.category_name.value));
+                {categories && categories.map((category) => {
+                    const color = hashToColor(stringToHash(category.category_name));
                     const lightColor = lightenColor(color, 20); // Lighten the color by 20%
                     return (
-                        <Card key={category.id} shadow className='p-4 rounded-lg'> {/* Add padding and rounded corners here */}
+                        <Card key={category.category_id} shadow className='p-4 rounded-lg'> {/* Add padding and rounded corners here */}
                             <Card className='flex flex-row items-center p-2 justify-between' style={{backgroundColor: color}}> {/* Move the background color here */}
-                                <h2 className='font-bold ml-2'>{category.category_name.value}</h2> 
+                                <h2 className='font-bold ml-2'>{category.category_name}</h2> 
                                 <Button style={{backgroundColor: lightColor}} light auto onClick={() => {router.push(`/category/${category.category_id}`)}}>Ver más</Button> {/* Use the lightened color here */}
                             </Card>
-                            <ProductCategory key={category.id} id={category.category_id.value} />
+                            <ProductCategory key={category.id} id={category.category_id} />
                         </Card>
                     );
                 })}

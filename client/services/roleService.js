@@ -2,14 +2,19 @@ import api from './axios';
 
 class RoleService{
 
-    async getRoleById(roleId) {
+    async getRoleById(roleId=null) {
         const response = await api.get(`/roles/${roleId}`);
         return response.data[0];
     }
 
-    async getUserRole() {
-        const response = await api.post(`/roles/userRole`);
-        return response.data.role_id;
+    async getRoleByUserId(userId=null) {
+        let response;
+        if(userId!=null){
+            response = await api.get(`/roles/user/${userId}`);
+        }else{
+            response = await api.post(`/roles/user`);
+        }
+        return response;
     }
 
     async deleteRole(roleId) {
@@ -17,14 +22,14 @@ class RoleService{
         return response.data;
     }
 
-    async getAllRoles(page = 1, limit = 10) {
+    async getRoles(page = 1, limit = 10) {
         const response = await api.get(`/roles?page=${page}&limit=${limit}`);
         return response.data;
     }
 
     async updateRole(id, roleName) {
         const response = await api.put(`/roles/${id}`, {
-            role_name: roleName, // changed from 'name' to 'role_name'
+            role_name: roleName, 
         });
         return response.data;
     }

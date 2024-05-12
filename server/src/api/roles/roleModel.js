@@ -40,7 +40,7 @@ class model {
         }
     };
     
-    getRoles = async (skip = 0, limit = 10, id) => {
+    getRoles = async (id, skip = 0, limit = 10 ) => {
         let roles;
         if (id) {
             roles = [await Role.findByPk(id)];

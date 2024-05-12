@@ -8,7 +8,6 @@ const uploadProduct = (req, res) => {
     const newPath = path.join(appRoot, '/../public/images/product/', productId);
 
     const files = req.files.images;
-    console.log(files);
 
     let fileIndex = 1;
 
@@ -55,7 +54,7 @@ const deleteImages = (req, res) => {
 const uploadUser = (req, res) => {
     const userId = req.user.userId;
     const newPath = path.join(appRoot, `/../public/images/user/${userId}` );
-    const file = req.files.image;
+    const file = req.body.image;
     
     const filename = `1.png`;
 

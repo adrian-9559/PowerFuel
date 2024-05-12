@@ -9,8 +9,7 @@ import { useRouter } from 'next/router';
 
 
 const UserMenu = () => {
-    const { user, isAdmin, isLoggedIn ,
-        setIsLoggedIn } = useAppContext();
+    const { user, isAdmin, isLoggedIn , setIsLoggedIn } = useAppContext();
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
 
@@ -21,33 +20,9 @@ const UserMenu = () => {
         router.push('/');
     };
 
-    const fetchUserInfo = async () => {
-        setIsLoading(true);
-        try {
-            const userInfo = await UserService.getUserInfo(sessionStorage.getItem('token'));
-            if(userInfo !== null && userInfo.user_id && userInfo.email && userInfo.first_name && userInfo.last_name && userInfo.dni){
-            }
-        } catch (error) {
-            console.error('Ha ocurrido un error al obtener la información del usuario' ,error);
-            dispatch(setUser(null));
-        }
-        setIsLoading(false);
-    };
-    
-    const fetchUserRole = async () => {
-        const token = sessionStorage.getItem('token');
-        try {
-            const userRole = await RoleService.getUserRole(token);
-            console.log(userRole);
-            if(userRole !== null)
-                dispatch(setAdmin(userRole !== 10));
-            else
-                dispatch(setAdmin(false));
-        } catch (error) {
-            console.error('Ha ocurrido un error al obtener el rol del usuario', error);
-        }
-    };
-
+    useEffect(() => {
+        console.log('UserMenu', user);
+    }, [user]);
 
     return (
         user === null || isLoading ? <Spinner size="large" /> :

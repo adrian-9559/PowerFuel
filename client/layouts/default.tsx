@@ -32,7 +32,7 @@ export default function DefaultLayout({
   };
 
   return (
-    <div className="relative flex flex-col h-screen gap-8">
+    <div className="relative flex flex-col h-screen">
       <NavigationBar />
       <motion.main
           key={router.route} // Cambia la clave cuando cambia la ruta
@@ -44,9 +44,7 @@ export default function DefaultLayout({
         >
         {children}
       </motion.main>
-      <footer className="bg-zinc-50 text-center text-surface/75 dark:bg-neutral-700 dark:text-white/75 lg:text-left">
-        <Footer />
-      </footer>
+      <Footer />
     </div>
   );
 }

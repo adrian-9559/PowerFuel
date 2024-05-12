@@ -53,8 +53,9 @@ router.route('/:userId')
         }
     })
     .get(async (req, res) => {
+        const userId = req.params.userId="null"?req.user.userId:req.params.userId; 
         try {
-            const user = await getUserById(req.params.userId);
+            const user = await getUserById(userId);
             if (!user) {
                 return res.status(404).json({ message: 'User not found' });
             }

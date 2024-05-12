@@ -1,95 +1,92 @@
 const model = require('./categoryModel');
 
-const handleInternalServerError = (res, error) => {
+const handleInternalServerError = (error) => {
     console.error(error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    return { status: 500, json: { message: 'Internal Server Error' } };
 };
 
-const getCategories = async (req, res) => {
-    const page = parseInt(req.query.page) ;
-    const limit = parseInt(req.query.limit) ;
+const getCategories = async (page, limit) => {
+    page = parseInt(page) || 1;
+    limit = parseInt(limit) || 10;
     const skip = (page - 1) * limit;
 
     try {
         let categories = await model.getCategories(skip, limit);
         const total = await model.getCategoriesCount();
 
-        categories = categories.map(category => {
-            return {
-                "id": category.category_id,
-                "category_id": { display: "ID de la categoría", value: category.category_id },
-                "category_name": { display: "Nombre de la categoría", value: category.category_name },
-                "parent_category_id": { display: "ID de la categoría padre", value: category.parent_category_id ?? "Ninguno" }
-            };
-        });
+        const categoriesWithParentNames = await Promise.all(
+            categories.map(async category => {
+                const parentCategory = await getCategoryById(category.parent_category_id);
+                return {
+                    "category_id": category.category_id,
+                    "category_name": category.category_name,
+                    "parent_category_id": category.parent_category_id ?? null,
+                    "parent_category_name": parentCategory ? parentCategory.category_name : null
+                };
+            })
+        );
 
-        res.json({
+        return {
             total,
             pages: Math.ceil(total / limit),
-            data: categories
-        });
+            categories: categoriesWithParentNames
+        };
     } catch (error) {
-        handleInternalServerError(res, error);
+        return handleInternalServerError(error);
     }
 };
 
-const getCategoryById = async (req, res) => {
-    const { categoryId } = req.params;
+const getCategoryById = async (categoryId) => {
     try {
         const category = await model.getCategories(null, null , categoryId);
-        res.json(category);
+        return category[0];
     } catch (error) {
-        handleInternalServerError(res, error);
+        return handleInternalServerError(error);
     }
 };
 
-const addCategory = async (req, res) => {
-    const newCategory = req.body;
+const addCategory = async (newCategory) => {
     try {
         const categoryId = await model.addCategory(newCategory);
-        res.json({ category_id: categoryId, ...newCategory });
+        return { category_id: categoryId, ...newCategory };
     } catch (error) {
-        handleInternalServerError(res, error);
+        return handleInternalServerError(error);
     }
 };
 
-const updateCategoryById = async (req, res) => {
-    const { categoryId } = req.params;
-    const updatedCategory = req.body;
+const updateCategoryById = async (categoryId, updatedCategory) => {
     try {
         await model.updateCategory(categoryId, updatedCategory);
-        res.json({ category_id: categoryId, ...updatedCategory });
+        return { category_id: categoryId, ...updatedCategory };
     } catch (error) {
-        handleInternalServerError(res, error);
+        return handleInternalServerError(error);
     }
 };
 
-const deleteCategoryById = async (req, res) => {
-    const { categoryId } = req.params;
+const deleteCategoryById = async (categoryId) => {
     try {
         await model.deleteCategory(categoryId);
-        res.status(200).json({ message: 'Category deleted successfully' });
+        return { status: 200, json: { message: 'Category deleted successfully' } };
     } catch (error) {
-        handleInternalServerError(res, error);
+        return handleInternalServerError(error);
     }
 };
 
-const getParentCategories = async (req, res) => {
+const getParentCategories = async () => {
     try {
         const categories = await model.getParentCategories();
-        res.json({categories});
+        return categories;
     } catch (error) {
-        handleInternalServerError(res, error);
+        return handleInternalServerError(error);
     }
 };
 
-const getChildCategories = async (req, res) => {
-    const { categoryId } = req.params;
+const getChildCategories = async (categoryId) => {
     try {
         const categories = await model.getChildCategories(categoryId);
-        res.json({categories});
+        return {categories};
     } catch (error) {
-        handleInternalServerError(res, error);
+        return handleInternalServerError(error);
     }
 };
 

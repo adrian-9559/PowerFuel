@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip, getKeyValue, Button} from "@nextui-org/react";
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip, getKeyValue, Button, Pagination} from "@nextui-org/react";
 import UserService from '@services/userService';
 import DeleteIcon from '@icons/DeleteIcon';
 import EyeIcon from '@icons/EyeIcon';
@@ -14,15 +14,18 @@ const statusColorMap = {
 const UserAdministration = () => {
     const [Users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
 
     useEffect(() => {
         const fetchUserData = async () => {
-            const response = await UserService.getAllUsersInfo();
+            const response = await UserService.getAllUsersInfo(page);
             setUsers(response.users??[]);
+            setTotalPages(response.pages);
             setIsLoading(false);
         }
         fetchUserData();
-    }, []);
+    }, [page]);
 
     const deleteUser = async (userId) => {
         try {
@@ -38,11 +41,23 @@ const UserAdministration = () => {
             <section>
                 <h1 className="text-center text-2xl font-bold">Listado de Usuarios</h1>
             </section>
-            <Table 
-                aria-label='Tabla de usuarios'  
-                selectionMode="multiple"
-                className="w-full h-full"
-            >
+            <Table aria-label='Tabla de roles' selectionMode="multiple" 
+                    className="w-full h-full"
+                    bottomContent={
+                    totalPages > 0 ? (
+                        <section className="flex w-full justify-center">
+                            <Pagination
+                                isCompact
+                                showControls
+                                showShadow
+                                color="primary"
+                                page={page}
+                                total={totalPages}
+                                onChange={(page) => setPage(page)}
+                            />
+                        </section>
+                    ) : null
+                }>
                 <TableHeader>
                     <TableColumn>
                         <p>Usuario</p>

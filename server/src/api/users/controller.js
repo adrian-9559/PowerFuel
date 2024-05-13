@@ -14,6 +14,7 @@ const registerUser = async (user) => {
 
     const salt = await bcrypt.genSalt(10);
     user.current_password = await bcrypt.hash(user.current_password, salt);
+    user.time_register = new Date();
 
     // Create a Stripe customer for the user
     try {

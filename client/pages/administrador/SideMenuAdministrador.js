@@ -8,7 +8,8 @@ const ADMIN_ACTIONS = {
         'Usuarios',
         'Roles',
         'Productos',
-        'Categorías'
+        'Categorías',
+        'Rendimiento del Servidor',
     ],
     '96': [ // managerAnalytics
         'Administración General',

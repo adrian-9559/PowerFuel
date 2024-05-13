@@ -1,6 +1,6 @@
 import React from 'react';
 
-const WelcomeAdministration = () => {
+const GeneralAdministration = () => {
     return (
         <div>
             <h1>Welcome to the administration page</h1>
@@ -9,4 +9,4 @@ const WelcomeAdministration = () => {
     )
 }
 
-export default WelcomeAdministration;
+export default GeneralAdministration;

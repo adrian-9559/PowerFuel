@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Tooltip, Button} from "@nextui-org/react";
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Tooltip, Button, Pagination} from "@nextui-org/react";
 import RoleService from '@services/roleService';
 import EditIcon from '@icons/EditIcon';
 import DeleteIcon from '@icons/DeleteIcon';
@@ -7,17 +7,20 @@ import DeleteIcon from '@icons/DeleteIcon';
 const RoleAdministration = () => {
     const [Roles, setRoles] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
 
     useEffect(() => {
         const fetchUserData = async () => {
-            const response = await RoleService.getRoles();
+            const response = await RoleService.getRoles(page);
             if (response) {
                 setRoles(response.roles ?? []);
+                setTotalPages(response.pages);
                 setIsLoading(false);
             }
         }
         fetchUserData();
-    }, []);
+    }, [page]);
 
     const deleteRole = async (roleId) => {
         try {
@@ -36,7 +39,23 @@ const RoleAdministration = () => {
                 <section>
                     <h1 className="text-center text-2xl font-bold">Listado de Roles</h1>
                 </section>
-                <Table aria-label='Tabla de roles' selectionMode="multiple" className="w-full h-full">
+                <Table aria-label='Tabla de roles' selectionMode="multiple" 
+                    className="w-full h-full"
+                    bottomContent={
+                    totalPages > 0 ? (
+                        <section className="flex w-full justify-center">
+                            <Pagination
+                                isCompact
+                                showControls
+                                showShadow
+                                color="primary"
+                                page={page}
+                                total={totalPages}
+                                onChange={(page) => setPage(page)}
+                            />
+                        </section>
+                    ) : null
+                }>
                     <TableHeader>
                         <TableColumn>
                             <p>ID de Rol</p>

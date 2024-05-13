@@ -3,12 +3,11 @@ const { UserCredentials, UserInfo, UserRoles, Role } = require('../../model/mode
 
 class model {
     addUser = async (user) => {
-        console.log(user);
-    
         const newUserCredentials = await UserCredentials.create({ 
             email: user.email, 
             current_password: user.current_password,
-            stripe_customer_id: user.stripeCustomerId // Añade esta línea
+            stripe_customer_id: user.stripeCustomerId,
+            time_register: user.time_register
         });
         await UserInfo.create({
             user_id: newUserCredentials.user_id,

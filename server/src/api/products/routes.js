@@ -7,7 +7,6 @@ const {
     getProductById,
     modifyProductById,
     deleteProductById,
-    getProductsInfo,
     getImageCount,
     getProductsByCategory,
     getProductsSearch
@@ -21,17 +20,17 @@ router.route('/')
             const product = await addProduct(req.body);
             res.json(product);
         } catch (error) {
-            console.error('Error adding the product:', error);
-            res.status(500).json({ message: 'Error adding the product' });
+            console.error('Error al agregar el producto:', error);
+            res.status(500).json({ message: 'Hubo un problema al agregar el producto. Por favor, inténtalo de nuevo.' });
         }
     })
     .get(async (req, res) => {
         try {
-            const products = await getProducts();
-            res.json({products});
+            const data = await getProducts(req.query.page, req.query.limit);
+            res.json(data);
         } catch (error) {
-            console.error('Error getting the products:', error);
-            res.status(500).json({ message: 'Error getting the products' });
+            console.error('Error al obtener la información del producto:', error);
+            res.status(500).json({ message: 'Hubo un problema al obtener la información del producto. Por favor, inténtalo de nuevo.' });
         }
     });
 
@@ -40,36 +39,36 @@ router.route('/:productId')
         try {
             const product = await getProductById(req.params.productId);
             if (!product) {
-                return res.status(404).json({ message: 'Product not found' });
+                return res.status(404).json({ message: 'Producto no encontrado' });
             }
             res.json(product);
         } catch (error) {
-            console.error('Error getting the product:', error);
-            res.status(500).json({ message: 'Error getting the product' });
+            console.error('Error al obtener el producto:', error);
+            res.status(500).json({ message: 'Hubo un problema al obtener el producto. Por favor, inténtalo de nuevo.' });
         }
     })
     .put(async (req, res) => {
         try {
             const product = await modifyProductById(req.params.productId, req.body);
             if (!product) {
-                return res.status(404).json({ message: 'Product not found' });
+                return res.status(404).json({ message: 'Producto no encontrado' });
             }
-            res.json({ message: 'Product modified successfully' });
+            res.json({ message: 'Producto modificado exitosamente' });
         } catch (error) {
-            console.error('Error modifying the product:', error);
-            res.status(500).json({ message: 'Error modifying the product' });
+            console.error('Error al modificar el producto:', error);
+            res.status(500).json({ message: 'Hubo un problema al modificar el producto. Por favor, inténtalo de nuevo.' });
         }
     })
     .delete(async (req, res) => {
         try {
             const deletedProduct = await deleteProductById(req.params.productId);
             if (!deletedProduct) {
-                return res.status(404).json({ message: 'Product not found' });
+                return res.status(404).json({ message: 'Producto no encontrado' });
             }
-            res.json({ message: 'Product deleted successfully' });
+            res.json({ message: 'Producto eliminado exitosamente' });
         } catch (error) {
-            console.error('Error deleting the product:', error);
-            res.status(500).json({ message: 'Error deleting the product' });
+            console.error('Error al eliminar el producto:', error);
+            res.status(500).json({ message: 'Hubo un problema al eliminar el producto. Por favor, inténtalo de nuevo.' });
         }
     });
 
@@ -78,12 +77,12 @@ router.route('/search/:input')
         try {
             const products = await getProductsSearch(req.params.input);
             if (!products) {
-                return res.status(404).json({ message: 'Products not found' });
+                return res.status(404).json({ message: 'Productos no encontrados' });
             }
             res.json({products});
         } catch (error) {
-            console.error('Error getting the products:', error);
-            res.status(500).json({ message: 'Error getting the products' });
+            console.error('Error al obtener los productos:', error);
+            res.status(500).json({ message: 'Hubo un problema al obtener los productos. Por favor, inténtalo de nuevo.' });
         }
     });
 
@@ -92,23 +91,12 @@ router.route('/category/:id')
         try {
             const products = await getProductsByCategory(req.query.page, req.query.limit, req.params.id);
             if (!products) {
-                return res.status(404).json({ message: 'Products not found' });
+                return res.status(404).json({ message: 'Productos no encontrados' });
             }
             res.json({products});
         } catch (error) {
-            console.error('Error getting the products:', error);
-            res.status(500).json({ message: 'Error getting the products' });
-        }
-    });
-
-router.route('/info')
-    .post(async (req, res) => {
-        try {
-            const info = await getProductsInfo(req.body.page, req.body.limit);
-            res.json(info);
-        } catch (error) {
-            console.error('Error getting the product info:', error);
-            res.status(500).json({ message: 'Error getting the product info' });
+            console.error('Error al obtener los productos:', error);
+            res.status(500).json({ message: 'Hubo un problema al obtener los productos. Por favor, inténtalo de nuevo.' });
         }
     });
 
@@ -118,8 +106,8 @@ router.route('/img/count/:id')
             const count = await getImageCount(req.params.id);
             res.json(count);
         } catch (error) {
-            console.error('Error getting the image count:', error);
-            res.status(500).json({ message: 'Error getting the image count' });
+            console.error('Error al obtener el conteo de imágenes:', error);
+            res.status(500).json({ message: 'Hubo un problema al obtener el conteo de imágenes. Por favor, inténtalo de nuevo.' });
         }
     });
 

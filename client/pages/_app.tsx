@@ -7,6 +7,14 @@ import { AppProvider } from "@context/AppContext";
 import "@styles/globals.css";
 require('dotenv').config();
 import DefaultLayout from '@layouts/default';
+import toastr from 'toastr';
+import 'toastr/build/toastr.min.css';
+
+toastr.options = {
+	"positionClass": "toast-bottom-right",
+	"timeOut": "2000",
+	"extendedTimeOut": "1000",
+  }
 
 export default function App({ Component, pageProps }: AppProps) {
 	const router = useRouter();

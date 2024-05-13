@@ -2,6 +2,8 @@ import axios from 'axios';
 
 const api = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/api`,
+  timeout: 1000,
+  headers: {'X-Custom-Header': 'foobar'}
 });
 
 api.interceptors.response.use(

@@ -1,5 +1,6 @@
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
+const pidusage = require('pidusage');
 const routes = require('./routes');
 require('dotenv').config();
 

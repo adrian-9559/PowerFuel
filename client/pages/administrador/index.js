@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useAppContext } from '@context/AppContext';
 import { useRouter } from 'next/router';
 import { AnimatePresence, motion } from 'framer-motion';
-import WelcomeAdministration from './welcomeAdministration';
+import GeneralAdministration from './generalAdministration';
 import SideMenuAdministrador from "./SideMenuAdministrador";
 import UserAdministration from "./userAdministration";
 import RoleAdministration from "./roleAdministration";
 import ProductoAdministration from "./productAdministration";
 import CategoryAdministration from "./categoryAdministration";
+import ServerRendimiento from "./serverRendimiento";
 
 const Administrador = () => {
     const router = useRouter();
@@ -37,11 +38,12 @@ const Administrador = () => {
                         animate={{opacity: 1}}
                         exit={{opacity: 0}}
                     >
-                        {ComponentUse === 'Administración General' && <WelcomeAdministration/>}
+                        {ComponentUse === 'Administración General' && <GeneralAdministration/>}
                         {ComponentUse === 'Usuarios' && <UserAdministration/>}
                         {ComponentUse === 'Roles' && <RoleAdministration/>}
                         {ComponentUse === 'Productos' && <ProductoAdministration/>}
                         {ComponentUse === 'Categorías' && <CategoryAdministration/>}
+                        {ComponentUse === 'Rendimiento del Servidor' && <ServerRendimiento/>}
                     </motion.div>
                 </AnimatePresence>
             </section>

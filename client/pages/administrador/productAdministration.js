@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip, getKeyValue, Button} from "@nextui-org/react";
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip, getKeyValue, Button, Pagination} from "@nextui-org/react";
 import ProductService from '@services/productService';
 import DeleteIcon from '@icons/DeleteIcon';
 import EyeIcon from '@icons/EyeIcon';
@@ -13,25 +13,27 @@ const statusColorMap = {
 const ProductoAdministration = () => {
     const [Products, setProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
 
     useEffect(() => {
         const fetchProductData = async () => {
-            const response = await ProductService.getAllProducts();
-            setProducts(response??[]);
-            console.log(Products);      
+            const response = await ProductService.getProducts(page);
+            setProducts(response.products??[]);
+            setTotalPages(response.pages);
             setIsLoading(false);
         }
         fetchProductData();
-    }, []);
+    }, [page]);
 
     const deleteProduct = async (productId) => {
         try {
-            await ProductService.deleteProduct(productId);
-            setProducts(Products.filter(product => product.product_id !== productId));
+          await ProductService.deleteProduct(productId);
+          setProducts(Products.filter(product => product.product_id !== productId));
         } catch (error) {
-            console.error('Failed to delete product: ', error);
+          toastr.error('Hubo un problema con tu solicitud', 'Error');
         }
-    };
+      };
 
 
     return (
@@ -39,11 +41,23 @@ const ProductoAdministration = () => {
             <section>
                 <h1 className="text-center text-2xl font-bold">Listado de Productos</h1>
             </section>
-            <Table 
-                aria-label='Tabla de productos'  
-                selectionMode="multiple"
-                className="w-full h-full"
-            >
+            <Table aria-label='Tabla de roles' selectionMode="multiple" 
+                    className="w-full h-full"
+                    bottomContent={
+                    totalPages > 0 ? (
+                        <section className="flex w-full justify-center">
+                            <Pagination
+                                isCompact
+                                showControls
+                                showShadow
+                                color="primary"
+                                page={page}
+                                total={totalPages}
+                                onChange={(page) => setPage(page)}
+                            />
+                        </section>
+                    ) : null
+                }>
                 <TableHeader>
                     <TableColumn>
                         <p>Producto</p>
@@ -78,14 +92,14 @@ const ProductoAdministration = () => {
                             </TableCell>
                             <TableCell>
                                 <section className="flex flex-col">
-                                    <p className="text-bold text-sm capitalize">{product.Brand.brand_name}</p>
+                                    <p className="text-bold text-sm capitalize">{product.brand_name}</p>
                                     <p className="text-bold text-sm capitalize text-default-400">Id Marca: {product.id_brand}</p>
                                 </section>
                             </TableCell>
                             <TableCell>
                                 <section className="flex flex-col">
-                                    <p className="text-bold text-sm capitalize">{product.Category.category_name}</p>
-                                    <p className="text-bold text-sm capitalize text-default-400">Id Categoría: {product.Category.category_id}</p>
+                                    <p className="text-bold text-sm capitalize">{product.category_name}</p>
+                                    <p className="text-bold text-sm capitalize text-default-400">Id Categoría: {product.category_id}</p>
                                 </section>
                             </TableCell>
                             <TableCell>
@@ -100,7 +114,7 @@ const ProductoAdministration = () => {
                                 <section className="relative flex justify-center items-center gap-2">
                                     <Tooltip color="primary" content="Details">
                                         <Button isIconOnly color="primary" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                                            <EyeIcon />
+                                            <EyeIcon color="primary"/>
                                         </Button>
                                     </Tooltip>
                                     <Tooltip color="success" content="Edit user" className="text-white">

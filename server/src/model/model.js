@@ -135,7 +135,8 @@ UserCredentials.init({
         type: DataTypes.ENUM,
         values: ['Active', 'Inactive', 'Suspended'],
         defaultValue: 'Active'
-    }
+    },
+    time_register: DataTypes.DATE
 }, {
     sequelize,
     modelName: 'UserCredentials',

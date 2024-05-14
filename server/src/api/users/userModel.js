@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { UserCredentials, UserInfo, UserRoles, Role } = require('../../model/model');
 
 
@@ -125,6 +126,28 @@ class model {
     getTableColumns = async () => {
         const columns = await UserCredentials.describe();
         return Object.keys(columns);
+    };
+
+    getUsersByRegistrationDate = async (startDate, endDate) => {
+        const users = await UserCredentials.findAll({
+            where: {
+                registration_date: {
+                    [Op.between]: [startDate, endDate]
+                }
+            },
+            include: [
+                { model: UserInfo, required: true, attributes: ['first_name', 'last_name', 'dni'] },
+                { 
+                    model: Role, 
+                    required: true, 
+                    attributes: ['role_id', 'role_name'],
+                    through: { model: UserRoles, attributes: [] } 
+                }
+            ]
+        });
+
+
+        return users;
     };
 }
 

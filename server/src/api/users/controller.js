@@ -14,7 +14,6 @@ const registerUser = async (user) => {
 
     const salt = await bcrypt.genSalt(10);
     user.current_password = await bcrypt.hash(user.current_password, salt);
-    user.time_register = new Date();
 
     // Create a Stripe customer for the user
     try {
@@ -96,11 +95,23 @@ const loginUser = async (email, current_password) => {
     }
 };
 
+const getUsersByRegistrationDate = async (startDate, endDate) => {
+    try {
+        const users = await getUsersByRegistrationDate(new Date(startDate), new Date(endDate));
+        return users;
+    } catch (error) {
+        console.error('Error getting users by registration date:', error);
+        throw new Error('Error getting users by registration date');
+    }
+};
+
+
 module.exports =  {
     registerUser,
     deleteUserById,
     updateUserById,
     getUserById,
     getUsers,
-    loginUser
+    loginUser,
+    getUsersByRegistrationDate
 };

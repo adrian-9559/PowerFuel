@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const api = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/api`,
-  timeout: 1000,
+  timeout: 30000,
   headers: {'X-Custom-Header': 'foobar'}
 });
 
@@ -26,7 +26,6 @@ api.interceptors.request.use(config => {
 
 api.interceptors.response.use(response => response, error => {
   // Mostrar un mensaje de error
-  alert('An error occurred: ' + error.message);
   return Promise.reject(error);
 });
 

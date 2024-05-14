@@ -1,6 +1,6 @@
 // routes.js
 const express = require('express');
-const { registerUser, deleteUserById, updateUserById, getUserById, getUsers, loginUser } = require('./controller');
+const { registerUser, deleteUserById, updateUserById, getUserById, getUsers, loginUser, getUsersByRegistrationDate } = require('./controller');
 
 const router = express.Router();
 
@@ -77,6 +77,19 @@ router.route('/login')
         } catch (error) {
             console.error('Error logging in:', error);
             res.status(500).json({ message: 'Error logging in' });
+        }
+    });
+
+router.route('/usersByRegistrationDate')
+    .post(async (req, res) => {
+        const { startDate, endDate } = req.body;
+        console.log(req.body);
+        try {
+            const users = await getUsersByRegistrationDate(startDate, endDate);
+            res.json(users);
+        } catch (error) {
+            console.error('Error in /usersByRegistrationDate:', error);
+            res.status(500).json({ message: error.message });
         }
     });
 

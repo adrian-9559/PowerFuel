@@ -35,7 +35,6 @@ class model {
             }],
             subQuery: false
         });
-        console.log(products);
         return products;
     };
     

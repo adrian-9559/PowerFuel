@@ -136,7 +136,11 @@ UserCredentials.init({
         values: ['Active', 'Inactive', 'Suspended'],
         defaultValue: 'Active'
     },
-    time_register: DataTypes.DATE
+    registration_date:{
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+        allowNull: false
+    },
 }, {
     sequelize,
     modelName: 'UserCredentials',

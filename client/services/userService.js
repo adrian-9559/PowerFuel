@@ -53,6 +53,11 @@ class UserService {
         
         return response;
     }
+
+    async getUserByRegisterWeek(startDate, endDate) {
+        const response = await api.post(`/users/usersByRegistrationDate`, {startDate, endDate});
+        return response.data;
+    }
 }
 
 export default new UserService();

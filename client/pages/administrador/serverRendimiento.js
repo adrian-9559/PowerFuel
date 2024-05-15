@@ -25,7 +25,7 @@ const ServerRendimiento = () => {
                     setColorDisk(colores(usoDiskPorcentaje));
                 })
                 .catch((err) => {
-                    console.error(err);
+                    console.error("Error al obtener la información del rendimiento del servidor")
                 });
         }, 5000);
 

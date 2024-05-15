@@ -11,6 +11,7 @@ router.use('/api/brands', require('./api/brands/routes'));
 router.use('/api/files', require('./api/files/routes'));
 router.use('/api/address', require('./api/addresses/routes'));
 router.use('/api/payment', require('./api/payment/routes'));
+router.use('/api/stripe', require('./api/stripe/routes'));
 router.use('/api/server', require('./api/server/routes'));
 
 module.exports = router;

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAppContext } from '@context/AppContext';
+import RoleService from '@services/roleService';
+import {Card} from '@nextui-org/react';
 import { useRouter } from 'next/router';
 import { AnimatePresence, motion } from 'framer-motion';
 import GeneralAdministration from './generalAdministration';
@@ -12,8 +14,9 @@ import ServerRendimiento from "./serverRendimiento";
 
 const Administrador = () => {
     const router = useRouter();
+    let view = router.query.view ?? 'Administración General';
     const { user, isLoggedIn, isAdmin} = useAppContext();
-    const [ComponentUse, setComponentUse] = useState('Administración General');
+    const [ComponentUse, setComponentUse] = useState(view);
 
     useEffect(() => {
         const checkLoginStatus = setTimeout(() => {
@@ -22,14 +25,18 @@ const Administrador = () => {
             }
         }, 1000);
     
+        setComponentUse(view);
+        router.replace(router.pathname); // Remove the query parameter from the URL
         return () => clearTimeout(checkLoginStatus);
     }, [isLoggedIn, isAdmin]);
 
+
+
     return (
         <section className="h-full flex w-full gap-8">
-            <section className="h-full l-0">
+            <Card radius="none">
                 <SideMenuAdministrador setComponentUse={setComponentUse}/>
-            </section>
+            </Card>
             <section className="w-full mr-8 my-8">
                 <AnimatePresence mode="wait">
                     <motion.div

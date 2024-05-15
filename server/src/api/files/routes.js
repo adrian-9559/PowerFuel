@@ -3,11 +3,11 @@ const { uploadProduct, deleteImages, uploadUser } = require('./controller'); // 
 
 const router = express.Router();
 
-router.route('/upload/:id')
-        .delete(deleteImages);
-
 router.route('/uploadProduct/:id')
         .post(uploadProduct)
+
+router.route('/deleteProduct/:id')
+        .post(deleteImages)
 
 router.route('/uploadUser')
         .post(uploadUser)

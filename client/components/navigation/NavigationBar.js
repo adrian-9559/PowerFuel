@@ -16,19 +16,19 @@ const NavigationBar = () => {
     const router = useRouter();
 
     return (
-        <header>
-            <Navbar isBordered className='flex flex-wrap items-center justify-center'>
+        <header className="w-full mx-auto px-0">
+            <Navbar isBordered className='w-full mx-auto px-0'>
                 <NavbarContent>
                     <SideMenu />
                 </NavbarContent>
                 <NavbarContent>
-                    <NavbarBrand className="mr-4 cursor-pointer" onClick={() => router.push('/')}>
+                    <NavbarBrand className="cursor-pointer" onClick={() => router.push('/')}>
                         <Image className="object-cover h-12 w-12"
                             src={`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/logo/logo.png`}
                         />
                     </NavbarBrand>
                 </NavbarContent>
-                <NavbarContent>
+                <NavbarContent className="w-96">
                     <SearchBar />
                 </NavbarContent>
                 <NavbarContent>

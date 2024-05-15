@@ -36,7 +36,8 @@ const ProductCarousel = ({id}) => {
                 images.push(
                     <div key={i} className={isThumbnail ? "w-16 h-16" : ""}>
                         <Skeleton isLoaded={id?true:false}>
-                            <Image isZoomed
+                            <Image 
+                                isZoomed
                                 src={`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/product/${id}/${i}.png`}
                                 alt={`Imagen ${i} del producto ${id}`}
                                 className="rounded shadow-lg object-cover cursor-pointer"

@@ -1,6 +1,5 @@
 import api from './axios';
 import toastr from 'toastr';
-
 class ProductService {
 
     async getProductById(id) {
@@ -11,9 +10,6 @@ class ProductService {
             }
             return response.data;
         } catch (error) {
-            if (error.response.status !== 404) {
-                toastr.error(error.response.data.message);
-            }
             throw error;
         }
     }
@@ -23,7 +19,6 @@ class ProductService {
             const response = await api.get(`/products?page=${page}&limit=${limit}`);
             return response.data;
         } catch (error) {
-            toastr.error(error.response.data.message);
             throw error;
         }
     }
@@ -33,7 +28,6 @@ class ProductService {
             const response = await api.get(`/products/category/${id}`);
             return response.data.products;
         } catch (error) {
-            toastr.error(error.response.data.message);
             throw error;
         }
     }
@@ -41,12 +35,12 @@ class ProductService {
     async addProduct(product) {
         try {
             const formData = new FormData();
-            formData.append('product_name', product.name);
+            formData.append('product_name', product.product_name);
             formData.append('description', product.description);
             formData.append('stock_quantity', product.stock);
             formData.append('price', product.price);
             formData.append('category_id', product.category_id);
-            formData.append('id_brand', product.brand);
+            formData.append('id_brand', product.id_brand);
 
             const response = await api.post(`/products`, formData, {
                 headers: {
@@ -58,7 +52,7 @@ class ProductService {
 
             return response.data;
         } catch (error) {
-            toastr.error(error.response.data.message);
+            toastr.error(error);
             throw error;
         }
     }
@@ -68,7 +62,7 @@ class ProductService {
             const response = await api.put(`/products/${id}`, product);
             return response.data;
         } catch (error) {
-            toastr.error(error.response.data.message);
+            toastr.error(error);
             throw error;
         }
     }
@@ -76,9 +70,10 @@ class ProductService {
     async deleteProduct(id) {
         try {
             const response = await api.delete(`/products/${id}`);
+            this.deleteImage(id);
             return response.data;
         } catch (error) {
-            toastr.error(error.response.data.message);
+            toastr.error(error);
             throw error;
         }
     }
@@ -91,8 +86,7 @@ class ProductService {
             }
             return response.data.count;
         } catch (error) {
-            console.error(error); 
-            return null; 
+            throw error;
         }
     }
 
@@ -111,7 +105,17 @@ class ProductService {
 
             return response.data;
         } catch (error) {
-            toastr.error(error.response.data.message);
+            toastr.error(error);
+            throw error;
+        }
+    }
+
+    async deleteImage(id) {
+        try {
+            const response = await api.post(`/files/deleteProduct/${id}`);
+            return response.data;
+        } catch (error) {
+            toastr.error(error);
             throw error;
         }
     }

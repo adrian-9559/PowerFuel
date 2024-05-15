@@ -8,12 +8,12 @@ import { useRouter } from 'next/router';
 
 const CreateProduct = () => {
     const [formState, setFormState] = useState({
-        name: '',
+        product_name: '',
         description: '',
         stock: 1,
-        price: '',
-        category_id: '',
-        brand: '',
+        price: 1,
+        category_id: 1,
+        id_brand: 1,
         images: null
     });
     const [loading, setLoading] = useState(false);
@@ -39,12 +39,13 @@ const CreateProduct = () => {
         fetchBrands();
     }, []);
 
-    const handleChange = (e) => {
+    const handleChange = (name) => (value) => {
         setFormState({
             ...formState,
-            [e.target.name]: e.target.value
+            [name]: value
         });
     };
+    
 
     useEffect(() => {
         const fetchData = async () => {
@@ -57,13 +58,14 @@ const CreateProduct = () => {
             if (id) {
                 const product = await ProductService.getProductById(id);
                 setFormState({
-                    name: product.product_name,
+                    product_name: product.product_name,
                     description: product.description,
-                    stock: product.stock_quantity,
+                    stock_quantity: product.stock_quantity,
                     price: product.price,
                     category_id: product.category_id,
-                    brand: product.id_brand
+                    id_brand: product.id_brand
                 });
+
                 const childCategories = await CategoryService.getChildCategories(product.category_id);
                 setChildCategoriesLevels([childCategories]);
             }
@@ -77,7 +79,7 @@ const CreateProduct = () => {
         setLoading(true);
         try {
             await ProductService.addProduct(formState);
-            router.push('/admin?tab=productos');
+            router.push('/administrador?view=Productos');
         } catch (error) {
             setError(error.message);
         } finally {
@@ -109,27 +111,47 @@ const CreateProduct = () => {
 
     return (
         <main
-            className="max-w-4xl mx-auto mt-10 p-6 bg-gray-100 rounded-lg shadow-xl"
+            className="max-w-4xl mx-auto mt-10 p-6 rounded-lg shadow-xl mb-10 border-1 border-gray-200"
         >
             <h1 className="text-2xl font-bold mb-4">Crear Producto</h1>
             {error && <p className="mb-4 text-red-500">{error}</p>}
             <form onSubmit={handleRegister}>
                 <section className="mb-4">
-                    <Input type='text' label='Nombre del Producto' value={formState.name} onChange={handleChange} onClear={() => setFormState({...formState, name: ''})}/>
+                    <Input 
+                        type='text' 
+                        label='Nombre del Producto' 
+                        name="product_name" 
+                        value={formState.product_name} 
+                        onValueChange={handleChange('product_name')} />
                 </section>
                 <section className="mb-4">
-                    <Textarea label='Descripción del Producto' value={formState.description} onChange={handleChange} onClear={() => setFormState({...formState, description: ''})} className="h-auto"/>
+                    <Textarea 
+                        label='Descripción del Producto' 
+                        value={formState.description} 
+                        onValueChange={handleChange('description')}/>
                 </section>
                 <section className="mb-4">
-                    <Select name='brand' label='Marca' value={formState.brand} onChange={handleChange}>
-                        {brands.map((brand) => (<SelectItem key={brand.id_brand} value={brand.id_brand}>{brand.brand_name}</SelectItem>))}
-                    </Select>
+                <Select 
+                    name='brand' 
+                    label='Marca' 
+                    value={formState.id_brand} 
+                    onValueChange={handleChange('id_brand')}>
+                    {brands.map((brand) => (<SelectItem key={brand.id_brand} value={brand.id_brand}>{brand.brand_name}</SelectItem>))}
+                </Select>
                 </section>
                 <section className="mb-4">
-                    <Input type='number' label='Cantidad en Stock' value={formState.stock} onChange={handleChange} onClear={() => setFormState({...formState, stock: 1})}/>
+                    <Input 
+                        type='number' 
+                        label='Cantidad en Stock' 
+                        value={formState.stock} 
+                        onValueChange={handleChange('stock')}/>
                 </section>
                 <section className="mb-4">
-                    <Input type='text' label='Precio del Producto' value={formState.price} onChange={(e) => setPrice(e.target.value)} inputMode="numeric" onClear={() => setPrice('')}/>
+                    <Input 
+                        type='number' 
+                        label='Precio del Producto' 
+                        value={formState.price} 
+                        onValueChange={handleChange('price')}/>
                 </section>
                 <section className="mb-4">
                     <Select 
@@ -139,7 +161,7 @@ const CreateProduct = () => {
                         onChange={handleParentCategoryChange} 
                         data-filled
                     >
-                        {parentCategories.map((category) => (<SelectItem key={category.category_id} value={category.category_id}>{category.category_name}</SelectItem>))}
+                        {parentCategories.map((category) => (<SelectItem key={category.category_id} defaultValue={category.category_id}>{category.category_name}</SelectItem>))}
                     </Select>
                 </section>
                 <AnimatePresence>
@@ -158,18 +180,18 @@ const CreateProduct = () => {
                                     value={formState.category_id}
                                     onChange={(e) => handleChildCategoryChange(e, index + 1)}
                                 >
-                                    {childCategories.map((category) => (<SelectItem key={category.category_id} value={category.category_id}>{category.category_name}</SelectItem>))}
+                                    {childCategories.map((category) => (<SelectItem key={category.category_id} defaultValue={category.category_id}>{category.category_name}</SelectItem>))}
                                 </Select>
                             </motion.section>
                         )
                     ))}
                 </AnimatePresence>
                 <section className="mb-4">
-                    <input type='file' multiple id='images' className="w-full px-4 py-2 border rounded-lg" onChange={(e) => setImages(e.target.files)}/>
+                    <input type='file' multiple id='images' className="w-full px-4 py-2 border rounded-lg" onChange={(e) => setFormState({...formState, images: e.target.files})}/>
                 </section>
                 <section className="mb-4">
                     <Button type='submit' disabled={loading} className="w-full">{loading ? 'Cargando...' : 'Crear Producto'}</Button>
-                    <Button type='button' color="danger" onClick={() => router.push('/admin?tab=productos')} className="w-full mt-4">Cancelar</Button>
+                    <Button type='button' color="danger" onClick={() => router.push('/administrador?view=Productos')} className="w-full mt-4">Cancelar</Button>
                 </section>
             </form>
         </main>

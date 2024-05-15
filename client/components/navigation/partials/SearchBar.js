@@ -15,7 +15,7 @@ const searchProduct = (data) => {
 
 const SearchBar = () => {
     return (
-        <Input placeholder="Buscar..." type="text" onChange={(e) => searchProduct(e.target.value)}/>
+        <Input className="w-96" placeholder="Buscar..." type="text" onChange={(e) => searchProduct(e.target.value)}/>
     );
 };
 

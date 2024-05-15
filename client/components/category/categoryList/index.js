@@ -47,7 +47,7 @@ const CategoryList = () => {
                         <Card key={category.category_id} shadow className='p-4 rounded-lg'> {/* Add padding and rounded corners here */}
                             <Card className='flex flex-row items-center p-2 justify-between' style={{backgroundColor: color}}> {/* Move the background color here */}
                                 <h2 className='font-bold ml-2'>{category.category_name}</h2> 
-                                <Button style={{backgroundColor: lightColor}} light auto onClick={() => {router.push(`/category/${category.category_id}`)}}>Ver más</Button> {/* Use the lightened color here */}
+                                <Button className="bg-gray-500 bg-opacity-50" auto onClick={() => {router.push(`/category/${category.category_id}`)}}>Ver más</Button> {/* Use the lightened color here */}
                             </Card>
                             <ProductCategory key={category.id} id={category.category_id} />
                         </Card>

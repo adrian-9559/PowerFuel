@@ -66,7 +66,7 @@ const CreateUser = () => {
         } else {
             await UserService.registerUser(user);
         }
-        router.push('/admin?tab=usuarios');
+        router.push('/administrador?view=Usuarios');
     }
 
     return (
@@ -128,7 +128,7 @@ const CreateUser = () => {
                         </SelectItem>
                     ))}
                 </Select>
-                <Button type="button" onClick={() => router.push('/admin?tab=usuarios')} aria-label="Cancelar">Cancelar</Button>
+                <Button type="button" onClick={() => router.push('/administrador?view=Usuarios')} aria-label="Cancelar">Cancelar</Button>
                 <Button type="submit" aria-label="Crear">Crear</Button>
             </form>
         </div>

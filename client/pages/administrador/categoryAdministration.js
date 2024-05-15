@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Tooltip, Button, Pagination, Spinner} from "@nextui-org/react";
+import { useRouter } from 'next/router';
 import CategoryService from '@services/categoryService';
 import EditIcon from '@icons/EditIcon';
 import DeleteIcon from '@icons/DeleteIcon';
-
+import PlusIcon from '@icons/PlusIcon';
 
 const CategoryAdministration = () => {
+    const router = useRouter();
     const [Categories, setCategories] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [page, setPage] = useState(1);
@@ -39,8 +41,17 @@ const CategoryAdministration = () => {
     };
     return (
             <section className='flex flex-col justify-center items-center'>
-                <section>
-                    <h1 className="text-center text-2xl font-bold">Listado de Categorías</h1>
+                <section className='grid w-full'>
+                    <section>
+                        <h1 className="text-center text-2xl font-bold">Listado de Categorias</h1>
+                    </section>
+                    <section className="flex justify-end mr-5 mb-5">
+                        <Tooltip color="success" content="Añadir Categoria">
+                            <Button isIconOnly color="success" variant='flat' none className="text-lg text-danger cursor-pointer active:opacity-50" onClick={() => router.push('/admin/createCategory')}>
+                                <PlusIcon color="primary"/>
+                            </Button>
+                        </Tooltip>
+                    </section>
                 </section>
                 <Table aria-label='Tabla de roles' selectionMode="multiple" 
                     className="w-full h-full"

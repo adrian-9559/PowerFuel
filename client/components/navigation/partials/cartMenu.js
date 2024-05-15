@@ -1,5 +1,5 @@
-    import React, { useState, useEffect }from 'react';
-import { Dropdown, DropdownMenu, DropdownItem, DropdownTrigger, Button, Badge, useDisclosure, user} from "@nextui-org/react";
+import React, { useState, useEffect }from 'react';
+import { Dropdown, DropdownMenu, DropdownItem, DropdownTrigger, Button, Badge, useDisclosure, user, ScrollShadow } from "@nextui-org/react";
 import CartItem from '@components/cart/cartItem';
 import { useRouter } from 'next/router';
 import { useAppContext } from "@context/AppContext";
@@ -106,18 +106,18 @@ const CartMenu = () => {
                 closeOnSelect={false}
             >
                 {cart && cart.length > 0 &&
-                    <DropdownItem key="cart" className="gap-2 sticky top-0 bg-white z-10 hover:bg-white dark:bg-dark w-full" textValue='Cart'>
-                        <section className='flex justify-between items-center dark:bg-dark'>
-                            <section className='flex items-center'> {/* Add flex and items-center here */}
-                                <p className="font-bold">Carrito</p>
+                        <DropdownItem key="cart" className="gap-2 sticky top-0 z-10 w-full bg-gray-500 bg-opacity-25" textValue='Cart'>
+                            <section className='flex justify-between items-center'>
+                                <section className='flex items-center'> {/* Add flex and items-center here */}
+                                    <p className="font-bold">Carrito</p>
+                                </section>
+                                <Button color="danger" className='m-1' variant="light" onClick={handleDeleteCart} isIconOnly isEnabled>
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" viewBox="0 0 448 512">
+                                        <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/>
+                                    </svg>
+                                </Button> 
                             </section>
-                            <Button color="danger" className='m-1' variant="light" onClick={handleDeleteCart} isIconOnly isEnabled>
-                                <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" viewBox="0 0 448 512">
-                                    <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/>
-                                </svg>
-                            </Button> 
-                        </section>
-                    </DropdownItem>                       
+                        </DropdownItem>                
                 }
                 {cart && cart.length > 0 ? (
                     cart.map((item, index) => (
@@ -139,7 +139,7 @@ const CartMenu = () => {
                         </DropdownItem>
                     )}
                 {cart && cart.length > 0 && (
-                    <DropdownItem key="checkout" className='items-center bg-green-200 hover:bg-green-500 sticky bottom-0 z-10' color='success' textValue="checkout" onClick={handleReviewOrder}>
+                    <DropdownItem key="checkout" className='items-center bg-green-500 bg-opacity-25 hover:bg-green-500 sticky bottom-0 z-10' color='success' textValue="checkout" onClick={handleReviewOrder}>
                         <section className='flex justify-between mx-2'>
                             <p>Revisar pedido:</p>
                             <p className='font-semibold'>{total} €</p>

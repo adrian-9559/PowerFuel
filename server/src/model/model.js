@@ -74,6 +74,14 @@ Product.init({
         type: DataTypes.ENUM('Enabled', 'Disabled'),
         allowNull: false,
         defaultValue: 'Disabled'
+    },
+    stripe_product_id: { 
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    stripe_price_id: {
+        type: DataTypes.STRING,
+        allowNull: false
     }
 }, {
     sequelize,

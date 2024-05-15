@@ -107,7 +107,9 @@ class model {
             price: product.price,
             stock_quantity: product.stock_quantity,
             id_brand: product.id_brand,
-            category_id: product.category_id, 
+            category_id: product.category_id,
+            stripe_product_id: product.stripe_product_id,
+            stripe_price_id: product.stripe_price_id
         });
     
         return newProduct.product_id;

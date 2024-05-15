@@ -38,7 +38,7 @@ const CreateCategory = () => {
             };
     
             await CategoryService.addCategory(category); // Use the service to add a category
-            router.push('/admin?tab=categorias');
+            router.push('/administrador?view=Categorías');
         } catch (error) {
             setError(error.message);
         } finally {
@@ -159,7 +159,7 @@ const CreateCategory = () => {
                 </section>
                 <section className="mb-4">
                     <Button type='submit' disabled={loading} className="w-full">{loading ? 'Cargando...' : 'Crear Categoría'}</Button>
-                    <Button type='button' color="danger" onClick={() => router.push('/admin?tab=categorias')} className="w-full mt-4">Cancelar</Button>
+                    <Button type='button' color="danger" onClick={() => router.push('/administrador?view=Categorías')} className="w-full mt-4">Cancelar</Button>
                 </section>
             </form>
         </motion.main>

@@ -3,7 +3,6 @@ import React from 'react';
 const DeleteIcon = ({color}) => (
   <svg
     aria-hidden="true"
-    fill="none"
     focusable="false"
     height="1em"
     role="presentation"

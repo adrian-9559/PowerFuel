@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip, getKeyValue, Button, Pagination} from "@nextui-org/react";
+import { useRouter } from 'next/router';
 import UserService from '@services/userService';
 import DeleteIcon from '@icons/DeleteIcon';
 import EyeIcon from '@icons/EyeIcon';
 import EditIcon from '@icons/EditIcon';
+import PlusIcon from '@icons/PlusIcon';
 
 const statusColorMap = {
     Active: "success",
@@ -12,6 +14,7 @@ const statusColorMap = {
 };  
 
 const UserAdministration = () => {
+    const router = useRouter();
     const [Users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [page, setPage] = useState(1);
@@ -38,9 +41,18 @@ const UserAdministration = () => {
 
     return (
         <section>
-            <section>
-                <h1 className="text-center text-2xl font-bold">Listado de Usuarios</h1>
-            </section>
+            <section className='grid w-full'>
+                    <section>
+                        <h1 className="text-center text-2xl font-bold">Listado de Usuarios</h1>
+                    </section>
+                    <section className="flex justify-end mr-5 mb-5">
+                        <Tooltip color="success" content="Añadir Usuario">
+                            <Button isIconOnly color="success" variant='flat' none className="text-lg text-danger cursor-pointer active:opacity-50" onClick={() => router.push('/admin/createUser')}>
+                                <PlusIcon color="primary"/>
+                            </Button>
+                        </Tooltip>
+                    </section>
+                </section>
             <Table aria-label='Tabla de roles' selectionMode="multiple" 
                     className="w-full h-full"
                     bottomContent={

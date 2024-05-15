@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip, getKeyValue, Button, Pagination} from "@nextui-org/react";
+import { useRouter } from 'next/router';
 import ProductService from '@services/productService';
 import DeleteIcon from '@icons/DeleteIcon';
 import EyeIcon from '@icons/EyeIcon';
 import EditIcon from '@icons/EditIcon';
+import PlusIcon from '@icons/PlusIcon';
+import TrashIcon from '@icons/TrashIcon';
 
 const statusColorMap = {
     Enabled: "success",
@@ -11,6 +14,7 @@ const statusColorMap = {
 };  
 
 const ProductoAdministration = () => {
+    const router = useRouter();
     const [Products, setProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [page, setPage] = useState(1);
@@ -38,8 +42,22 @@ const ProductoAdministration = () => {
 
     return (
         <section>
-            <section>
-                <h1 className="text-center text-2xl font-bold">Listado de Productos</h1>
+            <section className='grid w-full'>
+                <section>
+                    <h1 className="text-center text-2xl font-bold">Listado de Productos</h1>
+                </section>
+                <section className="flex justify-between p-5 pt-3">
+                    <Tooltip color="danger" content="Eliminar Producto/s">
+                        <Button isIconOnly color="danger" variant='flat' none className="text-lg text-danger cursor-pointer active:opacity-50">
+                            <DeleteIcon color="primary"/>
+                        </Button>
+                    </Tooltip>
+                    <Tooltip color="success" content="Añadir Producto">
+                        <Button isIconOnly color="success" variant='flat' none className="text-lg text-danger cursor-pointer active:opacity-50" onClick={() => router.push('/admin/createProduct')}>
+                            <PlusIcon color="primary"/>
+                        </Button>
+                    </Tooltip>
+                </section>
             </section>
             <Table aria-label='Tabla de roles' selectionMode="multiple" 
                     className="w-full h-full"
@@ -112,17 +130,17 @@ const ProductoAdministration = () => {
                             </TableCell>
                             <TableCell>
                                 <section className="relative flex justify-center items-center gap-2">
-                                    <Tooltip color="primary" content="Details">
+                                    <Tooltip color="primary" content="Detalles">
                                         <Button isIconOnly color="primary" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50">
                                             <EyeIcon color="primary"/>
                                         </Button>
                                     </Tooltip>
-                                    <Tooltip color="success" content="Edit user" className="text-white">
+                                    <Tooltip color="success" content="Editar Usuario" className="text-white">
                                         <Button isIconOnly color="success" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50">
                                             <EditIcon color="green"/>
                                         </Button>
                                     </Tooltip>
-                                    <Tooltip color="danger" content="Delete product">
+                                    <Tooltip color="danger" content="Eliminar Producto">
                                         <Button isIconOnly color="danger" variant="light" none className="text-lg text-danger cursor-pointer active:opacity-50" onClick={() => deleteProduct(product.product_id)}>
                                             <DeleteIcon color="red"/>
                                         </Button>

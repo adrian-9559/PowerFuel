@@ -78,7 +78,7 @@ router.route('/:categoryId/child')
             if (!childCategories) {
                 return res.status(404).json({ message: 'Child categories not found' });
             }
-            res.json({childCategories});
+            res.json(childCategories);
         } catch (error) {
             console.error('Error getting the child categories:', error);
             res.status(500).json({ message: 'Error getting the child categories' });

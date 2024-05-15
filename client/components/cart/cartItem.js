@@ -70,7 +70,7 @@ function Cartproduct({ item }) {
                 <p className='font-semibold overflow-hidden overflow-ellipsis whitespace-nowrap'>{product.product_name}</p>
             </Tooltip>
         </section>
-        <section className='flex gap-2 justify-center products-center'>
+        <section className='flex gap-2 justify-center items-center products-center'>
           {
             quantity > 9 ? (
               <section className='flex gap-2 justify-center products-center'> {/* Añade products-center */}

@@ -58,10 +58,8 @@ class CategoryService {
      async getChildCategories(categoryId) {
         try {
             const response = await api.get(`/categories/${categoryId}/child`);
-            if (!response.data.categories) {
-                return [];
-            }
-            return response.data.categories;
+            console.log(response.data);
+            return response.data.categories??[];
         } catch (error) {
             console.error('Error fetching child categories:', error.message);
         }

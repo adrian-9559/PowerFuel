@@ -1,11 +1,9 @@
 // ProductImagesCarousel.js
 import React, { useState, useEffect } from 'react';
-import { Button } from "@nextui-org/react";
+import { Button, Accordion, AccordionItem } from "@nextui-org/react";
 import { motion } from 'framer-motion';
 import CategoryService from '@services/categoryService';
 import { useRouter } from 'next/router';
-
-
 
 const SideMenu = ({productId}) => {
     const router = useRouter();
@@ -15,6 +13,14 @@ const SideMenu = ({productId}) => {
     const fetchParentCategories = async () => {
         const categories = await CategoryService.getParentCategories();
         setCategoriesParents(categories);
+    };
+
+    const handleMouseEnter = (index) => {
+        setOpenedIndex(index);
+    };
+
+    const handleMouseLeave = () => {
+        setOpenedIndex(null);
     };
 
     const toggleMenuLeft = () => {
@@ -49,7 +55,7 @@ const SideMenu = ({productId}) => {
 
 
     return (
-        <section className='container'>
+        <section>
              <Button isIconOnly onClick={toggleMenuLeft}>
                  <svg xmlns="http://www.w3.org/2000/svg" height="10" width="8.75" viewBox="0 0 448 512">
                      <path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/>
@@ -59,7 +65,7 @@ const SideMenu = ({productId}) => {
                  initial={{ x: '-100%' }}
                  animate={{ x: showMenuLeft ? '0%' : '-100%' }}
                  transition={{duration: 0.5}}
-                 className="fixed top-0 left-0 w-64 z-50 h-screen max-w-full shadow-2xl bg-white border-r border-gray-200"
+                 className="fixed top-0 left-0 w-64 z-50 h-screen max-w-full bg-gray-500 bg-opacity-90 shadow-2xl border-r border-gray-200"
                  onClick={(e) => e.stopPropagation()}
              >
                  <motion.div
@@ -80,20 +86,19 @@ const SideMenu = ({productId}) => {
                          </svg>
                      </Button>
                  </motion.div>
-                 <ul className="flex flex-col items-center mt-16">
-                    {categoriesParents && categoriesParents.map((category) => (
-                        <li className="w-full" key={category.category_id}>
-                            <Button 
-                                onClick={(e) => { router.push(`/category/${category.category_id}`); }} 
-                                radius="none" 
-                                className="w-full" 
-                                color='default'
-                            >
-                                {category.category_name} {category.category_id}
-                            </Button>
-                        </li>
+                 <Accordion >
+                    {categoriesParents && categoriesParents.map((category, index) => (
+                        <AccordionItem
+                            className="w-full"
+                            aria-label={category.category_name}
+                            title={category.category_name}
+                            key={category.category_id}
+                            onClick={() => { router.push(`/category/${category.category_id}`); }}
+                        >
+                            <p onClick={() => { router.push(`/category/${category.category_id}`); }}>{category.category_name}</p>
+                        </AccordionItem>
                     ))}
-                </ul>
+                </Accordion>
              </motion.div>
          </section>
      );

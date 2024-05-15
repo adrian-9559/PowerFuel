@@ -26,7 +26,7 @@ const CreateRole = () => {
                 // If no id is provided or it's an empty string, add a new role
                 await RoleService.addRole(name);
             }
-            router.push('/admin?tab=roles');
+            router.push('/administrador?view=Roles');
         } catch (error) {
             setError(error.message);
         } finally {
@@ -68,7 +68,7 @@ const CreateRole = () => {
                 <section className="mb-4">
                     <Button type='submit' disabled={loading} className="w-full">{id ? 'Guardar' : 'Crear Role'}</Button>
                     {loading && <p className="text-blue-500 text-sm mt-2">Cargando...</p>}
-                    <Button type='button' color="danger" onClick={() => router.push('/admin?tab=roles')} className="w-full mt-4">Cancelar</Button>
+                    <Button type='button' color="danger" onClick={() => router.push('/administrador?view=Roles')} className="w-full mt-4">Cancelar</Button>
                 </section>
             </form>
         </main>

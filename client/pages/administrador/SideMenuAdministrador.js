@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAppContext } from '@context/AppContext';
-import RoleService from '@services/roleService';
+import {Button} from '@nextui-org/react';
+import ArrowIcon from '@icons/ArrowIcon';
 
 const ADMIN_ACTIONS = {
     '99': [
@@ -51,13 +52,25 @@ const SideMenuAdministrador = ({ComponentUse, setComponentUse}) => {
     },[isLoggedIn, user]);
 
     return (
-        <nav className='h-full border-r border-gray-300 pt-4 w-56 pb-96'>
-            <section className="flex flex-col justify-center gap-1">
-                <h1 className="font-bold px-5">Menú Administrador</h1>
+        <nav className='py-4 w-64'>
+            <ul 
+                className="flex flex-col items-center gap-1 w-full"
+            >
+                <li className="w-full">
+                    <h1 className="font-bold w-full px-8">Menú Administrador</h1>
+                </li>
+                
                 {ADMIN_ACTIONS[roleUser] && ADMIN_ACTIONS[roleUser].map((action, index) => (
-                    <section className='hover:bg-gray-200 dark:hover:bg-blue-800 w-full items-center flex h-10 cursor-pointer px-5' key={index} onClick={() => setComponentUse(action)}>{action}</section>
+                    <li className="w-full p-0" key={index}>
+                        <Button 
+                            radius="none" variant="light" className='w-full cursor-pointer justify-start text-start' key={index} onClick={() => setComponentUse(action)}
+                            startContent={<ArrowIcon/>} // Mostrar el icono sólo si hoveredIndex es igual al índice del botón
+                        >
+                            {action}
+                        </Button>
+                    </li>
                 ))}
-            </section>
+            </ul>
         </nav>
     );
 }

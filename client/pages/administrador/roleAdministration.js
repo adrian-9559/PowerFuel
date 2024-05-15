@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Tooltip, Button, Pagination} from "@nextui-org/react";
+import { useRouter } from 'next/router';
 import RoleService from '@services/roleService';
 import EditIcon from '@icons/EditIcon';
 import DeleteIcon from '@icons/DeleteIcon';
+import PlusIcon from '@icons/PlusIcon';
 
 const RoleAdministration = () => {
+    const router = useRouter();
     const [Roles, setRoles] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [page, setPage] = useState(1);
@@ -36,8 +39,17 @@ const RoleAdministration = () => {
             <h1>Loading...</h1>
         ) : (
             <section>
-                <section>
-                    <h1 className="text-center text-2xl font-bold">Listado de Roles</h1>
+                <section className='grid w-full'>
+                    <section>
+                        <h1 className="text-center text-2xl font-bold">Listado de Roles de Usuario</h1>
+                    </section>
+                    <section className="flex justify-end mr-5 mb-5">
+                        <Tooltip color="success" content="Añadir Rol">
+                            <Button isIconOnly color="success" variant='flat' none className="text-lg text-danger cursor-pointer active:opacity-50" onClick={() => router.push('/admin/createCategory')}>
+                                <PlusIcon color="primary"/>
+                            </Button>
+                        </Tooltip>
+                    </section>
                 </section>
                 <Table aria-label='Tabla de roles' selectionMode="multiple" 
                     className="w-full h-full"

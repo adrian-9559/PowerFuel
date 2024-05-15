@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const model = require('./userModel');
 const filesUpload = require('../files/controller');
-const { createStripeCustomer } = require('../payment/controller');
+const { createStripeCustomer } = require('../stripe/controller');
 
 const generateToken = (userId) => jwt.sign({ userId }, process.env.JWT_SECRET_KEY, { expiresIn: '8h' });
 

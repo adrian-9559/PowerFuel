@@ -5,8 +5,16 @@ const model = require('./productModel');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const {createProduct} = require('../stripe/controller');
 
 const addProduct = async (productData) => {
+    // Crear el producto en Stripe
+    const {productId, priceId} = await createProduct(productData.product_name, productData.description, productData.price);
+
+    productData.stripe_product_id = productId;
+    productData.stripe_price_id = priceId;
+
+
     const product = await model.insertProduct(productData);
     return product;
 };

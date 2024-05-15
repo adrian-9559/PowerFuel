@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Card } from '@nextui-org/react';
 import PaymentService from './PaymentService';
 
-const PaymentMethodsList = ({ userId }) => {
+const PaymentMethodsList = () => {
   const [paymentMethods, setPaymentMethods] = useState([]);
 
   useEffect(() => {
     const fetchPaymentMethods = async () => {
-      const customer = await PaymentService.getCustomer(userId);
+      console.log("id", userId)
+      const customer = await PaymentService.getCustomerPaymentMethods();
       // Asumiendo que los métodos de pago están en customer.paymentMethods
       setPaymentMethods(customer.paymentMethods);
     };

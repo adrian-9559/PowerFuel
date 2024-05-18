@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Card } from '@nextui-org/react';
-import PaymentService from '@services/paymentService';
+import PaymentService from './PaymentService';
 
 const PaymentMethodsList = ({ userId }) => {
   const [paymentMethods, setPaymentMethods] = useState([]);

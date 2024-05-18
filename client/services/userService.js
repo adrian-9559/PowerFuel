@@ -39,11 +39,7 @@ class UserService {
     }
 
     async getUserById(id=null) {
-        return await api.get(`/users/${id}`, {
-            headers: {
-                Authorization: `Bearer ${sessionStorage.getItem('token')}`
-            }
-        });
+        return await api.get(`/users/${id}`);
     }
 
     async setUserImage(image) {
@@ -58,7 +54,7 @@ class UserService {
         return response;
     }
 
-    async getUserByRegisterDate(startDate, endDate) {
+    async getUserByRegisterWeek(startDate, endDate) {
         const response = await api.post(`/users/usersByRegistrationDate`, {startDate, endDate});
         return response.data;
     }

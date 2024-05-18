@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback }from 'react';
+import React, { useState, useEffect }from 'react';
 import { Dropdown, DropdownMenu, DropdownItem, DropdownTrigger, Button, Badge, useDisclosure, user, ScrollShadow } from "@nextui-org/react";
 import CartItem from '@components/cart/cartItem';
 import { useRouter } from 'next/router';
@@ -23,7 +23,7 @@ const CartMenu = () => {
             onOpenChange(false);
     }
     
-    const getTotalPrice = useCallback(async () => {
+    async function getTotalPrice() {
         let total = 0;
         for (const item of cart) {
             try {
@@ -36,7 +36,7 @@ const CartMenu = () => {
             }
         }
         setTotal(parseFloat(total.toFixed(2)));
-    }, [cart]);
+    }
     
     function quantityHasChanged(newCart, oldCart) {
         for(let i = 0; i < newCart.length; i++) {
@@ -49,13 +49,15 @@ const CartMenu = () => {
     }
 
     useEffect(() => {
-        if (isFirstLoad) {
-            setIsFirstLoad(false);
-            getTotalPrice();
-        } else if (isOpen) {
-            getTotalPrice();
-        }
-    }, [cartAux, getTotalPrice, isFirstLoad, isOpen, onOpenChange]);
+        setIsLoading(true);
+        getTotalPrice();
+        setTimeout(() => {
+            setIsLoading(false);
+            if(!isFirstLoad && !isOpen && cart && cart.length > 0 && (quantityHasChanged(cartAux, cart) || cartAux.length !== cart.length))
+                onOpenChange(true);
+            if(isFirstLoad) setIsFirstLoad(false); // Cambiar el estado después de la primera carga
+        }, 750);
+    }, [cart]);
 
     const handleReviewOrder = () => {
         onOpenChange(false);

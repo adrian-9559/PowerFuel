@@ -145,7 +145,7 @@ UserCredentials.init({
         defaultValue: 'Active'
     },
     registration_date:{
-        type: DataTypes.DATE(3),
+        type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
         allowNull: false
     },

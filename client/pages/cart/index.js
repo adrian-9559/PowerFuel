@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Image, Input, Select, SelectItem, Modal, useDisclosure } from "@nextui-org/react";
 import { useRouter } from 'next/router';
 import ProductService from '@services/productService';
@@ -28,7 +28,7 @@ const ViewCart = () => {
         setCart(cart.filter(item => item.product_id !== id));
     };
 
-    const getTotalPrice = useCallback(async () => {
+    async function getTotalPrice() {
         let total = 0;
         for (const item of cart) {
             try {
@@ -41,11 +41,11 @@ const ViewCart = () => {
             }
         }
         setTotal(parseFloat(total.toFixed(2)));
-    }, [cart]);
+    }
 
     useEffect(() => {
         getTotalPrice();
-    }, [cart, getTotalPrice]);
+    }, [cart]);
 
     return (
         <main className='flex flex-col items-center justify-center p-4'>

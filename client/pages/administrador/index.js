@@ -19,16 +19,18 @@ const Administrador = () => {
     const [ComponentUse, setComponentUse] = useState(view);
 
     useEffect(() => {
-        console.log(isAdmin, user, isLoggedIn);
         const checkLoginStatus = setTimeout(() => {
             if (!isLoggedIn || !isAdmin || !user || user.role_id === 10) {
                 router.push('/');
             }
         }, 1000);
+    
         setComponentUse(view);
-        router.replace(router.pathname);
+        router.replace(router.pathname); // Remove the query parameter from the URL
         return () => clearTimeout(checkLoginStatus);
-    }, [isLoggedIn, isAdmin, router, user, view]);
+    }, [isLoggedIn, isAdmin]);
+
+
 
     return (
         <section className="h-full flex w-full gap-8">

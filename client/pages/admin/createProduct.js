@@ -72,7 +72,7 @@ const CreateProduct = () => {
         };
         
         fetchData();
-    }, [id]);
+    }, []);
 
     const handleRegister = async (e) => {
         e.preventDefault();

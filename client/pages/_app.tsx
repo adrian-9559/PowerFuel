@@ -1,4 +1,3 @@
-import React, {useEffect}from "react";
 import type { AppProps } from "next/app";
 import { NextUIProvider } from "@nextui-org/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
@@ -12,9 +11,9 @@ import toastr from 'toastr';
 import 'toastr/build/toastr.min.css';
 
 toastr.options = {
-	positionClass: "toast-bottom-right",
-	timeOut: 2000,
-	extendedTimeOut: 1000,
+	"positionClass": "toast-bottom-right",
+	"timeOut": "2000",
+	"extendedTimeOut": "1000",
   }
 
 export default function App({ Component, pageProps }: AppProps) {

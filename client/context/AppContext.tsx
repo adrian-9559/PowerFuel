@@ -69,7 +69,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         const userInfo = await UserService.getUserById();
         const userRole = await RoleService.getRoleByUserId();
         setUser(userInfo.data);
-        setIsAdmin(userRole.data !== 10);
+        setIsAdmin(userRole !== 10);
       };
   
       fetchUserInfo();
@@ -77,22 +77,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   }, [isLoggedIn]);
 
   return (
-    <AppContext.Provider
-      value={{
-        isLoggedIn,
-        setIsLoggedIn,
-        user,
-        setUser,
-        cart,
-        setCart,
-        isAdmin,
-        setIsAdmin,
-        router,
-      }}
-      >
+    <AppContext.Provider value={{ isLoggedIn, setIsLoggedIn, user, setUser, cart, setCart, isAdmin, setIsAdmin}}>
       {children}
     </AppContext.Provider>
   );
 };
 
+// Crear un hook personalizado para usar el contexto
 export const useAppContext = () => useContext(AppContext);

@@ -52,7 +52,7 @@ const CreateUser = () => {
         }
     }
     fetchRoles();
-}, [router.query.id]);
+}, [id]);
 
     const handleChange = (event) => {
         const { name, value } = event.target;

@@ -15,6 +15,7 @@ const Config = () => {
     useEffect(() => {
         const checkLoginStatus = setTimeout(() => {
             if (!isLoggedIn) {
+                console.log("El q me importa:" , isLoggedIn);
                 router.push('/');
             } else {
                 setIsLoading(false);
@@ -22,7 +23,7 @@ const Config = () => {
         }, 1000);
     
         return () => clearTimeout(checkLoginStatus);
-    }, [isLoggedIn, router]);
+    }, [isLoggedIn]);
 
     return (
         <section className='flex h-full items-stretch'>

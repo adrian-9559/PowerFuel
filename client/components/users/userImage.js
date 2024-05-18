@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useCallback } from 'react';
+// UserImage.js
+import React, { useEffect, useState } from 'react';
 import { Image, Avatar } from "@nextui-org/react";
 
 const UserImage = ({user}) => {
@@ -30,9 +31,9 @@ const UserImage = ({user}) => {
         return '#' + '00000'.substring(0, 6 - c.length) + c;
     };
     
-    const getProfileColor = useCallback(() => {
+    const getProfileColor = () => {
         return intToRGB(hashCode(sessionStorage.getItem('token')));
-    }, []);
+    };
 
     useEffect(() => {
         setStyle({
@@ -40,7 +41,8 @@ const UserImage = ({user}) => {
             backgroundColor: getProfileColor(),
         });
         
-    }, [image, getProfileColor, style]);
+    }, [setImage]);
+
     return (
         <section style={style} className='w-full h-full rounded-full'>
             {image ? (  

@@ -12,11 +12,7 @@ class RoleService{
         if(userId!=null){
             response = await api.get(`/roles/user/${userId}`);
         }else{
-            response = await api.post(`/roles/user`, {
-                headers: {
-                    Authorization: `Bearer ${sessionStorage.getItem('token')}`
-                }
-            });
+            response = await api.post(`/roles/user`);
         }
         return response;
     }

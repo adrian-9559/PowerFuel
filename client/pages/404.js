@@ -1,8 +1,8 @@
-import React from 'react';
+// pages/404.js
 
 import Link from 'next/link';
 
-const Custom404 = () => {
+export default function Custom404() {
     return (
         <div>
             <h1>404 - Página no encontrada</h1>
@@ -12,5 +12,3 @@ const Custom404 = () => {
         </div>
     );
 }
-
-export default Custom404;

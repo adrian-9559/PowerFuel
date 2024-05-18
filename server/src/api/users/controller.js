@@ -96,13 +96,8 @@ const loginUser = async (email, current_password) => {
 };
 
 const getUsersByRegistrationDate = async (startDate, endDate) => {
-    try {
-        const users = await getUsersByRegistrationDate(new Date(startDate), new Date(endDate));
-        return users;
-    } catch (error) {
-        console.error('Error getting users by registration date:', error);
-        throw new Error('Error getting users by registration date');
-    }
+    const users = (await model.getUsersByRegistrationDate(startDate, endDate)).length;
+    return users;
 };
 
 

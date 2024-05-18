@@ -5,7 +5,8 @@ import UserImage from '../../users/userImage';
 import UserService from '@services/userService';
 import RoleService from '@services/roleService';
 import { useAppContext } from '@context/AppContext';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 
 const UserMenu = () => {
@@ -18,7 +19,15 @@ const UserMenu = () => {
         sessionStorage.removeItem('token');
         setIsLoggedIn(false);
         router.push('/');
+        router.reload();
     };
+
+    const handleConfig = (e) => {
+        e.preventDefault() 
+        router.push('/users/config');
+    };
+
+    
 
     useEffect(() => {
         console.log('UserMenu', user);
@@ -40,8 +49,8 @@ const UserMenu = () => {
                         <p className='font-bold'>Hola,</p>
                         <p className="font-bold">{user.email}</p>
                     </DropdownItem>
-                    <DropdownItem key="settings" textValue="Settings" onClick={() => router.push('/users/config')}>
-                        Configuración
+                    <DropdownItem key="settings" textValue="Settings" onClick={handleConfig}>
+                            <p>Configuración</p>
                     </DropdownItem>
                     <DropdownItem key="team_settings" textValue="Delivered" showDivider>Pedidos</DropdownItem>
                     

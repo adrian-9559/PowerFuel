@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Card } from '@nextui-org/react';
-import PaymentService from './PaymentService';
+import PaymentService from '@services/paymentService';
 
 const PaymentMethodsList = () => {
   const [paymentMethods, setPaymentMethods] = useState([]);
@@ -14,7 +14,7 @@ const PaymentMethodsList = () => {
     };
 
     fetchPaymentMethods();
-  }, [userId]);
+  }, []);
 
   return (
     <div>

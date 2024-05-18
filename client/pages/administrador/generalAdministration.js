@@ -15,15 +15,26 @@ const GeneralAdministration = () => {
     }
 
     useEffect(() => {
-        getNumUsersWeek();
+        getUserData();
     }, [])
 
-    async function getNumUsersWeek(){
+    async function getUserData(){
         const dateStart = new Date();
         const dateEnd = new Date();
-        dateEnd.setDate(dateStart.getDate() - 7)
-        console.log("Fecha Inicio: ", formatDate(dateStart));
-        console.log("Fecha Fin: ", formatDate(dateEnd));
+        dateStart.setDate(dateEnd.getDate() - 7)
+        try{
+            setNumUsersRegisterWeek(await UserService.getUserByRegisterDate(dateStart, dateEnd));
+        }catch(error){
+            console.error(error);
+        } 
+    }
+
+    async function setNumUsers(){
+        try{
+            
+        }catch(error){
+            console.error(error);
+        }
     }
 
     return (
@@ -36,34 +47,34 @@ const GeneralAdministration = () => {
                     </CardHeader>
                     <CardBody className="justify-center h-auto w-full grid grid-cols-2 grid-row-2 gap-2">
                         <Card className='bg-blue-500 bg-opacity-50 rounded-[0.375rem] '>
-                            <CardHeader >
-                                <h4 className="font-medium text-2xs text-large text-tiny">Número total de usuarios</h4>
+                            <CardHeader className="z-10 flex-col !items-start pb-0">
+                                <h4 className="absolute font-medium text-2xs text-large text-tiny">Número total de usuarios</h4>
                             </CardHeader>
-                            <CardBody>
+                            <CardBody className="p-0 pl-4 pt-8">
                                 <p className="uppercase text-6xl">{numTotalUsers}</p>
                             </CardBody>
                         </Card>
                         <Card className='bg-blue-500 w-auto h-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
                             <CardHeader className="z-10 flex-col !items-start pb-0">
-                                <h4 className="font-medium text-2xs text-large text-tiny">Usuarios registrados esta semana</h4>
+                                <h4 className="absolute font-medium text-2xs text-large text-tiny">Usuarios registrados esta semana</h4>
                             </CardHeader>
-                            <CardBody>
+                            <CardBody className="p-0 pl-4 pt-8">
+                                <p className="uppercase text-6xl">{numUsersRegisterWeek}</p>
+                            </CardBody>
+                        </Card>
+                        <Card className='bg-blue-500 w-auto h-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
+                            <CardHeader className="z-10 flex-col !items-start pb-0">
+                                <h4 className="absolute font-medium text-2xs text-large text-tiny">Usuarios en la página</h4>
+                            </CardHeader>
+                            <CardBody className="p-0 pl-4 pt-8">
                                 <p className="uppercase text-6xl">{numTotalUsers}</p>
                             </CardBody>
                         </Card>
                         <Card className='bg-blue-500 w-auto h-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
                             <CardHeader className="z-10 flex-col !items-start pb-0">
-                                <h4 className="font-medium text-2xs text-large text-tiny">Usuarios en la página</h4>
+                                <h4 className="absolute font-medium text-2xs text-large text-tiny">Usuarios que han comprado</h4>
                             </CardHeader>
-                            <CardBody>
-                                <p className="uppercase text-6xl">{numTotalUsers}</p>
-                            </CardBody>
-                        </Card>
-                        <Card className='bg-blue-500 w-auto h-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
-                            <CardHeader className="z-10 flex-col !items-start pb-0">
-                                <h4 className="font-medium text-2xs text-large text-tiny">Usuarios que han comprado</h4>
-                            </CardHeader>
-                            <CardBody>
+                            <CardBody className="p-0 pl-4 pt-8">
                                 <p className="uppercase text-6xl">{numTotalUsers}</p>
                             </CardBody>
                         </Card>
@@ -77,33 +88,33 @@ const GeneralAdministration = () => {
                     <CardBody className=" justify-center h-auto w-full grid grid-cols-2 grid-row-2 gap-2">
                         <Card className='bg-purple-500 w-auto h-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem] '>
                             <CardHeader className="z-10 flex-col !items-start pb-0">
-                                <h4 className="font-medium text-2xs text-large text-tiny">Número total de pedidos</h4>
+                                <h4 className="absolute font-medium text-2xs text-large text-tiny">Número total de pedidos</h4>
                             </CardHeader>
-                            <CardBody>
+                            <CardBody className="p-0 pl-4 pt-8">
                                 <p className="uppercase text-6xl ">{numTotalUsers}</p>
                             </CardBody>
                         </Card>
                         <Card className='bg-purple-500 w-auto h-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
                             <CardHeader className="z-10 flex-col !items-start pb-0">
-                                <h4 className="font-medium text-2xs text-large text-tiny">Pedidos semanales</h4>
+                                <h4 className="absolute font-medium text-2xs text-large text-tiny">Pedidos semanales</h4>
                             </CardHeader>
-                            <CardBody>
+                            <CardBody className="p-0 pl-4 pt-8">
                                 <p className="uppercase text-6xl">{numTotalUsers}</p>
                             </CardBody>
                         </Card>
                         <Card className='bg-purple-500 w-auto h-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
                             <CardHeader className="z-10 flex-col !items-start pb-0">
-                                <h4 className="font-medium text-2xs text-large text-tiny">Pedidos en reparto</h4>
+                                <h4 className="absolute font-medium text-2xs text-large text-tiny">Pedidos en reparto</h4>
                             </CardHeader>
-                            <CardBody>
+                            <CardBody className="p-0 pl-4 pt-8">
                                 <p className="uppercase text-6xl">{numTotalUsers}</p>
                             </CardBody>
                         </Card>
                         <Card className='bg-purple-500 w-auto h-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
                             <CardHeader className="z-10 flex-col !items-start pb-0">
-                                <h4 className="font-medium text-2xs text-large text-tiny">Pedidos entregados</h4>
+                                <h4 className="absolute font-medium text-2xs text-large text-tiny">Pedidos entregados</h4>
                             </CardHeader>
-                            <CardBody>
+                            <CardBody className="p-0 pl-4 pt-8">
                                 <p className="uppercase text-6xl">{numTotalUsers}</p>
                             </CardBody>
                         </Card>
@@ -117,33 +128,33 @@ const GeneralAdministration = () => {
                     <CardBody className=" justify-center h-auto w-full grid grid-cols-2 grid-row-2 gap-2">
                         <Card className='bg-green-500 w-auto h-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem] '>
                             <CardHeader className="z-10 flex-col !items-start pb-0">
-                                <h4 className="font-medium text-2xs text-large text-tiny">Número total de productos</h4>
+                                <h4 className="absolute font-medium text-2xs text-large text-tiny">Número total de productos</h4>
                             </CardHeader>
-                            <CardBody>
+                            <CardBody className="p-0 pl-4 pt-8">
                                 <p className="uppercase text-6xl ">{numTotalUsers}</p>
                             </CardBody>
                         </Card>
                         <Card className='bg-green-500 w-auto h-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
                             <CardHeader className="z-10 flex-col !items-start pb-0">
-                                <h4 className="font-medium text-2xs text-large text-tiny">Productos en oferta</h4>
+                                <h4 className="absolute font-medium text-2xs text-large text-tiny">Productos en oferta</h4>
                             </CardHeader>
-                            <CardBody>
+                            <CardBody className="p-0 pl-4 pt-8">
                                 <p className="uppercase text-6xl">{numTotalUsers}</p>
                             </CardBody>
                         </Card>
                         <Card className='bg-green-500 w-auto h-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
                             <CardHeader className="z-10 flex-col !items-start pb-0">
-                                <h4 className="font-medium text-2xs text-large text-tiny">Productos sin stock</h4>
+                                <h4 className="absolute font-medium text-2xs text-large text-tiny">Productos sin stock</h4>
                             </CardHeader>
-                            <CardBody>
+                            <CardBody className="p-0 pl-4 pt-8">
                                 <p className="uppercase text-6xl">{numTotalUsers}</p>
                             </CardBody>
                         </Card>
                         <Card className='bg-green-500 w-auto h-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
                             <CardHeader className="z-10 flex-col !items-start pb-0">
-                                <h4 className="font-medium text-2xs text-large text-tiny">Productos</h4>
+                                <h4 className="absolute font-medium text-2xs text-large text-tiny">Productos</h4>
                             </CardHeader>
-                            <CardBody>
+                            <CardBody className="p-0 pl-4 pt-8">
                                 <p className="uppercase text-6xl">{numTotalUsers}</p>
                             </CardBody>
                         </Card>
@@ -189,7 +200,7 @@ const GeneralAdministration = () => {
                     <div className="flex flex-grow gap-2 items-center">
                         <div className="flex flex-col">
                             <p className="text-tiny">Breathing App</p>
-                            <p className="text-tiny">Get a good night's sleep.</p>
+                            <p className="text-tiny">Get a good nights sleep.</p>
                         </div>
                     </div>
                     <Button radius="full" size="sm">Get App</Button>

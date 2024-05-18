@@ -11,9 +11,10 @@ const stripePromise = loadStripe('pk_test_51P5QR3Iqj90TtX55bRu7F6whFW26fRauivAnk
 
 const PaymentForm = () => {
   const {cart, setCart} = useAppContext();
+  
   const fetchClientSecret = useCallback(async () => {
     return await PaymentService.createCheckoutSession(cart);
-  }, []);
+  }, [cart]);
 
   const handleSuccess = () => {
     setCart([]);

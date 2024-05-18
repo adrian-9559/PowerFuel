@@ -128,7 +128,7 @@ function AdminPanel() {
         }
     
         return () => clearTimeout(checkLoginStatus);
-    }, [isLoggedIn, isAdmin]);
+    }, [isLoggedIn, isAdmin, router, tab]);
 
     useEffect(() => {
         if ( adminType && selectedTab && ADMIN_ACTIONS[adminType] && ADMIN_ACTIONS[adminType][selectedTab]) {

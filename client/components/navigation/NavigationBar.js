@@ -25,6 +25,7 @@ const NavigationBar = () => {
                     <NavbarBrand className="cursor-pointer" onClick={() => router.push('/')}>
                         <Image className="object-cover h-12 w-12"
                             src={`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/logo/logo.png`}
+                            alt="logo"
                         />
                     </NavbarBrand>
                 </NavbarContent>

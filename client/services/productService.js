@@ -4,7 +4,10 @@ class ProductService {
 
     async getProductById(id) {
         try {
+            console.log(id);
             const response = await api.get(`/products/${id}`);
+            console.log("hola");
+            console.log(response);
             if (!response.data) {
                 throw new Error('Product not found');
             }

@@ -3,12 +3,14 @@ import { useState } from 'react';
 import { useAppContext } from '@context/AppContext';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
+import { useCart } from '@hooks/useCart';
 
 const ProductCard = ({ product }) => {
     const { cart, setCart } = useAppContext();
     const [isAdded, setIsAdded] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const { addToCart } = useCart();
     const router = useRouter();
 
     const handleKeyDown = (event) => {
@@ -17,23 +19,6 @@ const ProductCard = ({ product }) => {
         }
     };
 
-    const addToCart = () => {
-        setIsLoading(true);
-        setIsHovered(true);
-        setTimeout(() => {
-            setIsLoading(false);
-            setIsAdded(true);
-            const cartItem = cart.find(item => item.product_id === product.product_id);
-            if (cartItem) {
-                cartItem.quantity += 1;
-                setCart([...cart]);
-            } else {
-                setCart([...cart, {product_id: product.product_id, quantity: 1 }]);
-            }
-            setTimeout(() => setIsAdded(false), 1000);
-            setIsHovered(false);
-        }, 1000);
-    };
 
     return (
         <Card  
@@ -85,7 +70,7 @@ const ProductCard = ({ product }) => {
                             radius="full" 
                             className={`text-black transition-opacity duration-2000`} 
                             isIconOnly 
-                            onPress={addToCart}
+                            onPress={()=>{addToCart(product.product_id)}}
                             onFocus={() => setIsHovered(true)}
                             onBlur={() => !isLoading && setIsHovered(false)}
                         >

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getCategories, getCategoryById, addCategory, updateCategoryById, deleteCategoryById, getParentCategories, getChildCategories } = require('./controller');
+const { getCategories, getCategoryById, addCategory, updateCategoryById, deleteCategoryById, getParentCategories, getChildCategories, getAllCategories } = require('./controller');
 
 router.route('/')
     .get(async (req, res) => {
@@ -82,6 +82,18 @@ router.route('/:categoryId/child')
         } catch (error) {
             console.error('Error getting the child categories:', error);
             res.status(500).json({ message: 'Error getting the child categories' });
+        }
+    });
+
+    
+router.route('/all')
+    .post(async (req, res) => {
+        try {
+            const categories = await getAllCategories();
+            res.json(categories);
+        } catch (error) {
+            console.error('Error fetching all categories:', error.message);
+            res.status(500).json({ message: 'Error fetching all categories' });
         }
     });
 

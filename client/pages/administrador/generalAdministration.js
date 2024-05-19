@@ -26,7 +26,7 @@ const GeneralAdministration = () => {
     }, [])
 
     return (
-        <section className="w-full p-6 flex flex-col gap-3">
+        <section className="w-full flex flex-col gap-3">
             <section className='w-full flex gap-3'>
                 <Card className="col-span-12 sm:col-span-4 h-auto w-full">
                     <CardHeader className="flex-col !items-start pb-0">

@@ -58,12 +58,20 @@ class CategoryService {
      async getChildCategories(categoryId) {
         try {
             const response = await api.get(`/categories/${categoryId}/child`);
-            console.log(response.data);
             return response.data.categories??[];
         } catch (error) {
             console.error('Error fetching child categories:', error.message);
         }
     };
+
+    async getAllCategories() {
+        try {
+            const response = await api.post('/categories/all');
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching all categories:', error.message);
+        }
+    }
 }
 
 const categoryService = new CategoryService();

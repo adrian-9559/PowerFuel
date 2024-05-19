@@ -27,7 +27,10 @@ const AppContext = createContext({
   cart: [] as CartItem[],
   setCart: (() => {}) as React.Dispatch<React.SetStateAction<CartItem[]>>,
   isAdmin: false,
-  setIsAdmin: (value: boolean) => {}
+  setIsAdmin: (value: boolean) => {},
+  isCartOpen: false,
+  onOpenCartChange: (value: boolean) => {},
+  onOpenCart : () => {}
 });
 
 // Crear el proveedor de contexto
@@ -37,7 +40,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isClient, setIsClient] = useState(false); 
-  const router = useRouter();
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   useEffect(() => {
     setIsClient(true); 
@@ -60,6 +63,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     if(cart.length === 0 && isClient) {
       localStorage.removeItem('cart');
     }
+
   }, [cart, isClient]);
 
   useEffect(() => {
@@ -75,7 +79,14 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [isLoggedIn]);
 
+  const onOpenCartChange = (value: boolean) => {
+    console.log(value);
+    setIsCartOpen(value);
+  }
 
+  const onOpenCart = () => {
+    setIsCartOpen(true);
+  };
 
   return (
     <AppContext.Provider 
@@ -86,7 +97,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           user, setUser,
           cart, setCart,
           isAdmin,
-          setIsAdmin
+          setIsAdmin,
+          isCartOpen,
+          onOpenCartChange,
+          onOpenCart
         }
       }
     >

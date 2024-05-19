@@ -48,13 +48,13 @@ const ProductoAdministration = () => {
                 </section>
                 <section className="flex justify-between p-5 pt-3">
                     <Tooltip color="danger" content="Eliminar Producto/s">
-                        <Button isIconOnly color="danger" variant='flat' none className="text-lg text-danger cursor-pointer active:opacity-50">
+                        <Button isIconOnly color="danger" className="text-lg cursor-pointer active:opacity-50">
                             <DeleteIcon color="primary"/>
                         </Button>
                     </Tooltip>
                     <Tooltip color="success" content="Añadir Producto">
-                        <Button isIconOnly color="success" variant='flat' none className="text-lg text-danger cursor-pointer active:opacity-50" onClick={() => router.push('/admin/createProduct')}>
-                            <PlusIcon color="primary"/>
+                        <Button isIconOnly color="success" className="text-lg  cursor-pointer active:opacity-50" onClick={() => router.push('/admin/createProduct')}>
+                            <PlusIcon color="white"/>
                         </Button>
                     </Tooltip>
                 </section>

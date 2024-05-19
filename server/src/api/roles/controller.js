@@ -3,7 +3,6 @@ const model = require('./roleModel');
 const getRoleById = async (roleId) => {
     
     let role = await model.getRoles(roleId);
-    console.log(role);
     role =  role.map(role => ({
         "role_id": role.role_id ,
         "role_name": role.role_name ,

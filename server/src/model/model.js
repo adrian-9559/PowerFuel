@@ -215,18 +215,27 @@ Category.init({
 // Relaciones
 UserCredentials.hasOne(UserInfo, { foreignKey: 'user_id' });
 UserCredentials.hasMany(UserAddress, { foreignKey: 'user_id' });
+UserCredentials.hasMany(UserRoles, { foreignKey: 'user_id' });
+UserCredentials.belongsToMany(Role, { through: UserRoles, foreignKey: 'user_id' });
+UserCredentials.hasMany(OldPasswords, { foreignKey: 'user_id' });
+
+UserRoles.belongsTo(UserCredentials, { foreignKey: 'user_id' });
+UserRoles.belongsTo(Role, { foreignKey: 'role_id' });
+
 UserAddress.belongsTo(UserCredentials, { foreignKey: 'user_id' });
+
+OldPasswords.belongsTo(UserCredentials, { foreignKey: 'user_id' });
+
+Role.belongsToMany(UserCredentials, { through: UserRoles, foreignKey: 'role_id' });
+Role.hasMany(UserRoles, { foreignKey: 'role_id' });
+
 Product.belongsTo(Brand, { foreignKey: 'id_brand' });
 Product.belongsTo(Category, { foreignKey: 'category_id' });
+
 Category.hasMany(Product, { foreignKey: 'category_id' });
-UserCredentials.belongsToMany(Role, { through: UserRoles, foreignKey: 'user_id' });
-Role.belongsToMany(UserCredentials, { through: UserRoles, foreignKey: 'role_id' });
-UserCredentials.hasMany(UserRoles, { foreignKey: 'user_id' });
-UserRoles.belongsTo(UserCredentials, { foreignKey: 'user_id' });
-Role.hasMany(UserRoles, { foreignKey: 'role_id' });
-UserRoles.belongsTo(Role, { foreignKey: 'role_id' });
-UserCredentials.hasMany(OldPasswords, { foreignKey: 'user_id' });
-OldPasswords.belongsTo(UserCredentials, { foreignKey: 'user_id' });
+Category.hasMany(Category, { as: 'children', foreignKey: 'parent_category_id' });
+
+
 
 
 // Exporta los modelos

@@ -90,6 +90,15 @@ const getChildCategories = async (categoryId) => {
     }
 };
 
+const getAllCategories = async () => {
+    try {
+        const categories = await model.getAllCategories();
+        return categories;
+    } catch (error) {
+        return handleInternalServerError(error);
+    }
+}
+
 module.exports = {
     getCategories,
     getCategoryById,
@@ -97,5 +106,6 @@ module.exports = {
     updateCategoryById,
     deleteCategoryById,
     getParentCategories,
-    getChildCategories
+    getChildCategories,
+    getAllCategories
 };

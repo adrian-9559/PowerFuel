@@ -26,7 +26,7 @@ const UserMenu = () => {
 
     return (
         user === null || isLoading ? <Spinner size="large" /> :
-            <Dropdown>
+            <Dropdown backdrop="blur">
                 <DropdownTrigger>
                     <Button radius="full" size="lg" className='flex justify-center items-center pt-0' isIconOnly>
                         <UserImage user={user}/>
@@ -46,8 +46,8 @@ const UserMenu = () => {
                     <DropdownItem key="team_settings" textValue="Delivered" showDivider>Pedidos</DropdownItem>
                     
                     {isAdmin ? (
-                            <DropdownItem key="panel" textValue="panel" onClick={() => router.push('/administrador/')}>
-                                <p onClick={() => router.push('/administrador/')}>Panel de Administración </p>
+                            <DropdownItem key="panel" textValue="panel" onClick={() => router.push('/administrador/General')}>
+                                <p>Panel de Administración </p>
                             </DropdownItem>
                     ) : null}
                     <DropdownItem key="help_and_feedback" textValue="Help">

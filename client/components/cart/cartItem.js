@@ -3,9 +3,12 @@ import { useAppContext } from "@context/AppContext";
 import { motion } from 'framer-motion';
 import { useEffect, useState } from "react";
 import ProductService from '@services/productService';
+import {useCart} from "@hooks/useCart";
 
 function Cartproduct({ item }) {
   const { cart, setCart } = useAppContext();
+  
+  const { changeQuantity } = useCart()
   const [product, setProduct] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [quantity, setQuantity] = useState(1);
@@ -31,12 +34,7 @@ function Cartproduct({ item }) {
 
 
   const handleQuantityChange = (id, quantity) => {
-    if (quantity > 50) {
-      quantity = 50;
-    }
-    const newCart = cart.map(product => product.product_id === id ? {...product, quantity: parseInt(quantity)} : product);
-    
-    setCart(newCart);
+    changeQuantity(id, quantity);
   }
   
   const handleDeleteCartProduct = (id) => {
@@ -66,7 +64,7 @@ function Cartproduct({ item }) {
       </section>
       <section className='flex-grow flex flex-col gap-2'>
         <section className='products-center max-w-40'>
-            <Tooltip content={product.product_name} delay={1500}>
+            <Tooltip content={product.product_name} delay={1250}>
                 <p className='font-semibold overflow-hidden overflow-ellipsis whitespace-nowrap'>{product.product_name}</p>
             </Tooltip>
         </section>

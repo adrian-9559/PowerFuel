@@ -36,7 +36,7 @@ const CategoryAdministration = () => {
             await CategoryService.deleteCategory(categoryId);
             setCategories(Categories.filter(category => category.category_id !== categoryId));
         } catch (error) {
-            console.error('Failed to delete role: ', error);
+            console.error('Failed to delete categoría: ', error);
         }
     };
     return (

@@ -83,7 +83,6 @@ router.route('/login')
 router.route('/usersByRegistrationDate')
     .post(async (req, res) => {
         const { startDate, endDate } = req.body;
-        console.log(req.body);
         try {
             const users = await getUsersByRegistrationDate(startDate, endDate);
             res.json(users);

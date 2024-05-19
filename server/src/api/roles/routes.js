@@ -81,7 +81,6 @@ router.route('/user/:userId')
 router.route('/user')
     .post(async (req, res) => {
         try {
-            console.log('User:', req.user);
             const role = await getRoleByUserId(req.user.userId);
             if (!role) {
                 return res.status(404).json({ message: 'Role not found for this user' });

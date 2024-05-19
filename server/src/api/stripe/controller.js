@@ -31,7 +31,6 @@ const getCustomerPaymentMethods = async (customerId) => {
         type: 'card',
       });
 
-    console.log(paymentMethods);
     return paymentMethods;
 };
 
@@ -46,8 +45,6 @@ const createProduct = async (name, description, price) => {
         currency: 'eur',
         product: product.id
     });
-
-    console.log(product);
 
     return { productId: product.id, priceId: priceObject.id };
 };

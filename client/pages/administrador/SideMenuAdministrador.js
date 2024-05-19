@@ -1,41 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { useAppContext } from '@context/AppContext';
 import {Button} from '@nextui-org/react';
-import ArrowIcon from '@icons/ArrowIcon';
+import UserIcon from '@icons/UserIcon';
 
 const ADMIN_ACTIONS = {
     '99': [
-        'Administración General',
+        'General',
         'Usuarios',
         'Roles',
         'Productos',
-        'Categorías',
-        'Rendimiento del Servidor',
+        'Categorias',
+        'Dashboard',
     ],
     '96': [ // managerAnalytics
-        'Administración General',
+        'General',
         'Usuarios',
         'Roles',
         'Productos',
-        'Categorías'
+        'Categorias'
     ],
     '94': [ // managerOrder
-        'Administración General',
+        'General',
         'Productos',
-        'Categorías'
+        'Categorias'
     ],
     '97': [
-        'Administración General',
+        'General',
         'Productos',
-        'Categorías'
+        'Categorias'
     ],
     '95': [ // managerSupport
-        'Administración General',
+        'General',
         'Usuarios',
         'Roles'
     ],
     '98': [
-        'Administración General',
+        'General',
         "Usuarios"
     ]
 };
@@ -64,8 +64,11 @@ const SideMenuAdministrador = ({ComponentUse, setComponentUse}) => {
                     <li className="w-full p-0" key={index}>
                         <Button 
                             radius="none" variant="light" className='w-full cursor-pointer justify-start text-start' key={index} onClick={() => setComponentUse(action)}
-                            startContent={<ArrowIcon/>} // Mostrar el icono sólo si hoveredIndex es igual al índice del botón
-                        >
+                            startContent={
+                                action === "Usuarios" ? 
+                                <UserIcon  className="w-4 h-4" color="red"/> : null
+                            } 
+                            >
                             {action}
                         </Button>
                     </li>

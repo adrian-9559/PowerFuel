@@ -97,6 +97,23 @@ class model {
             throw new Error('Error getting categories count');
         }
     };
+
+    getAllCategories = async () => {
+        try {
+            const categories = await Category.findAll({
+                where: { parent_category_id: null },
+                include: [{
+                    model: Category,
+                    as: 'children',
+                    hierarchy: true
+                }]
+            });
+            return categories;
+        } catch (error) {
+            console.error(error);
+            throw new Error('Error getting all categories');
+        }
+    };
 }
 
 

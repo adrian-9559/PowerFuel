@@ -32,4 +32,6 @@ class BrandService{
     }
 }
 
-export default new BrandService();
+const brandService = new BrandService();
+
+export default brandService;

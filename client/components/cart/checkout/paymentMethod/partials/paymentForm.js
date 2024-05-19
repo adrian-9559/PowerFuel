@@ -13,7 +13,7 @@ const PaymentForm = () => {
   const {cart, setCart} = useAppContext();
   const fetchClientSecret = useCallback(async () => {
     return await PaymentService.createCheckoutSession(cart);
-  }, []);
+  }, [cart]);
 
   const handleSuccess = () => {
     setCart([]);

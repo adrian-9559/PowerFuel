@@ -18,7 +18,6 @@ const CreateUser = () => {
     });
 
     useEffect(() => {
-    const id = router.query.id;
     
     if(id){
         const fetchUser = async () => {

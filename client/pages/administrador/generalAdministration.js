@@ -14,17 +14,16 @@ const GeneralAdministration = () => {
         return t;
     }
 
+
     useEffect(() => {
+        async function getNumUsersWeek(){
+            const dateStart = new Date();
+            const dateEnd = new Date();
+            dateEnd.setDate(dateStart.getDate() - 7);
+        }
+    
         getNumUsersWeek();
     }, [])
-
-    async function getNumUsersWeek(){
-        const dateStart = new Date();
-        const dateEnd = new Date();
-        dateEnd.setDate(dateStart.getDate() - 7)
-        console.log("Fecha Inicio: ", formatDate(dateStart));
-        console.log("Fecha Fin: ", formatDate(dateEnd));
-    }
 
     return (
         <section className="w-full p-6 flex flex-col gap-3">
@@ -189,7 +188,7 @@ const GeneralAdministration = () => {
                     <div className="flex flex-grow gap-2 items-center">
                         <div className="flex flex-col">
                             <p className="text-tiny">Breathing App</p>
-                            <p className="text-tiny">Get a good night's sleep.</p>
+                            <p className="text-tiny">Get a good nights sleep.</p>
                         </div>
                     </div>
                     <Button radius="full" size="sm">Get App</Button>

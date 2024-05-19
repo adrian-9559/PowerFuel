@@ -14,21 +14,22 @@ import ServerRendimiento from "./serverRendimiento";
 
 const Administrador = () => {
     const router = useRouter();
-    let view = router.query.view ?? 'Administración General';
+    const { query: { view }, push } = router;
+    let defaultView = view ?? 'Administración General';
     const { user, isLoggedIn, isAdmin} = useAppContext();
-    const [ComponentUse, setComponentUse] = useState(view);
+    const [ComponentUse, setComponentUse] = useState(defaultView);
 
     useEffect(() => {
         const checkLoginStatus = setTimeout(() => {
             if (!isLoggedIn || !isAdmin || !user || user.role_id === 10) {
-                router.push('/');
+                push('/');
             }
         }, 1000);
     
-        setComponentUse(view);
-        router.replace(router.pathname); // Remove the query parameter from the URL
+        setComponentUse(view ?? 'Administración General');
+        console.log('view', view);
         return () => clearTimeout(checkLoginStatus);
-    }, [isLoggedIn, isAdmin]);
+    }, [isLoggedIn, isAdmin, user, view, push]);
 
 
 

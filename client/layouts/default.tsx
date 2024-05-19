@@ -40,11 +40,12 @@ export default function DefaultLayout({
           initial="hidden" // Estado inicial
           animate="show" // Anima al estado "show" cuando se monta
           exit="exit" // Anima al estado "exit" cuando se desmonta
-          style={{ flexGrow: 1 }} // Añade flex-grow: 1 para que siempre esté abajo
+          style={{ flexGrow: 1 }} 
+          className='px-4 py-8 sm:px-8 md:px-16 lg:px-24 xl:px-32 2xl:px-40'
         >
         {children}
       </motion.main>
-      <Footer />
+      <Footer/>
     </div>
   );
 }

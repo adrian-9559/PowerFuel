@@ -1,4 +1,4 @@
-import React, { useState, useEffect }from 'react';
+import React, { useState, useEffect, useCallback }from 'react';
 import { Dropdown, DropdownMenu, DropdownItem, DropdownTrigger, Button, Badge, useDisclosure, user, ScrollShadow } from "@nextui-org/react";
 import CartItem from '@components/cart/cartItem';
 import { useRouter } from 'next/router';
@@ -14,8 +14,11 @@ const CartMenu = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isFirstLoad, setIsFirstLoad] = useState(true); // Nueva variable de estado
     const router = useRouter();
-    const { isOpen, onOpen, onOpenChange } = useDisclosure(false);
+    const { isOpen, onOpen, onOpenChange: originalOnOpenChange } = useDisclosure(false);
 
+    const onOpenChange = useCallback((value) => {
+        originalOnOpenChange(value);
+    }, [originalOnOpenChange]);
 
     const handleDeleteCart = () => {
         setCart([]);
@@ -23,7 +26,7 @@ const CartMenu = () => {
             onOpenChange(false);
     }
     
-    async function getTotalPrice() {
+    const getTotalPrice = useCallback(async () => {
         let total = 0;
         for (const item of cart) {
             try {
@@ -36,8 +39,8 @@ const CartMenu = () => {
             }
         }
         setTotal(parseFloat(total.toFixed(2)));
-    }
-    
+    }, [cart]);
+
     function quantityHasChanged(newCart, oldCart) {
         for(let i = 0; i < newCart.length; i++) {
             const oldItem = oldCart.find(item => item.product_id === newCart[i].product_id);
@@ -53,11 +56,11 @@ const CartMenu = () => {
         getTotalPrice();
         setTimeout(() => {
             setIsLoading(false);
-            if(!isFirstLoad && !isOpen && cart && cart.length > 0 && (quantityHasChanged(cartAux, cart) || cartAux.length !== cart.length))
-                onOpenChange(true);
-            if(isFirstLoad) setIsFirstLoad(false); // Cambiar el estado después de la primera carga
+            // if(!isFirstLoad && !isOpen && cart && cart.length > 0 && (quantityHasChanged(cartAux, cart) || cartAux.length !== cart.length))
+            //     onOpenChange(true);
+            if(isFirstLoad) setIsFirstLoad(false); 
         }, 750);
-    }, [cart]);
+    }, [cart, cartAux, getTotalPrice, isFirstLoad, isOpen, onOpenChange]);
 
     const handleReviewOrder = () => {
         onOpenChange(false);

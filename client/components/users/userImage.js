@@ -15,33 +15,32 @@ const UserImage = ({user}) => {
         fontSize: '1.25em'
     });
 
-    const hashCode = (str) => {
-        let hash = 0;
-        if(str)
-            for (let i = 0; i < str.length; i++) {
-                hash = str.charCodeAt(i) + ((hash << 5) - hash);
-            }
-        return hash;
-    };
-    
-    const intToRGB = (i) => {
-        const c = (i & 0x00FFFFFF)
-            .toString(16)
-            .toUpperCase();
-        return '#' + '00000'.substring(0, 6 - c.length) + c;
-    };
-    
-    const getProfileColor = () => {
-        return intToRGB(hashCode(sessionStorage.getItem('token')));
-    };
-
     useEffect(() => {
-        setStyle({
-            ...style,
-            backgroundColor: getProfileColor(),
-        });
+        const hashCode = (str) => {
+            let hash = 0;
+            if(str)
+                for (let i = 0; i < str.length; i++) {
+                    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+                }
+            return hash;
+        };
         
-    }, [setImage]);
+        const intToRGB = (i) => {
+            const c = (i & 0x00FFFFFF)
+                .toString(16)
+                .toUpperCase();
+            return '#' + '00000'.substring(0, 6 - c.length) + c;
+        };
+        
+        const getProfileColor = () => {
+            return intToRGB(hashCode(sessionStorage.getItem('token')));
+        };
+    
+        setStyle((prevStyle) => ({
+            ...prevStyle,
+            backgroundColor: getProfileColor(),
+        }));
+    }, []);
 
     return (
         <section style={style} className='w-full h-full rounded-full'>

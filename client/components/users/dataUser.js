@@ -5,7 +5,7 @@ import UserService from '@services/userService';
 import { Input, Button, Image, Link , Skeleton, Badge } from "@nextui-org/react";
 import { useAppContext } from '@context/AppContext';
 
-const dataUser = () => {
+const DataUser = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const { user, setUser, isLoggedIn} = useAppContext();
@@ -79,4 +79,4 @@ const dataUser = () => {
     )
 }
 
-export default dataUser;
+export default DataUser;

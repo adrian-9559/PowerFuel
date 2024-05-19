@@ -42,4 +42,6 @@ class RoleService{
     }
 }
 
-export default new RoleService();
+const roleService = new RoleService();
+
+export default roleService;

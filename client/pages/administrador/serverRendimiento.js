@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Slider, CircularProgress } from '@nextui-org/react';
 
-import serverService from 'services/serverService'
+import serverService from '@services/serverService'
 
 const ServerRendimiento = () => {
     const [usoRAMPorcentaje, setUsoRAMPorcentaje] = useState(0);

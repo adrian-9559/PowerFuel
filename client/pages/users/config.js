@@ -23,10 +23,10 @@ const Config = () => {
         }, 1000);
     
         return () => clearTimeout(checkLoginStatus);
-    }, [isLoggedIn]);
+    }, [isLoggedIn, router]);
 
     return (
-        <section className='flex h-full items-stretch'>
+        <section className='flex h-full items-stretch w-auto'>
             <SideMenu setSelectedOption={setSelectedOption} />
             {selectedOption === 'DataUser' && <DataUser />}
             {selectedOption === 'AddressList' && <AddressList />}

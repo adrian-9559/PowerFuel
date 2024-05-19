@@ -28,22 +28,22 @@ const ViewCart = () => {
         setCart(cart.filter(item => item.product_id !== id));
     };
 
-    async function getTotalPrice() {
-        let total = 0;
-        for (const item of cart) {
-            try {
-                const productData = await ProductService.getProductById(item.product_id);
-                if (productData) {
-                    total += productData.price * item.quantity;
-                }
-            } catch (error) {
-                console.error('Error fetching product:', error.message);
-            }
-        }
-        setTotal(parseFloat(total.toFixed(2)));
-    }
-
     useEffect(() => {
+        async function getTotalPrice() {
+            let total = 0;
+            for (const item of cart) {
+                try {
+                    const productData = await ProductService.getProductById(item.product_id);
+                    if (productData) {
+                        total += productData.price * item.quantity;
+                    }
+                } catch (error) {
+                    console.error('Error fetching product:', error.message);
+                }
+            }
+            setTotal(parseFloat(total.toFixed(2)));
+        }
+    
         getTotalPrice();
     }, [cart]);
 

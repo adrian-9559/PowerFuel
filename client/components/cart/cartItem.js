@@ -2,7 +2,7 @@ import { Button, Image, Input, Select, SelectItem, Tooltip } from "@nextui-org/r
 import { useAppContext } from "@context/AppContext";
 import { motion } from 'framer-motion';
 import { useEffect, useState } from "react";
-import ProductService from "@services/productService";
+import ProductService from '@services/productService';
 
 function Cartproduct({ item }) {
   const { cart, setCart } = useAppContext();

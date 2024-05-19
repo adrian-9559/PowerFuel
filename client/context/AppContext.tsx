@@ -12,10 +12,10 @@ interface User {
   email: string;
 }
 
+
 interface CartItem {
-  id: string;
+  id: number;
   quantity: number;
-  // ...otros campos que necesites
 }
 
 // Crear el contexto con un valor predeterminado
@@ -25,10 +25,9 @@ const AppContext = createContext({
   user: null as User | null,
   setUser: (user: User | null) => {},
   cart: [] as CartItem[],
-  setCart: (cart: CartItem[]) => {},
+  setCart: (() => {}) as React.Dispatch<React.SetStateAction<CartItem[]>>,
   isAdmin: false,
-  setIsAdmin: (value: boolean) => {},
-  router: null as any,
+  setIsAdmin: (value: boolean) => {}
 });
 
 // Crear el proveedor de contexto
@@ -37,11 +36,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [cart, setCart] = useState<CartItem[]>([]);
-  const [isClient, setIsClient] = useState(false); // Nueva variable de estado
+  const [isClient, setIsClient] = useState(false); 
   const router = useRouter();
 
   useEffect(() => {
-    setIsClient(true); // Establecer isClient a true cuando el cliente toma el control
+    setIsClient(true); 
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
       setCart(JSON.parse(storedCart));
@@ -54,7 +53,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   }, []);
   
   useEffect(() => {
-    if (cart.length > 0 && isClient) { // Solo actualizar localStorage si estamos en el cliente
+    if (cart.length > 0 && isClient) { 
       localStorage.setItem('cart', JSON.stringify(cart));
     }
 
@@ -67,17 +66,30 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     if (isLoggedIn) {
       const fetchUserInfo = async () => {
         const userInfo = await UserService.getUserById();
-        const userRole = await RoleService.getRoleByUserId();
+        const roleResponse = await RoleService.getRoleByUserId();
         setUser(userInfo.data);
-        setIsAdmin(userRole !== 10);
+        setIsAdmin(roleResponse.data !== 10);
       };
   
       fetchUserInfo();
     }
   }, [isLoggedIn]);
 
+
+
   return (
-    <AppContext.Provider value={{ isLoggedIn, setIsLoggedIn, user, setUser, cart, setCart, isAdmin, setIsAdmin}}>
+    <AppContext.Provider 
+      value={
+        {
+          isLoggedIn,
+          setIsLoggedIn,
+          user, setUser,
+          cart, setCart,
+          isAdmin,
+          setIsAdmin
+        }
+      }
+    >
       {children}
     </AppContext.Provider>
   );

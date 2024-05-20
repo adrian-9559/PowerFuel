@@ -1,5 +1,5 @@
 -- --------------------------------------------------------
--- Host:                         192.168.1.142
+-- Host:                         25.65.210.24
 -- Versión del servidor:         8.0.36-0ubuntu0.22.04.1 - (Ubuntu)
 -- SO del servidor:              Linux
 -- HeidiSQL Versión:             12.6.0.6765
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `brands` (
   UNIQUE KEY `brand_name` (`brand_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla database_WEB.brands: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla database_WEB.brands: ~0 rows (aproximadamente)
 DELETE FROM `brands`;
 INSERT INTO `brands` (`id_brand`, `brand_name`) VALUES
 	(1, 'Prozis');
@@ -55,7 +55,6 @@ INSERT INTO `categories` (`category_id`, `category_name`, `parent_category_id`) 
 	(7, 'Energía y Resistencia', 1),
 	(8, 'Cafeína', 7),
 	(9, 'L-Canitina', 7),
-	(10, 'Intraentreno', 7),
 	(11, 'Bebidas Isotonicas y Electrolitos', 7),
 	(12, 'Carne y Huevo', 2),
 	(13, 'Vegetal', 2),
@@ -65,6 +64,19 @@ INSERT INTO `categories` (`category_id`, `category_name`, `parent_category_id`) 
 	(17, 'Estimulantes y Testosterona', 6),
 	(18, 'Aminoácidos Esenciales', 6),
 	(29, 'Barras', NULL);
+
+-- Volcando estructura para tabla database_WEB.notifications
+CREATE TABLE IF NOT EXISTS `notifications` (
+  `notification_id` int NOT NULL,
+  `text_notification` varchar(500) DEFAULT NULL,
+  `user_id` int DEFAULT NULL,
+  PRIMARY KEY (`notification_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_credentials` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Volcando datos para la tabla database_WEB.notifications: ~0 rows (aproximadamente)
+DELETE FROM `notifications`;
 
 -- Volcando estructura para tabla database_WEB.old_passwords
 CREATE TABLE IF NOT EXISTS `old_passwords` (
@@ -110,46 +122,45 @@ DELETE FROM `order_details`;
 -- Volcando estructura para tabla database_WEB.products
 CREATE TABLE IF NOT EXISTS `products` (
   `product_id` int NOT NULL AUTO_INCREMENT,
-  `product_name` varchar(100) DEFAULT NULL,
-  `description` text,
-  `price` decimal(10,2) DEFAULT NULL,
-  `stock_quantity` int DEFAULT NULL,
-  `id_brand` int DEFAULT NULL,
-  `status` enum('enable','disable') NOT NULL DEFAULT 'disable',
-  `category_id` int DEFAULT NULL,
-  `phone_number` int DEFAULT NULL,
+  `product_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `stock_quantity` int NOT NULL,
+  `id_brand` int NOT NULL,
+  `category_id` int NOT NULL,
+  `status` enum('Enabled','Disabled') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'Disabled',
+  `stripe_product_id` varchar(50) NOT NULL,
+  `stripe_price_id` varchar(50) NOT NULL,
   PRIMARY KEY (`product_id`),
   KEY `id_brand` (`id_brand`),
   KEY `category_ibfk_1` (`category_id`),
   CONSTRAINT `category_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`),
   CONSTRAINT `products_ibfk_1` FOREIGN KEY (`id_brand`) REFERENCES `brands` (`id_brand`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla database_WEB.products: ~3 rows (aproximadamente)
+-- Volcando datos para la tabla database_WEB.products: ~1 rows (aproximadamente)
 DELETE FROM `products`;
-INSERT INTO `products` (`product_id`, `product_name`, `description`, `price`, `stock_quantity`, `id_brand`, `status`, `category_id`, `phone_number`) VALUES
-	(30, 'Tortilla proteica de clara de huevo 400 g', '¡Ser o no ser, esa es la cuestión! Shakespeare inmortalizó esta cita en Hamlet, pero la cuestión se vuelve fácil (y la respuesta también) con nuestro omelet. ¡De hecho, queremos simplificar y hacer frente a las grandes cuestiones de la vida!\r\n\r\n¡Basta de tragedias! ¡Se acabó el drama por la falta de tiempo o de ingredientes! Se acabó el estrés por no poder seguir el estilo de vida saludable que quieres. Aquí tienes la solución. Solo tienes que seguir las instrucciones del paquete. ¡Si Hamlet lo hubiera sabido!', 24.99, 0, 1, 'enable', 1, NULL),
-	(31, 'aaaa', 'aaaaa', 6.99, 123, 1, 'enable', 11, NULL),
-	(32, 'wadcasd', 'awdadw', 1.00, 11234, 1, 'enable', 29, NULL);
+INSERT INTO `products` (`product_id`, `product_name`, `description`, `price`, `stock_quantity`, `id_brand`, `category_id`, `status`, `stripe_product_id`, `stripe_price_id`) VALUES
+	(30, 'Tortilla proteica de clara de huevo 400 g', '¡Ser o no ser, esa es la cuestión! Shakespeare inmortalizó esta cita en Hamlet, pero la cuestión se vuelve fácil (y la respuesta también) con nuestro omelet. ¡De hecho, queremos simplificar y hacer frente a las grandes cuestiones de la vida!\r\n\r\n¡Basta de tragedias! ¡Se acabó el drama por la falta de tiempo o de ingredientes! Se acabó el estrés por no poder seguir el estilo de vida saludable que quieres. Aquí tienes la solución. Solo tienes que seguir las instrucciones del paquete. ¡Si Hamlet lo hubiera sabido!', 24.99, 0, 1, 1, 'Enabled', '', '');
 
 -- Volcando estructura para tabla database_WEB.roles
 CREATE TABLE IF NOT EXISTS `roles` (
-  `role_id` int NOT NULL,
+  `role_id` int NOT NULL AUTO_INCREMENT,
   `role_name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`role_id`),
   UNIQUE KEY `role_name` (`role_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Volcando datos para la tabla database_WEB.roles: ~7 rows (aproximadamente)
 DELETE FROM `roles`;
 INSERT INTO `roles` (`role_id`, `role_name`) VALUES
-	(99, 'admin'),
-	(96, 'managerAnalytics'),
-	(94, 'managerOrder'),
-	(97, 'managerProduct'),
-	(95, 'managerSupport'),
-	(98, 'managerUser'),
-	(10, 'user');
+	(99, 'Administrador'),
+	(96, 'Manager de Analiticas'),
+	(94, 'Manager de Pedidos'),
+	(97, 'Manager de Productos'),
+	(95, 'Manager de Soporte'),
+	(98, 'Manager de Usuarios'),
+	(10, 'Usuario');
 
 -- Volcando estructura para tabla database_WEB.user_address
 CREATE TABLE IF NOT EXISTS `user_address` (
@@ -161,32 +172,35 @@ CREATE TABLE IF NOT EXISTS `user_address` (
   `zip` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `province` varchar(255) DEFAULT NULL,
   `phone_number` int DEFAULT NULL,
-  `is_default` TINYINT(1) NOT NULL DEFAULT 0,
+  `is_default` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`address_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `user_address_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_credentials` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Volcando datos para la tabla database_WEB.user_address: ~1 rows (aproximadamente)
 DELETE FROM `user_address`;
-INSERT INTO `user_address` (`address_id`, `user_id`, `street`, `city`, `country`, `zip`, `province`, `phone_number`) VALUES
-	(29, 25, 'c/ Doctor Fleming', 'Coslada', 'España', '28821', 'Madrid', 602240748);
+INSERT INTO `user_address` (`address_id`, `user_id`, `street`, `city`, `country`, `zip`, `province`, `phone_number`, `is_default`) VALUES
+	(29, 25, 'c/ Doctor Fleming', 'Coslada', 'España', '28821', 'Madrid', 602240748, 0),
+	(61, 78, 'Plaza de Uruguay 7, Coslada, Madrid, España', 'Coslada', 'España', '28822', 'Madrid', 654203319, 0);
 
 -- Volcando estructura para tabla database_WEB.user_credentials
 CREATE TABLE IF NOT EXISTS `user_credentials` (
   `user_id` int NOT NULL AUTO_INCREMENT,
   `email` varchar(50) NOT NULL,
-  `current_password` varchar(255) DEFAULT NULL,
-  `stripe_customer_id` varchar(255) DEFAULT NULL;
+  `current_password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `stripe_customer_id` varchar(255) DEFAULT NULL,
+  `status` enum('Active','Inactive','Suspended') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'Active',
+  `registration_date` datetime NOT NULL,
   PRIMARY KEY (`user_id`,`email`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla database_WEB.user_credentials: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla database_WEB.user_credentials: ~3 rows (aproximadamente)
 DELETE FROM `user_credentials`;
-INSERT INTO `user_credentials` (`user_id`, `email`, `current_password`) VALUES
-	(25, 'adrian.escribano3@gmail.com', '$2b$10$D7t6MTFT1AYiSZM41c6lNuy0neKh10AweQAKNwT2ifomsY56UAmZS'),
-	(68, 'adrigar250503@gmail.com', '$2b$10$CDuvsqVWHkejFEFOLy/Lmuivgwp6jDKYovTTyGeJnEnI/ZRKmmIci');
+INSERT INTO `user_credentials` (`user_id`, `email`, `current_password`, `stripe_customer_id`, `status`, `registration_date`) VALUES
+	(25, 'adrian.escribano3@gmail.com', '$2b$10$D7t6MTFT1AYiSZM41c6lNuy0neKh10AweQAKNwT2ifomsY56UAmZS', NULL, 'Active', '2024-05-13 23:08:11'),
+	(78, 'adrigar250503@gmail.com', '$2b$10$ZijwuzdB7qMqF7Fi2M2sSO/J1vlg38OSicJbBnFAcG5CA.xt.1u42', 'cus_Q5rhcIQtgL7fqn', 'Active', '2024-05-13 23:08:11');
 
 -- Volcando estructura para tabla database_WEB.user_info
 CREATE TABLE IF NOT EXISTS `user_info` (
@@ -198,11 +212,11 @@ CREATE TABLE IF NOT EXISTS `user_info` (
   CONSTRAINT `user_info_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_credentials` (`user_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla database_WEB.user_info: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla database_WEB.user_info: ~3 rows (aproximadamente)
 DELETE FROM `user_info`;
 INSERT INTO `user_info` (`user_id`, `first_name`, `last_name`, `dni`) VALUES
 	(25, 'Adrián', 'Escribano', '49814242z'),
-	(68, 'Adrián', 'García Torrente', '49815997k');
+	(78, 'Adrián', 'García Torrente', '49815997k');
 
 -- Volcando estructura para tabla database_WEB.user_roles
 CREATE TABLE IF NOT EXISTS `user_roles` (
@@ -218,14 +232,14 @@ CREATE TABLE IF NOT EXISTS `user_roles` (
 DELETE FROM `user_roles`;
 INSERT INTO `user_roles` (`user_id`, `role_id`) VALUES
 	(25, 99),
-	(68, 99);
+	(78, 99);
 
--- Volcando estructura para disparador database_WEB.after_delete_role
+-- Volcando estructura para disparador database_WEB.before_delete_role
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
-CREATE TRIGGER `after_delete_role` AFTER DELETE ON `roles` FOR EACH ROW BEGIN
+CREATE TRIGGER `before_delete_role` BEFORE DELETE ON `roles` FOR EACH ROW BEGIN
     UPDATE user_roles
-    SET role_id = 0
+    SET role_id = 10
     WHERE role_id = OLD.role_id;
 END//
 DELIMITER ;

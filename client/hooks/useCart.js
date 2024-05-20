@@ -6,6 +6,7 @@ export const useCart = () => {
     const { cart, setCart ,onOpenCartChange} = useAppContext();
     
     const addToCart = (product_id, quantity = 1) => {
+        product_id = parseInt(product_id);
         const existingItem = cart.find(item => item.product_id === product_id);
         if (existingItem) {
             const updatedCart = cart.map(item => {

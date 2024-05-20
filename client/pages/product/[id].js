@@ -50,7 +50,7 @@ const Product = () => {
                             </Skeleton>
                         </section>
                         <QuantityInput
-                            product={product}
+                            id={id}
                         />
                     </section>
                 </section>

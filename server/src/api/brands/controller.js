@@ -1,67 +1,46 @@
 const model = require('./brandModel');
 
-const handleInternalServerError = (res, error) => {
-    console.error(error);
-    res.status(500).json({ message: 'Internal Server Error' });
-};
-
 const getBrands = async (req, res) => {
-    const page = req.query.page ? parseInt(req.query.page) : null;
-    const limit = req.query.limit ? parseInt(req.query.limit) : null;
+    const page = parseInt(req.query.page) || null;
+    const limit = parseInt(req.query.limit) || null;
     const skip = page && limit ? (page - 1) * limit : null;
 
-    try {
-        let brands = await model.getBrands(skip, limit);
-        const total = await model.getBrandsCount();
+    let brands = await model.getBrands(skip, limit);
+    const total = await model.getBrandsCount();
 
-        if(page!==null && limit!==null && brands.length === 0) 
-            brands = brands.map(brand => {
-                return {
-                    "id": brand.id_brand,
-                    "brand_id": { display: "ID de la marca", value: brand.id_brand },
-                    "brand_name": { display: "Nombre de la marca", value: brand.brand_name }
-                };
-            });
-
-        res.json({
-            total,
-            pages: limit ? Math.ceil(total / limit) : 1,
-            data: brands
-        });
-    } catch (error) {
-        handleInternalServerError(res, error);
+    if (page !== null && limit !== null && brands.length === 0) {
+        brands = brands.map(brand => ({
+            "id": brand.id_brand,
+            "brand_id": { display: "ID de la marca", value: brand.id_brand },
+            "brand_name": { display: "Nombre de la marca", value: brand.brand_name }
+        }));
     }
+
+    res.json({
+        total,
+        pages: limit ? Math.ceil(total / limit) : 1,
+        data: brands
+    });
 };
 
 const getBrandById = async (req, res) => {
     const { brandId } = req.params;
-    try {
-        const brand = await model.getBrands(null, null , brandId);
-        res.json({brand});
-    } catch (error) {
-        handleInternalServerError(res, error);
-    }
+
+    const brand = await model.getBrands(null, null , brandId);
+    res.json({brand});
 };
 
 const addBrand = async (req, res) => {
     const newBrand = req.body;
-    try {
-        const brandId = await model.insertBrand(newBrand);
-        res.json({ brand_id: brandId, ...newBrand });
-    } catch (error) {
-        handleInternalServerError(res, error);
-    }
+    const brandId = await model.insertBrand(newBrand);
+    res.json({ brand_id: brandId, ...newBrand });
 };
 
 const updateBrandById = async (req, res) => {
     const { brandId } = req.params;
     const updatedBrand = req.body;
-    try {
-        await model.updateBrand(brandId, updatedBrand);
-        res.json({ brand_id: brandId, ...updatedBrand });
-    } catch (error) {
-        handleInternalServerError(res, error);
-    }
+    await model.updateBrand(brandId, updatedBrand);
+    res.json({ brand_id: brandId, ...updatedBrand });
 };
 
 const deleteBrandById = async (req, res) => {

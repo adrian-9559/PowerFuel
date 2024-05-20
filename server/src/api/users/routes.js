@@ -1,5 +1,5 @@
-// routes.js
 const express = require('express');
+const isAdmin = require('../../middlewares/isAdmin');
 const { registerUser, deleteUserById, updateUserById, getUserById, getUsers, loginUser, getUsersByRegistrationDate } = require('./controller');
 
 const router = express.Router();
@@ -17,7 +17,7 @@ router.route('/')
             res.status(500).json({ message: 'Error registering the user' });
         }
     })
-    .get(async (req, res) => {
+    .get(isAdmin, async (req, res) => {
         try {
             const data = await getUsers(req.query.limit, req.query.page);
             res.send(data);
@@ -28,7 +28,7 @@ router.route('/')
     });
 
 router.route('/:userId')
-    .delete(async (req, res) => {
+    .delete(isAdmin, async (req, res) => {
         try {
             const deletedUser = await deleteUserById(req.params.userId);
             if (!deletedUser) {
@@ -40,7 +40,7 @@ router.route('/:userId')
             res.status(500).json({ message: 'Error deleting the user' });
         }
     })
-    .put(async (req, res) => {
+    .put(isAdmin, async (req, res) => {
         try {
             const user = await updateUserById(req.params.userId, req.body.user);
             if (!user) {
@@ -81,7 +81,7 @@ router.route('/login')
     });
 
 router.route('/usersByRegistrationDate')
-    .post(async (req, res) => {
+    .post(isAdmin, async (req, res) => {
         const { startDate, endDate } = req.body;
         try {
             const users = await getUsersByRegistrationDate(startDate, endDate);

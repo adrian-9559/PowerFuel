@@ -18,6 +18,15 @@ const ProductCard = ({ product }) => {
             router.push(`/product/${product.product_id}`);
         }
     };
+    const handleAddToCart = () => {
+        setIsLoading(true);
+        setTimeout(() => {
+            setIsLoading(false);
+            setIsAdded(true);
+            addToCart(product.product_id);
+            setTimeout(() => setIsAdded(false), 1000);
+        }, 1000);
+    };
 
 
     return (
@@ -70,7 +79,7 @@ const ProductCard = ({ product }) => {
                             radius="full" 
                             className={`text-black transition-opacity duration-2000`} 
                             isIconOnly 
-                            onPress={()=>{addToCart(product.product_id)}}
+                            onPress={handleAddToCart}
                             onFocus={() => setIsHovered(true)}
                             onBlur={() => !isLoading && setIsHovered(false)}
                         >

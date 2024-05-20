@@ -15,18 +15,9 @@ const registerUser = async (user) => {
     const salt = await bcrypt.genSalt(10);
     user.current_password = await bcrypt.hash(user.current_password, salt);
 
-    // Create a Stripe customer for the user
-    try {
-        const stripeCustomer = await createStripeCustomer(email, first_name + ' ' + last_name);
-        user.stripeCustomerId = stripeCustomer.id;
-    } catch (error) {
-        console.error('Failed to create Stripe customer:', error);
-        throw error;
-    }
-
-    const newUser = await model.addUser(user);
+    user.stripeCustomerId = { id } = await createStripeCustomer(email, first_name + ' ' + last_name);
     
-    return newUser;
+    return await model.addUser(user);
 };
 
 const deleteUserById = async (userId) => {
@@ -53,6 +44,7 @@ const getUserById = async (userId) => {
         "stripe_customer_id": user.stripe_customer_id,
         "status": user.status
     }));
+
     return user[0];
 };
 
@@ -87,22 +79,15 @@ const getUsers = async (limit, page) => {
 const loginUser = async (email, current_password) => {
     const user = await model.getUserByEmail(email);
 
-    if (user && await bcrypt.compare(current_password, user.current_password)) {
-        const token = generateToken(user.user_id);
-        return token;
-    } else {
-        throw new Error('Login failed');
-    }
+    if (user && await bcrypt.compare(current_password, user.current_password))
+        return  generateToken(user);
+
+    return null;
 };
 
 const getUsersByRegistrationDate = async (startDate, endDate) => {
-    try {
-        const users = await getUsersByRegistrationDate(new Date(startDate), new Date(endDate));
-        return users;
-    } catch (error) {
-        console.error('Error getting users by registration date:', error);
-        throw new Error('Error getting users by registration date');
-    }
+    const users = await getUsersByRegistrationDate(new Date(startDate), new Date(endDate));
+    return users;
 };
 
 

@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const { UserCredentials, UserInfo, UserRoles, Role } = require('../../model/model');
+const { UserCredentials, UserInfo, UserRoles, Role } = require('../../model');
 
 
 class model {
@@ -10,6 +10,7 @@ class model {
             stripe_customer_id: user.stripeCustomerId,
             time_register: user.time_register
         });
+        
         await UserInfo.create({
             user_id: newUserCredentials.user_id,
             first_name: user.first_name,
@@ -28,67 +29,25 @@ class model {
             });
         }
     
-        return newUserCredentials.user_id;
+        return { user_id: newUserCredentials.user_id };
     };
     
     updateUser = async (userId, user) => {
-        try{
-        
-            await UserCredentials.update({
-                email: user.email,
-                current_password: user.current_password
-            },
-                {
-                    where: { user_id: userId }
-                }
-            );
-            await UserInfo.update({
-                first_name: user.first_name,
-                last_name: user.last_name,
-                dni: user.dni
-            },
-                {
-                    where: { user_id: userId }
-                }
-            );
-            await UserRoles.update({
-                role_id: user.role_id
-            },
-                {
-                    where: { user_id: userId }
-                }
-            );
-            
-        }catch(error){
-            console.error('Error updating user:', error.message);
-            return null;
+        const { email, current_password, first_name, last_name, dni, role_id } = user;
+
+        await UserCredentials.update({ email, current_password }, { where: { user_id: userId } });
+        await UserInfo.update({ first_name, last_name, dni }, { where: { user_id: userId } });
+
+        if (role_id) {
+            await UserRoles.update({ role_id }, { where: { user_id: userId } });
         }
-    
-    
+
         return await this.getUserByEmail(user.email);
     };
     
     deleteUser = async (userId) => {
-
-        const user = await UserCredentials.findOne(
-            {
-                where: { user_id: userId }
-            });
-
-        await UserRoles.destroy(
-            {
-                where: { user_id: userId }
-            });
-        await UserInfo.destroy(
-            {
-                where: { user_id: userId }
-            });
-        await UserCredentials.destroy(
-            {
-                where: { user_id: userId }
-            });
-
-       return user;
+        await UserCredentials.destroy({ where: { user_id: userId } });
+        return await UserCredentials.findOne({ where: { user_id: userId } });
     };
     
     getUserByEmail = async (email) => {
@@ -101,7 +60,7 @@ class model {
     };
     
     getUsers = async (skip = 0, limit = 10, userId=null) => {
-        const users = await UserCredentials.findAll({
+        return await UserCredentials.findAll({
             where: userId ? { user_id: userId } : {},
             offset: skip,
             limit: limit,
@@ -115,19 +74,12 @@ class model {
                 }
             ]
         });
-    
-        return users;
     };
     
     getUsersCount = () => UserCredentials.count();
-    
-    getTableColumns = async () => {
-        const columns = await UserCredentials.describe();
-        return Object.keys(columns);
-    };
 
     getUsersByRegistrationDate = async (startDate, endDate) => {
-        const users = await UserCredentials.findAll({
+        return await UserCredentials.findAll({
             where: {
                 registration_date: {
                     [Op.between]: [startDate, endDate]
@@ -143,9 +95,6 @@ class model {
                 }
             ]
         });
-
-
-        return users;
     };
 }
 

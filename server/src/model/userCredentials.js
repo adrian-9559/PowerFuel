@@ -1,0 +1,35 @@
+const { Model, DataTypes } = require('sequelize');
+const sequelize = require('./database');
+
+class UserCredentials extends Model { }
+UserCredentials.init({
+    user_id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    email: {
+        type: DataTypes.STRING,
+        unique: true,
+        primaryKey: true
+    },
+    current_password: DataTypes.STRING,
+    stripe_customer_id: DataTypes.STRING,
+    status: {
+        type: DataTypes.ENUM,
+        values: ['Active', 'Inactive', 'Suspended'],
+        defaultValue: 'Active'
+    },
+    registration_date:{
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+        allowNull: false
+    },
+}, {
+    sequelize,
+    modelName: 'UserCredentials',
+    tableName: 'user_credentials',
+    timestamps: false
+});
+
+module.exports = UserCredentials;

@@ -1,35 +1,23 @@
-const { Brand } = require('../../model/model');
+const { Brand } = require('../../model');
 
 class model {
     async insertBrand(brand) {
-        try {
-            const newBrand = await Brand.create({
+        return {id_brand} = await Brand.create({
                 brand_name: brand.brand_name
-            });
-            return newBrand.id_brand; 
-        } catch (error) {
-            console.error(error);
-            throw new Error('Error adding brand');
-        }
+        });
     }
 
     async updateBrand(brandId, brand) {
-        try {
-            await Brand.update({
-                brand_name: brand.brand_name
-            }, {
-                where: {
-                    id_brand: brandId
-                }
-            });
-        } catch (error) {
-            console.error(error);
-            throw new Error('Error updating brand');
-        }
+        await Brand.update({
+            brand_name: brand.brand_name
+        }, {
+            where: {
+                id_brand: brandId
+            }
+        });
     }
 
     async getBrands(skip, limit, brandId) {
-        try {
             const query = {
                 where: brandId ? {id_brand: brandId} : {},
             };
@@ -42,35 +30,19 @@ class model {
                 query.limit = limit;
             }
 
-            const brands = await Brand.findAll(query);
-            return brands;
-        } catch (error) {
-            console.error(error);
-            throw new Error('Error getting brands');
-        }
+            return await Brand.findAll(query);
     }
 
     async deleteBrand(brandId) {
-        try {
-            await Brand.destroy({
-                where: {
-                    id_brand: brandId
-                }
-            });
-        } catch (error) {
-            console.error(error);
-            throw new Error('Error deleting brand');
-        }
+        await Brand.destroy({
+            where: {
+                id_brand: brandId
+            }
+        });
     }
 
     async getBrandsCount() {
-        try {
-            const count = await Brand.count();
-            return count;
-        } catch (error) {
-            console.error(error);
-            throw new Error('Error getting brands count');
-        }
+        return await Brand.count();
     }
 }
 

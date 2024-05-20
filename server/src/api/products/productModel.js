@@ -1,6 +1,4 @@
-const { Brand } = require('../../model/model');
-const { Category } = require('../../model/model');
-const { Product } = require('../../model/model');
+const { Brand, Category, Product } = require('../../model');
 const { Op } = require('sequelize');
 
 class model {

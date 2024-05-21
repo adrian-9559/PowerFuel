@@ -17,11 +17,14 @@ const LoginForm = () => {
         try {
             const emailInput = email;
             const passwordInput = password;
-
-            const token = await UserService.loginUser(emailInput, passwordInput);
-            sessionStorage.setItem('token', token);
-            setIsLoggedIn(true);
-            router.push('/');
+            try {
+                await UserService.loginUser(emailInput, passwordInput);
+                setIsLoggedIn(true);
+                router.push('/');
+              } catch (error) {
+                console.error("Error during login: ", error);
+                setIsLoggedIn(false);
+              }
 
         } catch (error) {
             console.error(error);

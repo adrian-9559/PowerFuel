@@ -54,7 +54,7 @@ const ServerRendimiento = () => {
                         <CircularProgress
                             classNames={{
                                 svg: "w-36 h-36 drop-shadow-md",
-                                value: "text-3xl font-semibold text-white",
+                                value: "text-3xl font-semibold",
                               }}
                             aria-label="Loading..."
                             value={usoCPUPorcentaje || 0}
@@ -67,7 +67,7 @@ const ServerRendimiento = () => {
                         <CircularProgress
                             classNames={{
                                 svg: "w-36 h-36 drop-shadow-md",
-                                value: "text-3xl font-semibold text-white",
+                                value: "text-3xl font-semibold",
                               }}
                             aria-label="Loading..."
                             value={usoRAMPorcentaje || 0}
@@ -80,7 +80,7 @@ const ServerRendimiento = () => {
                         <CircularProgress
                             classNames={{
                                 svg: "w-36 h-36 drop-shadow-md",
-                                value: "text-3xl font-semibold text-white",
+                                value: "text-3xl font-semibold",
                               }}
                             aria-label="Loading..."
                             value={usoDiskPorcentaje || 0}

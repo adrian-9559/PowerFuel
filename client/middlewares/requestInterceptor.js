@@ -1,6 +1,6 @@
-import api from '../services/axios'; 
+import axios from 'axios'; 
 
-const requestInterceptor = api.interceptors.request.use((config) => {
+const requestInterceptor = axios.interceptors.request.use((config) => {
     const token = sessionStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;

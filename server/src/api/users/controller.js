@@ -80,7 +80,7 @@ const loginUser = async (email, current_password) => {
     const user = await model.getUserByEmail(email);
 
     if (user && await bcrypt.compare(current_password, user.current_password))
-        return  generateToken(user);
+        return  generateToken(user.user_id);
 
     return null;
 };
@@ -89,7 +89,6 @@ const getUsersByRegistrationDate = async (startDate, endDate) => {
     const users = await getUsersByRegistrationDate(new Date(startDate), new Date(endDate));
     return users;
 };
-
 
 module.exports =  {
     registerUser,

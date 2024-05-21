@@ -44,6 +44,7 @@ function startExpress() {
             } catch (error) {
                 if (error.name === 'TokenExpiredError') {
                     return res.status(401).json({ message: 'La sesión ha expirado. Por favor, inicia sesión de nuevo.' });
+                    //si explirea tendre que ahcer el refreshtoken
                 }
                 console.error('Token inválido:', error.message);
             }
@@ -51,7 +52,6 @@ function startExpress() {
         next();
     });
 
-    // Usar el middleware routes
     app.use(routes);
 
     

@@ -71,6 +71,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       const fetchUserInfo = async () => {
         const userInfo = await UserService.getUserById();
         const roleResponse = await RoleService.getRoleByUserId();
+        console.log("user",userInfo);
         setUser(userInfo.data);
         setIsAdmin(roleResponse.data !== 10);
       };

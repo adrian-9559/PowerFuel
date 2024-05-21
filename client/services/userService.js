@@ -8,6 +8,8 @@ class UserService {
             email: email,
             current_password: password,
         });
+        
+        sessionStorage.setItem('token', response.data.token);
         return response.data.token;
     }
 

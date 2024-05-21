@@ -53,6 +53,7 @@ router.route('/:userId')
         }
     })
     .get(async (req, res) => {
+        console.log("user",req.user);
         const userId = req.params.userId="null"?req.user.userId:req.params.userId; 
         try {
             const user = await getUserById(userId);

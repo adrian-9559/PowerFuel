@@ -32,7 +32,12 @@ Product.init({
     stripe_price_id: {
         type: DataTypes.STRING,
         allowNull: false
-    }
+    },
+    registration_date:{
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+        allowNull: true
+    },
 }, {
     sequelize,
     modelName: 'Product',

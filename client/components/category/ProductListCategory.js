@@ -14,9 +14,10 @@ const ProductListCategory = ({id}) => {
                 const data = await ProductService.getAllProductsByCategory(id);
                 setProductos(data);
                 setLoading(false);
+                console.log('Productos:', data);
             } catch (error) {
                 console.error('Error fetching products:', error.message);
-                setLoading(false); // Indica que la carga ha terminado incluso si hay un error
+                setLoading(false);
             }
         };
 

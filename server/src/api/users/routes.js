@@ -70,11 +70,13 @@ router.route('/:userId')
 router.route('/login')
     .post(async (req, res) => {
         try {
-            const token = await loginUser(req.body.email, req.body.current_password);
-            if (!token) {
+            const tokens = await loginUser(req.body.email, req.body.current_password);
+            console.log("tokens",tokens);
+            if (!tokens) {
                 return res.status(401).json({ message: 'Login failed' });
             }
-            res.json({ message: 'Login successful', token });
+            const { authToken, refreshToken } = tokens;
+            res.json({ message: 'Login successful', auth_token: authToken, refresh_token: refreshToken});
         } catch (error) {
             console.error('Error logging in:', error);
             res.status(500).json({ message: 'Error logging in' });

@@ -2,6 +2,7 @@ const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
 const pidusage = require('pidusage');
 const routes = require('./routes');
+const authTokenInterceptor = require('./middlewares/authTokenInterceptor');
 require('dotenv').config();
 
 // Función para inicializar la aplicación Express
@@ -35,22 +36,8 @@ function startExpress() {
         cookie: { maxAge: 86400000 },
     }));
 
-    app.use((req, res, next) => {
-        let token = req.headers['authorization'];
-        if (token) {
-            token = token.split('Bearer ')[1];
-            try {
-                req.user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-            } catch (error) {
-                if (error.name === 'TokenExpiredError') {
-                    return res.status(401).json({ message: 'La sesión ha expirado. Por favor, inicia sesión de nuevo.' });
-                    //si explirea tendre que ahcer el refreshtoken
-                }
-                console.error('Token inválido:', error.message);
-            }
-        }
-        next();
-    });
+    
+    app.use(authTokenInterceptor);
 
     app.use(routes);
 

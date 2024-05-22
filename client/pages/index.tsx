@@ -2,13 +2,13 @@
 import React, { useEffect } from 'react';
 import DefaultLayout from '@layouts/default';
 import {NextUIProvider} from "@nextui-org/react";
-import CategoryList from '@components/category/categoryList';
+import HomeComponent from '@pages/home/index';
 
 
 const HomePage = () => {
     return (
-        <NextUIProvider>
-            <CategoryList />
+        <NextUIProvider className="m-5">
+            <HomeComponent />
         </NextUIProvider>
     );
 };

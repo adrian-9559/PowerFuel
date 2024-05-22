@@ -3,8 +3,8 @@ const jwt = require('jsonwebtoken');
 const model = require('./userModel');
 const filesUpload = require('../files/controller');
 const { createStripeCustomer } = require('../stripe/controller');
+const { generateAuthToken, generateRefreshToken} = require('../../utils/tokenUtils');
 
-const generateToken = (userId) => jwt.sign({ userId }, process.env.JWT_SECRET_KEY, { expiresIn: '8h' });
 
 const registerUser = async (user) => {
     const { email, current_password, first_name, last_name, dni } = user;
@@ -76,14 +76,24 @@ const getUsers = async (limit, page) => {
     };
 };
 
+
 const loginUser = async (email, current_password) => {
     const user = await model.getUserByEmail(email);
 
-    if (user && await bcrypt.compare(current_password, user.current_password))
-        return  generateToken(user.user_id);
+    console.log("user",user);
+
+    if (user && await bcrypt.compare(current_password, user.current_password)){
+        const authToken = generateAuthToken(user.user_id);
+        const refreshToken = generateRefreshToken(user.user_id);
+
+        return {
+            authToken,
+            refreshToken
+        };
+    }
 
     return null;
-};
+};  
 
 const getUsersByRegistrationDate = async (startDate, endDate) => {
     const users = await getUsersByRegistrationDate(new Date(startDate), new Date(endDate));

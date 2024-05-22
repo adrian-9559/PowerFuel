@@ -1,6 +1,6 @@
 import axios from 'axios';
-import responseInterceptor from '../middlewares/responseInterceptor';
-import requestInterceptor from '../middlewares/requestInterceptor';
+import {responseMessageInterceptor} from '../middlewares/responseMessageInterceptor';
+import {authTokenInterceptor} from '../middlewares/authTokenInterceptor';
 import toastr from 'toastr'; // Add the import statement for toastr
 
 const api = axios.create({
@@ -9,7 +9,7 @@ const api = axios.create({
   headers: {'X-Custom-Header': 'foobar'}
 });
 api.interceptors.request.use((config) => {
-  const token = sessionStorage.getItem('token');
+  const token = localStorage.getItem('auth_token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -30,9 +30,16 @@ api.interceptors.response.use(response => {
   }
 });
 
+// api.interceptors.response.use(responseMessageInterceptor, error => {
+//   return Promise.reject(error);
+// } );
+
+// api.interceptors.request.use(authTokenInterceptor, error => {
+//   return Promise.reject(error);
+// } );
 
 
-// api.interceptors.response.use(responseInterceptor);
-// api.interceptors.request.use(requestInterceptor);
+
+
 
 export default api;

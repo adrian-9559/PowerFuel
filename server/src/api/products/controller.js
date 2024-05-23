@@ -84,6 +84,14 @@ const getImageCount = async (id) => {
     return { count: files.length };
 };
 
+const getProductsByDate = async (page, limit, startDate, endDate, order) => {
+    page = parseInt(page) || 1;
+    limit = parseInt(limit) || 15;
+    const skip = (page - 1) * limit;
+    let products = await model.getProductsByDate(limit, skip, startDate, endDate, order);
+    return products;
+}
+
 module.exports = {
     addProduct,
     getProducts,
@@ -92,5 +100,6 @@ module.exports = {
     deleteProductById,
     getImageCount,
     getProductsByCategory,
-    getProductsSearch
+    getProductsSearch,
+    getProductsByDate
 };

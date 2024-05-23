@@ -1,13 +1,12 @@
-const jwt = require('jsonwebtoken');
+const tokenUtils = require('../utils/tokenUtils');
 
 const authTokenInterceptor  =  async  (req, res, next) => {
     let token = req.headers['authorization'];
     if (token) {
         token = token.split('Bearer ')[1];
         try {
-            const {userId} = jwt.verify(token, process.env.JWT_SECRET_KEY);
-            req.user = userId;
-            console.log('Token válido:', req.user);
+            const {userId} = tokenUtils.verifyToken(token);
+            req.user = {userId};
             return next();
         } catch (error) {
             if (error.name === 'TokenExpiredError') {

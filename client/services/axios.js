@@ -10,6 +10,7 @@ const api = axios.create({
 });
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('auth_token');
+  console.log('token', token);
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -28,6 +29,33 @@ api.interceptors.response.use(response => {
   if (error.response && error.response.data.message) {
     toastr.error(error.response.data.message);
   }
+});
+
+api.interceptors.response.use((response) => {
+  return response;
+}, async (error) => {
+  const originalRequest = error.config;
+  if (error.response.status === 401 && !originalRequest._retry) {
+    originalRequest._retry = true;
+    const refreshToken = localStorage.getItem('refresh_token');
+    if (refreshToken) {
+      try {
+        const res = await api.post('/refresh', { token: refreshToken });
+        if (res.status === 200) {
+          localStorage.setItem('auth_token', res.data.auth_token);
+          api.defaults.headers.common['Authorization'] = `Bearer ${res.data.auth_token}`;
+          return api(originalRequest);
+        }
+      } catch (err) {
+        console.log(err);
+        localStorage.removeItem('auth_token');
+        localStorage.removeItem('refresh_token');
+      }
+    } else {
+      localStorage.removeItem('auth_token');
+    }
+  }
+  return Promise.reject(error);
 });
 
 // api.interceptors.response.use(responseMessageInterceptor, error => {

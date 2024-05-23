@@ -3,6 +3,7 @@ const numCPUs = require('os').cpus().length;
 const pidusage = require('pidusage');
 const routes = require('./routes');
 const authTokenInterceptor = require('./middlewares/authTokenInterceptor');
+const refreshTokenInterceptor = require('./middlewares/refreshTokenInterceptor');
 require('dotenv').config();
 
 // Función para inicializar la aplicación Express
@@ -38,6 +39,7 @@ function startExpress() {
 
     
     app.use(authTokenInterceptor);
+    app.use(refreshTokenInterceptor);
 
     app.use(routes);
 

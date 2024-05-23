@@ -23,6 +23,15 @@ class ProductService {
         }
     }
 
+    async getProductsNovedades(limit = 15, page = 1, order = "ASC", startDate = null, endDate = null) {
+        try {
+            const response = await api.post(`/products/date?startDate=${startDate}&endDate=${endDate}&page=${page}&limit=${limit}&order=${order}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    }
+
     async getAllProductsByCategory(id) {
         try {
             const response = await api.get(`/products/category/${id}`);

@@ -107,7 +107,8 @@ class model {
             id_brand: product.id_brand,
             category_id: product.category_id,
             stripe_product_id: product.stripe_product_id,
-            stripe_price_id: product.stripe_price_id
+            stripe_price_id: product.stripe_price_id,
+            resgistration_date: product.resgistration_date
         });
     
         return newProduct.product_id;
@@ -150,6 +151,26 @@ class model {
                 category_id: categoryId
             }
         });
+    }
+
+    async getProductsByDate(limit = 15, skip = 0, startDate, endDate, order = 'ASC') {
+        let whereCondition = {};
+        if(startDate && endDate && !isNaN(new Date(startDate)) && !isNaN(new Date(endDate))) {
+            whereCondition.registration_date = {
+                [Op.between]: [startDate, endDate]
+            };
+        }
+    
+        let products = await Product.findAll({
+            where: whereCondition,
+            order: [
+                ['registration_date', order]
+            ],
+            offset: skip,
+            limit: limit
+        });
+        
+        return products;
     }
 }
 

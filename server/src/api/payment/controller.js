@@ -18,7 +18,7 @@ const createCheckout = async (cart, userId) => {
     }));
 
     const session = await createCheckoutSession(user.stripe_customer_id, line_items);
-
+    console.log("compra", session);
     return session;
 };
 

@@ -53,25 +53,25 @@ router.route('/:userId')
         }
     })
     .get(async (req, res) => {
-        console.log("user",req.user);
-        const userId = req.params.userId="null"?req.user.userId:req.params.userId; 
+        const userId = req.params.userId;
         try {
             const user = await getUserById(userId);
             if (!user) {
                 return res.status(404).json({ message: 'User not found' });
             }
-            res.json(user);
+            return res.json(user); 
         } catch (error) {
             console.error('Error getting the user:', error);
-            res.status(500).json({ message: 'Error getting the user' });
+            if (!res.headersSent) {
+                return res.status(500).json({ message: 'Error getting the user' });
+            }
         }
     });
 
 router.route('/login')
     .post(async (req, res) => {
         try {
-            const tokens = await loginUser(req.body.email, req.body.current_password);
-            console.log("tokens",tokens);
+            const tokens = await loginUser(req.body.email, req.body.password);
             if (!tokens) {
                 return res.status(401).json({ message: 'Login failed' });
             }
@@ -92,6 +92,23 @@ router.route('/usersByRegistrationDate')
         } catch (error) {
             console.error('Error in /usersByRegistrationDate:', error);
             res.status(500).json({ message: error.message });
+        }
+    });
+
+router.route('/info')
+    .post(async (req, res) => {
+        const userId = req.user.userId;
+        try {
+            const user = await getUserById(userId);
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+            return res.json(user); 
+        } catch (error) {
+            console.error('Error getting the user:', error);
+            if (!res.headersSent) {
+                return res.status(500).json({ message: 'Error getting the user' });
+            }
         }
     });
 

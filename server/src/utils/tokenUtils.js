@@ -1,14 +1,29 @@
 const jwt = require('jsonwebtoken');
 
+const generateAuthToken = (user) => {
+    const payload = { userId: user.user_id, role: user.role_id };
+    return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '10h' });
+};
 
-const generateAuthToken = (userId) => jwt.sign({ userId }, process.env.JWT_SECRET_KEY, { expiresIn: '20m' });
-const generateRefreshToken = (userId) => jwt.sign({ userId }, process.env.JWT_SECRET_KEY, { expiresIn: '1d' });
+const generateRefreshToken = (user) => {
+    const payload = { userId: user.user_id };
+    return jwt.sign(payload, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
+};
 
+const verifyAuthToken = (token) => {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    return decoded;
+};
 
-const verifyToken = (token) => jwt.verify(token, process.env.JWT_SECRET_KEY);
+const verifyRefreshToken = (token) => {
+    const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+    return decoded;
+    
+};
 
 module.exports = {
     generateAuthToken,
     generateRefreshToken,
-    verifyToken
+    verifyAuthToken,
+    verifyRefreshToken,
 };

@@ -67,21 +67,23 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   }, [cart, isClient]);
 
   useEffect(() => {
-    if (isLoggedIn) {
-      const fetchUserInfo = async () => {
-        const userInfo = await UserService.getUserById();
-        const roleResponse = await RoleService.getRoleByUserId();
-        console.log("user",userInfo);
-        setUser(userInfo.data);
-        setIsAdmin(roleResponse.data !== 10);
-      };
-  
-      fetchUserInfo();
+    const token = localStorage.getItem('auth_token');
+    if (token && !user) {
+        setIsLoggedIn(true);
+        const fetchUserInfo = async () => {
+            const userInfo = await UserService.getUserInfo();
+            const roleResponse = await RoleService.getRoleByUserId();
+            setUser(userInfo.data);
+            setIsAdmin(roleResponse.data !== 10);
+        };
+
+        fetchUserInfo();
+    } else {
+        setIsLoggedIn(false);
     }
-  }, [isLoggedIn]);
+}, []);
 
   const onOpenCartChange = (value: boolean) => {
-    console.log(value);
     setIsCartOpen(value);
   }
 

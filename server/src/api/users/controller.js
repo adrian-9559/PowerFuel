@@ -1,9 +1,9 @@
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const model = require('./userModel');
 const filesUpload = require('../files/controller');
 const { createStripeCustomer } = require('../stripe/controller');
 const { generateAuthToken, generateRefreshToken} = require('../../utils/tokenUtils');
+const bcrypt = require('bcrypt');
 
 
 const registerUser = async (user) => {
@@ -31,6 +31,7 @@ const updateUserById = async (userId, user) => {
 };
 
 const getUserById = async (userId) => {
+    console.log('userId-controller', userId);
     let user = await model.getUsers(null, null, userId);
 
     user =  user.map(user => ({
@@ -77,14 +78,12 @@ const getUsers = async (limit, page) => {
 };
 
 
-const loginUser = async (email, current_password) => {
+const loginUser = async (email, password) => {
     const user = await model.getUserByEmail(email);
-
-    console.log("user",user);
-
-    if (user && await bcrypt.compare(current_password, user.current_password)){
-        const authToken = generateAuthToken(user.user_id);
-        const refreshToken = generateRefreshToken(user.user_id);
+    
+    if (user && await bcrypt.compare(password, user.current_password)){
+        const authToken = generateAuthToken(user);
+        const refreshToken = generateRefreshToken(user);
 
         return {
             authToken,

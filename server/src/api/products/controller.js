@@ -4,11 +4,12 @@ const jwt = require('jsonwebtoken');
 const model = require('./productModel');
 const multer = require('multer');
 const path = require('path');
+const appRoot = path.dirname(require.main.filename);
 const fs = require('fs');
 const {createProduct} = require('../stripe/controller');
 
+
 const addProduct = async (productData) => {
-    // Crear el producto en Stripe
     const {productId, priceId} = await createProduct(productData.product_name, productData.description, productData.price);
 
     productData.stripe_product_id = productId;

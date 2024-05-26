@@ -7,6 +7,12 @@ class PaymentService {
     return response.data;
   }
 
+  async createCheckoutSession(cart) {
+    const response = await api.post('/payment/create-checkout-session', { cart });
+    const session = response.data;
+    return session.clientSecret;
+  }
+
 }
 
 const paymentService = new PaymentService();

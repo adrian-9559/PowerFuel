@@ -1,4 +1,4 @@
-const pidusage = require('pidusage');
+// const pidusage = require('pidusage');
 const fs = require('fs');
 const os = require('os');
 
@@ -25,24 +25,24 @@ const getUseServerRAM = async () => {
   return totalUsage.toFixed(2);
 }
 
-const getDiskUsage = async () => {
-  // Obtener la información del disco
-  const diskInfo = fs.statSync('/');
+// const getDiskUsage = async () => {
+//   // Obtener la información del disco
+//   const diskInfo = fs.statSync('/');
 
-  // Calcular el uso del disco
-  const totalSpace = diskInfo.blocks * diskInfo.blksize;
-  const freeSpace = diskInfo.blocks * diskInfo.blksize - diskInfo.size;
+//   // Calcular el uso del disco
+//   const totalSpace = diskInfo.blocks * diskInfo.blksize;
+//   const freeSpace = diskInfo.blocks * diskInfo.blksize - diskInfo.size;
 
-  // Calcular el porcentaje de espacio libre
-  const freeSpacePercentage = (freeSpace / totalSpace) * 10;
+//   // Calcular el porcentaje de espacio libre
+//   const freeSpacePercentage = (freeSpace / totalSpace) * 10;
 
-  return freeSpacePercentage.toFixed(2);
-}
+//   return freeSpacePercentage.toFixed(2);
+// }
 
 const getUseServerInfo = async () => {
   const cpuUsage = await getUseServerCPU();
   const ramUsage = await getUseServerRAM();
-  const diskUsage = await getDiskUsage();
+  // const diskUsage = await getDiskUsage();
 
   return {
     cpu: cpuUsage,
@@ -55,5 +55,5 @@ module.exports = {
   getUseServerInfo,
   getUseServerCPU,
   getUseServerRAM,
-  getDiskUsage
+  // getDiskUsage
 }

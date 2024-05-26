@@ -40,17 +40,20 @@ const UserMenu = () => {
                         <p className='font-bold'>Hola,</p>
                         <p className="font-bold">{user.email}</p>
                     </DropdownItem>
-                    <DropdownItem key="settings" textValue="Settings" onClick={() => router.push('/users/config')}>
+                    <DropdownItem key="settings" textValue="Settings" onClick={() => router.push('/users/config/DataUser')}>
                         Configuración
                     </DropdownItem>
-                    <DropdownItem key="team_settings" textValue="Delivered" showDivider>Pedidos</DropdownItem>
+                    <DropdownItem key="team_settings" textValue="Delivered" showDivider onClick={() => router.push('/users/config/OrderList')}>Pedidos</DropdownItem>
                     
                     {isAdmin ? (
-                            <DropdownItem key="panel" textValue="panel" onClick={() => router.push('/administrador/General')}>
+                            <DropdownItem key="panel" textValue="panel" onClick={() => router.push('/admin/General')}>
                                 <p>Panel de Administración </p>
                             </DropdownItem>
                     ) : null}
-                    <DropdownItem key="help_and_feedback" textValue="Help">
+                    <DropdownItem key="help_and_feedback" textValue="Help" onClick={() => router.push('/web/Information')}>
+                        Información
+                    </DropdownItem>
+                    <DropdownItem key="help_and_feedback" textValue="Help" onClick={() => router.push('/web/help')}>
                         Ayuda
                     </DropdownItem>
                     <DropdownItem key="logout" textValue="Logout" color="danger" className='bg-red-400' onClick={() => handleLogout()}>

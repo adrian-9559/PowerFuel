@@ -33,7 +33,9 @@ const UserImage = ({user}) => {
         };
         
         const getProfileColor = () => {
-            return intToRGB(hashCode(sessionStorage.getItem('token')));
+            const color =  intToRGB(hashCode(localStorage.getItem('auth_token')));
+            console.log(color);
+            return color;
         };
     
         setStyle((prevStyle) => ({

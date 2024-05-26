@@ -7,14 +7,18 @@ const isAdmin = async (req, res, next) => {
 
     if (authHeader) {
         const token = authHeader.split(' ')[1];
-        jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, {userId}) => {
+        jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, user) => {
             if (err) {
                 return res.sendStatus(403);
             }
-
+        
+            if (!user || !user.userId) {
+                return res.sendStatus(403);
+            }
+        
+            const {userId} = user;
             const {role_id} = await fetchRole(userId);
-
-
+        
             if (role_id !== 10) {
                 next();
             } else {

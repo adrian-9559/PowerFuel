@@ -34,9 +34,8 @@ const HomeComponent = () => {
                 <section className="flex grid-cols-2 gap-32 mx-16 my-4 h-60">
                     <Card className='w-full h-full shadow-lg' isPressable onPress={() => router.push(`/category/novedades`)}>
                         <CardHeader className="absolute z-10 top-1 flex-col !items-start">
-                            <h1 className="font-bold text-2xl text-white">
-                                Destacados
-                            </h1>
+                            <p className="text-tiny text-white/60 uppercase font-bold">Productos</p>
+                            <h4 className="text-white font-medium text-large">Más vendidos</h4>
                         </CardHeader>
                         <Image
                             removeWrapper
@@ -47,9 +46,8 @@ const HomeComponent = () => {
                     </Card>
                     <Card className='w-full h-full shadow-lg' isPressable onPress={() => router.push(`/category/ofertas`)}>
                         <CardHeader className="absolute z-10 top-1 flex-col !items-start">
-                            <h1 className="font-bold text-2xl text-white">
-                                Ofertas del día
-                            </h1>
+                            <p className="text-tiny text-white/60 uppercase font-bold">Productos</p>
+                            <h4 className="text-white font-medium text-large">Ofertas</h4>
                         </CardHeader>
                         <Image
                             removeWrapper
@@ -71,15 +69,17 @@ const HomeComponent = () => {
                         {loading ? (
                             <Spinner />
                         ) : productos && productos.length > 0 ? (
-                            productos.map((product) => (
-                                <section 
-                                    key={product.product_id} 
-                                    onClick={() => router.push(`/product/${product.product_id}`)}
-                                    className="cursor-pointer mx-2 w-fit"
-                                >
-                                    <ProductCard product={product} />
-                                </section>
-                            ))
+                            <div className="flex flex-wrap justify-around">
+                                {productos.map((product) => (
+                                    <section 
+                                        key={product.product_id} 
+                                        onClick={() => router.push(`/product/${product.product_id}`)}
+                                        className="cursor-pointer mx-2 w-fit flex flex-row items-center"
+                                    >
+                                        <ProductCard product={product} />
+                                    </section>
+                                ))}
+                            </div>
                         ) : (
                             <p className="text-center">No se encontraron productos.</p>
                         )}

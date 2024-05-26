@@ -40,7 +40,7 @@ router.route('/:userId')
             res.status(500).json({ message: 'Error deleting the user' });
         }
     })
-    .put(isAdmin, async (req, res) => {
+    .put( async (req, res) => {
         try {
             const user = await updateUserById(req.params.userId, req.body.user);
             if (!user) {

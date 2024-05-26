@@ -1,4 +1,4 @@
-const { getUseServerCPU, getUseServerRAM, getDiskUsage, getUseServerInfo } = require('./controller');
+const { getUseServerCPU, getUseServerRAM, getUseServerInfo } = require('./controller'); //getDiskUsage
 
 const express = require('express');
 
@@ -37,8 +37,8 @@ router.route('/ram')
 router.route('/disk')
     .post(async (req, res) => {
         try {
-            const result = await getDiskUsage();
-            res.json(result);
+            // const result = await getDiskUsage();
+            res.json(0);
         } catch (error) {
             res.status(500).json(error);
         }

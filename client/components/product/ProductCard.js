@@ -35,7 +35,7 @@ const ProductCard = ({ product }) => {
             onKeyDown={handleKeyDown} 
             onMouseEnter={() => setIsHovered(true)} 
             onMouseLeave={() => !isLoading && setIsHovered(false)} 
-            className={`w-64 h-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${isHovered ? 'shadow-lg' : ''}`}
+            className={`w-64 h-80 shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 }`}
         >
             <CardBody className="overflow-visible p-0 relative h-full">
                 <section className='bg-cover bg-center h-full w-full relative' style={{ backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/product/${product.product_id}/1.png)` }}> 

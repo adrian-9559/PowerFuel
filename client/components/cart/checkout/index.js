@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Button, Modal, ModalContent, ModalFooter, ModalHeader, useDisclosure, ModalBody } from '@nextui-org/react';
-import AddressMenu from '@components/cart/checkout/address';
-import PaymentMenu from '@components/cart/checkout/paymentMethod';
+import { Button, Modal, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@nextui-org/react';
+import AddressMenu from '@components/address/checkout';
+import PaymentMenu from '@components/payments/checkout';
 import AuthTabs from '@components/auth/authMenu/partials/authTabs';
 import { useAppContext } from '@context/AppContext';
 

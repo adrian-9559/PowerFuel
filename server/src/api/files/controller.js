@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
+const appRoot = path.dirname(require.main.filename);
+
 const uploadProduct = (req, res) => {
     const productId = req.params.id;
     console.log(productId);

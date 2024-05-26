@@ -1,7 +1,7 @@
 import React from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
-export default function PaymentList() {
+export default function PaymentForm() {
   const stripe = useStripe();
   const elements = useElements();
 

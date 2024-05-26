@@ -1,7 +1,6 @@
 // routes.ts
 const express = require('express');
 const { getCustomerPaymentMethods, createCheckout } = require("./controller");
-
 const router = express.Router();
 
 router.post('/create-checkout-session', async (req, res) => {

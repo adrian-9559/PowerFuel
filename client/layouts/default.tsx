@@ -41,7 +41,7 @@ export default function DefaultLayout({
           animate="show" // Anima al estado "show" cuando se monta
           exit="exit" // Anima al estado "exit" cuando se desmonta
           style={{ flexGrow: 1 }} 
-          className='px-4 py-8 sm:px-8 md:px-16 lg:px-24 xl:px-32 2xl:px-40'
+          className='px-8 py-8 sm:px-8 md:px-16 lg:px-24 xl:px-32 2xl:px-40'
         >
         {children}
       </motion.main>

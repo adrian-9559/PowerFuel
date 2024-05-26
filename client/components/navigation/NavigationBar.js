@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useContext ,useEffect } from 'react';
+    import React, { useState, useCallback, useContext, useEffect } from 'react';
 import { Navbar, NavbarContent, NavbarItem, NavbarBrand, Image } from "@nextui-org/react";
 import { useAppContext } from '@context/AppContext';
 import { ThemeSwitch } from '@components/theme-switch';
@@ -16,44 +16,41 @@ const NavigationBar = () => {
     const router = useRouter();
 
     return (
-        <header className="w-full mx-auto px-0">
-            <Navbar isBordered className='w-full mx-auto px-0'>
-                <NavbarContent>
+        <header className="w-full mx-0 px-0 flex justify-center">
+            <Navbar isBordered className='w-full h-20'>
+                <NavbarContent justify='center' className='w-full'>
                     <SideMenu />
-                </NavbarContent>
-                <NavbarContent>
-                    <NavbarBrand className="cursor-pointer" onClick={() => router.push('/')}>
-                        <Image className="object-cover h-12 w-12"
+                    <NavbarItem  className="cursor-pointer mx-16" onClick={() => router.push('/')}>
+                        <Image className="object-cover h-16 w-16"
                             src={`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/logo/logo.png`}
                             alt="logo"
                         />
-                    </NavbarBrand>
-                </NavbarContent>
-                <NavbarContent className="w-96">
-                    <SearchBar />
-                </NavbarContent>
-                <NavbarContent>
-                    <CartMenu/>
+                    </NavbarItem>
+                    <NavbarItem className='w-full h-full flex flex-row items-center'>
+                        <SearchBar />
+                    </NavbarItem>
+                    <NavbarItem className='h-full flex flex-row items-center'>
+                        <CartMenu />
+                    </NavbarItem>
                     {isLoggedIn &&
-                        <NotificationMenu/>
+                        <NavbarItem className='h-full flex flex-row items-center'>
+                            <NotificationMenu />
+                        </NavbarItem>
                     }
-                </NavbarContent>
-                <NavbarItem>
-                    <ThemeSwitch/>
-                </NavbarItem>
-                <NavbarContent as="section">
-                    <NavbarItem>
-                        {isLoggedIn ? 
+                    <NavbarItem className='h-full flex flex-row items-center'>
+                        <ThemeSwitch />
+                    </NavbarItem>
+                    <NavbarItem className='h-full flex flex-row items-center'>
+                        {isLoggedIn ?
                             (
-                                <UserMenu/> 
+                                <UserMenu />
                             ) : (
-                                <AuthMenu/>
+                                <AuthMenu />
                             )
                         }
                     </NavbarItem>
                 </NavbarContent>
             </Navbar>
-            
         </header>
     );
 };

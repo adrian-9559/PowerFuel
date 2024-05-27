@@ -1,5 +1,5 @@
 import { Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ProductService from '@services/productService';
 import CategoryService from '@services/categoryService';
@@ -22,7 +22,7 @@ const CreateProduct = () => {
     const [parentCategories, setParentCategories] = useState([]);
     const [childCategoriesLevels, setChildCategoriesLevels] = useState([]);
     const router = useRouter();
-    const {id} = router.query;
+    const {id, readOnly} = router.query;
 
     useEffect(() => {
         const fetchParentCategories = async () => {
@@ -45,7 +45,41 @@ const CreateProduct = () => {
             [name]: value
         });
     };
-    
+
+    const handleRegister = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            await ProductService.addProduct(formState);
+            router.push('/admin/Productos');
+        } catch (error) {
+            setError(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleUpdate = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            await ProductService.updateProduct(id, formState);
+            router.push('/admin/Productos');
+        } catch (error) {
+            setError(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleParentCategoryChange = async (e) => {
+        const childCategories = await CategoryService.getChildCategories(e.target.value);
+        setFormState({
+            ...formState,
+            category_id: childCategories.length === 0 ? e.target.value : null
+        });
+        setChildCategoriesLevels([childCategories]);
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -74,27 +108,9 @@ const CreateProduct = () => {
         fetchData();
     }, [id]);
 
-    const handleRegister = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        try {
-            await ProductService.addProduct(formState);
-            router.push('/admin/Productos');
-        } catch (error) {
-            setError(error.message);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleParentCategoryChange = async (e) => {
-        const childCategories = await CategoryService.getChildCategories(e.target.value);
-        setFormState({
-            ...formState,
-            category_id: childCategories.length === 0 ? e.target.value : null
-        });
-        setChildCategoriesLevels([childCategories]);
-    };
+    useEffect(() => {
+        console.log('formState', formState);
+    }, [formState]);
 
     const handleChildCategoryChange = async (e, level) => {
         const newChildCategories = await CategoryService.getChildCategories(e.target.value);
@@ -109,33 +125,50 @@ const CreateProduct = () => {
         });
     };
 
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        if (id) {
+            handleUpdate(e);
+        }
+        else {  
+            handleRegister(e);
+        }
+    }
+
+
     return (
         <main
             className="max-w-4xl mx-auto mt-10 p-6 rounded-lg shadow-xl mb-10 border-1 border-gray-200"
         >
             <h1 className="text-2xl font-bold mb-4">Crear Producto</h1>
             {error && <p className="mb-4 text-red-500">{error}</p>}
-            <form onSubmit={handleRegister}>
+            <form onSubmit={handleSubmit}>
                 <section className="mb-4">
                     <Input 
                         type='text' 
                         label='Nombre del Producto' 
                         name="product_name" 
                         value={formState.product_name} 
-                        onValueChange={handleChange('product_name')} />
+                        onValueChange={handleChange('product_name')}
+                        isReadOnly={readOnly}
+                    />
                 </section>
                 <section className="mb-4">
                     <Textarea 
                         label='Descripción del Producto' 
                         value={formState.description} 
-                        onValueChange={handleChange('description')}/>
+                        onValueChange={handleChange('description')}
+                        isReadOnly={readOnly}
+                    />
                 </section>
                 <section className="mb-4">
                 <Select 
                     name='brand' 
                     label='Marca' 
                     value={formState.id_brand} 
-                    onValueChange={handleChange('id_brand')}>
+                    onValueChange={handleChange('id_brand')}
+                    isDisabled={readOnly}
+                >
                     {brands.map((brand) => (<SelectItem key={brand.id_brand} value={brand.id_brand}>{brand.brand_name}</SelectItem>))}
                 </Select>
                 </section>
@@ -143,15 +176,19 @@ const CreateProduct = () => {
                     <Input 
                         type='number' 
                         label='Cantidad en Stock' 
-                        value={formState.stock} 
-                        onValueChange={handleChange('stock')}/>
+                        value={formState.stock_quantity} 
+                        onValueChange={handleChange('stock_quantity')}
+                        isReadOnly={readOnly}
+                    />
                 </section>
                 <section className="mb-4">
                     <Input 
                         type='number' 
                         label='Precio del Producto' 
                         value={formState.price} 
-                        onValueChange={handleChange('price')}/>
+                        onValueChange={handleChange('price')}
+                        isReadOnly={readOnly}
+                    />
                 </section>
                 <section className="mb-4">
                     <Select 
@@ -160,6 +197,7 @@ const CreateProduct = () => {
                         value={formState.category_id} 
                         onChange={handleParentCategoryChange} 
                         data-filled
+                        isDisabled={readOnly}
                     >
                         {parentCategories.map((category) => (<SelectItem key={category.category_id} defaultValue={category.category_id}>{category.category_name}</SelectItem>))}
                     </Select>
@@ -168,17 +206,19 @@ const CreateProduct = () => {
                     {childCategoriesLevels.map((childCategories, index) => (
                         childCategories.length > 0 && (
                             <motion.section 
-                                key={index}
+                                key={childCategories.category_id}
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: "auto" }}
                                 exit={{ opacity: 0, height: 0 }}
                                 transition={{ duration: 0.225 }}
-                                className="mb-4">
+                                className="mb-4"
+                            >
                                 <Select 
                                     name={`childCategory${index}`} 
                                     label='Subcategoría del Producto' 
                                     value={formState.category_id}
                                     onChange={(e) => handleChildCategoryChange(e, index + 1)}
+                                    readOnly={readOnly}
                                 >
                                     {childCategories.map((category) => (<SelectItem key={category.category_id} defaultValue={category.category_id}>{category.category_name}</SelectItem>))}
                                 </Select>
@@ -186,11 +226,16 @@ const CreateProduct = () => {
                         )
                     ))}
                 </AnimatePresence>
+                {!readOnly && readOnly !== "true" && (
+                    <section className="mb-4">
+                        <input type='file' multiple id='images' className="w-full px-4 py-2 border rounded-lg" onChange={(e) => setFormState({...formState, images: e.target.files})}/>
+                    </section>
+                )}
                 <section className="mb-4">
-                    <input type='file' multiple id='images' className="w-full px-4 py-2 border rounded-lg" onChange={(e) => setFormState({...formState, images: e.target.files})}/>
-                </section>
-                <section className="mb-4">
-                    <Button type='submit' disabled={loading} className="w-full">{loading ? 'Cargando...' : 'Crear Producto'}</Button>
+                    {!readOnly && readOnly !== "true" && (
+                        <Button type='submit' disabled={loading} className="w-full">{loading ? 'Cargando...' : {id} ? 'Guardar cambios' : 'Crear Producto'}</Button>
+                        
+                    )}
                     <Button type='button' color="danger" onClick={() => router.push('/admin/Productos')} className="w-full mt-4">Cancelar</Button>
                 </section>
             </form>

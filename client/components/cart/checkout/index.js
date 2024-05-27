@@ -5,7 +5,7 @@ import PaymentMenu from '@components/payments/checkout';
 import AuthTabs from '@components/auth/authMenu/partials/authTabs';
 import { useAppContext } from '@context/AppContext';
 
-const CheckOut = ({total}) => {
+const CheckOut = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [selectedAddress, setSelectedAddress] = useState(null);
     const [selectedPayment, setSelectedPayment] = useState(null);
@@ -37,10 +37,9 @@ const CheckOut = ({total}) => {
     },[isOpen]);
 
     return (
-        <section className='w-full'>
-            <Button onPress={onOpen} className='items-center bg-green-200 hover:bg-green-500 sticky bottom-0 z-10 w-full flex justify-between mx-2' color='success' >
+        <section className='w-full flex justify-center'>
+            <Button onPress={onOpen} className='items-center bg-green-200 hover:bg-green-500 sticky bottom-0 z-10 flex justify-center w-1/2' color='success'>
                 <p>Pagar</p>
-                <p className='font-semibold'>{total} €</p>            
             </Button>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} className='p-8' backdrop="blur">
                 <ModalHeader className="flex flex-col gap-1">Pagar</ModalHeader>

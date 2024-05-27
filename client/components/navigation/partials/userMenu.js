@@ -1,5 +1,5 @@
 // UserMenu.js
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Image, Spinner } from "@nextui-org/react";
 import UserImage from '../../users/userImage';
 import UserService from '@services/userService';
@@ -10,22 +10,17 @@ import { useRouter } from 'next/router';
 
 const UserMenu = () => {
     const { user, isAdmin, isLoggedIn , setIsLoggedIn } = useAppContext();
-    const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
 
 
     const handleLogout = () => {
-        sessionStorage.removeItem('token');
+        localStorage.removeItem('auth_token');
         setIsLoggedIn(false);
         router.push('/');
     };
 
-    useEffect(() => {
-        console.log('UserMenu', user);
-    }, [user]);
-
     return (
-        user === null || isLoading ? <Spinner size="large" /> :
+        user === null || !isLoggedIn? <Spinner size="large" /> :
             <Dropdown backdrop="blur">
                 <DropdownTrigger>
                     <Button radius="full" size="lg" className='flex justify-center items-center pt-0' isIconOnly>

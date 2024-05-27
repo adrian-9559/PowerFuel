@@ -100,18 +100,22 @@ class ProductService {
     }
 
     async uploadImages(id, images) {
+        if (!images.length) {
+            throw new Error('Images must be an array or a FileList');
+        }
+    
         try {
             const formData = new FormData();
             for (let i = 0; i < images.length; i++) {
                 formData.append('images', images[i]);
             }
-
+    
             const response = await api.post(`/files/uploadProduct/${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 },
             });
-
+    
             return response.data;
         } catch (error) {
             toastr.error(error);

@@ -46,13 +46,14 @@ const Administrador = () => {
     return (
         <section className="h-full flex w-full gap-0">
             <SideMenuAdministrador setComponentUse={setComponentUse}/>
-            <section className="w-full p-8">
+            <section className='w-full p-8 h-full'>
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={ComponentUse}
                         initial={{opacity: 0}}
                         animate={{opacity: 1}}
                         exit={{opacity: 0}}
+                        className='w-full h-full'
                     >
                         {components[ComponentUse]}
                     </motion.div>

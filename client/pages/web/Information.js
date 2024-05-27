@@ -83,58 +83,48 @@ const InformationComponent = () => {
                 <CardHeader className="flex">Guías de Uso</CardHeader>
                 <Divider />
                 <CardBody className="grid gap-4">
-                    <section className="bg-red-200 bg-opacity-20">
-                        <h3>Cómo Elegir el Suplemento Adecuado</h3>
-                        <section className="grid gap-4">
-                            <section>
-                                <h3>Diferentes tipos de suplementos</h3>
-                                <section>
-                                    <p>Ofrecemos una variedad de suplementos, incluyendo proteínas, vitaminas, minerales, aminoácidos y productos herbales. Cada tipo de suplemento tiene sus propios beneficios y está diseñado para satisfacer diferentes necesidades nutricionales.</p>
-                                </section>
-                            </section>
-                            <section>
-                                <h3>Guía para principiantes</h3>
-                                <section>
-                                    <p>Si eres nuevo en el mundo de los suplementos, te recomendamos comenzar con una multivitamina básica y luego añadir otros suplementos según tus objetivos y necesidades específicas.</p>
-                                </section>
-                            </section>
+                    <section>
+                        <h3 className="font-bold">Diferentes tipos de suplementos</h3>
+                        <section>
+                            <p>Ofrecemos una variedad de suplementos, incluyendo proteínas, vitaminas, minerales, aminoácidos y productos herbales. Cada tipo de suplemento tiene sus propios beneficios y está diseñado para satisfacer diferentes necesidades nutricionales.</p>
                         </section>
                     </section>
-                    <section className="bg-red-200 bg-opacity-20">
-                        <h3>Instrucciones de Uso</h3>
-                        <section className="grid gap-4">
-                            <section>
-                                <h3>Dosificación recomendada</h3>
-                                <section>
-                                    <p>Sigue siempre las instrucciones de dosificación en la etiqueta del producto. Si tienes dudas, consulta a un profesional de la salud.</p>
-                                </section>
-                            </section>
-                            <section>
-                                <h3>Consejos sobre cuándo y cómo tomar los suplementos</h3>
-                                <section>
-                                    <p>Algunos suplementos son más efectivos cuando se toman con las comidas, mientras que otros pueden ser mejor absorbidos con el estómago vacío. Lee las instrucciones del producto para obtener la mejor guía.</p>
-                                </section>
-                            </section>
+                    <section>
+                        <h3 className="font-bold">Guía para principiantes</h3>
+                        <section>
+                            <p>Si eres nuevo en el mundo de los suplementos, te recomendamos comenzar con una multivitamina básica y luego añadir otros suplementos según tus objetivos y necesidades específicas.</p>
                         </section>
                     </section>
-                    <section className="grid gap-4 bg-red-200 bg-opacity-20">
-                        <h3>Advertencias y Precauciones</h3>
-                        <section className="grid gap-4">
+                    <section>
+                        <h3 className="font-bold">Dosificación recomendada</h3>
+                        <section>
+                            <p>Sigue siempre las instrucciones de dosificación en la etiqueta del producto. Si tienes dudas, consulta a un profesional de la salud.</p>
+                        </section>
+                    </section>
+                    <section>
+                        <h3 className="font-bold">Consejos sobre cuándo y cómo tomar los suplementos</h3>
+                        <section>
+                            <p>Algunos suplementos son más efectivos cuando se toman con las comidas, mientras que otros pueden ser mejor absorbidos con el estómago vacío. Lee las instrucciones del producto para obtener la mejor guía.</p>
+                        </section>
+                    </section>
+                    <section>
+                        <h3 className="font-bold">Advertencias y Precauciones</h3>
+                        <section className="mx-10">
                             <section>
-                                <h3>Contraindicaciones</h3>
-                                <section>
+                                <h4 className="font-bold">- Contraindicaciones</h4>
+                                <section className="mx-3">
                                     <p>Algunos suplementos pueden no ser adecuados para personas con ciertas condiciones médicas. Lee siempre las advertencias en la etiqueta del producto y consulta a un profesional de la salud.</p>
                                 </section>
                             </section>
                             <section>
-                                <h3>Posibles efectos secundarios</h3>
-                                <section>
+                                <h4 className="font-bold">- Posibles efectos secundarios</h4>
+                                <section className="mx-3">
                                     <p>Aunque los suplementos son generalmente seguros, pueden causar efectos secundarios en algunas personas. Si experimentas algún efecto adverso, deja de usar el producto y consulta a un profesional de la salud.</p>
                                 </section>
                             </section>
                             <section>
-                                <h3>Interacciones con medicamentos</h3>
-                                <section>
+                                <h4 className="font-bold">- Interacciones con medicamentos</h4>
+                                <section className="mx-3">
                                     <p>Algunos suplementos pueden interactuar con medicamentos recetados o de venta libre. Consulta siempre a un profesional de la salud antes de comenzar un nuevo suplemento si estás tomando otros medicamentos.</p>
                                 </section>
                             </section>

@@ -114,19 +114,28 @@ class model {
         return newProduct.product_id;
     };
     
-    modifyProduct = async (productId, product) => {
-        const updatedProduct = await Product.findByPk(productId);
-    
-        if (updatedProduct) {
-            await updatedProduct.update({
-                product_name: product.name,
-                description: product.description,
-                price: product.price,
-                stock_quantity: product.quantity,
-                id_brand: product.id_brand,
-                category_id: product.category_id, // Add this line
+    modifyProduct = async (productId, productData) => {
+        const product = await Product.findByPk(productId);
+        console.log("product", product);
+        if (product) {
+            const updateProduct = await Product.update({
+                product_name: productData.name,
+                description: productData.description,
+                price: productData.price,
+                stock_quantity: productData.stock_quantity,
+                id_brand: productData.id_brand,
+                category_id: productData.category_id,
+            }, {
+                where: {
+                    product_id: parseInt(productId)
+                }
             });
+
+            console.log("updateProduct", updateProduct);
+    
+            return updateProduct;
         }
+        return null;
     };
     
     deleteProduct = async (productId) => {

@@ -19,6 +19,27 @@ const UserMenu = () => {
         router.push('/');
     };
 
+    useEffect(() => {
+        if (isLoggedIn && user === null) {
+            const fetchUser = async () => {
+                try {
+                    const userData = await UserService.getUserInfo();
+                    if (userData) {
+                        const role = await RoleService.getRoleById(userData.role_id);
+                        userData.role = role;
+                        setIsLoggedIn(true);
+                    }
+                }
+                catch (error) {
+                    console.error('Error fetching user:', error.message);
+                }
+            }
+            fetchUser();
+        }
+    }
+    , [isLoggedIn, user, setIsLoggedIn]);
+                    
+
     return (
         user === null || !isLoggedIn? <Spinner size="large" /> :
             <Dropdown backdrop="blur">

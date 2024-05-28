@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip, getKeyValue, Button, Pagination} from "@nextui-org/react";
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip, Button, Pagination} from "@nextui-org/react";
 import { useRouter } from 'next/router';
 import UserService from '@services/userService';
 import DeleteIcon from '@icons/DeleteIcon';
@@ -19,6 +19,7 @@ const UserAdministration = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
+    const [selectedKeys, setSelectedKeys] = useState([]);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -39,23 +40,45 @@ const UserAdministration = () => {
         }
     };
 
+    const deleteSelectedUsers = async () => {
+        for (const userId of selectedKeys) {
+            await deleteUser(userId);
+            setUsers(Users.filter(user => user.user_id !== userId));
+        }
+        setSelectedKeys([]);
+    };
+
+    useEffect(() => {
+        console.log(selectedKeys);
+    }, [selectedKeys]);
+
     return (
-        <section>
-            <section className='grid w-full'>
-                    <section>
-                        <h1 className="text-center text-2xl font-bold">Listado de Usuarios</h1>
+        <section className='h-full w-full'>
+            <Table aria-label='Tabla de usuarios'
+                selectionMode="multiple"
+                selectedKeys={selectedKeys}
+                onSelectionChange={setSelectedKeys}
+                className="w-full h-full"
+                topContent={
+                    <section className='flex flex-row w-full h-full'>
+                        <section className="absolute flex justify-left gap-2">
+                            <Tooltip color="danger" content="Eliminar Usuario/s">
+                                <Button isIconOnly color="danger" className="text-lg cursor-pointer active:opacity-50" onClick={deleteSelectedUsers}>
+                                    <DeleteIcon color="primary" />
+                                </Button>
+                            </Tooltip>
+                            <Tooltip color="success" content="Añadir Usuario" className='text-white'>
+                                <Button isIconOnly color="success" className="text-lg  cursor-pointer active:opacity-50" onClick={() => router.push('/admin/create/createUser')}>
+                                    <PlusIcon color="white" />
+                                </Button>
+                            </Tooltip>
+                        </section>
+                        <section className='flex justify-center items-center h-auto w-full'>
+                            <h1 className="text-center text-2xl font-bold">Listado de Usuarios</h1>
+                        </section>
                     </section>
-                    <section className="flex justify-end mr-5 mb-5">
-                        <Tooltip color="success" content="Añadir Usuario">
-                            <Button isIconOnly color="success" variant='flat' none className="text-lg text-danger cursor-pointer active:opacity-50" onClick={() => router.push('/admin/create/createUser')}>
-                                <PlusIcon color="primary"/>
-                            </Button>
-                        </Tooltip>
-                    </section>
-                </section>
-            <Table aria-label='Tabla de roles' selectionMode="multiple" 
-                    className="w-full h-full"
-                    bottomContent={
+                }
+                bottomContent={
                     totalPages > 0 ? (
                         <section className="flex w-full justify-center">
                             <Pagination
@@ -115,19 +138,19 @@ const UserAdministration = () => {
                             </TableCell>
                             <TableCell>
                                 <section className="relative flex justify-center items-center gap-2">
-                                    <Tooltip color="primary" content="Details">
+                                    <Tooltip color="primary" content="Detalles">
                                         <Button isIconOnly color="primary" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                                            <EyeIcon />
+                                            <EyeIcon color="primary" />
                                         </Button>
                                     </Tooltip>
-                                    <Tooltip color="success" content="Edit user" className="text-white">
+                                    <Tooltip color="success" content="Editar Usuario" className="text-white">
                                         <Button isIconOnly color="success" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50">
                                             <EditIcon color="green"/>
                                         </Button>
                                     </Tooltip>
-                                    <Tooltip color="danger" content="Delete user">
-                                        <Button isIconOnly color="danger" variant="light" none className="text-lg text-danger cursor-pointer active:opacity-50" onClick={() => deleteUser(user.user_id)}>
-                                            <DeleteIcon color="red"/>
+                                    <Tooltip color="danger" content="Eliminar Usuario">
+                                        <Button isIconOnly color="danger" className="text-lg cursor-pointer active:opacity-50" onClick={() => deleteUser(user.user_id)}>
+                                            <DeleteIcon color="primary" />
                                         </Button>
                                     </Tooltip>
                                 </section>

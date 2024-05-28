@@ -1,59 +1,72 @@
 import React, { useState, useEffect } from 'react';
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Tooltip, Button, Pagination} from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Tooltip, Button, Pagination } from "@nextui-org/react";
 import { useRouter } from 'next/router';
 import RoleService from '@services/roleService';
-import EditIcon from '@icons/EditIcon';
 import DeleteIcon from '@icons/DeleteIcon';
+import EyeIcon from '@icons/EyeIcon';
+import EditIcon from '@icons/EditIcon';
 import PlusIcon from '@icons/PlusIcon';
 
 const RoleAdministration = () => {
     const router = useRouter();
     const [Roles, setRoles] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
+    const [selectedKeys, setSelectedKeys] = useState([]);
 
     useEffect(() => {
-        const fetchUserData = async () => {
+        const fetchRoleData = async () => {
             const response = await RoleService.getRoles(page);
-            if (response) {
-                setRoles(response.roles ?? []);
-                setTotalPages(response.pages);
-                setIsLoading(false);
-            }
+            setRoles(response.roles ?? []);
+            setTotalPages(response.pages);
         }
-        fetchUserData();
+        fetchRoleData();
     }, [page]);
 
     const deleteRole = async (roleId) => {
-        try {
-            await RoleService.deleteRole(roleId);
-            setRoles(Roles.filter(role => role.role_id !== roleId));
-        } catch (error) {
-            console.error('Failed to delete role: ', error);
-        }
+        await RoleService.deleteRole(roleId);
+        setRoles(Roles.filter(role => role.role_id !== roleId));
     };
 
+    const deleteSelectedRoles = async () => {
+        for (const roleId of selectedKeys) {
+            await deleteRole(roleId);
+            setRoles(Roles.filter(role => role.role_id !== roleId));
+        }
+        setSelectedKeys([]);
+    };
+
+    useEffect(() => {
+        console.log(selectedKeys);
+    }, [selectedKeys]);
+
     return (
-        isLoading ? (
-            <h1>Loading...</h1>
-        ) : (
-            <section>
-                <section className='grid w-full'>
-                    <section>
-                        <h1 className="text-center text-2xl font-bold">Listado de Roles de Usuario</h1>
+        <section className='h-full w-full'>
+            <Table aria-label='Tabla de roles'
+                selectionMode="multiple"
+                selectedKeys={selectedKeys}
+                onSelectionChange={setSelectedKeys}
+                className="w-full h-full"
+                topContent={
+                    <section className='flex flex-row w-full h-full'>
+                        <section className="absolute flex justify-left gap-2">
+                            <Tooltip color="danger" content="Eliminar Rol/es">
+                                <Button isIconOnly color="danger" className="text-lg cursor-pointer active:opacity-50" onClick={deleteSelectedRoles}>
+                                    <DeleteIcon color="primary" />
+                                </Button>
+                            </Tooltip>
+                            <Tooltip color="success" content="Añadir Rol" className='text-white'>
+                                <Button isIconOnly color="success" className="text-lg  cursor-pointer active:opacity-50" onClick={() => router.push('/admin/create/createRole')}>
+                                    <PlusIcon color="white" />
+                                </Button>
+                            </Tooltip>
+                        </section>
+                        <section className='flex justify-center items-center h-auto w-full'>
+                            <h1 className="text-center text-2xl font-bold">Listado de Roles</h1>
+                        </section>
                     </section>
-                    <section className="flex justify-end mr-5 mb-5">
-                        <Tooltip color="success" content="Añadir Rol">
-                            <Button isIconOnly color="success" variant='flat' none className="text-lg text-danger cursor-pointer active:opacity-50" onClick={() => router.push('/admin/create/createCategory')}>
-                                <PlusIcon color="primary"/>
-                            </Button>
-                        </Tooltip>
-                    </section>
-                </section>
-                <Table aria-label='Tabla de roles' selectionMode="multiple" 
-                    className="w-full h-full"
-                    bottomContent={
+                }
+                bottomContent={
                     totalPages > 0 ? (
                         <section className="flex w-full justify-center">
                             <Pagination
@@ -68,46 +81,50 @@ const RoleAdministration = () => {
                         </section>
                     ) : null
                 }>
-                    <TableHeader>
-                        <TableColumn>
-                            <p>ID de Rol</p>
-                        </TableColumn>
-                        <TableColumn>
-                            <p>Nombre de Rol</p>
-                        </TableColumn>
-                        <TableColumn className='flex justify-center items-center'>
-                            <p>Acciones</p>
-                        </TableColumn>
-                    </TableHeader>
-                    <TableBody>
-                        {Roles.map((role, index) => (
-                            <TableRow key={index}>
-                                <TableCell>
-                                    <p>{role.role_id}</p>
-                                </TableCell>
-                                <TableCell>
-                                    <p>{role.role_name}</p>
-                                </TableCell>
-                                <TableCell>
-                                    <section className="relative flex justify-center items-center gap-2">
-                                        <Tooltip color="success" content="Edit user" className="text-white">
-                                            <Button isIconOnly color="success" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                                                <EditIcon color="green"/>
-                                            </Button>
-                                        </Tooltip>
-                                        <Tooltip color="danger" content="Delete role">
-                                            <Button isIconOnly color="danger" variant="light" none className="text-lg text-danger cursor-pointer active:opacity-50" onClick={() => deleteRole(role.role_id)}>
-                                                <DeleteIcon color="red"/>
-                                            </Button>
-                                        </Tooltip>
-                                    </section>
-                                </TableCell>
-                            </TableRow>   
-                        ))}
-                    </TableBody>
-                </Table>
-            </section>
-        )
+                <TableHeader>
+                    <TableColumn>
+                        <p>ID de Rol</p>
+                    </TableColumn>
+                    <TableColumn>
+                        <p>Nombre de Rol</p>
+                    </TableColumn>
+                    <TableColumn className='flex justify-center items-center'>
+                        <p>Acciones</p>
+                    </TableColumn>
+                </TableHeader>
+                <TableBody>
+                    {Roles.map((role, index) => (
+                        <TableRow key={index}>
+                            <TableCell>
+                                <p>{role.role_id}</p>
+                            </TableCell>
+                            <TableCell>
+                                <p>{role.role_name}</p>
+                            </TableCell>
+                            <TableCell>
+                                <section className="relative flex justify-center items-center gap-2">
+                                    <Tooltip color="primary" content="Detalles">
+                                        <Button isIconOnly color="primary" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => router.push(`/admin/create/createRole?readOnly=true&&id=${role.role_id}`)}>
+                                            <EyeIcon color="primary" />
+                                        </Button>
+                                    </Tooltip>
+                                    <Tooltip color="success" content="Editar Rol" className="text-white">
+                                        <Button isIconOnly color="success" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => router.push(`/admin/create/createRole?id=${role.role_id}`)}>
+                                            <EditIcon color="green" />
+                                        </Button>
+                                    </Tooltip>
+                                    <Tooltip color="danger" content="Eliminar Rol">
+                                        <Button isIconOnly color="danger" className="text-lg cursor-pointer active:opacity-50" onClick={() => deleteRole(role.role_id)}>
+                                            <DeleteIcon color="primary" />
+                                        </Button>
+                                    </Tooltip>
+                                </section>
+                            </TableCell>
+                        </TableRow>   
+                    ))}
+                </TableBody>
+            </Table>
+        </section>
     );
 };
 

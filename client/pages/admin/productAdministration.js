@@ -153,12 +153,12 @@ const ProductoAdministration = () => {
                                             <EyeIcon color="primary" />
                                         </Button>
                                     </Tooltip>
-                                    <Tooltip color="success" content="Editar Usuario" className="text-white">
+                                    <Tooltip color="success" content="Editar Producto" className="text-white">
                                         <Button isIconOnly color="success" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50" onPress={() => router.push(`/admin/create/createProduct?id=${product.product_id}`)}>
                                             <EditIcon color="green" />
                                         </Button>
                                     </Tooltip>
-                                    <Tooltip color="danger" content="Eliminar Producto/s">
+                                    <Tooltip color="danger" content="Eliminar Producto">
                                         <Button isIconOnly color="danger" className="text-lg cursor-pointer active:opacity-50" onClick={() => deleteProduct(product.product_id)}>
                                             <DeleteIcon color="primary" />
                                         </Button>

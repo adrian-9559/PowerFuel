@@ -64,10 +64,7 @@ const SideMenuAdministrador = ({ComponentUse, setComponentUse}) => {
                     <li className="w-full p-0" key={index}>
                         <Button 
                             radius="none" variant="light" className='w-full cursor-pointer justify-start text-start' key={index} onClick={() => setComponentUse(action)}
-                            startContent={
-                                action === "Usuarios" ? 
-                                <UserIcon  className="w-4 h-4" color="red"/> : null
-                            } 
+                           
                             >
                             {action}
                         </Button>

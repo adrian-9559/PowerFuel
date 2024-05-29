@@ -102,7 +102,9 @@ const CategoryAdministration = () => {
                         <p>Acciones</p>
                     </TableColumn>
                 </TableHeader>
-                <TableBody>
+                <TableBody
+                    emptyContent="No hay categorías disponibles"
+                >
                     {Categories.map((category) => (
                         <TableRow key={category.category_id}>
                             <TableCell>
@@ -135,7 +137,7 @@ const CategoryAdministration = () => {
                                 </section>
                             </TableCell>
                         </TableRow>   
-                    ))}
+                    ), )}
                 </TableBody>
             </Table>
         </section>

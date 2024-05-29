@@ -5,10 +5,10 @@ const InformationComponent = () => {
     return (
         <section className="grid my-5 mx-16 justify-center gap-5">
             <section className="flex justify-center">
-                <h1 className="text-4xl">Información</h1>
+                <h1 className="text-5xl">Información</h1>
             </section>
-            <Card className="bg-blue-200 bg-opacity-20">
-                <CardHeader className="flex gap-3">Preguntas Frecuentes (FAQ)</CardHeader>
+            <Card className="bg-blue-200 bg-opacity-20 p-4">
+                <CardHeader className="flex gap-3 font-bold text-4xl">Preguntas Frecuentes (FAQ)</CardHeader>
                 <Divider />
                 <CardBody className="grid gap-4">
                         <section>
@@ -37,8 +37,8 @@ const InformationComponent = () => {
                         </section>
                 </CardBody>
             </Card>
-            <Card className="bg-blue-200 bg-opacity-20">
-                <CardHeader className="flex gap-3">Información sobre la Empresa</CardHeader>
+            <Card className="bg-blue-200 bg-opacity-20 p-4">
+                <CardHeader className="flex gap-3 font-bold text-4xl">Información sobre la Empresa</CardHeader>
                 <Divider />
                 <CardBody className="grid gap-4">
                     <section>
@@ -79,8 +79,8 @@ const InformationComponent = () => {
                     </section>
                 </CardBody>
             </Card>
-            <Card className="bg-blue-200 bg-opacity-20">
-                <CardHeader className="flex">Guías de Uso</CardHeader>
+            <Card className="bg-blue-200 bg-opacity-20 p-4">
+                <CardHeader className="flex font-bold text-4xl">Guías de Uso</CardHeader>
                 <Divider />
                 <CardBody className="grid gap-4">
                     <section>

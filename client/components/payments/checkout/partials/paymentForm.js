@@ -15,10 +15,6 @@ const PaymentForm = () => {
     return await PaymentService.createCheckoutSession(cart);
   }, [cart]);
 
-  const handleSuccess = () => {
-    setCart([]);
-  };
-
   const options = {fetchClientSecret};
 
   return (
@@ -27,10 +23,7 @@ const PaymentForm = () => {
         stripe={stripePromise}
         options={options}
       >
-        <EmbeddedCheckout 
-          
-          onSuccess={handleSuccess}
-        />
+        <EmbeddedCheckout />
       </EmbeddedCheckoutProvider>
     </div>
   )

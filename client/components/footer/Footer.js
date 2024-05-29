@@ -3,7 +3,7 @@ import React from 'react';
 export default function Footer(){
     
     return (
-        <footer className="text-center   lg:text-left">
+        <footer className="text-center lg:text-left">
             <section className="flex items-center justify-center border-b-2 border-t-2 border-neutral-200 p-6 dark:border-white/10 lg:justify-between ">
                 <section className="me-12 hidden lg:block">
                     <span>Redes Sociales:</span>

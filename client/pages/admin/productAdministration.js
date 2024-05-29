@@ -107,7 +107,9 @@ const ProductoAdministration = () => {
                         <p>Acciones</p>
                     </TableColumn>
                 </TableHeader>
-                <TableBody className='h-full'>
+                <TableBody 
+                    emptyContent="No hay productos disponibles"
+                >
                     {Products.map((product) => (
                         <TableRow key={product.product_id} >
                             <TableCell>
@@ -159,7 +161,7 @@ const ProductoAdministration = () => {
                                 </section>
                             </TableCell>
                         </TableRow>
-                    ))}
+                    ), [])}
                 </TableBody>
             </Table>
         </section>

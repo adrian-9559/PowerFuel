@@ -1,19 +1,20 @@
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button } from "@nextui-org/react";
 import {Divider} from "@nextui-org/react";
 import ProductService from '@services/productService';
-import AddressService from '@services/addressService';
+import OrderService from '@services/orderService';
 import { useAppContext } from '@context/AppContext';
 import CheckOut from '@components/cart/checkout';
 import CartItemPageComponent from '@components/cart/cartItemPage';
 import DeleteIcon from '@icons/DeleteIcon';
+import PaymentService from '@services/paymentService';
 
 const ViewCart = () => {
     const { cart, setCart } = useAppContext();
-    // const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [total, setTotal] = useState(0);
     const router = useRouter();
+    const success = router.query.success;
 
     const handleDeleteCart = () => {
         setCart([]);
@@ -46,6 +47,28 @@ const ViewCart = () => {
     
         getTotalPrice();
     }, [cart]);
+
+    useEffect(() => {
+        const handleSuccess = async () => {
+            if (success) {
+                const lastPayment = await PaymentService.getLastPayment();
+
+                console.log('lastPayment', lastPayment);
+        
+                const order = {
+                    order_id: lastPayment.id,
+                    order_date: new Date(),
+                    order_status: 'pending',
+                    details: JSON.stringify(cart)
+                };
+        
+                await OrderService.createOrder(order);
+        
+                setCart([]);
+            }
+        }
+        handleSuccess();
+    }, [success]);
 
     return (
         <main className="px-12 py-6 w-full grid gap-10">

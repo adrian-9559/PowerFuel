@@ -53,12 +53,11 @@ const UserAdministration = () => {
     }, [selectedKeys]);
 
     return (
-        <section className='h-full w-full'>
+        <section className='h-[100%]'>
             <Table aria-label='Tabla de usuarios'
                 selectionMode="multiple"
                 selectedKeys={selectedKeys}
                 onSelectionChange={setSelectedKeys}
-                className="w-full h-full"
                 topContent={
                     <section className='flex flex-row w-full h-full'>
                         <section className="absolute flex justify-left gap-2">
@@ -110,7 +109,9 @@ const UserAdministration = () => {
                         <p>Acciones</p>
                     </TableColumn>
                 </TableHeader>
-                <TableBody>
+                <TableBody
+                    emptyContent="No hay usuarios disponibles"
+                >
                     {Users.map((user) => (
                         <TableRow key={user.user_id}>
                             <TableCell>
@@ -156,7 +157,7 @@ const UserAdministration = () => {
                                 </section>
                             </TableCell>
                         </TableRow>   
-                    ))}
+                    ) , [])}
                 </TableBody>
             </Table>
         </section>

@@ -52,7 +52,7 @@ const SideMenuAdministrador = ({ComponentUse, setComponentUse}) => {
     },[isLoggedIn, user]);
 
     return (
-        <nav className='py-4 w-64'>
+        <nav className='py-4 w-64 h-[54rem] border-r-1 border-default-100'>
             <ul 
                 className="flex flex-col items-center gap-1 w-full"
             >

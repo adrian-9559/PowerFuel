@@ -92,7 +92,9 @@ const RoleAdministration = () => {
                         <p>Acciones</p>
                     </TableColumn>
                 </TableHeader>
-                <TableBody>
+                <TableBody
+                    emptyContent="No hay roles disponibles"
+                >
                     {Roles.map((role) => (
                         <TableRow key={role.role_id}>
                             <TableCell>
@@ -121,7 +123,7 @@ const RoleAdministration = () => {
                                 </section>
                             </TableCell>
                         </TableRow>   
-                    ))}
+                    ), [])}
                 </TableBody>
             </Table>
         </section>

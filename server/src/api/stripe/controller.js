@@ -21,7 +21,7 @@ const createCheckoutSession = async (customerId, line_items) => {
         line_items,
         mode: 'payment',
         ui_mode: 'embedded',
-        return_url: `http://${process.env.SERVER_HOST}:3000/cart`
+        return_url: `http://${process.env.SERVER_HOST}:3000/cart?success=true`,
     });
 };
 

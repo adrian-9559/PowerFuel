@@ -99,6 +99,16 @@ class ProductService {
         }
     }
 
+    async deleteImage(id) {
+        try {
+            const response = await api.post(`/files/deleteProduct/${id}`);
+            return response.data;
+        } catch (error) {
+            toastr.error(error);
+            throw error;
+        }
+    }
+
     async uploadImages(id, images) {
         if (!images.length) {
             throw new Error('Images must be an array or a FileList');
@@ -116,16 +126,6 @@ class ProductService {
                 },
             });
     
-            return response.data;
-        } catch (error) {
-            toastr.error(error);
-            throw error;
-        }
-    }
-
-    async deleteImage(id) {
-        try {
-            const response = await api.post(`/files/deleteProduct/${id}`);
             return response.data;
         } catch (error) {
             toastr.error(error);

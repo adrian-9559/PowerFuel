@@ -37,20 +37,20 @@ class UserService {
         return await api.post(`/users/info`);
     }
 
+    async getUserByRegisterWeek(startDate, endDate) {
+        const response = await api.post(`/users/usersByRegistrationDate`, { startDate, endDate });
+        return response.data;
+    }
+
     async setUserImage(image) {
         const formData = new FormData();
-        formData.append('image', image);
+        formData.append('images', image);
         const response = await api.post(`/files/uploadUser`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         });
         return response;
-    }
-
-    async getUserByRegisterWeek(startDate, endDate) {
-        const response = await api.post(`/users/usersByRegistrationDate`, { startDate, endDate });
-        return response.data;
     }
 }
 

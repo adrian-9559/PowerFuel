@@ -46,7 +46,7 @@ const UserMenu = () => {
                                 <p>Panel de Administración </p>
                             </DropdownItem>
                     ) : null}
-                    <DropdownItem key="help_and_feedback" textValue="Help" onClick={() => router.push('/web/Information')}>
+                    <DropdownItem key="information" textValue="Help" onClick={() => router.push('/web/Information')}>
                         Información
                     </DropdownItem>
                     <DropdownItem key="help_and_feedback" textValue="Help" onClick={() => router.push('/web/help')}>

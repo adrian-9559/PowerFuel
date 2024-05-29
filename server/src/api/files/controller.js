@@ -47,25 +47,33 @@ const deleteImages = (req, res) => {
 };
 
 const uploadUser = (req, res) => {
-    const userId = req.user.userId;
-    const newPath = path.join(appRoot, `/../public/images/user/${userId}` );
-    const file = req.body.image;
-    
-    const filename = `1.png`;
+    const userId = req.user.userId.toString();
+    const newPath = path.join(appRoot, '/../public/images/user/', userId);
+
+    const files =  req.body.images;
+
+    let fileIndex = 1;
 
     if (!fs.existsSync(newPath)) {
         fs.mkdirSync(newPath, { recursive: true });
+    } else {
+        const existingFiles = fs.readdirSync(newPath);
+        fileIndex = existingFiles.length + 1;
     }
 
-    file.mv(path.join(newPath, filename), (err) => {
-        if (err) {
-            console.error(err);
-            res.status(500).send('Error uploading image');
-        } else {
-            res.status(200).send('Image uploaded successfully');
-        }
-    });
-} 
+    if(Array.isArray(files)) {
+        // Move each file to the new folder and number them
+        files.forEach((file, index) => {
+            const filename = `${fileIndex + index}.png`;
+            file.mv(path.join(newPath, filename));
+        });
+    } else {
+        const filename = `${fileIndex}.png`;
+        files.mv(path.join(newPath, filename));
+    }
+
+    res.send('Files uploaded successfully');
+};
 
 module.exports = {
     uploadProduct,

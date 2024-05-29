@@ -7,6 +7,7 @@ const UserCredentials = require('./userCredentials');
 const OldPasswords = require('./oldPasswords');
 const UserInfo = require('./userInfo');
 const Category = require('./category');
+const Order = require('./orders');
 
 // Relaciones
 UserCredentials.hasOne(UserInfo, { foreignKey: 'user_id' });
@@ -31,6 +32,9 @@ Product.belongsTo(Category, { foreignKey: 'category_id' });
 Category.hasMany(Product, { foreignKey: 'category_id' });
 Category.hasMany(Category, { as: 'children', foreignKey: 'parent_category_id' });
 
+Order.belongsTo(UserCredentials, { foreignKey: 'user_id' });
+UserCredentials.hasMany(Order, { foreignKey: 'user_id' });
+
 module.exports = {
     Brand,
     UserAddress,
@@ -40,5 +44,6 @@ module.exports = {
     UserCredentials,
     OldPasswords,
     UserInfo,
-    Category
+    Category,
+    Order
 };

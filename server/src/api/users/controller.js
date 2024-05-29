@@ -15,7 +15,7 @@ const registerUser = async (user) => {
     const salt = await bcrypt.genSalt(10);
     user.current_password = await bcrypt.hash(user.current_password, salt);
 
-    user.stripeCustomerId = { id } = await createStripeCustomer(email, first_name + ' ' + last_name);
+    user.stripeCustomer = await createStripeCustomer(email, first_name + ' ' + last_name);
     
     return await model.addUser(user);
 };
@@ -81,7 +81,7 @@ const getUsers = async (limit, page) => {
 const loginUser = async (email, password) => {
     const user = await model.getUserByEmail(email);
     
-    if (user && await bcrypt.compare(password, user.current_password)){
+    if (user && await bcrypt.compare(password, user.current_password) && user.status === 'Active'){
         const authToken = generateAuthToken(user);
         const refreshToken = generateRefreshToken(user);
 

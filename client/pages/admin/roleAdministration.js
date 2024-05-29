@@ -93,8 +93,8 @@ const RoleAdministration = () => {
                     </TableColumn>
                 </TableHeader>
                 <TableBody>
-                    {Roles.map((role, index) => (
-                        <TableRow key={index}>
+                    {Roles.map((role) => (
+                        <TableRow key={role.role_id}>
                             <TableCell>
                                 <p>{role.role_id}</p>
                             </TableCell>
@@ -114,8 +114,8 @@ const RoleAdministration = () => {
                                         </Button>
                                     </Tooltip>
                                     <Tooltip color="danger" content="Eliminar Rol">
-                                        <Button isIconOnly color="danger" className="text-lg cursor-pointer active:opacity-50" onClick={() => deleteRole(role.role_id)}>
-                                            <DeleteIcon color="primary" />
+                                        <Button isIconOnly color="danger" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50"  onClick={() => deleteRole(role.role_id)}>
+                                            <DeleteIcon color="red" />
                                         </Button>
                                     </Tooltip>
                                 </section>

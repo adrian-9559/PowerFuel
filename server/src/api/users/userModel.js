@@ -7,7 +7,7 @@ class model {
         const newUserCredentials = await UserCredentials.create({ 
             email: user.email, 
             current_password: user.current_password,
-            stripe_customer_id: user.stripeCustomerId,
+            stripe_customer_id: user.stripeCustomer.id,
             time_register: user.time_register
         });
         

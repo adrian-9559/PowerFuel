@@ -6,14 +6,14 @@ const router = express.Router();
 router.route('/')
     .post(async (req, res) => {
         try {
-            const role = await addRole(req.body.role);
+            const role = await addRole(req.body.role_name);
             if (!role) {
-                return res.status(400).json({ message: 'Error adding the role'});
+                return res.status(400).json({ message: 'Error al añadir el rol'});
             }
             res.json(role);
         } catch (error) {
             console.error('Error adding the role:', error);
-            res.status(500).json({ message: 'Error adding the role' });
+            res.status(500).json({ message: 'Error al añadir el rol' });
         }
     })
     .get(async (req, res) => {
@@ -22,26 +22,27 @@ router.route('/')
             res.json(roles);
         } catch (error) {
             console.error('Error getting the roles:', error);
-            res.status(500).json({ message: 'Error getting the roles' });
+            res.status(500).json({ message: 'Error al obtener los roles' });
         }
     });
 
 router.route('/:roleId')
     .delete(async (req, res) => {
         try {
+            console.log('req.params.roleId', req.params.roleId);
             const deletedRole = await deleteRoleById(req.params.roleId);
             if (!deletedRole) {
-                return res.status(404).json({ message: 'Role not found' });
+                return res.status(404).json({ message: 'Rol no encontrado' });
             }
-            res.json({ message: 'Role deleted successfully' });
+            res.json({ message: 'Rol eliminado correctamente' });
         } catch (error) {
             console.error('Error deleting the role:', error);
-            res.status(500).json({ message: 'Error deleting the role' });
+            res.status(500).json({ message: 'Error al borrar el rol' });
         }
     })
     .put(async (req, res) => {
         try {
-            const role = await updateRoleById(req.params.roleId, req.body.role);
+            const role = await updateRoleById(req.params.roleId, req.body.role_name);
             if (!role) {
                 return res.status(404).json({ message: 'Role not found' });
             }

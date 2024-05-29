@@ -29,7 +29,7 @@ const CartMenu = () => {
             setTotal(total);
         };
         fetchTotal();
-    }, [cart])
+    }, [cart, getTotal])
     
     return (
         <Dropdown 

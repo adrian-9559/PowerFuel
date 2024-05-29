@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAppContext } from '@context/AppContext';
 import RoleService from '@services/roleService';
 import {Card} from '@nextui-org/react';
@@ -14,6 +14,7 @@ import ServerRendimiento from "./serverRendimiento";
 
 const Administrador = () => {
     const router = useRouter();
+    const routerRef = useRef(router); // Crear una referencia para router
     const { user, isLoggedIn, isAdmin} = useAppContext();
     const [ComponentUse, setComponentUse] = useState(null);
 
@@ -27,15 +28,15 @@ const Administrador = () => {
     };
 
     useEffect(() => {
-        if (router.isReady) {
-            const view = router.asPath.split('/')[2] || 'General';
+        if (routerRef.current.isReady) { // Usar la referencia en lugar de router directamente
+            const view = routerRef.current.asPath.split('/')[2] || 'General';
             setComponentUse(view);
         }
-    }, [router.isReady]);
+    }, [routerRef.current.isReady]);
 
     useEffect(() => {
         if (ComponentUse) {
-            router.replace(`/admin/${ComponentUse}`, undefined, { shallow: true });
+            routerRef.current.replace(`/admin/${ComponentUse}`, undefined, { shallow: true }); // Usar la referencia en lugar de router directamente
         }
     }, [ComponentUse]);
 

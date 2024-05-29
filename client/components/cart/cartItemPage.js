@@ -49,13 +49,13 @@ function CartItemPageComponent({ item }) {
         <CardBody>
           <section className="flex flex-row items-start gap-4 w-full">
             <section className="w-32 h-32 flex items-center justify-center">
-              <Image
-                alt={product.product_name}
-                shadow="md"
-                height={128}
-                width={128}
-                src={`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/product/${product.product_id}/1.png`}
-              />
+            <Image
+              shadow="sm"
+              radius="lg"
+              alt={product.product_name}
+              className="object-cover h-24 w-24 z-1"
+              src={`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/product/${product.product_id}/1.png`}
+          />
             </section>
             <section className="flex flex-col w-full">
               <section className="flex w-full">

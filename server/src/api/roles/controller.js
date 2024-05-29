@@ -1,7 +1,6 @@
 const model = require('./roleModel');
 
 const getRoleById = async (roleId) => {
-    
     let role = await model.getRoles(roleId);
     role =  role.map(role => ({
         "role_id": role.role_id ,
@@ -34,18 +33,16 @@ const getRoles = async (limit, page) => {
 };
 
 const addRole = async (role) => {
-    const newRole = await model.insertRole(role);
-    return newRole;
+    console.log('role', role);
+    return await model.insertRole(role);
 };
 
 const updateRoleById = async (roleId, role) => {
-    const updatedRole = await model.updateRole(roleId, role);
-    return updatedRole;
+    return await model.updateRole(roleId, role);
 };
 
 const deleteRoleById = async (roleId) => {
-    const deletedRole = await model.deleteRole(roleId);
-    return deletedRole;
+    return await model.deleteRole(roleId);
 };
 
 const getRoleByUserId = async (userId) => {

@@ -4,7 +4,7 @@ class RoleService{
 
     async getRoleById(roleId=null) {
         const response = await api.get(`/roles/${roleId}`);
-        return response.data[0];
+        return response.data;
     }
 
     async getRoleByUserId(userId=null) {

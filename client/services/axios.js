@@ -17,7 +17,6 @@ api.interceptors.request.use((config) => {
 });
 
 api.interceptors.response.use(response => {
-    console.log("response", response);
     return response;
 }, async error => {
     const originalRequest = error.config;
@@ -33,6 +32,14 @@ api.interceptors.response.use(response => {
             console.log(err);
         }
     }
+    return Promise.reject(error);
+});
+
+api.interceptors.response.use((response) => {
+    return response;
+}, (error) => {
+    console.log(error);
+    toastr.error(error.response.data.message);
     return Promise.reject(error);
 });
 

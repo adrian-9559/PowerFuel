@@ -63,7 +63,7 @@ const CategoryAdministration = () => {
                                 </Button>
                             </Tooltip>
                             <Tooltip color="success" content="Añadir Categoría" className='text-white'>
-                                <Button isIconOnly color="success" className="text-lg  cursor-pointer active:opacity-50" onClick={() => router.push('/admin/create/createUser')}>
+                                <Button isIconOnly color="success" className="text-lg  cursor-pointer active:opacity-50" onClick={() => router.push('/admin/create/createCategory')}>
                                     <PlusIcon color="white" />
                                 </Button>
                             </Tooltip>
@@ -95,18 +95,25 @@ const CategoryAdministration = () => {
                     <TableColumn>
                         <p>ID</p>
                     </TableColumn>
+                    <TableColumn>
+                        <p>Categoria Padre</p>
+                    </TableColumn>
                     <TableColumn className='flex justify-center items-center'>
                         <p>Acciones</p>
                     </TableColumn>
                 </TableHeader>
                 <TableBody>
-                    {Categories.map((category, index) => (
-                        <TableRow key={index}>
+                    {Categories.map((category) => (
+                        <TableRow key={category.category_id}>
                             <TableCell>
                                 <p>{category.category_name}</p>
                             </TableCell>
                             <TableCell>
                                 <p>{category.category_id}</p>
+                            </TableCell>
+                            <TableCell>
+                                <p className="text-bold text-sm capitalize">{Categories.filter(cat => cat.category_id === category.parent_category_id)[0]?.category_name||'Ninguna'}</p>
+                                <p className="text-bold text-sm capitalize text-default-400"> {category.parent_category_id?`Id de la categoría: ${category.parent_category_id}`:''}</p>
                             </TableCell>
                             <TableCell>
                                 <section className="relative flex justify-center items-center gap-2">
@@ -121,8 +128,8 @@ const CategoryAdministration = () => {
                                         </Button>
                                     </Tooltip>
                                     <Tooltip color="danger" content="Eliminar Categoría">
-                                        <Button isIconOnly color="danger" className="text-lg cursor-pointer active:opacity-50" onClick={() => deleteCategory(category.category_id)}>
-                                            <DeleteIcon color="primary" />
+                                        <Button isIconOnly color="danger" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => deleteCategory(category.category_id)}>
+                                            <DeleteIcon color="red" />
                                         </Button>
                                     </Tooltip>
                                 </section>

@@ -18,7 +18,6 @@ const HomeComponent = () => {
             const data = await ProductService.getProductsNovedades(15, 1, 'DESC');
             setProductos(data);
             setLoading(false);
-            console.log('Productos:', data);
         } catch (error) {
             console.error('Error fetching products:', error.message);
             setLoading(false);
@@ -164,7 +163,7 @@ const HomeComponent = () => {
                             />
                             <div className="flex flex-col">
                                 <p className="text-tiny text-white/60">Breathing App</p>
-                                <p className="text-tiny text-white/60">Get a good night's sleep.</p>
+                                <p className="text-tiny text-white/60">Get a good night&apos;s sleep.</p>
                             </div>
                         </div>
                         <Button radius="full" size="sm">Get App</Button>

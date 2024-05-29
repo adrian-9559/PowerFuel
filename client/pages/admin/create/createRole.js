@@ -5,10 +5,10 @@ import { useRouter } from 'next/router';
 
 const CreateRole = () => {
     const router = useRouter();
-    const {id} = router.query;
     const [error, setError] = useState('');
     const [name, setName] = useState('');
     const [loading, setLoading] = useState(false);
+    const {id, readOnly} = router.query;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -39,7 +39,7 @@ const CreateRole = () => {
         const fetchRol = async () => {
             try {
                 const res = await RoleService.getRoleById(id);
-                setName(res.role_name); // changed from res.rol_name to res.role_name
+                setName(res.role_name);
             } catch (error) {
                 setError(error.message);
             }
@@ -55,19 +55,22 @@ const CreateRole = () => {
             <h1 className="text-2xl font-bold mb-4">Crear Role</h1>
             <form onSubmit={handleSubmit}>
                 <section className="mb-4">
-                    <Input
-                        name='rol_name'
-                        type='text' 
-                        label='Nombre del role' 
-                        value={name} 
-                        onChange={(e) => setName(e.target.value)} 
-                        onClear={() => setName('')}
-                    />
+                <Input
+                    name='rol_name'
+                    type='text' 
+                    label='Nombre del role' 
+                    value={name} 
+                    onChange={(e) => setName(e.target.value)} 
+                    onClear={readOnly ? undefined : () => setName('')}
+                    readOnly={readOnly === "true"}
+                />
                 </section>
                 {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
-                <section className="mb-4">
-                    <Button type='submit' disabled={loading} className="w-full">{id ? 'Guardar' : 'Crear Role'}</Button>
-                    {loading && <p className="text-blue-500 text-sm mt-2">Cargando...</p>}
+                <section>
+                    {!readOnly && readOnly !== "true" && (
+                        <Button type='submit' disabled={loading} className="w-full">{loading ? 'Cargando...' : {id} ? 'Guardar cambios' : 'Crear Producto'}</Button>
+                        
+                    )}
                     <Button type='button' color="danger" onClick={() => router.push('/admin/Roles')} className="w-full mt-4">Cancelar</Button>
                 </section>
             </form>

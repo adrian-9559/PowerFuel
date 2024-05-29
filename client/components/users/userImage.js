@@ -34,7 +34,6 @@ const UserImage = ({user}) => {
         
         const getProfileColor = () => {
             const color =  intToRGB(hashCode(localStorage.getItem('auth_token')));
-            console.log(color);
             return color;
         };
     

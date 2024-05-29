@@ -44,13 +44,6 @@ const ProductoAdministration = () => {
         setSelectedKeys([]);
     };
 
-    useEffect(() => {
-        console.log(selectedKeys);
-    }
-        , [selectedKeys]);
-
-
-
 
     return (
         <section className='h-full w-full'>
@@ -115,7 +108,7 @@ const ProductoAdministration = () => {
                     </TableColumn>
                 </TableHeader>
                 <TableBody className='h-full'>
-                    {Products.map((product, index) => (
+                    {Products.map((product) => (
                         <TableRow key={product.product_id} >
                             <TableCell>
                                 <User
@@ -159,7 +152,7 @@ const ProductoAdministration = () => {
                                         </Button>
                                     </Tooltip>
                                     <Tooltip color="danger" content="Eliminar Producto">
-                                        <Button isIconOnly color="danger" className="text-lg cursor-pointer active:opacity-50" onClick={() => deleteProduct(product.product_id)}>
+                                        <Button isIconOnly color="danger" variant="light" className="text-lg cursor-pointer active:opacity-50" onClick={() => deleteProduct(product.product_id)}>
                                             <DeleteIcon color="primary" />
                                         </Button>
                                     </Tooltip>

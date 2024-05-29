@@ -231,7 +231,7 @@ const CreateProduct = () => {
                         <input type='file' multiple id='images' className="w-full px-4 py-2 border rounded-lg" onChange={(e) => setFormState({...formState, images: e.target.files})}/>
                     </section>
                 )}
-                <section className="mb-4">
+                <section>
                     {!readOnly && readOnly !== "true" && (
                         <Button type='submit' disabled={loading} className="w-full">{loading ? 'Cargando...' : {id} ? 'Guardar cambios' : 'Crear Producto'}</Button>
                         

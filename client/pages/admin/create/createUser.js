@@ -6,8 +6,9 @@ import { useRouter } from 'next/router';
 
 const CreateUser = () => {
     const router = useRouter();
-    const {id} = router.query;
     const [roles, setRoles] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const {id, readOnly} = router.query;
     const [user, setUser] = useState({
         email:  '',
         current_password:  '',
@@ -69,7 +70,9 @@ const CreateUser = () => {
     }
 
     return (
-        <div>
+        <main
+            className="max-w-4xl mx-auto mt-10 p-6 rounded-lg shadow-xl mb-10 border-1"
+        >
             <h1>Create User</h1>
             <form onSubmit={handleSubmit}>
                 <Input
@@ -127,10 +130,15 @@ const CreateUser = () => {
                         </SelectItem>
                     ))}
                 </Select>
-                <Button type="button" onClick={() => router.push('/admin/Usuarios')} aria-label="Cancelar">Cancelar</Button>
-                <Button type="submit" aria-label="Crear">Crear</Button>
+                <section>
+                    {!readOnly && readOnly !== "true" && (
+                        <Button type='submit' disabled={loading} className="w-full">{loading ? 'Cargando...' : {id} ? 'Guardar cambios' : 'Crear Producto'}</Button>
+                        
+                    )}
+                    <Button type='button' color="danger" onClick={() => router.push('/admin/Usuarios')} className="w-full mt-4">Cancelar</Button>
+                </section>
             </form>
-        </div>
+        </main>
     );
 }
 

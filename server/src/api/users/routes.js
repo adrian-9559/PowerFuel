@@ -72,11 +72,11 @@ router.route('/login')
     .post(async (req, res) => {
         try {
             const tokens = await loginUser(req.body.email, req.body.password);
-            if (!tokens) {
-                return res.status(401).json({ message: 'Login failed' });
+            if (!tokens && tokens == null) {
+                return res.status(401).json({ message: 'Inicio de sesión fallido' });
             }
             const { authToken, refreshToken } = tokens;
-            res.json({ message: 'Login successful', auth_token: authToken, refresh_token: refreshToken});
+            res.json({ message: 'Inicio de sesión correcto', auth_token: authToken, refresh_token: refreshToken});
         } catch (error) {
             console.error('Error logging in:', error);
             res.status(500).json({ message: 'Error logging in' });
@@ -91,7 +91,7 @@ router.route('/usersByRegistrationDate')
             res.json(users);
         } catch (error) {
             console.error('Error in /usersByRegistrationDate:', error);
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ message: 'Error al obtener los usuarios por fecha de registro' });
         }
     });
 

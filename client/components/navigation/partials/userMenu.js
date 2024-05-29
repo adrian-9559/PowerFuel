@@ -1,6 +1,6 @@
 // UserMenu.js
 import React, { use, useEffect, useState } from 'react';
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Image, Spinner } from "@nextui-org/react";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Spinner } from "@nextui-org/react";
 import UserImage from '../../users/userImage';
 import UserService from '@services/userService';
 import RoleService from '@services/roleService';
@@ -18,31 +18,11 @@ const UserMenu = () => {
         setIsLoggedIn(false);
         router.push('/');
     };
-
-    useEffect(() => {
-        if (isLoggedIn && user === null) {
-            const fetchUser = async () => {
-                try {
-                    const userData = await UserService.getUserInfo();
-                    if (userData) {
-                        const role = await RoleService.getRoleById(userData.role_id);
-                        userData.role = role;
-                        setIsLoggedIn(true);
-                    }
-                }
-                catch (error) {
-                    console.error('Error fetching user:', error.message);
-                }
-            }
-            fetchUser();
-        }
-    }
-    , [isLoggedIn, user, setIsLoggedIn]);
                     
 
     return (
         user === null || !isLoggedIn? <Spinner size="large" /> :
-            <Dropdown backdrop="blur">
+            <Dropdown>
                 <DropdownTrigger>
                     <Button radius="full" size="lg" className='flex justify-center items-center pt-0' isIconOnly>
                         <UserImage user={user}/>
@@ -61,7 +41,7 @@ const UserMenu = () => {
                     </DropdownItem>
                     <DropdownItem key="team_settings" textValue="Delivered" showDivider onClick={() => router.push('/users/config/OrderList')}>Pedidos</DropdownItem>
                     
-                    {isAdmin ? (
+                    {isAdmin && isAdmin !== "true" ? (
                             <DropdownItem key="panel" textValue="panel" onClick={() => router.push('/admin/General')}>
                                 <p>Panel de Administración </p>
                             </DropdownItem>
@@ -72,13 +52,10 @@ const UserMenu = () => {
                     <DropdownItem key="help_and_feedback" textValue="Help" onClick={() => router.push('/web/help')}>
                         Ayuda
                     </DropdownItem>
-                    <DropdownItem key="logout" textValue="Logout" color="danger" className='bg-red-400' onClick={() => handleLogout()}>
-                        <section className='flex justify-center space-x-1 items-center'>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
-                            </svg>
-                            <p className='font-semibold'>Cerrar Sesión</p>
-                        </section>
+                    <DropdownItem key="logout" textValue="Logout" className='p-0' >
+                        <Button color="danger" className='w-full' onPress={() => handleLogout()}>
+                            Cerrar Sesión
+                        </Button>
                     </DropdownItem>
                 </DropdownMenu>
             </Dropdown>

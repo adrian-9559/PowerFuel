@@ -19,7 +19,6 @@ const SideMenu = ({ productId }) => {
     useEffect(() => {
         const fetchAllCategories = async () => {
             const categories = await CategoryService.getAllCategories();
-            console.log(categories);
             setCategories(categories);
         };
         fetchAllCategories();

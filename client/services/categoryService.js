@@ -4,7 +4,7 @@ class CategoryService {
      async getCategoryById(id) {
         try {
             const response = await api.get(`/categories/${id}`);
-            return response.data[0];
+            return response.data;
         } catch (error) {
             console.error('Error fetching category:', error.message);
         }

@@ -51,16 +51,16 @@ function Cartproduct({ item }) {
         animate={{ opacity: 1, height: "auto" }}
         exit={{ opacity: 0, height: "auto" }}
         transition={{ duration: 0.3 }}
-        className='flex products-center justify-between w-full gap-2' // Add justify-between here
+        className='flex products-center justify-between w-full gap-2'
         >
       <section className="w-auto">
-        <Image
+      <Image
           shadow="sm"
           radius="lg"
           alt={product.product_name}
-          className="object-cover h-20 my-1 z-1 w-full"
+          className="object-cover h-20 w-20 z-1"
           src={`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/product/${product.product_id}/1.png`}
-        /> 
+      />
       </section>
       <section className='flex-grow flex flex-col gap-2'>
         <section className='products-center max-w-40'>

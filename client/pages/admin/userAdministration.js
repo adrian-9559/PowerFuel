@@ -111,8 +111,8 @@ const UserAdministration = () => {
                     </TableColumn>
                 </TableHeader>
                 <TableBody>
-                    {Users.map((user, index) => (
-                        <TableRow key={index}>
+                    {Users.map((user) => (
+                        <TableRow key={user.user_id}>
                             <TableCell>
                                 <User
                                     avatarProps={{radius: "lg", src: `${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/user/${user.user_id}/1.png`}}
@@ -139,17 +139,17 @@ const UserAdministration = () => {
                             <TableCell>
                                 <section className="relative flex justify-center items-center gap-2">
                                     <Tooltip color="primary" content="Detalles">
-                                        <Button isIconOnly color="primary" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                                        <Button isIconOnly color="primary" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => router.push(`/admin/create/createUser?readOnly=true&&id=${user.user_id}`)}>
                                             <EyeIcon color="primary" />
                                         </Button>
                                     </Tooltip>
                                     <Tooltip color="success" content="Editar Usuario" className="text-white">
-                                        <Button isIconOnly color="success" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                                        <Button isIconOnly color="success" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => router.push(`/admin/create/createUser?id=${user.user_id}`)}>
                                             <EditIcon color="green"/>
                                         </Button>
                                     </Tooltip>
                                     <Tooltip color="danger" content="Eliminar Usuario">
-                                        <Button isIconOnly color="danger" className="text-lg cursor-pointer active:opacity-50" onClick={() => deleteUser(user.user_id)}>
+                                        <Button isIconOnly color="danger" variant="light" className="text-lg cursor-pointer active:opacity-50" onClick={() => deleteUser(user.user_id)}>
                                             <DeleteIcon color="primary" />
                                         </Button>
                                     </Tooltip>

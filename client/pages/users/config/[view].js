@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useAppContext } from '@context/AppContext';
@@ -10,6 +10,7 @@ import OrderList from '@components/orders/orderList';
 
 const Config = () => {
     const router = useRouter();
+    const routerRef = useRef(router);
     const { user, setUser, isLoggedIn} = useAppContext();
     const [isLoading, setIsLoading] = useState(true);
     const [selectedOption, setSelectedOption] = useState(null);
@@ -25,25 +26,26 @@ const Config = () => {
         const checkLoginStatus = setTimeout(() => {
             if (!isLoggedIn) {
                 console.log("El q me importa:" , isLoggedIn);
-                router.push('/');
+                routerRef.current.push('/'); // Usar la referencia en lugar de router directamente
             } else {
                 setIsLoading(false);
             }
         }, 1000);
-
-        if (router.isReady) {
-            const view = router.asPath.split('/')[3] || 'DataUser';
+    
+        if (routerRef.current.isReady) { // Usar la referencia en lugar de router directamente
+            const view = routerRef.current.asPath.split('/')[3] || 'DataUser';
             setSelectedOption(view);
         }
     
         return () => clearTimeout(checkLoginStatus);
-    }, [isLoggedIn, router.isReady]);
+    }, [isLoggedIn]);
 
     useEffect(() => {
         if (selectedOption) {
-            router.replace(`/users/config/${selectedOption}`, undefined, { shallow: true });
+            routerRef.current.replace(`/users/config/${selectedOption}`, undefined, { shallow: true }); // Usar la referencia en lugar de router directamente
         }
     }, [selectedOption]);
+
 
     if (!selectedOption) {
         return null;

@@ -32,7 +32,7 @@ const Product = () => {
 
     return (
         <main className='flex flex-col items-center justify-center p-6'>
-            <section className='flex flex-col bg-gray-600 bg-opacity-25 rounded-lg rounded-lg p-8'>
+            <section className='flex flex-col bg-gray-600 bg-opacity-25 rounded-lg p-8'>
                 <section className='w-full max-w-4xl p-8 flex flex-row bg-gray-500 bg-opacity-25 rounded-lg'>
                     <ProductCarousel
                         id={id}

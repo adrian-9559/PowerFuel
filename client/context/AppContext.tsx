@@ -80,6 +80,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         fetchUserInfo();
     } else {
         setIsLoggedIn(false);
+        setUser(null);
+        setIsAdmin(false);
     }
 }, []);
 

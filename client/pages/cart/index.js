@@ -14,20 +14,10 @@ const ViewCart = () => {
     const { cart, setCart } = useAppContext();
     const [total, setTotal] = useState(0);
     const router = useRouter();
-    const success = router.query.success;
 
     const handleDeleteCart = () => {
         setCart([]);
     }
-
-    const handleQuantityChange = (id, quantity) => {
-        cart.map(item => item.product_id === id ? {...item, quantity: parseInt(quantity)} : item);
-        setCart(cart);
-    }
-    
-    const handleDeleteCartProduct = (id) => {
-        setCart(cart.filter(item => item.product_id !== id));
-    };
 
     useEffect(() => {
         async function getTotalPrice() {
@@ -47,28 +37,6 @@ const ViewCart = () => {
     
         getTotalPrice();
     }, [cart]);
-
-    useEffect(() => {
-        const handleSuccess = async () => {
-            if (success) {
-                const lastPayment = await PaymentService.getLastPayment();
-
-                console.log('lastPayment', lastPayment);
-        
-                const order = {
-                    order_id: lastPayment.id,
-                    order_date: new Date(),
-                    order_status: 'pending',
-                    details: JSON.stringify(cart)
-                };
-        
-                await OrderService.createOrder(order);
-        
-                setCart([]);
-            }
-        }
-        handleSuccess();
-    }, [success]);
 
     return (
         <main className="px-12 py-6 w-full grid gap-10">
@@ -128,9 +96,9 @@ const ViewCart = () => {
                     </section>
                     {cart && cart.length > 0 && (
                         <section className='flex w-full px-10 pb-8'>
-                            <CheckOut/>
+                            <CheckOut />
                         </section>
-                    )}  
+                    )}
                 </section>
             </section>
         </main>

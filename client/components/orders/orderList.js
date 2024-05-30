@@ -23,7 +23,7 @@ const OrdersList = ({ userId }) => {
   return (
     <div className="flex flex-col space-y-4">
       {userOrders.map((order, index) => (
-        <OrderItem order={order}/>
+        <OrderItem order={order} key={order.order_id}/>
       )) || 'No tienes ningún pedido aún'}
     </div>
   );

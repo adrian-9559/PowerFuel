@@ -44,7 +44,8 @@ const getLastPayment = async (userId) => {
     const user = await getUserById(userId);
     const charges = await getCustomerCharges(user.stripe_customer_id);
 
-    const lastCharge = charges.data.pop();
+
+    const lastCharge = charges.data[0];
 
     return lastCharge;
 }

@@ -3,6 +3,7 @@
 import React, { createContext, useState, useEffect, useContext, ReactNode } from 'react';
 import UserService from '@services/userService';
 import RoleService from '@services/roleService';
+import NotificationService from '@services/notificationService';
 import { useRouter } from 'next/router';
 
 // Definir la forma de la información del usuario y del carrito
@@ -18,6 +19,10 @@ interface CartItem {
   quantity: number;
 }
 
+interface NotificationItem {
+  id: number;
+}
+
 // Crear el contexto con un valor predeterminado
 const AppContext = createContext({
   isLoggedIn: false,
@@ -30,7 +35,9 @@ const AppContext = createContext({
   setIsAdmin: (value: boolean) => {},
   isCartOpen: false,
   onOpenCartChange: (value: boolean) => {},
-  onOpenCart : () => {}
+  onOpenCart : () => {},
+  notifications: [] as NotificationItem[],
+  setNotifications: (() => {}) as React.Dispatch<React.SetStateAction<NotificationItem[]>>
 });
 
 // Crear el proveedor de contexto
@@ -39,8 +46,19 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [isClient, setIsClient] = useState(false); 
   const [isCartOpen, setIsCartOpen] = useState(false);
+
+  
+
+  const onOpenCartChange = (value: boolean) => {
+    setIsCartOpen(value);
+  }
+
+  const onOpenCart = () => {
+    setIsCartOpen(true);
+  };
 
   useEffect(() => {
     setIsClient(true); 
@@ -73,6 +91,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         const fetchUserInfo = async () => {
             const userInfo = await UserService.getUserInfo();
             const roleResponse = await RoleService.getRoleByUserId();
+            const notificationResponse = await NotificationService.getNotificationsByUser();
+            setNotifications(notificationResponse);
             setUser(userInfo.data);
             setIsAdmin(roleResponse.data !== 10);
         };
@@ -83,15 +103,16 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         setUser(null);
         setIsAdmin(false);
     }
+
+    // Actualizar las notificaciones cada 30 segundos
+    const intervalId = setInterval(async () => {
+        const notificationResponse = await NotificationService.getNotificationsByUser();
+        setNotifications(notificationResponse);
+    }, 30000);
+
+    // Limpiar el intervalo cuando el componente se desmonte
+    return () => clearInterval(intervalId);
 }, []);
-
-  const onOpenCartChange = (value: boolean) => {
-    setIsCartOpen(value);
-  }
-
-  const onOpenCart = () => {
-    setIsCartOpen(true);
-  };
 
   return (
     <AppContext.Provider 
@@ -105,7 +126,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           setIsAdmin,
           isCartOpen,
           onOpenCartChange,
-          onOpenCart
+          onOpenCart,
+          notifications,
+          setNotifications
         }
       }
     >

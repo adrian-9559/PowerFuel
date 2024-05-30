@@ -10,7 +10,8 @@ const {
     getImageCount,
     getProductsByCategory,
     getProductsSearch,
-    getProductsByDate
+    getProductsByDate,
+    getRandomProducts
 } = require('./controller');
 
 const router = express.Router();
@@ -74,7 +75,7 @@ router.route('/:productId')
     });
 
 router.route('/search/:input')
-    .get(async (req, res) => {
+    .post(async (req, res) => {
         try {
             const products = await getProductsSearch(req.params.input);
             if (!products) {
@@ -117,6 +118,22 @@ router.route('/date')
         try {
             const products = await getProductsByDate(req.query.page, req.query.limit, req.query.startDate, req.query.endDate, req.query.order);
             if (!products) {
+                return res.status(404).json({ message: 'Productos no encontrados' });
+            }
+            res.json(products);
+        } catch (error) {
+            console.error('Error al obtener los productos:', error);
+            res.status(500).json({ message: 'Hubo un problema al obtener los productos. Por favor, inténtalo de nuevo.' });
+        }
+    });
+
+
+router.route('/random')
+    .post(async (req, res) => {
+        try {
+            const products = await getRandomProducts(parseInt(req.query.limit));
+            if (!products) {
+                console.log('Productos no encontrados');
                 return res.status(404).json({ message: 'Productos no encontrados' });
             }
             res.json(products);

@@ -14,9 +14,7 @@ import ServerRendimiento from "./serverRendimiento";
 
 const Administrador = () => {
     const router = useRouter();
-    const routerRef = useRef(router); // Crear una referencia para router
-    const { user, isLoggedIn, isAdmin} = useAppContext();
-    const [ComponentUse, setComponentUse] = useState(null);
+    const [selectedOption, setSelectedOption] = useState(null);
 
     const components = {
         'General': <GeneralAdministration />,
@@ -28,35 +26,35 @@ const Administrador = () => {
     };
 
     useEffect(() => {
-        if (routerRef.current.isReady) { // Usar la referencia en lugar de router directamente
-            const view = routerRef.current.asPath.split('/')[2] || 'General';
-            setComponentUse(view);
+        if (router.isReady) { 
+            const view = router.asPath.split('/')[2] || 'General';
+            setSelectedOption(view);
         }
-    }, [routerRef.current.isReady]);
+    }, [router.isReady]);
 
     useEffect(() => {
-        if (ComponentUse) {
-            routerRef.current.replace(`/admin/${ComponentUse}`, undefined, { shallow: true }); // Usar la referencia en lugar de router directamente
+        if (selectedOption && router.asPath.split('/')[2] !== selectedOption) {
+            router.replace(`/admin/${selectedOption}`, undefined, { shallow: true }); 
         }
-    }, [ComponentUse]);
+    }, [selectedOption, router]);
 
-    if (!ComponentUse) {
+    if (!selectedOption) {
         return null;
     }
 
     return (
         <section className="h-full flex w-full gap-0">
-            <SideMenuAdministrador setComponentUse={setComponentUse}/>
+            <SideMenuAdministrador setSelectedOption={setSelectedOption}/>
             <section className='w-full p-8 h-full'>
                 <AnimatePresence mode="wait">
                     <motion.div
-                        key={ComponentUse}
+                        key={selectedOption}
                         initial={{opacity: 0}}
                         animate={{opacity: 1}}
                         exit={{opacity: 0}}
                         className='w-full h-full'
                     >
-                        {components[ComponentUse]}
+                        {components[selectedOption]}
                     </motion.div>
                 </AnimatePresence>
             </section>

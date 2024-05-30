@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { use, useCallback, useEffect, useState } from 'react';
 import { Button, Modal, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@nextui-org/react';
 import AddressMenu from '@components/address/checkout';
 import PaymentMenu from '@components/payments/checkout';
@@ -54,6 +54,9 @@ const CheckOut = () => {
                         <PaymentMenu 
                             handleSelectPayment={handleSelectPayment}
                         />
+                    )}
+                    {isLoggedIn && currentStep === 3 && (
+                        <p>Pago realizado correctamente</p>
                     )}
                     <ModalFooter className='w-full'>
                         {isLoggedIn && currentStep === 1 && (

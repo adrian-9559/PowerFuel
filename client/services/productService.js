@@ -109,6 +109,16 @@ class ProductService {
         }
     }
 
+    async getRandomProducts(limit) {
+        try {
+
+            const response = await api.post(`/products/random?limit=${limit}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    }
+
     async uploadImages(id, images) {
         if (!images.length) {
             throw new Error('Images must be an array or a FileList');

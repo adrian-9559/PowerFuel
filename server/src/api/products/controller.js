@@ -8,7 +8,6 @@ const appRoot = path.dirname(require.main.filename);
 const fs = require('fs');
 const {createProduct} = require('../stripe/controller');
 
-
 const addProduct = async (productData) => {
     const {productId, priceId} = await createProduct(productData.product_name, productData.description, productData.price);
 
@@ -93,6 +92,10 @@ const getProductsByDate = async (page, limit, startDate, endDate, order) => {
     return products;
 }
 
+const getRandomProducts = async (limit) => {
+    return await model.getRandomProducts(limit);
+}
+
 module.exports = {
     addProduct,
     getProducts,
@@ -102,5 +105,6 @@ module.exports = {
     getImageCount,
     getProductsByCategory,
     getProductsSearch,
-    getProductsByDate
+    getProductsByDate,
+    getRandomProducts
 };

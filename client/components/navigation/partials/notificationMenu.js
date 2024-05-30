@@ -1,28 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import { Dropdown, DropdownMenu, DropdownItem, DropdownTrigger, Button, Badge, Select, SelectItem, Image } from "@nextui-org/react";
 import { useAppContext } from "@context/AppContext";
+import NotificationService from '@services/notificationService';
+import { useRouter } from 'next/router';
 
 const NotificationMenu = () => {
-    const [notifications, setNotifications] = useState([]);
-    const { user, isAdmin, isLoggedIn ,setIsLoggedIn } = useAppContext();
+    const [unseenNotifications , setUnseenNotifications] = useState([]);
+    const { notifications } = useAppContext();
+    const router = useRouter();
 
-    // Función para agregar una notificación
-    const addNotification = (message) => {
-        setNotifications([...notifications, message]);
-    };
+    useEffect(() => {
+      setUnseenNotifications(notifications.filter(notification => notification.viewed === "0"));
+    }, [notifications])
 
-    // Función para eliminar una notificación
-    const removeNotification = (index) => {
-        const updatedNotifications = [...notifications];
-        updatedNotifications.splice(index, 1);
-        setNotifications(updatedNotifications);
-    };
+    useEffect(() => {
+      if(unseenNotifications.length > 0){
+        NotificationService.markAsViewed();
+      }
+    }, [unseenNotifications])
+
+    const handleOpen = () => {
+      if(unseenNotifications.length > 0){
+        NotificationService.markAsViewed();
+        setUnseenNotifications([]);
+      }
+    }
 
     return (
-      <Dropdown>
+      <Dropdown onOpen={handleOpen}>
         <Badge
-          content={notifications ? notifications.length : 0}
+          content={unseenNotifications?.length || null}
           color="primary"
+          isInvisible={unseenNotifications?.length === 0}
         >
           <DropdownTrigger>
             <Button isIconOnly>
@@ -42,12 +51,22 @@ const NotificationMenu = () => {
         </Badge>
         <DropdownMenu
           aria-label="Cart Actions"
-          className="min-w-16 max-h-96 px-0.5 overflow-y-auto "
+          className="min-w-16 max-h-48 overflow-y-auto pb-8"
           closeOnSelect={false}
         >
-          <DropdownItem key="empty" textValue="empty">
-            <p>Vacío</p>
-          </DropdownItem>
+          {notifications.map((notification, index) => (
+            <DropdownItem key={index} textValue={notification.title}>
+              <p>{notification.title}</p>
+            </DropdownItem>
+          ))}
+            {notifications.length > 0 && (
+              <DropdownItem key="viewAll" textValue="Ver más" className='fixed h-auto w-[92%] p-0 bottom-2'>
+              <Button color="primary" className='w-full h-6' onPress={() => router.push('/users/config/NotificationList')}>
+                Ver más
+              </Button>
+            </DropdownItem>
+            )
+          }
         </DropdownMenu>
       </Dropdown>
     );

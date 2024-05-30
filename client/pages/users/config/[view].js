@@ -5,7 +5,7 @@ import { useAppContext } from '@context/AppContext';
 import SideMenu from '@components/users/sideMenu';
 import DataUser from '@components/users/dataUser';
 import AddressList from '@components/address/addressList';
-import PaymentList from '@components/users/payment/paymentList';
+import NotificationList from '@components/users/notification/NotificationList';
 import OrderList from '@components/orders/orderList';
 
 const Config = () => {
@@ -18,7 +18,7 @@ const Config = () => {
     const components = {
         'DataUser': <DataUser />,
         'AddressList': <AddressList />,
-        'PaymentList': <PaymentList />,
+        'NotificationList': <NotificationList />,
         'OrderList': <OrderList />,
     };
 
@@ -26,23 +26,25 @@ const Config = () => {
         const checkLoginStatus = setTimeout(() => {
             if (!isLoggedIn) {
                 console.log("El q me importa:" , isLoggedIn);
-                routerRef.current.push('/'); // Usar la referencia en lugar de router directamente
+                routerRef.current.push('/');
             } else {
                 setIsLoading(false);
             }
         }, 1000);
     
-        if (routerRef.current.isReady) { // Usar la referencia en lugar de router directamente
-            const view = routerRef.current.asPath.split('/')[3] || 'DataUser';
-            setSelectedOption(view);
-        }
-    
         return () => clearTimeout(checkLoginStatus);
     }, [isLoggedIn]);
 
     useEffect(() => {
+        if (router.isReady) {
+            const view = router.asPath.split('/')[3] || 'DataUser';
+            setSelectedOption(view);
+        }
+    }, [router.asPath, router.isReady]);
+
+    useEffect(() => {
         if (selectedOption) {
-            routerRef.current.replace(`/users/config/${selectedOption}`, undefined, { shallow: true }); // Usar la referencia en lugar de router directamente
+            routerRef.current.replace(`/users/config/${selectedOption}`, undefined, { shallow: true });
         }
     }, [selectedOption]);
 

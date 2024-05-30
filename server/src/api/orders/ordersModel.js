@@ -17,7 +17,7 @@ class OrderModel {
     createOrder = async (orderData) => {
         return await Order.create(orderData);
     };
-r
+
     updateOrder = async (orderId, orderData) => {
         return await Order.update(orderData, {
             where: { order_id: orderId }

@@ -8,6 +8,7 @@ const OldPasswords = require('./oldPasswords');
 const UserInfo = require('./userInfo');
 const Category = require('./category');
 const Order = require('./orders');
+const Notification = require('./notification');
 
 // Relaciones
 UserCredentials.hasOne(UserInfo, { foreignKey: 'user_id' });
@@ -35,6 +36,9 @@ Category.hasMany(Category, { as: 'children', foreignKey: 'parent_category_id' })
 Order.belongsTo(UserCredentials, { foreignKey: 'user_id' });
 UserCredentials.hasMany(Order, { foreignKey: 'user_id' });
 
+Notification.belongsTo(Order, { foreignKey: 'reference', onUpdate: 'CASCADE', onDelete: 'NO ACTION' });
+Notification.belongsTo(UserCredentials, { foreignKey: 'notification_user', onUpdate: 'CASCADE', onDelete: 'CASCADE' });
+
 module.exports = {
     Brand,
     UserAddress,
@@ -45,5 +49,6 @@ module.exports = {
     OldPasswords,
     UserInfo,
     Category,
-    Order
+    Order,
+    Notification
 };

@@ -1,5 +1,7 @@
 const { Brand, Category, Product } = require('../../model');
+const sequelize = require('../../model/database');
 const { Op } = require('sequelize');
+
 
 class model {
     getProductsByCategory = async (skip = 0, limit = 10, categoryId) => {
@@ -35,6 +37,19 @@ class model {
         });
         return products;
     };
+
+    async getProductsId(){
+        const products = await Product.findAll({
+            attributes: ['product_id'],
+            include: [{
+                model: Category
+            }, {
+                model: Brand
+            }],
+            subQuery: false
+        });
+        return products;
+    }
     
     async getChildCategories(categoryIds) {
         let childCategories = [];
@@ -180,6 +195,13 @@ class model {
         });
         
         return products;
+    }
+
+    getRandomProducts = async (limit) => {
+        return await Product.findAll({
+          order: sequelize.random(),
+          limit: limit
+        });
     }
 }
 

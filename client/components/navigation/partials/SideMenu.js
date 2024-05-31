@@ -5,12 +5,11 @@ import { motion } from 'framer-motion';
 import CategoryService from '@services/categoryService';
 import { useRouter } from 'next/router';
 
-const SideMenu = ({ productId }) => {
+const SideMenu = () => {
     const router = useRouter();
     const [categories, setCategories] = useState([]);
     const [showMenuLeft, setShowMenuLeft] = useState(false);
     const [hoveredIndex, setHoveredIndex] = useState(null);
-
 
     const toggleMenuLeft = () => {
         setShowMenuLeft(!showMenuLeft);

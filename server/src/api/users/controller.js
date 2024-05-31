@@ -4,7 +4,7 @@ const filesUpload = require('../files/controller');
 const { createStripeCustomer } = require('../stripe/controller');
 const { generateAuthToken, generateRefreshToken} = require('../../utils/tokenUtils');
 const bcrypt = require('bcrypt');
-
+const controllerOldPassword = require('./../oldPassword/controller');
 
 const registerUser = async (user) => {
     const { email, current_password, first_name, last_name, dni } = user;
@@ -99,6 +99,27 @@ const getUsersByRegistrationDate = async (startDate, endDate) => {
     return users;
 };
 
+const changePassword = async (userId, newPassword) => {
+    const user = await model.getUsers(null, null, userId);
+
+    if(await bcrypt.compare(newPassword, user.current_password)){
+        console.error('Password igual a la anterior');
+        return null;
+    }
+
+    const allOldPasswordUser = await controllerOldPassword.getAllOldPasswordByUserId(userId);
+    const isOldPassword = allOldPasswordUser.some(password => bcrypt.compare(newPassword, password.previous_password));
+
+    if(!isOldPassword){
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+        return await model.updateUser(userId, hashedPassword);
+    } else {
+        console.error('Password ya registrada con este usuario');
+        return null;
+    }
+};
+
 module.exports =  {
     registerUser,
     deleteUserById,
@@ -106,5 +127,6 @@ module.exports =  {
     getUserById,
     getUsers,
     loginUser,
+    changePassword,
     getUsersByRegistrationDate
 };

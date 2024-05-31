@@ -20,12 +20,14 @@ const AddressList = () => {
     return (
         <main className="py-5">
             <h1 className="font-bold text-3xl">Lista de pedidos</h1>
-            <ul>
-                {orderList && orderList.map((oder, index) => (
-                    <OrderItem key={index} order={oder} />
-                ))} 
-                {!orderList && <p>No hay direcciones de envío</p>}
-            </ul>
+            <section>
+                <ul>
+                    {orderList && orderList.map((oder, index) => (
+                        <OrderItem key={index} order={oder} />
+                    ))} 
+                    {!orderList && <p>No hay direcciones de envío</p>}
+                </ul>
+            </section>
         </main>
     );
 }

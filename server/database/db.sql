@@ -93,7 +93,7 @@ INSERT INTO `notification` (`notification_id`, `title`, `description`, `notifica
 CREATE TABLE IF NOT EXISTS `old_passwords` (
   `user_id` int DEFAULT NULL,
   `previous_password` varchar(255) DEFAULT NULL,
-  `change_date` timestamp NULL DEFAULT NULL,
+  `change_date` datetime NULL DEFAULT NULL,
   KEY `user_id` (`user_id`),
   CONSTRAINT `old_passwords_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_credentials` (`user_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

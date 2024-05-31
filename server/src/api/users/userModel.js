@@ -1,7 +1,6 @@
 const { Op } = require('sequelize');
 const { UserCredentials, UserInfo, UserRoles, Role } = require('../../model');
 
-
 class model {
     addUser = async (user) => {
         const newUserCredentials = await UserCredentials.create({ 

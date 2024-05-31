@@ -1,9 +1,8 @@
 // ProductImagesCarousel.js
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import { Skeleton, Image } from "@nextui-org/react";
 import ProductService from '@services/productService';
-
 
 const ProductCarousel = ({id}) => {
     const [selectedImageIndex, setSelectedImageIndex] = useState(1);
@@ -25,10 +24,6 @@ const ProductCarousel = ({id}) => {
                 });
         }
     }, [id]);
-
-
-
-    
 
     const renderProductImages = (isThumbnail = false) => {
         const images = [];

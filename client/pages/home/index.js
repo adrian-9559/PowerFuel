@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { Carousel } from 'react-responsive-carousel';
 import ProductService from '@services/productService';
-import { Card, CardHeader, CardBody, Image, Spinner, CardFooter, Button } from '@nextui-org/react';
+import { Card, CardHeader, CardBody, Image, Spinner } from '@nextui-org/react';
 import ProductCard from '@components/product/ProductCard';
 
 const HomeComponent = () => {
@@ -9,6 +10,8 @@ const HomeComponent = () => {
     const [productosNovedades, setProductosNovedades] = useState([]);
     const [productos, setProductos] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(0);
+    const itemsPerPage = 5;
     
     useEffect(() => {
         fetchProductos();
@@ -37,8 +40,8 @@ const HomeComponent = () => {
 
     return (
         <main className="grid gap-3">
-            <section>
-                <h1 className="font-bold text-2xl">Bienvenido a PowerFuel!</h1>
+            <section className="w-fit flex ml-16">
+                <h1 className="font-bold text-4xl">Bienvenido a <span className='text-blue-500'>PowerFuel!</span></h1>
             </section>
             <section>
                 <section className="flex grid-cols-2 gap-32 mx-16 my-4 h-60">
@@ -76,23 +79,43 @@ const HomeComponent = () => {
                         </h1>
                     </CardHeader>
                     <CardBody>
-                        {loading ? (
-                            <Spinner />
-                        ) : productosNovedades && productosNovedades.length > 0 ? (
-                            <div className="flex flex-wrap justify-around">
-                                {productosNovedades.map((product) => (
-                                    <section 
-                                        key={product.product_id} 
-                                        onClick={() => router.push(`/product/${product.product_id}`)}
-                                        className="cursor-pointer mx-2 w-fit flex flex-row items-center"
-                                    >
-                                        <ProductCard product={product} />
-                                    </section>
-                                ))}
-                            </div>
-                        ) : (
-                            <p className="text-center">No se encontraron productos.</p>
-                        )}
+                        <Carousel
+                            showStatus={false}
+                            emulateTouch={true}
+                            useKeyboardArrows={true}
+                            showArrows={true}
+                            showIndicators={false}
+                        >
+                            {loading ? (
+                                <Spinner />
+                            ) : productosNovedades && productosNovedades.length > 0 ? (
+                                <section className="flex justify-around">
+                                    {productosNovedades.slice(page * itemsPerPage, (page + 1) * itemsPerPage).map((product) => (
+                                        <section 
+                                            key={product.product_id} 
+                                            onClick={() => router.push(`/product/${product.product_id}`)}
+                                            className="cursor-pointer flex flex-row items-center"
+                                        >
+                                            <ProductCard product={product} />
+                                        </section>
+                                    ))}
+                                </section>
+                            ) : (
+                                 <p className="text-center">No se encontraron productos.</p>
+                            )}
+                        </Carousel>
+                        <section className="w-full flex justify-between">
+                            <section>
+                                {page > 0 && (
+                                    <button onClick={() => setPage(page - 1)}>Volver</button>
+                                )}
+                            </section>
+                            <section>
+                                {productosNovedades && productosNovedades.length > (page + 1) * itemsPerPage && (
+                                    <button onClick={() => setPage(page + 1)}>Mostrar más</button>
+                                )}
+                            </section>
+                        </section>
                     </CardBody>
                 </Card>
             </section>

@@ -4,7 +4,6 @@ import ProductService from '@services/productService';
 import { Skeleton } from "@nextui-org/react";
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { useRouter } from 'next/router';
-import NavigationBar from '@components/navigation/NavigationBar';
 import QuantityInput from '@components/product/productPage/QuantityInput';
 import ProductCarousel from '@components/product/productPage/ProductCarousel';
 

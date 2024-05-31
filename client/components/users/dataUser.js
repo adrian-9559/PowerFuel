@@ -8,7 +8,7 @@ import { useAppContext } from '@context/AppContext';
 const DataUser = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const { user, setUser, isLoggedIn} = useAppContext();
+    const { user, setUser} = useAppContext();
 
     const toggleEdit = async () => {
         setIsEditing(!isEditing);

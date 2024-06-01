@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Carousel } from 'react-responsive-carousel';
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 import ProductService from '@services/productService';
 import { Card, CardHeader, CardBody, Image, Spinner } from '@nextui-org/react';
 import ProductCard from '@components/product/ProductCard';
@@ -10,8 +11,6 @@ const HomeComponent = () => {
     const [productosNovedades, setProductosNovedades] = useState([]);
     const [productos, setProductos] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [page, setPage] = useState(0);
-    const itemsPerPage = 5;
     
     useEffect(() => {
         fetchProductos();
@@ -37,6 +36,16 @@ const HomeComponent = () => {
             console.error('Error fetching products:', error.message);
         }
     };
+
+    const renderProductosNovedades = () => {
+        return productosNovedades.map((product, index) => (
+            <section key={index} className="cursor-pointer mx-2 w-fit flex flex-row items-center">
+                <ProductCard product={product} />
+            </section>
+        ));
+    }
+
+    
 
     return (
         <main className="grid gap-3">
@@ -79,43 +88,55 @@ const HomeComponent = () => {
                         </h1>
                     </CardHeader>
                     <CardBody>
-                        <Carousel
-                            showStatus={false}
-                            emulateTouch={true}
-                            useKeyboardArrows={true}
-                            showArrows={true}
-                            showIndicators={false}
+                    <Carousel
+                        additionalTransfrom={0}
+                        infinite
+                        arrows={false}
+                        autoPlaySpeed={1500}
+                        autoPlay={true}
+                        centerMode={true}
+                        containerClass="container"
+                        draggable
+                        focusOnSelect={false}
+                        keyBoardControl
+                        minimumTouchDrag={80}
+                        renderButtonGroupOutside={false}
+                        renderDotsOutside={false}
+                        responsive={{
+                            desktop: {
+                            breakpoint: {
+                                max: 3000,
+                                min: 1024
+                            },
+                            items: 4,
+                            slidesToSlide: 1,
+                            partialVisibilityGutter: 40
+                            },
+                            mobile: {
+                            breakpoint: {
+                                max: 464,
+                                min: 0
+                            },
+                            items: 1,
+                            slidesToSlide: 1,
+                            partialVisibilityGutter: 30
+                            },
+                            tablet: {
+                            breakpoint: {
+                                max: 1024,
+                                min: 464
+                            },
+                            items: 2,
+                            slidesToSlide: 1,
+                            partialVisibilityGutter: 30
+                            }
+                        }}
+                        showDots={false}
+                        slidesToSlide={1}
+                        swipeable
                         >
-                            {loading ? (
-                                <Spinner />
-                            ) : productosNovedades && productosNovedades.length > 0 ? (
-                                <section className="flex justify-around">
-                                    {productosNovedades.slice(page * itemsPerPage, (page + 1) * itemsPerPage).map((product) => (
-                                        <section 
-                                            key={product.product_id} 
-                                            onClick={() => router.push(`/product/${product.product_id}`)}
-                                            className="cursor-pointer flex flex-row items-center"
-                                        >
-                                            <ProductCard product={product} />
-                                        </section>
-                                    ))}
-                                </section>
-                            ) : (
-                                 <p className="text-center">No se encontraron productos.</p>
-                            )}
+                        {renderProductosNovedades()}
                         </Carousel>
-                        <section className="w-full flex justify-between">
-                            <section>
-                                {page > 0 && (
-                                    <button onClick={() => setPage(page - 1)}>Volver</button>
-                                )}
-                            </section>
-                            <section>
-                                {productosNovedades && productosNovedades.length > (page + 1) * itemsPerPage && (
-                                    <button onClick={() => setPage(page + 1)}>Mostrar más</button>
-                                )}
-                            </section>
-                        </section>
                     </CardBody>
                 </Card>
             </section>

@@ -1,6 +1,7 @@
 // ProductImagesCarousel.js
 import { useState, useEffect } from 'react';
-import { Carousel } from 'react-responsive-carousel';
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 import { Skeleton, Image } from "@nextui-org/react";
 import ProductService from '@services/productService';
 
@@ -50,16 +51,52 @@ const ProductCarousel = ({id}) => {
         <section className='w-96 h-auto flex flex-col'>
             <Skeleton isLoaded={isLoaded} className="rounded-lg mw-96 h-96">
                 <Carousel
-                    emulateTouch={true}
-                    useKeyboardArrows={true}
-                    showArrows={true}
-                    showIndicators={false}
-                    showStatus={false}
-                    infiniteLoop={true}
-                    className='rounded-lg shadow-lg px-0 w-96 h-96'
-                    transitionTime={500}
-                    selectedItem={selectedImageIndex}
-                    onChange={setSelectedImageIndex}
+                    additionalTransfrom={0}
+                    arrows={imageCount > 1}
+                    centerMode={false}
+                    className=""
+                    containerClass="container"
+                    draggable
+                    focusOnSelect={false}
+                    infinite
+                    itemClass=""
+                    keyBoardControl
+                    minimumTouchDrag={80}
+                    renderButtonGroupOutside={false}
+                    renderDotsOutside={false}
+                    responsive={{
+                        desktop: {
+                            breakpoint: {
+                                max: 3000,
+                                min: 1024
+                            },
+                            items: 1,
+                            slidesToSlide: 1,
+                            partialVisibilityGutter: 40
+                        },
+                        mobile: {
+                            breakpoint: {
+                                max: 464,
+                                min: 0
+                            },
+                            items: 1,
+                            slidesToSlide: 1,
+                            partialVisibilityGutter: 30
+                        },
+                        tablet: {
+                            breakpoint: {
+                                max: 1024,
+                                min: 464
+                            },
+                            items: 1,
+                            slidesToSlide: 1,
+                            partialVisibilityGutter: 30
+                        }
+                    }}
+                    showDots={false}
+                    sliderClass=""
+                    slidesToSlide={1}
+                    swipeable
                 >
                     {renderProductImages()}
                 </Carousel>

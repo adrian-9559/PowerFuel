@@ -31,7 +31,7 @@ const ProductCard = ({ product }) => {
 
     return (
         <Card  
-            tabIndex="0" 
+            tabIndex="10" 
             onKeyDown={handleKeyDown} 
             onMouseEnter={() => setIsHovered(true)} 
             onMouseLeave={() => !isLoading && setIsHovered(false)} 

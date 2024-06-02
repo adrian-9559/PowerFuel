@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import NavigationBar from "@components/navigation/NavigationBar";
 import Footer from "@components/footer/Footer";
+import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react';
 
 export default function DefaultLayout({
   children,
@@ -10,37 +11,31 @@ export default function DefaultLayout({
 }) {
   const router = useRouter();
 
-  /* 
-    const hideOnRoutes = ['/login', '/register'];
-
-    Comprueba si la ruta actual está en la lista de rutas donde no quieres mostrar la barra de navegación
-    const showNavbar = !hideOnRoutes.includes(router.pathname);
-
-    {showNavbar && <NavigationBar />}
-  */
-
-  // Animación: Fade in y out
-  const variants = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        duration: 0.5
-      }
-    },
-    exit: { opacity: 0 }
-  };
+  // Divide la ruta en segmentos y elimina el primer segmento vacío
+  const pathnames = router.pathname.split('/').filter(x => x);
 
   return (
-    <div className="relative flex flex-col h-screen">
+    <div className="relative flex flex-col h-screen ">
       <NavigationBar />
+      {/* <section className="p-16 w-full flex flex-row justify-center">
+        <Breadcrumbs>
+          {router.pathname !== "/" && (
+            <BreadcrumbItem href="/" onClick={() => router.push("/")}>Inicio</BreadcrumbItem>
+          )}
+          {pathnames.map((value, index) => {
+            const last = index === pathnames.length - 1;
+            const to = `/${pathnames.slice(0, index + 1).join('/')}`;
+
+            return last ? (
+              <BreadcrumbItem key={to}>{value}</BreadcrumbItem>
+            ) : (
+              <BreadcrumbItem href={to} key={to} onClick={() => router.push(to)}>{value}</BreadcrumbItem>
+            );
+          })}
+        </Breadcrumbs>
+      </section> */}
       <motion.main
-          key={router.route} // Cambia la clave cuando cambia la ruta
-          variants={variants} // Pasa las variantes de la animación
-          initial="hidden" // Estado inicial
-          animate="show" // Anima al estado "show" cuando se monta
-          exit="exit" // Anima al estado "exit" cuando se desmonta
-          style={{ flexGrow: 1 }} 
+          key={router.route} 
         >
         {children}
       </motion.main>

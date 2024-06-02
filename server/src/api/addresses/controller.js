@@ -1,76 +1,78 @@
 const model = require('./addressModel');
+const errorDisplay = "(Error en el controlador de Direcciones)";
 
-const addAddress = async (req, res) => {
-    const newAddress = req.body;
-    newAddress.user_id = req.user.userId;
+const addAddress = async (newAddress) => {
     try {
         const address = await model.insertAddress(newAddress);
-        res.json(address);
+        return address;
     } catch (error) {
-        console.error('Error adding the address:', error);
-        res.status(500).json({ message: 'Error adding the address' });
+        throw new Error(`Error al intentar agregar la dirección ${errorDisplay}`, error);
     }
 };
 
-const deleteAddressById = async (req, res) => {
-    const deletedAddress = await model.deleteAddress(req.params.addressId);
-
-    if (!deletedAddress) {
-        return res.status(404).json({ message: 'Address not found' });
-    }
-    res.json({ message: 'Address deleted successfully' });
-};
-
-const updateAddress = async (req, res) => {
-    const { addressId } = req.params;
-    const address = await model.updateAddress(addressId, req.body);
-    if (!address) {
-        throw new Error('Not found');
-    }
-    res.json({ message: 'Address modified successfully' });
-};
-
-const getAddressById = async (req, res) => {
+const deleteAddressById = async (addressId) => {
     try {
-        const address = await model.getAddress(req.params.addressId);
-        if (!address) {
-            return res.status(404).json({ message: 'Address not found' });
-        }
-        res.json({address});
+        const deletedAddress = await model.deleteAddress(addressId);
+        return deletedAddress;
     } catch (error) {
-        console.error('Error getting the address:', error);
-        res.status(500).json({ message: 'Error getting the address' });
+        throw new Error(`Error al intentar eliminar la dirección ${errorDisplay}`, error);
     }
 };
 
-const getAddresses = async (req, res) => {
-    const addresses = await model.getAddresses();
-    if (!addresses) {
-        throw new Error('Not found');
+const updateAddress = async (addressId, data) => {
+    try {
+        const address = await model.updateAddress(addressId, data);
+        if (!address) {
+            throw new Error('Not found');
+        }
+        return address;
+    } catch (error) {
+        throw new Error(`Error al intentar actualizar la dirección ${errorDisplay}`, error);
     }
-
-    res.json(addresses);
 };
 
-const getAddressesByUserId = async (req, res) => {
-    const userId = req.params.userId==="null"?req.user.userId:req.params.userId;
-    const addresses = await model.getAddressesByUserId(userId);
-    if (!addresses) {
-        throw new Error('Not found');
+const getAddressById = async (addressId) => {
+    try {
+        return await model.getAddress(addressId);
+    } catch (error) {
+        throw new Error(`Error al intentar obtener la dirección por ID ${errorDisplay}`, error);
     }
-    res.json(addresses);
 };
 
-const setDefaultAddress = async (req, res) => {
-    const { addressId } = req.params;
-    const userId = req.user.userId;
-    console.log('userId', userId);
-    console.log('addressId', addressId);
-    const response = await model.setDefaultAddress(userId, addressId);
-    if (!response) {
-        res.status(404).json({ message: 'Address not found' });
+const getAddresses = async () => {
+    try {
+        const addresses = await model.getAddresses();
+        if (!addresses) {
+            throw new Error('Not found addresses');
+        }
+        return addresses;
+    } catch (error) {
+        throw new Error(`Error al intentar obtener las direcciones ${errorDisplay}`, error);
     }
-    res.json({ message: 'Default address set successfully' });
+};
+
+const getAddressesByUserId = async (userId) => {
+    try {
+        const addresses = await model.getAddressesByUserId(userId);
+        if (!addresses) {
+            throw new Error('Not found');
+        }
+        return addresses;
+    } catch (error) {
+        throw new Error(`Error al intentar obtener las direcciones por ID de usuario ${errorDisplay}`, error);
+    }
+};
+
+const setDefaultAddress = async (userId, addressId) => {
+    try {
+        const response = await model.setDefaultAddress(userId, addressId);
+        if (!response) {
+            throw new Error('Not found');
+        }
+        return response;
+    } catch (error) {
+        throw new Error(`Error al intentar establecer la dirección por defecto ${errorDisplay}`, error);
+    }
 };
 
 module.exports = {

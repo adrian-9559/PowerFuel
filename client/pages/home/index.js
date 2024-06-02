@@ -39,8 +39,8 @@ const HomeComponent = () => {
     };
 
     const renderProductosNovedades = () => {
-        return productosNovedades.map((product, index) => (
-            <ProductCard product={product} key={product.product_id} />
+        return productosNovedades.map((product) => (
+                <ProductCard product={product} key={product.product_id} />
         ));
     }
 
@@ -113,7 +113,7 @@ const HomeComponent = () => {
                                 autoPlaySpeed={1500}
                                 autoPlay={true}
                                 centerMode={true}
-                                containerClass="w-full py-3"
+                                containerClass="w-full"
                                 draggable
                                 focusOnSelect={false}
                                 keyBoardControl
@@ -181,7 +181,7 @@ const HomeComponent = () => {
                             Productos
                         </h1>
                     </CardHeader>
-                    <CardBody className=" flex flex-col gap-3 justify-center items-center">
+                    <CardBody >
                         {loading ? (
                             <Spinner />
                         ) : productos && productos.length > 0 ? (
@@ -189,7 +189,7 @@ const HomeComponent = () => {
                                     let rows = [];
                                     for (let i = 0; i < productos.length; i += 5) {
                                         rows.push(
-                                            <div key={i} className="w-full flex flex-row gap-3 justify-center items-center">
+                                            <div key={i} className="w-full flex flex-row gap-3 justify-start items-center">
                                                 {productos.slice(i, i + 5).map((product) => (
                                                     <ProductCard product={product} key={product.product_id} />
                                                 ))}

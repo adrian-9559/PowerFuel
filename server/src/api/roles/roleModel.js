@@ -1,56 +1,78 @@
-
 const { Role, UserRoles } = require('../../model');
+const errorDisplay = "(Error en el modelo de Role)";
 
 class model {
     insertRole = async (role) => {
-        const newRole = await Role.create({
-            role_name: role.role_name
-        });
-        return newRole.role_id;
+        try {
+            const newRole = await Role.create({
+                role_name: role.role_name
+            });
+            return newRole.role_id;
+        } catch (error) {
+            throw new Error(`Error al insertar el rol ${errorDisplay}`, error);
+        }
     };
     
     updateRole = async (roleId, role) => {
-        return await Role.update({
-            role_name: role.role_name
-        }, {
-            where: {
-                role_id: roleId
-            }
-        });
-
-
+        try {
+            return await Role.update({
+                role_name: role.role_name
+            }, {
+                where: {
+                    role_id: roleId
+                }
+            });
+        } catch (error) {
+            throw new Error(`Error al actualizar el rol ${errorDisplay}`, error);
+        }
     };
     
     deleteRole = async (roleId) => {
-        return await Role.destroy({
-            where: {
-                role_id: roleId
-            }
-        });
+        try {
+            return await Role.destroy({
+                where: {
+                    role_id: roleId
+                }
+            });
+        } catch (error) {
+            throw new Error(`Error al eliminar el rol ${errorDisplay}`, error);
+        }
     };
     
     getRoles = async (id, skip = 0, limit = 10 ) => {
-        if (id) {
-           return [await Role.findByPk(id)];
-        } else {
-            return await Role.findAll({
-                offset: skip,
-                limit: limit,
-            });
+        try {
+            if (id) {
+                return [await Role.findByPk(id)];
+            } else {
+                return await Role.findAll({
+                    offset: skip,
+                    limit: limit
+                });
+            }
+        } catch (error) {
+            throw new Error(`Error al obtener los roles ${errorDisplay}`, error);
         }
     };
     
     getRolesCount = async () => {
-        return await Role.count();
+        try {
+            return await Role.count();
+        } catch (error) {
+            throw new Error(`Error al obtener el conteo de roles ${errorDisplay}`, error);
+        }
     };
     
     getRoleByUserId = async (userId) => {
-        return await UserRoles.findOne({
-            where: {
-                user_id: userId
-            },
-            include: Role
-        });
+        try {
+            return await UserRoles.findOne({
+                where: {
+                    user_id: userId
+                },
+                include: Role
+            });
+        } catch (error) {
+            throw new Error(`Error al obtener el rol por ID de usuario ${errorDisplay}`, error);
+        }
     };
 }
 

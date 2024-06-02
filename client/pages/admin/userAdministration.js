@@ -78,7 +78,7 @@ const UserAdministration = () => {
                         <section className="absolute flex justify-left gap-2">
                             <Tooltip color="danger" content="Eliminar Usuario/s">
                                 <Button isIconOnly color="danger" className="text-lg cursor-pointer active:opacity-50" onClick={deleteSelectedUsers}>
-                                    <DeleteIcon color="primary" />
+                                    <DeleteIcon color="white" />
                                 </Button>
                             </Tooltip>
                             <Tooltip color="success" content="Añadir Usuario" className='text-white'>
@@ -166,7 +166,7 @@ const UserAdministration = () => {
                                     </Tooltip>
                                     <Tooltip color="danger" content="Eliminar Usuario">
                                         <Button isIconOnly color="danger" variant="light" className="text-lg cursor-pointer active:opacity-50" onClick={() => deleteUser(user.user_id)}>
-                                            <DeleteIcon color="primary" />
+                                            <DeleteIcon color="white" />
                                         </Button>
                                     </Tooltip>
                                 </section>

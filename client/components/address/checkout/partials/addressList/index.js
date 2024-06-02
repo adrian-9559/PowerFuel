@@ -2,25 +2,26 @@ import React, { useState, useEffect } from 'react';
 import AddressItem from './partials/addressItem';
 import { RadioGroup, Radio , cn} from '@nextui-org/react';
 
-const AddressList = ({addressList, handleDelete, handleEdit, handleSelectAddress}) => {
-    const [selectedAddress, setSelectedAddress] = useState(null);
+const AddressList = ({addressList, handleDelete, handleEdit, setSelectedAddress}) => {
+    const [selectedRadio, setSelectedRadio] = useState(null);
 
     useEffect(() => {
-        const defaultAddress = addressList.find(address => address.is_default);
+        const defaultAddress = addressList.find(address => address.is_default === 1);
         if (defaultAddress) {
+            setSelectedRadio(defaultAddress.address_id);
             setSelectedAddress(defaultAddress.address_id);
         }
     }, [addressList]);
 
     const handleValueChange = (value) => {
+        setSelectedRadio(value);
         setSelectedAddress(value);
-        handleSelectAddress(value);
     }
 
     return (
         <section className="flex flex-col justify-center items-center">
             <RadioGroup 
-                value={selectedAddress} 
+                value={selectedRadio} 
                 onValueChange={handleValueChange}
             >
                 {addressList.map((address) => (
@@ -31,7 +32,7 @@ const AddressList = ({addressList, handleDelete, handleEdit, handleSelectAddress
                             base: cn(
                             "inline-flex m-0 bg-content1 hover:bg-content2 items-center justify-between",
                             " max-w-[300px] cursor-pointer rounded-lg gap-4 p-4 border-2 border-transparent",
-                            "data-[selected=true]:border-primary"
+                            "data-[selected=true]:border-primary border-default",
                             ),
                         }}
                     >

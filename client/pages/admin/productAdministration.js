@@ -6,7 +6,6 @@ import DeleteIcon from '@icons/DeleteIcon';
 import EyeIcon from '@icons/EyeIcon';
 import EditIcon from '@icons/EditIcon';
 import PlusIcon from '@icons/PlusIcon';
-import TrashIcon from '@icons/TrashIcon';
 
 const statusColorMap = {
     Enabled: "success",
@@ -72,7 +71,7 @@ const ProductoAdministration = () => {
                         <section className="absolute flex justify-left gap-2">
                             <Tooltip color="danger" content="Eliminar Producto/s">
                                 <Button isIconOnly color="danger" className="text-lg cursor-pointer active:opacity-50" onClick={deleteSelectedProducts}>
-                                    <DeleteIcon color="primary" />
+                                    <DeleteIcon color="white" />
                                 </Button>
                             </Tooltip>
                             <Tooltip color="success" content="Añadir Producto" className='text-white'>
@@ -169,7 +168,7 @@ const ProductoAdministration = () => {
                                     </Tooltip>
                                     <Tooltip color="danger" content="Eliminar Producto">
                                         <Button isIconOnly color="danger" variant="light" className="text-lg cursor-pointer active:opacity-50" onClick={() => deleteProduct(product.product_id)}>
-                                            <DeleteIcon color="primary" />
+                                            <DeleteIcon color="white" />
                                         </Button>
                                     </Tooltip>
                                 </section>

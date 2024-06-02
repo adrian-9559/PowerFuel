@@ -6,13 +6,12 @@ import { useAppContext } from "@context/AppContext";
 import { AnimatePresence } from 'framer-motion';
 import ProductService from '@services/productService';
 import { useCart } from '@hooks/useCart';
+import DeleteIcon from '@icons/DeleteIcon';
 
 
 const CartMenu = () => {
-    const { cart, setCart, isCartOpen ,onOpenCartChange, onOpenCart } = useAppContext();
-    const [cartAux, setCartAux] = useState([]);
+    const { cart, isCartOpen ,onOpenCartChange, onOpenCart } = useAppContext();
     const [total, setTotal] = useState(0);
-    const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
     const { emptyCart, getTotal } = useCart()
 
@@ -37,19 +36,7 @@ const CartMenu = () => {
             onOpenChange={onOpenCartChange}
             showArrow 
         >
-        <Badge content={isLoading ? (
-                <svg 
-                    className="w-2   h-4"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity="0.25"/>
-                    <path fill="currentColor" d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z">
-                        <animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/>
-                    </path>
-                </svg>
-            ) : 
+        <Badge content={
                 cart?cart.length:0
             }  
             color="primary" 
@@ -74,13 +61,11 @@ const CartMenu = () => {
                 {cart && cart.length > 0 &&
                         <DropdownItem key="cart" className="gap-2 sticky top-0 z-10 w-full bg-gray-500 bg-opacity-25" textValue='Cart'>
                             <section className='flex justify-between items-center'>
-                                <section className='flex items-center'> {/* Add flex and items-center here */}
+                                <section className='flex items-center'> 
                                     <p className="font-bold">Carrito</p>
                                 </section>
                                 <Button color="danger" className='m-1' variant="light" onClick={emptyCart} isIconOnly isEnabled>
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" viewBox="0 0 448 512">
-                                        <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/>
-                                    </svg>
+                                    <DeleteIcon color="white" />
                                 </Button> 
                             </section>
                         </DropdownItem>                

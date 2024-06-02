@@ -65,22 +65,24 @@ const AddressForm = ({setShowForm, editAddress ,setEditAddress}) => {
     }
 
     return (
-        <section className="flex flex-col justify-center items-center">
+        <section className="w-full">
             <h2 className="text-2xl font-bold">Añadir dirección</h2>
-            <form onSubmit={handleSubmit} className='flex flex-col gap-4 justify-content'>
-                <section className="flex flex-row justify-center gap-4 items-center">
-                    <section className="flex flex-col justify-center gap-4 items-center">
+            <form onSubmit={handleSubmit} className='flex flex-col gap-4 justify-content w-full'>
+                <section className="flex flex-row justify-center gap-4 items-center w-full">
+                    <section className="flex flex-col justify-center gap-4 items-center w-full">
                         <Input name="street" label="Dirección:" defaultValue={street} onChange={handleChange} />
                         <Input name="city" label="Ciudad:" defaultValue={city} onChange={handleChange} />
                         <Input name="zip" label="Código Postal:" defaultValue={zip} onChange={handleChange}/>
                     </section>
-                    <section className="flex flex-col justify-center gap-4 items-center">
+                    <section className="flex flex-col justify-center gap-4 items-center w-full">
                         <Input name="province" label="Provincia/Estado:" defaultValue={province} onChange={handleChange} />
                         <Input name="country" label="País:" defaultValue={country} onChange={handleChange} />
                         <Input name="phone_number" label="Teléfono:" defaultValue={phone_number} onChange={handleChange} />
                     </section>
                 </section>
-                <Button color="primary" auto onClick={handleSubmit}>Añadir dirección</Button>
+                <Button color="primary" auto onClick={handleSubmit}>
+                    {editAddress ? 'Guardar cambios' : 'Añadir dirección'}
+                </Button>
             </form>
         </section>
     );

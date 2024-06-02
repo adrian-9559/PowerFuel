@@ -7,6 +7,7 @@ import UserAdministration from "./userAdministration";
 import RoleAdministration from "./roleAdministration";
 import ProductoAdministration from "./productAdministration";
 import CategoryAdministration from "./categoryAdministration";
+import BrandAdministration from './brandAdministration';
 import ServerRendimiento from "./serverRendimiento";
 
 const Administrador = () => {
@@ -19,7 +20,8 @@ const Administrador = () => {
         'Roles': <RoleAdministration />,
         'Productos': <ProductoAdministration />,
         'Categorias': <CategoryAdministration />,
-        'Dashboard': <ServerRendimiento />
+        'Dashboard': <ServerRendimiento />,
+        'Marcas': <BrandAdministration />
     };
 
     useEffect(() => {

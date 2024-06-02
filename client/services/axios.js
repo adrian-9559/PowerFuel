@@ -21,10 +21,10 @@ api.interceptors.response.use(response => {
 }, async error => {
     const originalRequest = error.config;
     if (error.response.status === 401 && !originalRequest._retry) {
-        originalRequest._retry = true;
+        originalRequest._retry = false;
         const refreshToken = localStorage.getItem('refresh_token');
         try {
-            const res = await axios.post('/api/token/refresh', { refreshToken });
+            const res = await api.post('/token/refresh', { refreshToken });
             localStorage.setItem('auth_token', res.data.accessToken);
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.accessToken;
             return axios(originalRequest);
@@ -36,7 +36,11 @@ api.interceptors.response.use(response => {
 });
 
 api.interceptors.response.use((response) => {
+    if (response.data.message) {
+        toastr.success(response.data.message);
+    }
     return response;
+
 }, (error) => {
     console.log(error);
     toastr.error(error.response.data.message);

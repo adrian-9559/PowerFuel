@@ -5,7 +5,7 @@ import { useAppContext } from '@context/AppContext';
 import SideMenu from '@components/users/sideMenu';
 import DataUser from '@components/users/dataUser';
 import AddressList from '@components/address/addressList';
-import NotificationList from '@components/users/notification/NotificationList';
+import NotificationList from '@components/notification/NotificationList';
 import OrderList from '@components/orders/orderList';
 
 const Config = () => {
@@ -63,7 +63,8 @@ const Config = () => {
                         initial={{opacity: 0}}
                         animate={{opacity: 1}}
                         exit={{opacity: 0}}
-                    >
+                        className='pr-36'
+                    >  
                         {components[selectedOption]}
                     </motion.div>
                 </AnimatePresence>

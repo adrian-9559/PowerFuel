@@ -75,7 +75,7 @@ const CategoryAdministration = () => {
                         <section className="absolute flex justify-left gap-2">
                             <Tooltip color="danger" content="Eliminar Categoría/s">
                                 <Button isIconOnly color="danger" className="text-lg cursor-pointer active:opacity-50" onClick={deleteSelectedCategories}>
-                                    <DeleteIcon color="primary" />
+                                    <DeleteIcon color="white" />
                                 </Button>
                             </Tooltip>
                             <Tooltip color="success" content="Añadir Categoría" className='text-white'>
@@ -147,7 +147,7 @@ const CategoryAdministration = () => {
                                     </Tooltip>
                                     <Tooltip color="danger" content="Eliminar Categoría">
                                         <Button isIconOnly color="danger" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => deleteCategory(category.category_id)}>
-                                            <DeleteIcon color="red" />
+                                            <DeleteIcon color="white" />
                                         </Button>
                                     </Tooltip>
                                 </section>

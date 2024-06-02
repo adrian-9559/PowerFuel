@@ -1,12 +1,21 @@
 const model = require('./oldPasswordModel');
+const errorDisplay = "(Error en el controlador de oldPassword)";
 
 const saveOldPassword = async (userId, oldPassword) => {
-    const changeTime = new Date();
-    await model.saveOldPassword(userId, oldPassword, changeTime);
+    try {
+        const changeTime = new Date();
+        await model.saveOldPassword(userId, oldPassword, changeTime);
+    } catch (error) {
+        throw new Error(`Error al intentar guardar la contraseña antigua ${errorDisplay}`, error);
+    }
 };
 
 const getAllOldPasswordByUserId = async (userId) => {
-    return await model.getAllOldPasswordByUserId(userId);
+    try {
+        return await model.getAllOldPasswordByUserId(userId);
+    } catch (error) {
+        throw new Error(`Error al intentar obtener todas las contraseñas antiguas por ID de usuario ${errorDisplay}`, error);
+    }
 };
 
 module.exports = {

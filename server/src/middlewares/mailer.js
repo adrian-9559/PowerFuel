@@ -1,7 +1,8 @@
 require('dotenv').config();
 const nodemailer = require('nodemailer');
 
-// const transporter = nodemailer.createTransport({
+const transporter = null;
+//  = nodemailer.createTransport({
 //     host: process.env.EMAIL_HOST,
 //     port: process.env.EMAIL_PORT, 
 //     secure: true, 
@@ -13,7 +14,9 @@ const nodemailer = require('nodemailer');
 
 // transporter.verify().then(() => {
 //     console.log('Preparado para mandar mensajes por email');
-// });
+// })
 
-const transporter = null;
+
+
+
 module.exports = transporter;

@@ -1,4 +1,5 @@
 const { Category } = require('../../model');
+const errorDisplay = "(Error en el modelo de Categories)";
 
 class model {
     addCategory = async (category) => {
@@ -9,8 +10,7 @@ class model {
             });
             return newCategory.category_id;
         } catch (error) {
-            console.error(error);
-            throw new Error('Error adding category');
+            throw new Error(`Error al añadir la categoría ${errorDisplay}`, error);
         }
     };
     
@@ -25,23 +25,27 @@ class model {
                 }
             });
         } catch (error) {
-            console.error(error);
-            throw new Error('Error updating category');
+            throw new Error(`Error al actualizar la categoría ${errorDisplay}`, error);
         }
     };
     
     getCategories = async (skip = null, limit = null, categoryId) => {
         try {
-                const categories = await Category.findAll({
-                    where: categoryId ? {category_id: categoryId} : {},
-                    limit: limit? limit : null,
-                    offset: skip? skip : null
-                });
-                return categories;
-    
+            const query = {
+                where: categoryId ? {category_id: categoryId} : {},
+            };
+
+            if (skip !== null) {
+                query.offset = skip;
+            }
+
+            if (limit !== null) {
+                query.limit = limit;
+            }
+
+            return await Category.findAll(query);
         } catch (error) {
-            console.error(error);
-            throw new Error('Error al obtener las categorías');
+            throw new Error(`Error al obtener las categorías ${errorDisplay}`, error);
         }
     };
     
@@ -54,8 +58,7 @@ class model {
             });
             return categories;
         } catch (error) {
-            console.error(error);
-            throw new Error('Error getting parent categories');
+            throw new Error(`Error al obtener las categorías principales ${errorDisplay}`, error);
         }
     };
     
@@ -67,13 +70,10 @@ class model {
                 }
             });
             return categories;
+        } catch (error) {
+            throw new Error(`Error al obtener las categorías hijas ${errorDisplay}`, error);
         }
-        catch (error) {
-            console.error(error);
-            throw new Error('Error getting child categories');
-        }
-    }
-    
+    };
     
     deleteCategory = async (categoryId) => {
         try {
@@ -84,17 +84,15 @@ class model {
             });
         } catch (error) {
             console.error(error);
-            throw new Error('Error deleting category');
+            throw new Error(`Error al eliminar la categoría ${errorDisplay}`, error);
         }
     };
     
     getCategoriesCount = async () => {
         try {
-            const count = await Category.count();
-            return count;
+            return await Category.count();
         } catch (error) {
-            console.error(error);
-            throw new Error('Error getting categories count');
+            throw new Error(`Error al obtener el conteo de categorías ${errorDisplay}`, error);
         }
     };
 
@@ -110,8 +108,7 @@ class model {
             });
             return categories;
         } catch (error) {
-            console.error(error);
-            throw new Error('Error getting all categories');
+            throw new Error(`Error al obtener todas las categorías ${errorDisplay}`, error);
         }
     };
 }

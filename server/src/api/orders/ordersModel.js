@@ -1,56 +1,86 @@
 const { Order } = require('../../model');
 const { Op } = require('sequelize');
+const errorDisplay = "(Error en el modelo de Orders)";
 
 class OrderModel {
     getOrdersByUser = async (userId) => {
-        return await Order.findAll({
-            where: { user_id: userId }
-        });
+        try {
+            return await Order.findAll({
+                where: { user_id: userId }
+            });
+        } catch (error) {
+            throw new Error(`Error al obtener los pedidos del usuario ${errorDisplay}`, error);
+        }
     };
 
     getOrderById = async (orderId) => {
-        return await Order.findOne({
-            where: { order_id: orderId }
-        });
+        try {
+            return await Order.findOne({
+                where: { order_id: orderId }
+            });
+        } catch (error) {
+            throw new Error(`Error al obtener el pedido por ID ${errorDisplay}`, error);
+        }
     };
 
     createOrder = async (orderData) => {
-        return await Order.create(orderData);
+        try {
+            return await Order.create(orderData);
+        } catch (error) {
+            throw new Error(`Error al crear el pedido ${errorDisplay}`, error);
+        }
     };
 
+
     updateOrder = async (orderId, orderData) => {
-        return await Order.update(orderData, {
-            where: { order_id: orderId }
-        });
+        try {
+            return await Order.update(orderData, {
+                where: { order_id: orderId }
+            });
+        } catch (error) {
+            throw new Error(`Error al actualizar el pedido ${errorDisplay}`, error);
+        }
     };
 
     deleteOrder = async (orderId) => {
-        const result = await Order.destroy({
-            where: { order_id: orderId }
-        });
-        return result > 0;
+        try {
+            const result = await Order.destroy({
+                where: { order_id: orderId }
+            });
+            return result > 0;
+        } catch (error) {
+            throw new Error(`Error al eliminar el pedido ${errorDisplay}`, error);
+        }
     };
 
     getOrdersCount = async () => {
-        return await Order.count();
+        try {
+            return await Order.count();
+        } catch (error) {
+            throw new Error(`Error al obtener el conteo de pedidos ${errorDisplay}`, error);
+        }
     };
 
     getOrdersByDate = async (startDate, endDate) => {
-        let whereCondition = {};
-        if(startDate && endDate && !isNaN(new Date(startDate)) && !isNaN(new Date(endDate))) {
-            whereCondition.order_date = {
-                [Op.between]: [startDate, endDate]
-            };
-        }
+        try {
+            let whereCondition = {};
+            if(startDate && endDate && !isNaN(new Date(startDate)) && !isNaN(new Date(endDate))) {
+                whereCondition.order_date = {
+                    [Op.between]: [startDate, endDate]
+                };
+            }
     
-        let orders = await Order.findAll({
-            where: whereCondition,
-            order: [
-                ['order_date', 'ASC']
-            ]
-        });
-        
-        return orders;
+            let orders = await Order.findAll({
+                where: whereCondition,
+                order: [
+                    ['order_date', 'ASC']
+                ]
+            });
+    
+            return orders;
+        } catch (error) {
+            throw new Error(`Error al obtener los pedidos por fecha ${errorDisplay}`, error);
+        }
     };
 }
 

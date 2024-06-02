@@ -1,8 +1,12 @@
 const model = require('./categoryModel');
+const errorDisplay = "(Error en el controlador de Categorias)";
 
 const handleInternalServerError = (error) => {
-    console.error(error);
-    return { status: 500, json: { message: 'Internal Server Error' } };
+    try {
+        return { status: 500, json: { message: `Error al manejar el error interno del servidor ${errorDisplay}` } };
+    } catch (error) {
+        throw new Error(`Error al manejar el error interno del servidor ${errorDisplay}`, error);
+    }
 };
 
 const getCategories = async (page, limit) => {

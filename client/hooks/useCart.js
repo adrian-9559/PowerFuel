@@ -1,11 +1,8 @@
-import { useEffect, useState, useContext } from 'react';
 import { useAppContext } from '@context/AppContext';
 import ProductService from '@services/productService';
-import { useRouter } from 'next/router';
 
 export const useCart = () => {
     const { cart, setCart ,onOpenCartChange} = useAppContext();
-    const router = useRouter();
     
     const addToCart = (product_id, quantity = 1) => {
         product_id = parseInt(product_id);
@@ -31,8 +28,6 @@ export const useCart = () => {
         const updatedCart = cart.map(product => product.product_id === product_id ? {...product, quantity: parseInt(quantity)} : product);
 
         setCart(updatedCart);
-        if(router.pathname !== '/cart')
-            onOpenCartChange(true);
     };
 
     const emptyCart = () => {

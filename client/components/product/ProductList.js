@@ -4,28 +4,33 @@ import { Spinner } from '@nextui-org/react';
 import ProductService from '@services/productService';
 import { useRouter } from 'next/router';
 
-const ProductList = () => {
+const ProductList = ({data}) => {
     const [productos, setProductos] = useState([]);
     const [loading, setLoading] = useState(true);
     const router = useRouter();
     useEffect(() => {
-        const fetchProductos = async () => {
-            try {
-                const data = await ProductService.getAllProducts(); // Usa el servicio
-                setProductos(data);
-                setLoading(false);
-            } catch (error) {
-                console.error('Error fetching products:', error.message);
-                setLoading(false); // Indica que la carga ha terminado incluso si hay un error
-            }
-        };
-
-        fetchProductos();
-    }, []);
+        if(data !== null){
+            setProductos(data);
+            setLoading(false);
+        } else {
+            const fetchProductos = async () => {
+                try {
+                    const data = await ProductService.getAllProducts(); 
+                    setProductos(data);
+                    setLoading(false);
+                } catch (error) {
+                    console.error('Error fetching products:', error.message);
+                    setLoading(false); 
+                }
+            };
+    
+            fetchProductos();
+        }
+    }, [data]);
 
     return (
         <main className='mt-4'>
-            <section className="mx-auto flex flex-wrap justify-center items-center">
+            <section className="mx-auto flex flex-wrap justify-start items-center">
                 {loading ? (
                     <Spinner />
                 ) : productos && productos.length > 0 ? (

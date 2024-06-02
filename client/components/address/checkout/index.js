@@ -6,16 +6,15 @@ import AddressService from '@services/addressService';
 import AddressList from '@components/address/checkout/partials/addressList';
 import AddressForm from '@components/address/checkout/partials/addressForm';
 
-const AddressMenu = ({handleSelectAddress}) => {
+const AddressMenu = ({setSelectedAddress}) => {
     const router = useRouter();
     const [ UserAddress, SetUserAddress ] = useState([]);
     const [ showForm, setShowForm ] = useState(false);
     const [ editAddress, setEditAddress ] = useState(null);
 
     const fetchAddress = async () => {
-        console.log('fetching address');
         const addressData = await AddressService.getAddressByUserId();
-        SetUserAddress(addressData);
+        SetUserAddress(addressData.addresses);
         if(addressData.length === 0) {
             setShowForm(true);
         }
@@ -64,7 +63,7 @@ const AddressMenu = ({handleSelectAddress}) => {
                                 addressList={UserAddress}
                                 handleDelete={handleDelete}
                                 handleEdit={handleEdit}
-                                handleSelectAddress={handleSelectAddress}
+                                setSelectedAddress={setSelectedAddress}
                             />
                         </section>
                     )}

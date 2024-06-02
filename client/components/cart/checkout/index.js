@@ -8,19 +8,8 @@ import { useAppContext } from '@context/AppContext';
 const CheckOut = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [selectedAddress, setSelectedAddress] = useState(null);
-    const [selectedPayment, setSelectedPayment] = useState(null);
     const [currentStep, setCurrentStep] = useState(1);
     const { isLoggedIn } = useAppContext();
-
-    const handleSelectAddress = (address) => {
-        setSelectedAddress(address);
-        console.log("selectedAddress", selectedAddress);
-    }
-
-    const handleSelectPayment = (payment) => {
-        setSelectedPayment(payment);
-        console.log("selectedPayment", selectedPayment);
-    }
 
     const handleContinue = (volver=false) => {
         if(!volver) {
@@ -33,9 +22,8 @@ const CheckOut = () => {
     useEffect(() => {
         setCurrentStep(1);
         setSelectedAddress(null);
-        setSelectedPayment(null);
     },[isOpen]);
-
+    
     return (
         <section className='w-full flex justify-center'>
             <Button onPress={onOpen} className='items-center bg-green-200 hover:bg-green-500 sticky bottom-0 z-10 flex justify-center w-1/2' color='success'>
@@ -47,13 +35,11 @@ const CheckOut = () => {
                     {!isLoggedIn && <AuthTabs />}
                     {isLoggedIn && currentStep === 1 && (
                         <AddressMenu 
-                            handleSelectAddress={handleSelectAddress}
+                            setSelectedAddress={setSelectedAddress}
                         />
                     )}
                     {isLoggedIn && currentStep === 2 && (
-                        <PaymentMenu 
-                            handleSelectPayment={handleSelectPayment}
-                        />
+                        <PaymentMenu/>
                     )}
                     {isLoggedIn && currentStep === 3 && (
                         <p>Pago realizado correctamente</p>

@@ -101,8 +101,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
         
       const intervalId = setInterval(async () => {
-        const notificationResponse = await NotificationService.getNotificationsByUser();
-        setNotifications(notificationResponse);
+        if(localStorage.getItem('auth_token')){
+          const notificationResponse = await NotificationService.getNotificationsByUser();
+          setNotifications(notificationResponse); 
+        }
       }, 30000);
 
       return () => clearInterval(intervalId);

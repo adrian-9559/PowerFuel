@@ -11,8 +11,9 @@ const ADMIN_ACTIONS = {
         'Productos',
         'Categorias',
         'Dashboard',
+        'Marcas'
     ],
-    '96': [ // managerAnalytics
+    '96': [
         'General',
         'Usuarios',
         'Roles',
@@ -22,7 +23,8 @@ const ADMIN_ACTIONS = {
     '94': [ // managerOrder
         'General',
         'Productos',
-        'Categorias'
+        'Categorias',
+        'Marcas'
     ],
     '97': [
         'General',

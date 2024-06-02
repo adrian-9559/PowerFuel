@@ -1,6 +1,12 @@
 const tokenUtils = require('../utils/tokenUtils');
+const errorDisplay = "(Error en authTokenInterceptor)";
 
 const authTokenInterceptor = async (req, res, next) => {
+    if (req.url === '/api/token/refresh') {
+        next();
+        return;
+    }
+
     let authorization = req.headers['authorization'];
     if (authorization) {
         const token = authorization.split('Bearer ')[1];
@@ -11,9 +17,9 @@ const authTokenInterceptor = async (req, res, next) => {
             req.user = {userId: decoded.userId};
             next();
         }
-        catch(e){
-            console.log("error", e);
-            if (e.name === 'TokenExpiredError') {
+        catch(error){
+            console.error(`Error al verificar el token de autenticación ${errorDisplay}`, error);
+            if (error.name === 'TokenExpiredError') {
                 res.status(401).json({
                     message: 'Token expired'
                 });

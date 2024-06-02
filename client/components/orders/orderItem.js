@@ -22,7 +22,6 @@ const OrderItem = ({ order }) => {
       const detailsAux = JSON.parse(order.details);
       const detailsTemp = [];
       for (const item of detailsAux) {
-        console.log("item" , item.product_id);
         const productData = await ProductService.getProductById(item.product_id);
         detailsTemp.push({ ...productData, quantity: item.quantity });
         total += productData.price * item.quantity;
@@ -35,7 +34,7 @@ const OrderItem = ({ order }) => {
   }, [order]);
 
   return (
-    <Card shadow className="p-6 rounded-md shadow-lg flex flex-col gap-2">
+    <Card shadow className="p-6 shadow-lg flex flex-col gap-2">
       <p className="font-bold text-lg">Order ID: {order.order_id}</p>
       <p>Fecha del pedido: {order.order_date}</p>
       <p>Detalles del pedido:</p>

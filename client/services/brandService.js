@@ -3,17 +3,17 @@ import api from "./axios";
 class BrandService{
     async getBrandById(id) {
         const response = await api.get(`/brands/${id}`);
-        return response.data.data;
+        return response.data;
     }
 
-    async getAllBrands(page = 1, limit = 10) {
+    async getBrands(page = 1, limit = 10) {
         const response = await api.get(`/brands?page=${page}&limit=${limit}`);
-        return response.data.data;
+        return response.data;
     }
 
     async getAllBrandsNoPagination() {
         const response = await api.get(`/brands`);
-        return response.data.data;
+        return response.data;
     }
 
     async addBrand(brand) {

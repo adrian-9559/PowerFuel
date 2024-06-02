@@ -18,6 +18,8 @@ const UserMenu = () => {
         setIsLoggedIn(false);
         router.push('/');
     };
+
+    
                     
 
     return (

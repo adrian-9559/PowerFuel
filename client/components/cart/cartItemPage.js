@@ -73,7 +73,7 @@ function CartItemPageComponent({ item }) {
                     }}
                   >
                     <DeleteIcon
-                      color="red"
+                      color="white"
                     />
                   </Button>
                 </section>

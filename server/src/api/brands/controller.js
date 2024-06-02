@@ -1,55 +1,51 @@
 const model = require('./brandModel');
+const errorDisplay = "(Error en el controlador de Brands)";
 
-const getBrands = async (req, res) => {
-    const page = parseInt(req.query.page) || null;
-    const limit = parseInt(req.query.limit) || null;
-    const skip = page && limit ? (page - 1) * limit : null;
+const getBrands = async (page = 1, limit = 10) => {
+    try {
+        const skip = page && limit ? (page - 1) * limit : null;
+        let brands = await model.getBrands(skip, limit);
+        const total = await model.getBrandsCount();
 
-    let brands = await model.getBrands(skip, limit);
-    const total = await model.getBrandsCount();
-
-    if (page !== null && limit !== null && brands.length === 0) {
-        brands = brands.map(brand => ({
-            "id": brand.id_brand,
-            "brand_id": { display: "ID de la marca", value: brand.id_brand },
-            "brand_name": { display: "Nombre de la marca", value: brand.brand_name }
-        }));
+        return {
+            total,
+            pages: Math.ceil(total / limit),
+            brands
+        };
+    } catch (error) {
+        throw new Error(`Error al obtener las marcas ${errorDisplay}`);
     }
-
-    res.json({
-        total,
-        pages: limit ? Math.ceil(total / limit) : 1,
-        data: brands
-    });
 };
 
-const getBrandById = async (req, res) => {
-    const { brandId } = req.params;
-
-    const brand = await model.getBrands(null, null , brandId);
-    res.json({brand});
+const getBrandById = async (brandId) => {
+    try {
+        return await model.getBrands(null, null , brandId);
+    } catch (error) {
+        throw new Error(`Error al obtener la marca por ID ${errorDisplay}`);
+    }
 };
 
-const addBrand = async (req, res) => {
-    const newBrand = req.body;
-    const brandId = await model.insertBrand(newBrand);
-    res.json({ brand_id: brandId, ...newBrand });
+const addBrand = async (newBrand) => {
+    try {
+        return await model.insertBrand(newBrand);
+    } catch (error) {
+        throw new Error(`Error al añadir la marca ${errorDisplay}`);
+    }
 };
 
-const updateBrandById = async (req, res) => {
-    const { brandId } = req.params;
-    const updatedBrand = req.body;
-    await model.updateBrand(brandId, updatedBrand);
-    res.json({ brand_id: brandId, ...updatedBrand });
+const updateBrandById = async (brandId, updatedBrand) => {
+    try {
+        return await model.updateBrand(brandId, updatedBrand);
+    } catch (error) {
+        throw new Error(`Error al actualizar la marca por ID ${errorDisplay}`);
+    }
 };
 
-const deleteBrandById = async (req, res) => {
-    const { brandId } = req.params;
+const deleteBrandById = async (brandId) => {
     try {
         await model.deleteBrand(brandId);
-        res.status(200).json({ message: 'Brand deleted successfully' });
     } catch (error) {
-        handleInternalServerError(res, error);
+        throw new Error(`Error al eliminar la marca por ID ${errorDisplay}`);
     }
 };
 

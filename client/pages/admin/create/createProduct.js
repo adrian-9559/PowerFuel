@@ -33,8 +33,8 @@ const CreateProduct = () => {
         };
 
         const fetchBrands = async () => {
-            const brands = await BrandService.getAllBrandsNoPagination();
-            setBrands(brands);
+            const response = await BrandService.getAllBrandsNoPagination();
+            setBrands(response.brands);
         };
         
         fetchParentCategories();
@@ -88,8 +88,9 @@ const CreateProduct = () => {
             const categories = await CategoryService.getParentCategories();
             setParentCategories(categories);
     
-            const brands = await BrandService.getAllBrandsNoPagination();
-            setBrands(brands);
+            const response = await BrandService.getAllBrandsNoPagination();
+            console.log(response.brands);
+            setBrands(response.brands);
     
             if (id) {
                 const product = await ProductService.getProductById(id);
@@ -147,7 +148,7 @@ const CreateProduct = () => {
         for (let i = 1; i <= imageCount; i++) {
             if (id) {
                 images.push(
-                    <div key={i} className='rounded-xl auto'>
+                    <div key={i} className='rounded-xl '>
                         {readOnly !== "true" && (
                             <Button 
                                 color='danger' 
@@ -164,7 +165,7 @@ const CreateProduct = () => {
                             isZoomed
                             src={`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/product/${id}/${i}.png`}
                             alt={`Imagen ${i} del producto ${id}`}
-                            className={`rounded shadow-lg object-cover cursor-pointer z-10`}
+                            className={`rounded shadow-lg object-cover cursor-pointer z-10 max-h-32`}
                             disableSkeleton= {imageCount}
                         />
                     </div>
@@ -268,7 +269,7 @@ const CreateProduct = () => {
                 {id && (    
                     <section className="mb-4">
                         <h2 className="text-xl font-bold mb-2">Imágenes del Producto</h2>
-                        <section className="flex flex-row gap-4 w-full">
+                        <section className="flex flex-row gap-4 w-full max-h-32">
                             {imageCount === 0 && (
                                 <p>No hay imágenes para mostrar</p>
                             ) || renderProductImages(true)}

@@ -63,7 +63,7 @@ const RoleAdministration = () => {
                         <section className="absolute flex justify-left gap-2">
                             <Tooltip color="danger" content="Eliminar Rol/es">
                                 <Button isIconOnly color="danger" className="text-lg cursor-pointer active:opacity-50" onClick={deleteSelectedRoles}>
-                                    <DeleteIcon color="primary" />
+                                    <DeleteIcon color="white" />
                                 </Button>
                             </Tooltip>
                             <Tooltip color="success" content="Añadir Rol" className='text-white'>
@@ -128,7 +128,7 @@ const RoleAdministration = () => {
                                     </Tooltip>
                                     <Tooltip color="danger" content="Eliminar Rol">
                                         <Button isIconOnly color="danger" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50"  onClick={() => deleteRole(role.role_id)}>
-                                            <DeleteIcon color="red" />
+                                            <DeleteIcon color="white" />
                                         </Button>
                                     </Tooltip>
                                 </section>

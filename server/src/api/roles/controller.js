@@ -1,53 +1,71 @@
 const model = require('./roleModel');
+const errorDisplay = "(Error en el controlador de Roles)";
 
 const getRoleById = async (roleId) => {
-    let role = await model.getRoles(roleId);
-    role =  role.map(role => ({
-        "role_id": role.role_id ,
-        "role_name": role.role_name ,
-    }));
+    try {
+        let role = await model.getRoles(roleId);
+        role =  role.map(role => ({
+            "role_id": role.role_id ,
+            "role_name": role.role_name ,
+        }));
 
-    return role[0];
+        return role[0];
+    } catch (error) {
+        throw new Error(`Error al intentar obtener el rol por ID ${errorDisplay}`, error);
+    }
 };
 
 const getRoles = async (limit, page) => {
-    const parsedLimit = parseInt(limit);
-    const parsedPage = parseInt(page);
-    const skip = (parsedPage - 1) * parsedLimit;
+    try {
+        const parsedLimit = parseInt(limit);
+        const parsedPage = parseInt(page);
+        const skip = (parsedPage - 1) * parsedLimit;
 
-    let roles = await model.getRoles(null, skip, parsedLimit);
-    
-    const total = await model.getRolesCount();
+        let roles = await model.getRoles(null, skip, parsedLimit);
+        
+        const total = await model.getRolesCount();
 
-
-    roles =  roles.map(role => ({
-        "role_id": role.role_id ,
-        "role_name": role.role_name ,
-    }));
-
-    return {
-        total,
-        pages: Math.ceil(total / limit),
-        roles
-    };
+        return {
+            total,
+            pages: Math.ceil(total / limit),
+            roles
+        };
+    } catch (error) {
+        throw new Error(`Error al intentar obtener los roles ${errorDisplay}`, error);
+    }
 };
 
 const addRole = async (role) => {
-    console.log('role', role);
-    return await model.insertRole(role);
+    try {
+        console.log('role', role);
+        return await model.insertRole(role);
+    } catch (error) {
+        throw new Error(`Error al intentar añadir el rol ${errorDisplay}`, error);
+    }
 };
 
 const updateRoleById = async (roleId, role) => {
-    return await model.updateRole(roleId, role);
+    try {
+        return await model.updateRole(roleId, role);
+    } catch (error) {
+        throw new Error(`Error al intentar actualizar el rol ${errorDisplay}`, error);
+    }
 };
 
 const deleteRoleById = async (roleId) => {
-    return await model.deleteRole(roleId);
+    try {
+        return await model.deleteRole(roleId);
+    } catch (error) {
+        throw new Error(`Error al intentar eliminar el rol ${errorDisplay}`, error);
+    }
 };
 
 const getRoleByUserId = async (userId) => {
-    const role = await model.getRoleByUserId(userId);
-    return role;
+    try {
+        return await model.getRoleByUserId(userId);
+    } catch (error) {
+        throw new Error(`Error al intentar obtener el rol por ID de usuario ${errorDisplay}`, error);
+    }
 };
 
 module.exports = { getRoles, getRoleById, addRole, updateRoleById, deleteRoleById, getRoleByUserId };

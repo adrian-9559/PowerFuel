@@ -1,5 +1,6 @@
 const { Notification } = require('../../model');
 const { Op } = require('sequelize');
+const errorDisplay = "(Error en el modelo de Notifications)";
 
 class notificationModel {
     async insertNotification(notificationData) {
@@ -7,7 +8,7 @@ class notificationModel {
             const notification = await Notification.create(notificationData);
             return notification;
         } catch (error) {
-            throw error;
+            throw new Error(`Error al insertar la notificación ${errorDisplay}`, error);
         }
     }
 
@@ -23,7 +24,7 @@ class notificationModel {
             });
             return notifications;
         } catch (error) {
-            throw error;
+            throw new Error(`Error al obtener las notificaciones del usuario ${errorDisplay}`, error);
         }
     }
 
@@ -32,7 +33,7 @@ class notificationModel {
             const notifications = await Notification.findAll();
             return notifications;
         } catch (error) {
-            throw error;
+            throw new Error(`Error al obtener todas las notificaciones ${errorDisplay}`, error);
         }
     }
 
@@ -45,7 +46,7 @@ class notificationModel {
             });
             return result;
         } catch (error) {
-            throw error;
+            throw new Error(`Error al marcar las notificaciones como vistas ${errorDisplay}`, error);
         }
     }
 
@@ -58,7 +59,7 @@ class notificationModel {
             });
             return result;
         } catch (error) {
-            throw error;
+            throw new Error(`Error al eliminar la notificación ${errorDisplay}`, error);
         }
     }
 }

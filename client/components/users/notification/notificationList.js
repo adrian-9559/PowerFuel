@@ -56,54 +56,50 @@ const NotificationList = () => {
     }
 
     return (
-        <section className="py-5 flex flex-col gap-4 ">
+        <section className="py-5 flex flex-col gap-4">
             <section>
                 <h1 className="font-bold text-3xl">Notificaciones</h1>
             </section>
-            <section>
-                <Card>
-                    <CardBody className='p-6 grid gap-6'>
-                        {notifications.map((notification) => (
-                            <Card key={notification.notification_id} className={`${getCardColor(notification.viewed)} bg-opacity-20`}>
-                                <CardBody>
-                                    <section className='flex w-full justify-between'>
-                                        <section className='w-full'>
-                                            <section>
-                                                <h3 className='text-2xl font-bold m-3'>{notification.title}</h3>
-                                                <section className='mx-4 grid'>
-                                                    <section className='font-bold'>Descripción:</section>
-                                                    <section>{notification.description}</section>
-                                                </section>
-                                                <section className='mx-4 my-1 grid'>
-                                                    <section>
-                                                        <section className='font-bold'>Fecha:</section>
-                                                        <section>{new Date(notification.notification_date).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</section>
-                                                    </section>
-                                                </section>
-                                            </section>
+            <section className='w-full h-full flex flex-col gap-4'>
+                {notifications.map((notification) => (
+                    <Card key={notification.notification_id} className={`${getCardColor(notification.viewed)} bg-opacity-20`}>
+                        <CardBody>
+                            <section className='flex w-full justify-between'>
+                                <section className='w-full'>
+                                    <section>
+                                        <h3 className='text-2xl font-bold m-3'>{notification.title}</h3>
+                                        <section className='mx-4 grid'>
+                                            <section className='font-bold'>Descripción:</section>
+                                            <section>{notification.description}</section>
                                         </section>
-                                        <section className='grid justify-end m-4 w-fit'>
-                                            <section className='flex justify-end'>
-                                                <Chip color={getStatusColor(notification.type)}>{notification.type}</Chip>
-                                            </section>
-                                            <section className='flex justify-end items-end h-full'>
-                                                <Button
-                                                    onClick={() => deleteNotification(notification.notification_id)}
-                                                    color='danger'
-                                                >
-                                                    Eliminar
-                                                </Button>
+                                        <section className='mx-4 my-1 grid'>
+                                            <section>
+                                                <section className='font-bold'>Fecha:</section>
+                                                <section>{new Date(notification.notification_date).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</section>
                                             </section>
                                         </section>
                                     </section>
-                                </CardBody>
-                            </Card>
-                        ))}
-                        {notifications.length <= 0 && (
-                            <p>No hay notificaciones</p>
-                        )}
-                    </CardBody>
-                </Card>
+                                </section>
+                                <section className='grid justify-end m-4 w-fit'>
+                                    <section className='flex justify-end'>
+                                        <Chip color={getStatusColor(notification.type)}>{notification.type}</Chip>
+                                    </section>
+                                    <section className='flex justify-end items-end h-full'>
+                                        <Button
+                                            onClick={() => deleteNotification(notification.notification_id)}
+                                            color='danger'
+                                        >
+                                            Eliminar
+                                        </Button>
+                                    </section>
+                                </section>
+                            </section>
+                        </CardBody>
+                    </Card>
+                ))}
+                {notifications.length <= 0 && (
+                    <p>No hay notificaciones</p>
+                )}
             </section>
         </section>
     );

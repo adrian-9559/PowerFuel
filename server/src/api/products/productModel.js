@@ -62,15 +62,14 @@ class model {
         return childCategories;
     }
     
-    getProductsSearch = async (search) => {
-        const skip = 0;
-        const limit = 10;
+    getProductsSearch = async (query, limit = 10, page = 1) => {
+        const skip = (page - 1) * limit;
         let products = await Product.findAll({
             where: {
                 [Op.or]: [
-                    {product_name: {[Op.like]: `%${search}%`}},
-                    {'$Category.category_name$': {[Op.like]: `%${search}%`}},
-                    {'$Brand.brand_name$': {[Op.like]: `%${search}%`}}
+                    {product_name: {[Op.like]: `%${query}%`}},
+                    {'$Category.category_name$': {[Op.like]: `%${query}%`}},
+                    {'$Brand.brand_name$': {[Op.like]: `%${query}%`}}
                 ],
             },
             offset: skip,
@@ -85,7 +84,7 @@ class model {
             const categories = await Category.findAll({
                 where: {
                     category_name: {
-                        [Op.like]: `%${search}%`
+                        [Op.like]: `%${query}%`
                     }
                 }
             });

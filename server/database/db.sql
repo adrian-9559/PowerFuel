@@ -139,7 +139,6 @@ CREATE TABLE IF NOT EXISTS `products` (
   `id_brand` int DEFAULT NULL,
   `status` enum('Enabled','Disabled') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'Disabled',
   `category_id` int DEFAULT NULL,
-  `phone_number` int DEFAULT NULL,
   `stripe_product_id` varchar(50) DEFAULT NULL,
   `stripe_price_id` varchar(50) DEFAULT NULL,
   `registration_date` datetime DEFAULT NULL,
@@ -152,7 +151,7 @@ CREATE TABLE IF NOT EXISTS `products` (
 
 -- Volcando datos para la tabla database_web.products: ~7 rows (aproximadamente)
 DELETE FROM `products`;
-INSERT INTO `products` (`product_id`, `product_name`, `description`, `price`, `stock_quantity`, `id_brand`, `status`, `category_id`, `phone_number`, `stripe_product_id`, `stripe_price_id`, `registration_date`) VALUES
+INSERT INTO `products` (`product_id`, `product_name`, `description`, `price`, `stock_quantity`, `id_brand`, `status`, `category_id`, `stripe_product_id`, `stripe_price_id`, `registration_date`) VALUES
 	(49, 'asd', 'asd', 1123.00, 1, 1, 'Disabled', 9, NULL, 'prod_QCHs671adWSSat', 'price_1PLtIsIqj90TtX55Hy5PUWFR', '2024-05-29 20:41:00'),
 	(50, 'a2', 'asddasd', 1.00, 1, 1, 'Disabled', 8, NULL, 'prod_QCcGzEiucZsh6w', 'price_1PMD2HIqj90TtX55jsC0Eptx', '2024-05-30 17:45:12'),
 	(51, 'a3', 'dasdasd', 1.00, 1, 1, 'Disabled', 5, NULL, 'prod_QCcH3p6iQF8juU', 'price_1PMD2XIqj90TtX55p15kY76Q', '2024-05-30 17:45:28'),

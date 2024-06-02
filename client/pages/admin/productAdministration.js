@@ -34,9 +34,23 @@ const ProductoAdministration = () => {
     const deleteProduct = async (productId) => {
         await ProductService.deleteProduct(productId);
         setProducts(Products.filter(product => product.product_id !== productId));
+
+        if (Products.length === 1 && page > 1) {
+            setPage(page - 1);
+        }
     };
 
     const deleteSelectedProducts = async () => {
+
+        if (selectedKeys ===  "all") {
+            for (const product of Products) {
+                await deleteProduct(product.product_id);
+            }
+            setProducts([]);
+            setSelectedKeys([]);
+            setPage(1);
+            return;
+        }
         for (const productId of selectedKeys) {
             await deleteProduct(productId);
             setProducts(Products.filter(product => product.product_id !== productId));

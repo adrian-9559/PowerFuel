@@ -3,11 +3,8 @@ const path = require('path');
 
 const appRoot = path.dirname(require.main.filename);
 
-const uploadProduct = (req, res) => {
-    const productId = req.params.id;
+const uploadProduct = (productId, files) => {
     const newPath = path.join(appRoot, '/../public/images/product/', productId);
-
-    const files = req.files.images;
 
     let fileIndex = 1;
 
@@ -19,7 +16,6 @@ const uploadProduct = (req, res) => {
     }
 
     if(Array.isArray(files)) {
-        // Move each file to the new folder and number them
         files.forEach((file, index) => {
             const filename = `${fileIndex + index}.png`;
             file.mv(path.join(newPath, filename));
@@ -32,26 +28,50 @@ const uploadProduct = (req, res) => {
     res.send('Files uploaded successfully');
 };
 
-const deleteImages = (req, res) => {
-    const productId = req.params.id;
-    const imagePath = path.join(appRoot, '/../public/images/product/', productId);
-    if (fs.existsSync(imagePath)) {
-        fs.readdirSync(imagePath).forEach((file) => {
-            fs.unlinkSync(path.join(imagePath, file));
-        });
-        fs.rmdirSync(imagePath);
-        res.send('Images deleted successfully');
-    } else {
-        res.status(404).send({message: 'Images not found'});
+const deleteProductImages = (productId, imageId) => {
+    const newPath = path.join(appRoot, '/../public/images/product/', productId);
+    const tempPath = path.join(appRoot, '/../public/images/temp/', productId);
+
+    if (fs.existsSync(newPath)) {
+        let files = fs.readdirSync(newPath);
+        const image = files.find(file => file.includes(imageId));
+
+        if (image) {
+            fs.unlinkSync(path.join(newPath, image));
+            files = fs.readdirSync(newPath);
+            
+            files.sort((a, b) => {
+                const numA = parseInt(a.split('.')[0]);
+                const numB = parseInt(b.split('.')[0]);
+                return numA - numB;
+            });
+            
+            if (!fs.existsSync(tempPath)) {
+                fs.mkdirSync(tempPath, { recursive: true });
+            }
+            for (let i = 0; i < files.length; i++) {
+                const oldPath = path.join(newPath, files[i]);
+                const newFileName = `${i + 1}.png`;
+                const newPathTemp = path.join(tempPath, newFileName);
+                fs.renameSync(oldPath, newPathTemp);
+            }
+
+            files = fs.readdirSync(tempPath);
+            for (let i = 0; i < files.length; i++) {
+                const oldPath = path.join(tempPath, files[i]);
+                const newFileName = `${i + 1}.png`;
+                const newPathFinal = path.join(newPath, newFileName);
+                fs.renameSync(oldPath, newPathFinal);
+            }
+
+            fs.rmdirSync(tempPath, { recursive: true });
+        }
     }
 };
 
-const uploadUser = (req, res) => {
-    const userId = req.user.userId.toString();
+const uploadUser = (userId, files) => {
     const newPath = path.join(appRoot, '/../public/images/user/', userId);
-
-    const files =  req.body.images;
-
+    
     let fileIndex = 1;
 
     if (!fs.existsSync(newPath)) {
@@ -62,7 +82,6 @@ const uploadUser = (req, res) => {
     }
 
     if(Array.isArray(files)) {
-        // Move each file to the new folder and number them
         files.forEach((file, index) => {
             const filename = `${fileIndex + index}.png`;
             file.mv(path.join(newPath, filename));
@@ -78,5 +97,5 @@ const uploadUser = (req, res) => {
 module.exports = {
     uploadProduct,
     uploadUser,
-    deleteImages
+    deleteProductImages
 };

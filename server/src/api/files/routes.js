@@ -1,15 +1,27 @@
 const express = require('express');
-const { uploadProduct, deleteImages, uploadUser } = require('./controller'); // replace 'yourFilePath' with the actual path to your file
+const { uploadProduct, deleteProductImages, uploadUser } = require('./controller');
 
 const router = express.Router();
 
 router.route('/uploadProduct/:id')
-        .post(uploadProduct)
+    .post(async (req, res) => {
+        const { id } = req.params;
+        await uploadProduct(id)
+    });
 
-router.route('/deleteProduct/:id')
-        .post(deleteImages)
+router.route('/deleteProduct/:id/:image')
+    .post(async (req, res) => {
+        console
+        const { id } = req.params;
+        const { image } = req.params;
+        await deleteProductImages(id, image)
+    });
 
 router.route('/uploadUser')
-        .post(uploadUser)
-        
+    .post(async (req, res) => {
+        const { userId } = req.user;
+        const { images } = req.body;
+        await uploadUser(userId.toString(), images)
+    });
+
 module.exports = router;

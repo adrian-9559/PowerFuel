@@ -32,20 +32,35 @@ const UserAdministration = () => {
     }, [page]);
 
     const deleteUser = async (userId) => {
-        try {
-            await UserService.deleteUser(userId);
-            setUsers(Users.filter(user => user.user_id !== userId));
-        } catch (error) {
-            console.error('Failed to delete user: ', error);
+        await UserService.deleteUser(userId);
+        setUsers(Users.filter(user => user.user_id !== userId));
+
+        if (Users.length === 1 && page > 1) {
+            setPage(page - 1);
         }
     };
 
     const deleteSelectedUsers = async () => {
+
+        if (selectedKeys === "all") {
+            for (const user of Users) {
+                await deleteUser(user.user_id);
+            }
+            setUsers([]);
+            setSelectedKeys([]);
+            setPage(1);
+            return;
+        }
+
         for (const userId of selectedKeys) {
             await deleteUser(userId);
             setUsers(Users.filter(user => user.user_id !== userId));
         }
         setSelectedKeys([]);
+
+        if (Users.length === 1 && page > 1) {
+            setPage(page - 1);
+        }
     };
 
     useEffect(() => {

@@ -26,20 +26,36 @@ const CategoryAdministration = () => {
     }, [page]);
 
     const deleteCategory = async (categoryId) => {
-        try {
-            await CategoryService.deleteCategory(categoryId);
-            setCategories(Categories.filter(category => category.category_id !== categoryId));
-        } catch (error) {
-            console.error('Failed to delete category: ', error);
+        await CategoryService.deleteCategory(categoryId);
+        setCategories(Categories.filter(category => category.category_id !== categoryId));
+
+        if (Categories.length === 1 && page > 1) {
+            setPage(page - 1);
         }
     };
 
     const deleteSelectedCategories = async () => {
+
+        if (selectedKeys === "all") {
+            for (const category of Categories) {
+                await deleteCategory(category.category_id);
+            }
+            setCategories([]);
+            setSelectedKeys([]);
+            setPage(1);
+            return;
+        }
+
         for (const categoryId of selectedKeys) {
             await deleteCategory(categoryId);
             setCategories(Categories.filter(category => category.category_id !== categoryId));
         }
         setSelectedKeys([]);
+
+        if (Categories.length === 1 && page > 1) {
+            setPage(page - 1);
+        }
+
     };
 
     useEffect(() => {

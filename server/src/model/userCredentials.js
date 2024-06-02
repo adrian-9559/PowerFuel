@@ -23,7 +23,6 @@ UserCredentials.init({
     registration_date:{
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
-        allowNull: false
     },
 }, {
     sequelize,

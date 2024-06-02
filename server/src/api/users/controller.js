@@ -5,6 +5,8 @@ const { createStripeCustomer } = require('../stripe/controller');
 const { generateAuthToken, generateRefreshToken} = require('../../utils/tokenUtils');
 const bcrypt = require('bcrypt');
 const controllerOldPassword = require('./../oldPassword/controller');
+const mailController = require('../mail/controller');
+const { sendMailPassReset } = require('./../mail/controller');
 
 const registerUser = async (user) => {
     const { email, current_password, first_name, last_name, dni } = user;
@@ -120,6 +122,21 @@ const changePassword = async (userId, newPassword) => {
     }
 };
 
+const resetPassword = async (email) => {
+    const user = await model.getUserByEmail(email);
+    if (!user) {
+        console.error('No existe un usuario con ese correo electrónico');
+        return null;
+    }
+
+    const code = createCode();
+    await sendMailPassReset(email, code);
+    console.log('Email sent successfully');
+};
+function createCode(){
+    return Math.floor(Math.random() * 999999);
+};
+
 module.exports =  {
     registerUser,
     deleteUserById,
@@ -128,5 +145,6 @@ module.exports =  {
     getUsers,
     loginUser,
     changePassword,
-    getUsersByRegistrationDate
+    getUsersByRegistrationDate,
+    resetPassword
 };

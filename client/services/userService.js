@@ -52,6 +52,15 @@ class UserService {
         });
         return response;
     }
+
+    async resetPassword(email) {
+        const response = await api.post(`/users/resetPassword`, {
+            email: email,
+        });
+
+        return response.data
+    }
+    
 }
 
 const userService = new UserService();

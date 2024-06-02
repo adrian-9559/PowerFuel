@@ -98,20 +98,20 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         };
 
         fetchUserInfo();
+
+        
+      const intervalId = setInterval(async () => {
+        const notificationResponse = await NotificationService.getNotificationsByUser();
+        setNotifications(notificationResponse);
+      }, 30000);
+
+      return () => clearInterval(intervalId);
     } else {
         setIsLoggedIn(false);
         setUser(null);
         setIsAdmin(false);
     }
 
-    // Actualizar las notificaciones cada 30 segundos
-    const intervalId = setInterval(async () => {
-        const notificationResponse = await NotificationService.getNotificationsByUser();
-        setNotifications(notificationResponse);
-    }, 30000);
-
-    // Limpiar el intervalo cuando el componente se desmonte
-    return () => clearInterval(intervalId);
 }, []);
 
   return (

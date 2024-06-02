@@ -68,7 +68,22 @@ class ProductService {
 
     async updateProduct(id, product) {
         try {
-            const response = await api.put(`/products/${id}`, product);
+            const formData = new FormData();
+            formData.append('product_name', product.product_name);
+            formData.append('description', product.description);
+            formData.append('stock_quantity', product.stock_quantity);
+            formData.append('price', product.price);
+            formData.append('category_id', product.category_id);
+            formData.append('id_brand', product.id_brand);
+
+            const response = await api.put(`/products/${id}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+            this.uploadImages(id, product.images);
+
             return response.data;
         } catch (error) {
             toastr.error(error);
@@ -90,9 +105,6 @@ class ProductService {
     async getImageCount(id) {
         try {
             const response = await api.get(`/products/img/count/${id}`);
-            if (!response.data.count) {
-                throw new Error('Image count not found');
-            }
             return response.data.count;
         } catch (error) {
             throw error;
@@ -111,7 +123,6 @@ class ProductService {
 
     async getRandomProducts(limit) {
         try {
-
             const response = await api.post(`/products/random?limit=${limit}`);
             return response.data;
         } catch (error) {
@@ -136,6 +147,29 @@ class ProductService {
                 },
             });
     
+            return response.data;
+        } catch (error) {
+            toastr.error(error);
+            throw error;
+        }
+    }
+
+    async deleteImage(id, imageId) {
+        try {
+            const response = await api.post(`/files/deleteProduct/${id}/${imageId}`);
+            return response.data;
+        } catch (error) {
+            toastr.error(error);
+            throw error;
+        }
+    }
+
+    async getAllProductsSearch(query, limit = 10, page = 1) {
+        try {
+            const response = await api.post(`/products/search?page=${page}&limit=${limit}`, {
+                query
+            
+            });
             return response.data;
         } catch (error) {
             toastr.error(error);

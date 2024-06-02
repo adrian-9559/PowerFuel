@@ -22,6 +22,7 @@ const OrderItem = ({ order }) => {
       const detailsAux = JSON.parse(order.details);
       const detailsTemp = [];
       for (const item of detailsAux) {
+        console.log("item" , item.product_id);
         const productData = await ProductService.getProductById(item.product_id);
         detailsTemp.push({ ...productData, quantity: item.quantity });
         total += productData.price * item.quantity;

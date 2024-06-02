@@ -9,7 +9,6 @@ Order.init({
     },
     user_id: {
         type: DataTypes.INTEGER,
-        allowNull: true,
         references: {
             model: 'UserCredentials',
             key: 'user_id'

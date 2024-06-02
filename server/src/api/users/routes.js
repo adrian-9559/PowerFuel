@@ -1,6 +1,6 @@
 const express = require('express');
 const isAdmin = require('../../middlewares/isAdmin');
-const { registerUser, deleteUserById, updateUserById, getUserById, getUsers, loginUser, getUsersByRegistrationDate } = require('./controller');
+const { registerUser, deleteUserById, updateUserById, getUserById, getUsers, loginUser, getUsersByRegistrationDate, resetPassword } = require('./controller');
 
 const router = express.Router();
 
@@ -104,6 +104,23 @@ router.route('/info')
                 return res.status(404).json({ message: 'User not found' });
             }
             return res.json(user); 
+        } catch (error) {
+            console.error('Error getting the user:', error);
+            if (!res.headersSent) {
+                return res.status(500).json({ message: 'Error getting the user' });
+            }
+        }
+    });
+
+router.route('/resetPassword')
+    .post(async (req, res) => {
+        const email = req.body.email;
+        try {
+            const response = await resetPassword(email);
+            if (!response) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+            return res.json(response); 
         } catch (error) {
             console.error('Error getting the user:', error);
             if (!res.headersSent) {

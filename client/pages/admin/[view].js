@@ -1,7 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useAppContext } from '@context/AppContext';
-import RoleService from '@services/roleService';
-import {Card} from '@nextui-org/react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { AnimatePresence, motion } from 'framer-motion';
 import GeneralAdministration from './generalAdministration';

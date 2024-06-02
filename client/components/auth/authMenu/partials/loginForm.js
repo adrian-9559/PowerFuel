@@ -32,29 +32,31 @@ const LoginForm = () => {
     };
 
     return (
-        <form
-            onSubmit={handleLogin}
-            className='flex flex-col w-full justify-between gap-5'
-        >
-                <Input
-                    fullWidth
-                    name="email"
-                    type="email"
-                    label="Email"
-                    defaultValue={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    autoComplete="email"
-                />
-                <Input
-                    name="password"
-                    type="password"
-                    label="Password"
-                    defaultValue={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    autoComplete="current-password"
-                />
-            <Button type='submit' disabled={loading} className="w-full">{loading ? 'Cargando...' : 'Iniciar sesión'}</Button>
-        </form>
+        <section className="w-full grid gap-6">
+            <form
+                onSubmit={handleLogin}
+                className='flex flex-col w-full justify-between gap-5'
+            >
+                    <Input
+                        fullWidth
+                        name="email"
+                        type="email"
+                        label="Email"
+                        defaultValue={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        autoComplete="email"
+                    />
+                    <Input
+                        name="password"
+                        type="password"
+                        label="Password"
+                        defaultValue={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        autoComplete="current-password"
+                    />
+                <Button type='submit' disabled={loading} className="w-full">{loading ? 'Cargando...' : 'Iniciar sesión'}</Button>
+            </form>
+        </section>
     );
 };
 

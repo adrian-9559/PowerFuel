@@ -1,10 +1,11 @@
-import { Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
+import { Button, Input, Select, SelectItem, Textarea, Skeleton, Image } from '@nextui-org/react';
 import { useState, useEffect, use } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ProductService from '@services/productService';
 import CategoryService from '@services/categoryService';
 import BrandService from '@services/brandService';
 import { useRouter } from 'next/router';
+import DeleteIcon from '@icons/DeleteIcon';
 
 const CreateProduct = () => {
     const [formState, setFormState] = useState({
@@ -22,6 +23,7 @@ const CreateProduct = () => {
     const [parentCategories, setParentCategories] = useState([]);
     const [childCategoriesLevels, setChildCategoriesLevels] = useState([]);
     const router = useRouter();
+    const [imageCount, setImageCount] = useState(0);
     const {id, readOnly} = router.query;
 
     useEffect(() => {
@@ -108,10 +110,6 @@ const CreateProduct = () => {
         fetchData();
     }, [id]);
 
-    useEffect(() => {
-        console.log('formState', formState);
-    }, [formState]);
-
     const handleChildCategoryChange = async (e, level) => {
         const newChildCategories = await CategoryService.getChildCategories(e.target.value);
         setFormState({
@@ -134,6 +132,47 @@ const CreateProduct = () => {
             handleRegister(e);
         }
     }
+
+    useEffect(() => {
+        if (id) {
+            ProductService.getImageCount(id)
+                .then(count => {
+                    setImageCount(count);
+                });
+        }
+    }, [id]);
+
+    const renderProductImages = (isThumbnail = false) => {
+        const images = [];
+        for (let i = 1; i <= imageCount; i++) {
+            if (id) {
+                images.push(
+                    <div key={i} className='rounded-xl auto'>
+                        {readOnly !== "true" && (
+                            <Button 
+                                color='danger' 
+                                variant='flat' 
+                                isIconOnly 
+                                radius='full' 
+                                onClick={() => ProductService.deleteImage(id, i)}
+                                className='absolute z-50 m-1 h-auto p-1'
+                            >
+                                <DeleteIcon/>
+                            </Button>
+                        )}
+                        <Image 
+                            isZoomed
+                            src={`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/product/${id}/${i}.png`}
+                            alt={`Imagen ${i} del producto ${id}`}
+                            className={`rounded shadow-lg object-cover cursor-pointer z-10`}
+                            disableSkeleton= {imageCount}
+                        />
+                    </div>
+                );
+            }
+        }
+        return images;
+    };
 
 
     return (
@@ -226,6 +265,16 @@ const CreateProduct = () => {
                         )
                     ))}
                 </AnimatePresence>
+                {id && (    
+                    <section className="mb-4">
+                        <h2 className="text-xl font-bold mb-2">Imágenes del Producto</h2>
+                        <section className="flex flex-row gap-4 w-full">
+                            {imageCount === 0 && (
+                                <p>No hay imágenes para mostrar</p>
+                            ) || renderProductImages(true)}
+                        </section>
+                    </section>
+                )}
                 {!readOnly && readOnly !== "true" && (
                     <section className="mb-4">
                         <input type='file' multiple id='images' className="w-full px-4 py-2 border rounded-lg" onChange={(e) => setFormState({...formState, images: e.target.files})}/>
@@ -233,8 +282,9 @@ const CreateProduct = () => {
                 )}
                 <section>
                     {!readOnly && readOnly !== "true" && (
-                        <Button type='submit' disabled={loading} className="w-full">{loading ? 'Cargando...' : {id} ? 'Guardar cambios' : 'Crear Producto'}</Button>
-                        
+                        <Button type='submit' disabled={loading} className="w-full">
+                            {loading ? 'Cargando...' : (id ? 'Guardar cambios' : 'Crear Producto')}
+                        </Button>
                     )}
                     <Button type='button' color="danger" onClick={() => router.push('/admin/Productos')} className="w-full mt-4">Cancelar</Button>
                 </section>

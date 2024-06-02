@@ -40,7 +40,7 @@ const ADMIN_ACTIONS = {
     ]
 };
 
-const SideMenuAdministrador = ({setSelectedOption }) => {
+const SideMenuAdministrador = ({ setSelectedOption }) => {
     const { user} = useAppContext();
     const [roleUser, setRoleUser] = useState(user?.role_id);
     
@@ -51,7 +51,7 @@ const SideMenuAdministrador = ({setSelectedOption }) => {
     },[user]);
 
     return (
-        <nav className='py-4 w-64 h-[54rem] border-r-1 border-default-100'>
+        <nav className='py-4 w-64 h-[54rem] border-r-1 border-default-250'>
             <ul 
                 className="flex flex-col items-center gap-1 w-full"
             >

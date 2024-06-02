@@ -36,13 +36,13 @@ const GeneralAdministration = () => {
                     <CardBody className="justify-center h-auto w-full grid grid-cols-2 grid-row-2 gap-2">
                         <Card className='bg-blue-500 bg-opacity-50 rounded-[0.375rem] '>
                             <CardHeader >
-                                <h4 className="font-medium text-2xs text-large text-tiny">Número total de usuarios</h4>
+                                <h4 className="font-medium text-2xs text-tiny">Número total de usuarios</h4>
                             </CardHeader>
                             <CardBody>
                                 <p className="uppercase text-6xl">{numTotalUsers}</p>
                             </CardBody>
                         </Card>
-                        <Card className='bg-blue-500 w-auto h-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
+                        <Card className='bg-blue-500 w-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
                             <CardHeader className="z-10 flex-col !items-start pb-0">
                                 <h4 className="font-medium text-2xs text-large text-tiny">Usuarios registrados esta semana</h4>
                             </CardHeader>

@@ -65,8 +65,8 @@ const getProducts = async (page, limit) => {
     };
 };
 
-const getProductsSearch = async (input) => {
-    let products = await model.getProductsSearch(input);
+const getProductsSearch = async (query, limit, page) => {
+    let products = await model.getProductsSearch(query, limit, page);
     return products;
 };
 
@@ -81,9 +81,11 @@ const getProductsByCategory = async (page, limit, id) => {
 const getImageCount = async (id) => {
     const directoryPath = path.join(appRoot, `/../public/images/product/${id}`);
     const files = fs.readdirSync(directoryPath);
+    if (!files) {
+        return { count: 0 };
+    }
     return { count: files.length };
 };
-
 const getProductsByDate = async (page, limit, startDate, endDate, order) => {
     page = parseInt(page) || 1;
     limit = parseInt(limit) || 15;

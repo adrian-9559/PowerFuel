@@ -74,10 +74,11 @@ router.route('/:productId')
         }
     });
 
-router.route('/search/:input')
+    router.route('/search')
     .post(async (req, res) => {
         try {
-            const products = await getProductsSearch(req.params.input);
+            const { query, limit = 10, page = 1 } = req.body;
+            const products = await getProductsSearch(query, limit, page);
             if (!products) {
                 return res.status(404).json({ message: 'Productos no encontrados' });
             }
@@ -89,7 +90,7 @@ router.route('/search/:input')
     });
 
 router.route('/category/:id')
-    .get(async (req, res) => {
+    .post(async (req, res) => {
         try {
             const products = await getProductsByCategory(req.query.page, req.query.limit, req.params.id);
             if (!products) {

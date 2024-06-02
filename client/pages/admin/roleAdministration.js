@@ -5,7 +5,7 @@ import RoleService from '@services/roleService';
 import DeleteIcon from '@icons/DeleteIcon';
 import EyeIcon from '@icons/EyeIcon';
 import EditIcon from '@icons/EditIcon';
-import PlusIcon from '@icons/PlusIcon';
+import PlusIcon from '@icons/PlusIcon'; 
 
 const RoleAdministration = () => {
     const router = useRouter();
@@ -26,19 +26,30 @@ const RoleAdministration = () => {
     const deleteRole = async (roleId) => {
         await RoleService.deleteRole(roleId);
         setRoles(Roles.filter(role => role.role_id !== roleId));
+
+        if(Roles.length === 1 && page > 1) {
+            setPage(page - 1);
+        }
     };
 
     const deleteSelectedRoles = async () => {
+
+        if (selectedKeys ===  "all") {
+            for (const role of Roles) {
+                await deleteRole(role.role_id);
+            }
+            setRoles([]);
+            setSelectedKeys([]);
+            setPage(1);
+            return;
+        }
+
         for (const roleId of selectedKeys) {
             await deleteRole(roleId);
             setRoles(Roles.filter(role => role.role_id !== roleId));
         }
         setSelectedKeys([]);
     };
-
-    useEffect(() => {
-        console.log(selectedKeys);
-    }, [selectedKeys]);
 
     return (
         <section className='h-full w-full'>

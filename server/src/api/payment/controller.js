@@ -7,6 +7,15 @@ const { createOrder } = require('../orders/controller');
 const { createCheckoutSession, getCustomerCharges } = require('../stripe/controller');
 const errorDisplay = "(Error en el controlador de Payment)";
 
+/**
+ * Función para crear una sesión de checkout.
+ * Function to create a checkout session.
+ * 
+ * @param {Object[]} cart - El carrito de compras del usuario. | The user's shopping cart.
+ * @param {string} userId - El ID del usuario que está realizando el checkout. | The ID of the user who is checking out.
+ * @returns {Promise<Object>} - Una promesa que se resuelve en un objeto de sesión de checkout. | A promise that resolves into a checkout session object.
+ * @throws {Error} - Lanza un error si hay un problema al crear la sesión de checkout. | Throws an error if there is a problem creating the checkout session.
+ */
 const createCheckout = async (cart, userId) => {
     try {
         const user = await getUserById(userId);
@@ -27,6 +36,14 @@ const createCheckout = async (cart, userId) => {
     }
 };
 
+/**
+ * Función para obtener los métodos de pago de un cliente.
+ * Function to get the payment methods of a client.
+ * 
+ * @param {string} userId - El ID del usuario del que se quieren obtener los métodos de pago. | The ID of the user whose payment methods are to be obtained.
+ * @returns {Promise<Object>} - Una promesa que se resuelve en un objeto que contiene los métodos de pago del cliente. | A promise that resolves into an object containing the client's payment methods.
+ * @throws {Error} - Lanza un error si hay un problema al obtener los métodos de pago del cliente. | Throws an error if there is a problem getting the client's payment methods.
+ */
 const getCustomerPaymentMethods = async (userId) => {
     try {
         const user = await getUserById(userId);
@@ -42,6 +59,14 @@ const getCustomerPaymentMethods = async (userId) => {
     }
 };
 
+/**
+ * Función para obtener los pagos de un usuario.
+ * Function to get the payments of a user.
+ * 
+ * @param {string} userId - El ID del usuario del que se quieren obtener los pagos. | The ID of the user whose payments are to be obtained.
+ * @returns {Promise<Object>} - Una promesa que se resuelve en un objeto que contiene los pagos del usuario. | A promise that resolves into an object containing the user's payments.
+ * @throws {Error} - Lanza un error si hay un problema al obtener los pagos del usuario. | Throws an error if there is a problem getting the user's payments.
+ */
 const getUserPayments = async (userId) => {
     try {
         const user = await getUserById(userId);
@@ -52,6 +77,14 @@ const getUserPayments = async (userId) => {
     }
 };
 
+/**
+ * Función para obtener el último pago de un usuario.
+ * Function to get the last payment of a user.
+ * 
+ * @param {string} userId - El ID del usuario del que se quiere obtener el último pago. | The ID of the user whose last payment is to be obtained.
+ * @returns {Promise<Object>} - Una promesa que se resuelve en un objeto que contiene el último pago del usuario. | A promise that resolves into an object containing the user's last payment.
+ * @throws {Error} - Lanza un error si hay un problema al obtener el último pago del usuario. | Throws an error if there is a problem getting the user's last payment.
+ */
 const getLastPayment = async (userId) => {
     try {
         const user = await getUserById(userId);

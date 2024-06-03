@@ -17,12 +17,12 @@ const ServerRendimiento = () => {
                 .then((result) => {
                     setUsoCPUPorcentaje(result.cpu);
                     setUsoRAMPorcentaje(result.ram);
-                    // setUsoDiskPorcentaje(result.disk);
+                    setUsoDiskPorcentaje(result.disk);
                 })
                 .then(() => {
                     setColorCPU(colores(usoCPUPorcentaje));
                     setColorRAM(colores(usoRAMPorcentaje));
-                    // setColorDisk(colores(usoDiskPorcentaje));
+                    setColorDisk(colores(usoDiskPorcentaje));
                 })
                 .catch((err) => {
                     console.error("Error al obtener la información del rendimiento del servidor")

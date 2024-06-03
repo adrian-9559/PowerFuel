@@ -34,7 +34,8 @@ class UserService {
     }
 
     async getUserInfo() {
-        return await api.post(`/users/info`);
+        const response = await api.post(`/users/info`);
+        return response.data;
     }
 
     async getUserByRegisterWeek(startDate, endDate) {

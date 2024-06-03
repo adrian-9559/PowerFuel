@@ -93,8 +93,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
             const roleResponse = await RoleService.getRoleByUserId();
             const notificationResponse = await NotificationService.getNotificationsByUser();
             setNotifications(notificationResponse);
-            setUser(userInfo.data);
-            setIsAdmin(roleResponse.data !== 10);
+            setUser(userInfo);
+            setIsAdmin(roleResponse.data.role_id !== 10);
         };
 
         fetchUserInfo();

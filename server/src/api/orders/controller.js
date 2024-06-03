@@ -2,7 +2,15 @@ const {insertNotification} = require('../notifications/controller');
 const OrderModel = require('./ordersModel');
 const errorDisplay = "(Error en el controlador de Orders)";
 
-getOrdersByUser = async (userId) => {
+/**
+ * Función para obtener las órdenes de un usuario específico.
+ * Function to get the orders of a specific user.
+ * 
+ * @param {string} userId - El ID del usuario cuyas órdenes se quieren obtener. | The ID of the user whose orders are to be obtained.
+ * @returns {Object[]} - Las órdenes del usuario. | The user's orders.
+ * @throws {Error} - Error al intentar obtener los pedidos del usuario. | Error when trying to get the user's orders.
+ */
+const getOrdersByUser = async (userId) => {
     try {
         return await OrderModel.getOrdersByUser(userId);
     } catch (error) {
@@ -10,7 +18,15 @@ getOrdersByUser = async (userId) => {
     }
 };
 
-getOrderById = async (orderId) => {
+/**
+ * Función para obtener una orden específica por su ID.
+ * Function to get a specific order by its ID.
+ * 
+ * @param {string} orderId - El ID de la orden que se quiere obtener. | The ID of the order to be obtained.
+ * @returns {Object} - La orden obtenida. | The obtained order.
+ * @throws {Error} - Error al intentar obtener el pedido por ID. | Error when trying to get the order by ID.
+ */
+const getOrderById = async (orderId) => {
     try {
         return await OrderModel.getOrderById(orderId);
     } catch (error) {
@@ -18,7 +34,15 @@ getOrderById = async (orderId) => {
     }
 };
 
-createOrder = async (orderData) => {
+/**
+ * Función para crear una nueva orden.
+ * Function to create a new order.
+ * 
+ * @param {Object} orderData - Los datos de la nueva orden. | The data of the new order.
+ * @returns {Object} - La respuesta de la creación de la orden. | The response of the order creation.
+ * @throws {Error} - Error al intentar crear el pedido. | Error when trying to create the order.
+ */
+const createOrder = async (orderData) => {
     try {
         const response = await OrderModel.createOrder(orderData);
 
@@ -42,7 +66,16 @@ createOrder = async (orderData) => {
     }
 };
 
-updateOrder = async (orderId, orderData) => {
+/**
+ * Función para actualizar una orden existente.
+ * Function to update an existing order.
+ * 
+ * @param {string} orderId - El ID de la orden que se quiere actualizar. | The ID of the order to be updated.
+ * @param {Object} orderData - Los nuevos datos de la orden. | The new data of the order.
+ * @returns {Object} - La respuesta de la actualización de la orden. | The response of the order update.
+ * @throws {Error} - Error al intentar actualizar el pedido. | Error when trying to update the order.
+ */
+const updateOrder = async (orderId, orderData) => {
     try {
         return await OrderModel.updateOrder(orderId, orderData);
     } catch (error) {
@@ -50,7 +83,15 @@ updateOrder = async (orderId, orderData) => {
     }
 };
 
-deleteOrder = async (orderId) => {
+/**
+ * Función para eliminar una orden existente.
+ * Function to delete an existing order.
+ * 
+ * @param {string} orderId - El ID de la orden que se quiere eliminar. | The ID of the order to be deleted.
+ * @returns {Object} - La respuesta de la eliminación de la orden. | The response of the order deletion.
+ * @throws {Error} - Error al intentar eliminar el pedido. | Error when trying to delete the order.
+ */
+const deleteOrder = async (orderId) => {
     try {
         return await OrderModel.deleteOrder(orderId);
     } catch (error) {
@@ -58,7 +99,14 @@ deleteOrder = async (orderId) => {
     }
 };
 
-getOrdersCount = async () => {
+/**
+ * Función para obtener el conteo total de órdenes.
+ * Function to get the total count of orders.
+ * 
+ * @returns {number} - El conteo total de órdenes. | The total count of orders.
+ * @throws {Error} - Error al intentar obtener el conteo de pedidos. | Error when trying to get the count of orders.
+ */
+const getOrdersCount = async () => {
     try {
         return await OrderModel.getOrdersCount();
     } catch (error) {
@@ -66,7 +114,16 @@ getOrdersCount = async () => {
     }
 };
 
-getOrdersByDate = async (startDate, endDate) => {
+/**
+ * Función para obtener las órdenes entre dos fechas.
+ * Function to get orders between two dates.
+ * 
+ * @param {string} startDate - La fecha de inicio del rango de búsqueda. | The start date of the search range.
+ * @param {string} endDate - La fecha de fin del rango de búsqueda. | The end date of the search range.
+ * @returns {Object[]} - Las órdenes encontradas en el rango de fechas. | The orders found in the date range.
+ * @throws {Error} - Error al intentar obtener los pedidos por fecha. | Error when trying to get the orders by date.
+ */
+const getOrdersByDate = async (startDate, endDate) => {
     try {
         return await OrderModel.getOrdersByDate(startDate, endDate);
     } catch (error) {
@@ -74,12 +131,30 @@ getOrdersByDate = async (startDate, endDate) => {
     }
 };
 
-    module.exports = {
-        getOrdersByUser,
-        getOrderById,
-        createOrder,
-        updateOrder,
-        deleteOrder,
-        getOrdersCount,
-        getOrdersByDate
-    };
+const getAllOrders = async (page, limit) => {
+    try {
+        page = parseInt(page) || 1;
+        limit = parseInt(limit) || 10;
+        const skip = (page - 1) * limit;
+        let orders = await OrderModel.getAllOrders(skip, limit);
+        const total = await OrderModel.getOrdersCount();
+        return {
+            total,
+            pages: Math.ceil(total / limit),
+            orders
+        };
+    } catch (error) {
+        throw new Error(`Error al intentar obtener todos los pedidos ${errorDisplay}`, error);
+    }
+};
+
+module.exports = {
+    getOrdersByUser,
+    getOrderById,
+    createOrder,
+    updateOrder,
+    deleteOrder,
+    getOrdersCount,
+    getOrdersByDate,
+    getAllOrders
+};

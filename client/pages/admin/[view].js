@@ -9,6 +9,7 @@ import ProductoAdministration from "./productAdministration";
 import CategoryAdministration from "./categoryAdministration";
 import BrandAdministration from './brandAdministration';
 import ServerRendimiento from "./serverRendimiento";
+import OrderAdministration from "./orderAdministration";
 
 const Administrador = () => {
     const router = useRouter();
@@ -20,8 +21,9 @@ const Administrador = () => {
         'Roles': <RoleAdministration />,
         'Productos': <ProductoAdministration />,
         'Categorias': <CategoryAdministration />,
+        'Marcas': <BrandAdministration />,
+        'Pedidos': <OrderAdministration />,
         'Dashboard': <ServerRendimiento />,
-        'Marcas': <BrandAdministration />
     };
 
     useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, use } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip, getKeyValue, Button, Pagination } from "@nextui-org/react";
 import { useRouter } from 'next/router';
 import ProductService from '@services/productService';
@@ -168,7 +168,7 @@ const ProductoAdministration = () => {
                                     </Tooltip>
                                     <Tooltip color="danger" content="Eliminar Producto">
                                         <Button isIconOnly color="danger" variant="light" className="text-lg cursor-pointer active:opacity-50" onClick={() => deleteProduct(product.product_id)}>
-                                            <DeleteIcon color="white" />
+                                            <DeleteIcon color="red" />
                                         </Button>
                                     </Tooltip>
                                 </section>

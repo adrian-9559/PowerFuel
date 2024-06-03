@@ -166,7 +166,7 @@ const UserAdministration = () => {
                                     </Tooltip>
                                     <Tooltip color="danger" content="Eliminar Usuario">
                                         <Button isIconOnly color="danger" variant="light" className="text-lg cursor-pointer active:opacity-50" onClick={() => deleteUser(user.user_id)}>
-                                            <DeleteIcon color="white" />
+                                            <DeleteIcon color="red" />
                                         </Button>
                                     </Tooltip>
                                 </section>

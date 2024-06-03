@@ -5,6 +5,16 @@ const { registerUser, deleteUserById, updateUserById, getUserById, getUsers, log
 const router = express.Router();
 
 router.route('/')
+    /**
+     * @route POST /
+     * Endpoint para registrar un nuevo usuario.
+     * Endpoint to register a new user.
+     * 
+     * @param {Object} req.body.user - Los datos del usuario que se quiere registrar. | The data of the user to be registered.
+     * @returns {Object} 200 - El usuario registrado. | The registered user.
+     * @returns {Object} 400 - Error al registrar el usuario. | Error when registering the user.
+     * @returns {Error} 500 - Error interno del servidor al registrar el usuario. | Internal server error when registering the user.
+     */
     .post(async (req, res) => {
         try {
             const user = await registerUser(req.body.user);
@@ -13,21 +23,37 @@ router.route('/')
             }
             res.json(user);
         } catch (error) {
-            console.error('Error registering the user:', error);
             res.status(500).json({ message: 'Error registering the user' });
         }
     })
+    /**
+     * @route GET /
+     * Endpoint para obtener todos los usuarios.
+     * Endpoint to get all users.
+     * 
+     * @returns {Array} 200 - Un array de todos los usuarios. | An array of all users.
+     * @returns {Error} 500 - Error interno del servidor al obtener los usuarios. | Internal server error when getting the users.
+     */
     .get(isAdmin, async (req, res) => {
         try {
             const data = await getUsers(req.query.limit, req.query.page);
             res.send(data);
         } catch (error) {
-            console.error('Error getting the users:', error);
             res.status(500).json({ message: 'Error getting the users' });
         }
     });
 
 router.route('/:userId')
+    /**
+     * @route DELETE /:userId
+     * Endpoint para eliminar un usuario por su ID.
+     * Endpoint to delete a user by their ID.
+     * 
+     * @param {string} req.params.userId - El ID del usuario que se quiere eliminar. | The ID of the user to be deleted.
+     * @returns {Object} 200 - Mensaje de éxito al eliminar el usuario. | Success message when deleting the user.
+     * @returns {Object} 404 - Error cuando el usuario no se encuentra. | Error when the user is not found.
+     * @returns {Error} 500 - Error interno del servidor al eliminar el usuario. | Internal server error when deleting the user.
+     */
     .delete(isAdmin, async (req, res) => {
         try {
             const deletedUser = await deleteUserById(req.params.userId);
@@ -36,10 +62,20 @@ router.route('/:userId')
             }
             res.json({ message: 'User deleted successfully' });
         } catch (error) {
-            console.error('Error deleting the user:', error);
             res.status(500).json({ message: 'Error deleting the user' });
         }
     })
+    /**
+     * @route PUT /:userId
+     * Endpoint para actualizar un usuario por su ID.
+     * Endpoint to update a user by their ID.
+     * 
+     * @param {string} req.params.userId - El ID del usuario que se quiere actualizar. | The ID of the user to be updated.
+     * @param {Object} req.body.user - Los datos actualizados del usuario. | The updated data of the user.
+     * @returns {Object} 200 - Mensaje de éxito al actualizar el usuario. | Success message when updating the user.
+     * @returns {Object} 404 - Error cuando el usuario no se encuentra. | Error when the user is not found.
+     * @returns {Error} 500 - Error interno del servidor al actualizar el usuario. | Internal server error when updating the user.
+     */
     .put( async (req, res) => {
         try {
             const user = await updateUserById(req.params.userId, req.body.user);
@@ -48,10 +84,19 @@ router.route('/:userId')
             }
             res.json({ message: 'User updated successfully' });
         } catch (error) {
-            console.error('Error updating the user:', error);
             res.status(500).json({ message: 'Error updating the user' });
         }
     })
+    /**
+     * @route GET /:userId
+     * Endpoint para obtener un usuario por su ID.
+     * Endpoint to get a user by their ID.
+     * 
+     * @param {string} req.params.userId - El ID del usuario que se quiere obtener. | The ID of the user to be obtained.
+     * @returns {Object} 200 - El usuario obtenido. | The obtained user.
+     * @returns {Object} 404 - Error cuando el usuario no se encuentra. | Error when the user is not found.
+     * @returns {Error} 500 - Error interno del servidor al obtener el usuario. | Internal server error when getting the user.
+     */
     .get(async (req, res) => {
         const userId = req.params.userId;
         try {
@@ -61,7 +106,6 @@ router.route('/:userId')
             }
             return res.json(user); 
         } catch (error) {
-            console.error('Error getting the user:', error);
             if (!res.headersSent) {
                 return res.status(500).json({ message: 'Error getting the user' });
             }
@@ -69,6 +113,17 @@ router.route('/:userId')
     });
 
 router.route('/login')
+    /**
+     * @route POST /login
+     * Endpoint para iniciar sesión de un usuario.
+     * Endpoint to log in a user.
+     * 
+     * @param {string} req.body.email - El correo electrónico del usuario que intenta iniciar sesión. | The email of the user trying to log in.
+     * @param {string} req.body.password - La contraseña del usuario que intenta iniciar sesión. | The password of the user trying to log in.
+     * @returns {Object} 200 - Mensaje de éxito al iniciar sesión y los tokens de autenticación y actualización. | Success message when logging in and the authentication and refresh tokens.
+     * @returns {Object} 401 - Error cuando las credenciales son incorrectas. | Error when the credentials are incorrect.
+     * @returns {Error} 500 - Error interno del servidor al iniciar sesión. | Internal server error when logging in.
+     */
     .post(async (req, res) => {
         try {
             const tokens = await loginUser(req.body.email, req.body.password);
@@ -78,24 +133,42 @@ router.route('/login')
             const { authToken, refreshToken } = tokens;
             res.json({ message: 'Inicio de sesión correcto', auth_token: authToken, refresh_token: refreshToken});
         } catch (error) {
-            console.error('Error logging in:', error);
             res.status(500).json({ message: 'Error logging in' });
         }
     });
 
 router.route('/usersByRegistrationDate')
+    /**
+     * @route POST /usersByRegistrationDate
+     * Endpoint para obtener usuarios por fecha de registro.
+     * Endpoint to get users by registration date.
+     * 
+     * @param {string} req.body.startDate - La fecha de inicio del rango de búsqueda. | The start date of the search range.
+     * @param {string} req.body.endDate - La fecha de fin del rango de búsqueda. | The end date of the search range.
+     * @returns {Array} 200 - Un array de usuarios que se registraron dentro del rango de fechas proporcionado. | An array of users who registered within the provided date range.
+     * @returns {Error} 500 - Error interno del servidor al obtener los usuarios por fecha de registro. | Internal server error when getting users by registration date.
+     */
     .post(isAdmin, async (req, res) => {
         const { startDate, endDate } = req.body;
         try {
             const users = await getUsersByRegistrationDate(startDate, endDate);
             res.json(users);
         } catch (error) {
-            console.error('Error in /usersByRegistrationDate:', error);
             res.status(500).json({ message: 'Error al obtener los usuarios por fecha de registro' });
         }
     });
 
 router.route('/info')
+    /**
+     * @route POST /info
+     * Endpoint para obtener la información de un usuario.
+     * Endpoint to get a user's information.
+     * 
+     * @param {string} req.user.userId - El ID del usuario cuya información se quiere obtener. | The ID of the user whose information is to be obtained.
+     * @returns {Object} 200 - La información del usuario. | The user's information.
+     * @returns {Object} 404 - Error cuando el usuario no se encuentra. | Error when the user is not found.
+     * @returns {Error} 500 - Error interno del servidor al obtener la información del usuario. | Internal server error when getting the user's information.
+     */
     .post(async (req, res) => {
         const userId = req.user.userId;
         try {
@@ -105,7 +178,6 @@ router.route('/info')
             }
             return res.json(user); 
         } catch (error) {
-            console.error('Error getting the user:', error);
             if (!res.headersSent) {
                 return res.status(500).json({ message: 'Error getting the user' });
             }
@@ -113,6 +185,16 @@ router.route('/info')
     });
 
 router.route('/resetPassword')
+    /**
+     * @route POST /resetPassword
+     * Endpoint para restablecer la contraseña de un usuario.
+     * Endpoint to reset a user's password.
+     * 
+     * @param {string} req.body.email - El correo electrónico del usuario que quiere restablecer su contraseña. | The email of the user who wants to reset their password.
+     * @returns {Object} 200 - La respuesta del proceso de restablecimiento de contraseña. | The response from the password reset process.
+     * @returns {Object} 404 - Error cuando el usuario no se encuentra. | Error when the user is not found.
+     * @returns {Error} 500 - Error interno del servidor al restablecer la contraseña del usuario. | Internal server error when resetting the user's password.
+     */
     .post(async (req, res) => {
         const email = req.body.email;
         try {
@@ -122,7 +204,6 @@ router.route('/resetPassword')
             }
             return res.json(response); 
         } catch (error) {
-            console.error('Error getting the user:', error);
             if (!res.headersSent) {
                 return res.status(500).json({ message: 'Error getting the user' });
             }

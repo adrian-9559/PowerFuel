@@ -2,6 +2,15 @@ import api from './axios';
 import toastr from 'toastr';
 
 class OrderService {
+    async getAllOrders(page = 1, limit = 10) {
+        try {
+            const response = await api.get(`/orders?page=${page}&limit=${limit}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    }
+
     async getOrdersByUser(userId) {
         try {
             const response = await api.get(`/orders/user/${userId}`);
@@ -50,7 +59,7 @@ class OrderService {
 
     async getOrdersCount() {
         try {
-            const response = await api.get(`/orders/`);
+            const response = await api.get(`/orders/count/`);
             return response.data;
         } catch (error) {
             throw error;

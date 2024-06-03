@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Chip } from '@nextui-org/react';
+import { useAppContext } from '@context/AppContext';
 import OrderService from '@services/orderService';
 import OrderItem from './orderItem';
 
-const OrdersList = ({ userId }) => {
+const OrdersList = () => {
   const [userOrders, setUserOrders] = useState([]);
+  const { user, isLoggedIn } = useAppContext();
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -12,13 +14,12 @@ const OrdersList = ({ userId }) => {
         const response = await OrderService.getUserOrders();
         setUserOrders(response || []);
       } catch (error) {
-        console.error(error);
         setUserOrders([]);
       }
     };
   
     fetchOrders();
-  }, [userId]);
+  }, [user, isLoggedIn]);
 
   return (
     <div className="flex flex-col space-y-4">

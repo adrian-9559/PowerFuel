@@ -1,6 +1,14 @@
 const tokenUtils = require('../utils/tokenUtils');
 const errorDisplay = "(Error en authTokenInterceptor)";
 
+/**
+ * Middleware para interceptar y verificar el token de autenticación en las solicitudes HTTP.
+ * Middleware to intercept and verify the authentication token in HTTP requests.
+ * 
+ * @param {Object} req - El objeto de solicitud HTTP. | The HTTP request object.
+ * @param {Object} res - El objeto de respuesta HTTP. | The HTTP response object.
+ * @param {Function} next - La función de callback para pasar al siguiente middleware. | The callback function to pass to the next middleware.
+ */
 const authTokenInterceptor = async (req, res, next) => {
     if (req.url === '/api/token/refresh') {
         next();

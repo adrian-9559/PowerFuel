@@ -10,13 +10,15 @@ const ADMIN_ACTIONS = {
         'Roles',
         'Productos',
         'Categorias',
-        'Dashboard',
-        'Marcas'
+        'Pedidos',
+        'Marcas',
+        'Dashboard'
     ],
     '96': [
         'General',
         'Usuarios',
         'Roles',
+        'Pedidos',
         'Productos',
         'Categorias'
     ],
@@ -24,11 +26,13 @@ const ADMIN_ACTIONS = {
         'General',
         'Productos',
         'Categorias',
+        'Pedidos',
         'Marcas'
     ],
     '97': [
         'General',
         'Productos',
+        'Pedidos',
         'Categorias'
     ],
     '95': [ // managerSupport

@@ -1,4 +1,4 @@
-// const pidusage = require('pidusage');
+const pidusage = require('pidusage');
 const fs = require('fs');
 const os = require('os');
 const errorDisplay = "(Error en el controlador de Server)";
@@ -6,11 +6,16 @@ const errorDisplay = "(Error en el controlador de Server)";
 // Obtener la cantidad de CPUs disponibles en el sistema
 const numCPUs = os.cpus().length;
 
+/**
+ * Función para obtener el uso de la CPU del servidor.
+ * Function to get the server's CPU usage.
+ * 
+ * @returns {Promise} - Promesa que resuelve al obtener el uso de la CPU del servidor en porcentaje. | Promise that resolves when getting the server's CPU usage in percentage.
+ * @throws {Error} - Error al intentar obtener el uso de la CPU del servidor. | Error when trying to get the server's CPU usage.
+ */
 const getUseServerCPU = async () => {
   try {
-      // Obtener la carga promedio del sistema
       const loadAvg = os.loadavg();
-      // Calcular el uso total de la CPU en porcentaje
       const totalUsage = (loadAvg[0] / numCPUs) * 100;
       return totalUsage.toFixed(2);
   } catch (error) {
@@ -18,13 +23,18 @@ const getUseServerCPU = async () => {
   }
 };
 
+/**
+ * Función para obtener el uso de la RAM del servidor.
+ * Function to get the server's RAM usage.
+ * 
+ * @returns {Promise} - Promesa que resuelve al obtener el uso de la RAM del servidor en porcentaje. | Promise that resolves when getting the server's RAM usage in percentage.
+ * @throws {Error} - Error al intentar obtener el uso de la RAM del servidor. | Error when trying to get the server's RAM usage.
+ */
 const getUseServerRAM = async () => {
   try {
-      // Obtener la memoria total y la memoria libre
       const totalMem = os.totalmem();
       const freeMem = os.freemem();
 
-      // Calcular el uso de la memoria en porcentaje
       const usedMem = totalMem - freeMem;
       const totalUsage = (usedMem / totalMem) * 100;
 
@@ -34,25 +44,36 @@ const getUseServerRAM = async () => {
   }
 };
 
-// const getDiskUsage = async () => {
-//   // Obtener la información del disco
-//   const diskInfo = fs.statSync('/');
+/**
+ * Función para obtener el uso del disco del servidor.
+ * Function to get the server's disk usage.
+ * 
+ * @returns {Promise} - Promesa que resuelve al obtener el uso del disco del servidor en porcentaje. | Promise that resolves when getting the server's disk usage in percentage.
+ * @throws {Error} - Error al intentar obtener el uso del disco del servidor. | Error when trying to get the server's disk usage.
+ */
+const getDiskUsage = async () => {
+  const diskInfo = fs.statSync('/');
 
-//   // Calcular el uso del disco
-//   const totalSpace = diskInfo.blocks * diskInfo.blksize;
-//   const freeSpace = diskInfo.blocks * diskInfo.blksize - diskInfo.size;
+  const totalSpace = diskInfo.blocks * diskInfo.blksize;
+  const freeSpace = diskInfo.blocks * diskInfo.blksize - diskInfo.size;
 
-//   // Calcular el porcentaje de espacio libre
-//   const freeSpacePercentage = (freeSpace / totalSpace) * 10;
+  const freeSpacePercentage = (freeSpace / totalSpace) * 10;
 
-//   return freeSpacePercentage.toFixed(2);
-// }
+  return freeSpacePercentage.toFixed(2);
+}
 
+/**
+ * Función para obtener la información de uso del servidor.
+ * Function to get the server usage information.
+ * 
+ * @returns {Promise} - Promesa que resuelve al obtener la información de uso del servidor. | Promise that resolves when getting the server usage information.
+ * @throws {Error} - Error al intentar obtener la información del servidor. | Error when trying to get the server information.
+ */
 const getUseServerInfo = async () => {
   try {
       const cpuUsage = await getUseServerCPU();
       const ramUsage = await getUseServerRAM();
-      // const diskUsage = await getDiskUsage();
+      const diskUsage = await getDiskUsage();
 
       return {
           cpu: cpuUsage,

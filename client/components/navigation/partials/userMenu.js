@@ -9,21 +9,28 @@ import { useRouter } from 'next/router';
 
 
 const UserMenu = () => {
+    const [isLoading, setIsLoading] = useState(true);
     const { user, isAdmin, isLoggedIn , setIsLoggedIn } = useAppContext();
     const router = useRouter();
-
-
+    
     const handleLogout = () => {
         localStorage.removeItem('auth_token');
         setIsLoggedIn(false);
         router.push('/');
     };
 
-    
-                    
+    useEffect(() => {
+        console.log(user)
+        if (user === null || user === undefined || !isLoggedIn ) {
+            setIsLoading(true);
+            return;
+        }
 
+        setIsLoading(false);
+    }, [user, isLoggedIn, setIsLoading]);   
+    
     return (
-        user === null || !isLoggedIn? <Spinner size="large" /> :
+        isLoading ? <Spinner size="large" /> :
             <Dropdown>
                 <DropdownTrigger>
                     <Button radius="full" size="lg" className='flex justify-center items-center pt-0' isIconOnly>
@@ -43,7 +50,7 @@ const UserMenu = () => {
                     </DropdownItem>
                     <DropdownItem key="team_settings" textValue="Delivered" showDivider onClick={() => router.push('/users/config/OrderList')}>Pedidos</DropdownItem>
                     
-                    {isAdmin && isAdmin !== "true" ? (
+                    {isAdmin && isAdmin === true ? (
                             <DropdownItem key="panel" textValue="panel" onClick={() => router.push('/admin/General')}>
                                 <p>Panel de Administración </p>
                             </DropdownItem>

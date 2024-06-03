@@ -128,7 +128,7 @@ const RoleAdministration = () => {
                                     </Tooltip>
                                     <Tooltip color="danger" content="Eliminar Rol">
                                         <Button isIconOnly color="danger" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50"  onClick={() => deleteRole(role.role_id)}>
-                                            <DeleteIcon color="white" />
+                                            <DeleteIcon color="red" />
                                         </Button>
                                     </Tooltip>
                                 </section>

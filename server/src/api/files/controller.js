@@ -3,6 +3,15 @@ const path = require('path');
 const errorDisplay = "(Error en el controlador de Productos)";
 const appRoot = path.dirname(require.main.filename);
 
+/**
+ * Función para subir un producto.
+ * Function to upload a product.
+ * 
+ * @param {string} productId - El ID del producto que se va a subir. | The ID of the product to be uploaded.
+ * @param {Array|Object} files - Un array de archivos o un solo archivo que se va a subir. | An array of files or a single file to be uploaded.
+ * @throws {Error} Si hay un error al intentar crear el directorio o leer los archivos existentes. | If there is an error trying to create the directory or read the existing files.
+ * @throws {Error} Si hay un error al intentar mover las imágenes del producto. | If there is an error trying to move the product images.
+ */
 const uploadProduct = (productId, files) => {
     const newPath = path.join(appRoot, '/../public/images/product/', productId);
 
@@ -38,6 +47,14 @@ const uploadProduct = (productId, files) => {
     }
 };
 
+/**
+ * Función para eliminar las imágenes de un producto.
+ * Function to delete a product's images.
+ * 
+ * @param {string} productId - El ID del producto cuyas imágenes se van a eliminar. | The ID of the product whose images are to be deleted.
+ * @param {string|null} imageId - El ID de la imagen específica a eliminar. Si es null, se eliminarán todas las imágenes. | The ID of the specific image to delete. If null, all images will be deleted.
+ * @throws {Error} Si hay un error al intentar eliminar las imágenes del producto. | If there is an error trying to delete the product images.
+ */
 const deleteProductImages = (productId, imageId=null) => {
     const newPath = path.join(appRoot, '/../public/images/product/', productId);
     const tempPath = path.join(appRoot, '/../public/images/temp/', productId);
@@ -87,6 +104,15 @@ const deleteProductImages = (productId, imageId=null) => {
     }
 };
 
+/**
+ * Función para subir un usuario.
+ * Function to upload a user.
+ * 
+ * @param {string} userId - El ID del usuario que se va a subir. | The ID of the user to be uploaded.
+ * @param {Array|Object} files - Un array de archivos o un solo archivo que se va a subir. | An array of files or a single file to be uploaded.
+ * @throws {Error} Si hay un error al intentar crear el directorio o leer los archivos existentes. | If there is an error trying to create the directory or read the existing files.
+ * @throws {Error} Si hay un error al intentar mover las imágenes del usuario. | If there is an error trying to move the user images.
+ */
 const uploadUser = (userId, files) => {
     const newPath = path.join(appRoot, '/../public/images/user/', userId);
     
@@ -120,8 +146,6 @@ const uploadUser = (userId, files) => {
             throw new Error(`Error al intentar mover la imagen del usuario ${errorDisplay}`, error);
         }
     }
-
-    res.send('Files uploaded successfully');
 };
 
 module.exports = {

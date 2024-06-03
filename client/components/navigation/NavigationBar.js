@@ -15,7 +15,6 @@ import { useRouter } from 'next/router';
 const NavigationBar = () => {
     const { isLoggedIn } = useAppContext();
     const router = useRouter();
-
     return (
         <Navbar isBordered className='w-full flex items-center py-4'>
             <NavbarContent className='w-full flex flex-row'>

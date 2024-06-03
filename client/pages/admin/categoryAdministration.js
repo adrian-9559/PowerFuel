@@ -65,7 +65,7 @@ const CategoryAdministration = () => {
 
     return (
         <section className='h-full w-full'>
-            <Table aria-label='Tabla de usuarios'
+            <Table aria-label='Tabla de categorias'
                 selectionMode="multiple"
                 selectedKeys={selectedKeys}
                 onSelectionChange={setSelectedKeys}
@@ -147,7 +147,7 @@ const CategoryAdministration = () => {
                                     </Tooltip>
                                     <Tooltip color="danger" content="Eliminar Categoría">
                                         <Button isIconOnly color="danger" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => deleteCategory(category.category_id)}>
-                                            <DeleteIcon color="white" />
+                                            <DeleteIcon color="red" />
                                         </Button>
                                     </Tooltip>
                                 </section>

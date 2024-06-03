@@ -43,7 +43,8 @@ api.interceptors.response.use((response) => {
 
 }, (error) => {
     console.log(error);
-    toastr.error(error.response.data.message);
+    if(error.response.data?.message)
+        toastr.error(error.response.data.message);
     return Promise.reject(error);
 });
 

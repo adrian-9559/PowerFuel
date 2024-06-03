@@ -267,6 +267,14 @@ INSERT INTO `user_roles` (`user_id`, `role_id`) VALUES
 	(73, 99),
 	(74, 99);
 
+DROP TABLE IF EXISTS `password_reset_codes`;
+CREATE TABLE password_reset_codes (
+    id SERIAL PRIMARY KEY,
+    code VARCHAR(255) NOT NULL,
+    userId INTEGER NOT NULL,
+    createdAt TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;

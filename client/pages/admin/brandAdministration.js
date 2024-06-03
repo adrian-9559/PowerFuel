@@ -141,7 +141,7 @@ const BrandAdministration = () => {
                                     </Tooltip>
                                     <Tooltip color="danger" content="Eliminar Marca">
                                         <Button isIconOnly color="danger" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => deleteBrand(brand.id_brand)}>
-                                            <DeleteIcon color="white" />
+                                            <DeleteIcon color="red" />
                                         </Button>
                                     </Tooltip>
                                 </section>

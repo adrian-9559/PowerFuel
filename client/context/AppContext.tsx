@@ -47,7 +47,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
-  const [isClient, setIsClient] = useState(false); 
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   
@@ -61,7 +60,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    setIsClient(true); 
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
       setCart(JSON.parse(storedCart));
@@ -74,15 +72,15 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   }, []);
   
   useEffect(() => {
-    if (cart.length > 0 && isClient) { 
+    if (cart.length > 0 ) { 
       localStorage.setItem('cart', JSON.stringify(cart));
     }
 
-    if(cart.length === 0 && isClient) {
+    if(cart.length === 0) {
       localStorage.removeItem('cart');
     }
 
-  }, [cart, isClient]);
+  }, [cart]);
 
   useEffect(() => {
     const token = localStorage.getItem('auth_token');
@@ -114,7 +112,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         setIsAdmin(false);
     }
 
-}, []);
+}, [isLoggedIn]);
 
   return (
     <AppContext.Provider 

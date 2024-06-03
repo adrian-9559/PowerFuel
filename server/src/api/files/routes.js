@@ -19,9 +19,9 @@ router.route('/uploadProduct/:id')
             const { id } = req.params;
             const { images } = req.files;
             await uploadProduct(id, images);
-            res.send({message: 'Files uploaded successfully'});
+            res.send({message: 'Imágenes subidas correctamente'});
         } catch (error) {
-            res.status(500).send({message: 'Error uploading product images'});
+            res.status(500).send({message: 'Error al subir las imágenes del producto'});
         }
     });
 
@@ -35,9 +35,16 @@ router.route('/deleteProduct/:id/:image')
      * @param {string} req.params.image - El nombre de la imagen que se quiere eliminar. | The name of the image to be deleted.
      */
     .post(async (req, res) => {
-        const { id } = req.params;
-        const { image } = req.params;
-        await deleteProductImages(id, image)
+        try{
+            const { id } = req.params;
+            const { image } = req.params;
+            await deleteProductImages(id, image)
+
+            res.status(200).send({message: 'Imagen eliminada correctamente'});
+        } catch (error) {
+            res.status(500).send({message: 'Error al eliminar la imagen del producto'});
+        }
+
     });
 
 router.route('/uploadUser')
@@ -50,9 +57,13 @@ router.route('/uploadUser')
      * @param {Object} req.body.images - Las imágenes que se quieren subir. | The images to be uploaded.
      */
     .post(async (req, res) => {
-        const { userId } = req.user;
-        const { images } = req.body;
-        await uploadUser(userId.toString(), images)
+        try{
+            const { userId } = req.user;
+            const { images } = req.body;
+            await uploadUser(userId.toString(), images)
+        } catch (error) {
+            res.status(500).send({message: 'Error al subir las imágenes del usuario'});
+        }
     });
 
 module.exports = router; 

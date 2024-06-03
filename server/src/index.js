@@ -39,8 +39,7 @@ function startExpress() {
         // Manejo de excepciones no capturadas
         // Handling uncaught exceptions
         process.on('uncaughtException', (error) => {
-            console.error(error);
-            process.exit(1);
+            console.error('Ha ocurrido un error inesperado:', error);
         });
 
         // Inicio del servidor

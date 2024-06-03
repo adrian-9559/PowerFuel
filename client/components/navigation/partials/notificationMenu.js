@@ -34,7 +34,7 @@ const NotificationMenu = () => {
           isInvisible={unseenNotifications?.length === 0}
         >
           <DropdownTrigger>
-            <Button isIconOnly>
+            <Button isIconOnly aria-label='Notification Menu'>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 height="10"

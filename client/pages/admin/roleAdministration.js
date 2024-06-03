@@ -116,11 +116,6 @@ const RoleAdministration = () => {
                             </TableCell>
                             <TableCell>
                                 <section className="relative flex justify-center items-center gap-2">
-                                    <Tooltip color="primary" content="Detalles">
-                                        <Button isIconOnly color="primary" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => router.push(`/admin/create/createRole?readOnly=true&&id=${role.role_id}`)}>
-                                            <EyeIcon color="primary" />
-                                        </Button>
-                                    </Tooltip>
                                     <Tooltip color="success" content="Editar Rol" className="text-white">
                                         <Button isIconOnly color="success" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => router.push(`/admin/create/createRole?id=${role.role_id}`)}>
                                             <EditIcon color="green" />

@@ -37,9 +37,9 @@ const DataUser = () => {
     }, [user]);
 
     return (
-        <main className='grid pt-6 pb-20 w-1/2'>
+        <main className='grid pt-6 pb-20 w-3/4'>
             <section className='flex flex-row items-center gap-3 pb-5'>
-                <section className="w-16 h-16 ">
+                <section className="w-1/12 h-1/12">
                     <Skeleton isLoaded={!isLoading} className="rounded-lg h-auto py-2">
                         {user && 
                             <EditUserImage>
@@ -52,27 +52,17 @@ const DataUser = () => {
                     <p className="font-bold">{user ? user.email : ''}</p>
                 </Skeleton>
             </section>
-            <section className='flex flex-col gap-5 '>
-                <section className='flex flex-col gap-3'>
-                    <Skeleton isLoaded={!isLoading} className="rounded-lg h-auto py-2">
-                        <Input type='text' className='w-full' value={user ? user.email : ''} onChange={handdleChange} disabled={!isEditing} label="Email:" name="email"></Input>
-                    </Skeleton>
-                </section>
-                <section className='flex flex-col gap-3'>
-                    <Skeleton isLoaded={!isLoading} className="rounded-lg h-auto py-2">
-                        <Input type='text' className='w-full' value={user ? user.first_name : ''} onChange={handdleChange} disabled={!isEditing} label="Nombre:" name="first_name"></Input>
-                    </Skeleton>
-                </section>
-                <section className='flex flex-col gap-3'>
-                    <Skeleton isLoaded={!isLoading} className="rounded-lg h-auto py-2">
-                        <Input type='text' className='w-full' value={user ? user.last_name : ''} onChange={handdleChange} disabled={!isEditing} label="Apellido:" name="last_name"></Input>
-                    </Skeleton>
-                </section>
-                <section className='flex flex-col gap-3'>
-                    <Skeleton isLoaded={!isLoading} className="rounded-lg h-auto py-2">
-                        <Input type='text' className='w-full' value={user ? user.dni : ''} onChange={handdleChange} disabled={!isEditing} label="DNI:" name="dni"></Input>
-                    </Skeleton>
-                </section>
+            <section className='w-full flex flex-col gap-5 '>
+                <Input type='text' className='w-full' value={user ? user.email : ''} onChange={handdleChange} disabled={!isEditing} label="Email:" name="email" />
+                <Skeleton isLoaded={!isLoading} className="rounded-lg h-auto py-2">
+                    <Input type='text' className='w-full' value={user ? user.first_name : ''} onChange={handdleChange} disabled={!isEditing} label="Nombre:" name="first_name" />
+                </Skeleton>
+                <Skeleton isLoaded={!isLoading} className="rounded-lg h-auto py-2">
+                    <Input type='text' className='w-full' value={user ? user.last_name : ''} onChange={handdleChange} disabled={!isEditing} label="Apellido:" name="last_name" />
+                </Skeleton>
+                <Skeleton isLoaded={!isLoading} className="rounded-lg h-auto py-2">
+                    <Input type='text' className='w-full' value={user ? user.dni : ''} onChange={handdleChange} disabled={!isEditing} label="DNI:" name="dni" />
+                </Skeleton>
                 <Button color={isEditing? 'primary' : 'default'} onClick={toggleEdit} className='w-full'>{isEditing ? 'Guardar' : 'Editar'}</Button>
             </section>
         </main>

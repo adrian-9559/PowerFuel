@@ -3,7 +3,7 @@ import api from "./axios";
 class BrandService{
     async getBrandById(id) {
         const response = await api.get(`/brands/${id}`);
-        return response.data;
+        return response.data[0];
     }
 
     async getBrands(page = 1, limit = 10) {
@@ -17,18 +17,17 @@ class BrandService{
     }
 
     async addBrand(brand) {
-        const response = await api.post(`/brands`, brand);
+        const response = await api.post(`/brands`, { brand_name: brand });
         return response.data.data;
     }
 
     async updateBrand(id, brand) {
-        const response = await api.put(`/brands/${id}`, brand);
+        const response = await api.put(`/brands/${id}`, {brand_name: brand});
         return response.data.data;
     }
 
     async deleteBrand(id) {
-        const response = await api.delete(`/brands/${id}`);
-        return response.data.data;
+        return await api.delete(`/brands/${id}`);
     }
 }
 

@@ -20,7 +20,7 @@ api.interceptors.response.use(response => {
     return response;
 }, async error => {
     const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (error.response && error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = false;
         const refreshToken = localStorage.getItem('refresh_token');
         try {
@@ -42,8 +42,7 @@ api.interceptors.response.use((response) => {
     return response;
 
 }, (error) => {
-    console.log(error);
-    if(error.response.data?.message)
+    if(error && error.response && error.response.data && error.response.data.message)
         toastr.error(error.response.data.message);
     return Promise.reject(error);
 });

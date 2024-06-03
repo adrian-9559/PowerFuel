@@ -20,8 +20,7 @@ const UserMenu = () => {
     };
 
     useEffect(() => {
-        console.log(user)
-        if (user === null || user === undefined || !isLoggedIn ) {
+        if (!user || user === null || user === undefined || !isLoggedIn ) {
             setIsLoading(true);
             return;
         }
@@ -33,7 +32,7 @@ const UserMenu = () => {
         isLoading ? <Spinner size="large" /> :
             <Dropdown>
                 <DropdownTrigger>
-                    <Button radius="full" size="lg" className='flex justify-center items-center pt-0' isIconOnly>
+                    <Button radius="full" size="lg" className='flex justify-center items-center pt-0' isIconOnly aria-label="User Menu">
                         <UserImage user={user}/>
                     </Button>
                 </DropdownTrigger>

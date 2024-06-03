@@ -32,7 +32,7 @@ const NotificationList = () => {
     return (
         <section className="py-5 flex flex-col gap-4">
             <section>
-                <h1 className="font-bold text-3xl">Notificaciones</h1>
+                <h1 className="font-bold text-3xl">Listado de notificaciones</h1>
             </section>
             <section className='w-full h-full flex flex-col gap-4'>
                 {notifications.map((notification) => (

@@ -29,8 +29,8 @@ const BrandAdministration = () => {
 
     const deleteBrand = async (brandId) => {
         await BrandService.deleteBrand(brandId);
-        setBrands(Brands.filter(brand => brand.id_brand !== brandId));
-
+        setBrands(prevBrands => prevBrands.filter(brand => brand.id_brand !== brandId));
+    
         if (Brands.length === 1 && page > 1) {
             setPage(page - 1);
         }
@@ -47,22 +47,17 @@ const BrandAdministration = () => {
             setPage(1);
             return;
         }
-
+    
         for (const brandId of selectedKeys) {
             await deleteBrand(brandId);
-            setBrands(Brands.filter(brand => brand.id_brand !== brandId));
         }
         setSelectedKeys([]);
-
+    
         if (Brands.length === 1 && page > 1) {
             setPage(page - 1);
         }
-
+    
     };
-
-    useEffect(() => {
-        console.log(selectedKeys);
-    }, [selectedKeys]);
 
     return (
         <section className='h-full w-full'>
@@ -129,11 +124,6 @@ const BrandAdministration = () => {
                             </TableCell>
                             <TableCell>
                                 <section className="relative flex justify-center items-center gap-2">
-                                    <Tooltip color="primary" content="Detalles">
-                                        <Button isIconOnly color="primary" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => router.push(`/admin/create/createBrand?readOnly=true&&id=${brand.id_brand}`)}>
-                                            <EyeIcon color="primary" />
-                                        </Button>
-                                    </Tooltip>
                                     <Tooltip color="success" content="Editar Marca" className="text-white">
                                         <Button isIconOnly color="success" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => router.push(`/admin/create/createBrand?id=${brand.id_brand}`)}>
                                             <EditIcon color="green"/>

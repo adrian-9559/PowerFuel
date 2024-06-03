@@ -16,9 +16,12 @@ router.route('/')
     .get(async (req, res) => {
         try {
             const categories = await getCategories(req.query.page, req.query.limit);
-            res.json(categories);
+            if (!categories) {
+                return res.status(404);
+            }
+            res.status(200).json(categories);
         } catch (error) {
-            res.status(500).json({ message: 'Error getting the categories' });
+            res.status(500);
         }
     })
     /**
@@ -33,9 +36,9 @@ router.route('/')
     .post(async (req, res) => {
         try {
             const category = await addCategory(req.body);
-            res.json(category);
+            res.status(201).json({ message: 'Categoría añadida correctamente', category });
         } catch (error) {
-            res.status(500).json({ message: 'Error adding the category' });
+            res.status(500).json({ message: 'Error al añadir la categoría' });
         }
     });
 
@@ -51,9 +54,12 @@ router.route('/parent')
     .get(async (req, res) => {
         try {
             const parentCategories = await getParentCategories();
-            res.json(parentCategories);
+            if (!parentCategories) {
+                return res.status(404);
+            }
+            res.status(200).json(parentCategories);
         } catch (error) {
-            res.status(500).json({ message: 'Error getting the parent categories' });
+            res.status(500);
         }
     });
 
@@ -72,11 +78,11 @@ router.route('/:categoryId')
         try {
             const category = await getCategoryById(req.params.categoryId);
             if (!category) {
-                return res.status(404).json({ message: 'Category not found' });
+                return res.status(404).json({ message: 'Categoría no encontrada' });
             }
             res.json(category);
         } catch (error) {
-            res.status(500).json({ message: 'Error getting the category' });
+            res.status(500).json({ message: 'Categoría no encontrada' });
         }
     })
     /**
@@ -94,11 +100,11 @@ router.route('/:categoryId')
         try {
             const category = await updateCategoryById(req.params.categoryId, req.body);
             if (!category) {
-                return res.status(404).json({ message: 'Category not found' });
+                return res.status(404).json({ message: 'Categoría no encontrada' });
             }
-            res.json({ message: 'Category modified successfully' });
+            res.json({ message: 'Categoría modificada correctamente' });
         } catch (error) {
-            res.status(500).json({ message: 'Error modifying the category' });
+            res.status(500).json({ message: 'Error al modificar la categoría' });
         }
     })
     /**
@@ -115,11 +121,11 @@ router.route('/:categoryId')
         try {
             const deletedCategory = await deleteCategoryById(req.params.categoryId);
             if (!deletedCategory) {
-                return res.status(404).json({ message: 'Category not found' });
+                return res.status(404).json({ message: 'Categoría no encontrada' });
             }
-            res.json({ message: 'Category deleted successfully' });
+            res.json({ message: 'Categoría eliminada correctamente' });
         } catch (error) {
-            res.status(500).json({ message: 'Error deleting the category' });
+            res.status(500).json({ message: 'Error al eliminar la categoría' });
         }
     });
 
@@ -138,11 +144,11 @@ router.route('/:categoryId/child')
         try {
             const childCategories = await getChildCategories(req.params.categoryId);
             if (!childCategories) {
-                return res.status(404).json({ message: 'Child categories not found' });
+                return res.status(404);
             }
             res.json(childCategories);
         } catch (error) {
-            res.status(500).json({ message: 'Error getting the child categories' });
+            res.status(500);
         }
     });
 
@@ -161,7 +167,7 @@ router.route('/all')
             const categories = await getAllCategories();
             res.json(categories);
         } catch (error) {
-            res.status(500).json({ message: 'Error fetching all categories' });
+            res.status(500);
         }
     });
 

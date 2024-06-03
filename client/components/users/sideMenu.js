@@ -3,7 +3,6 @@ import { Button } from "@nextui-org/react";
 import { useRouter } from 'next/router';
 
 const SideMenu = ({setSelectedOption}) => {
-    const router = useRouter();
 
     return (
         <nav className='h-full ml-5 mr-20 border-r border-gray-300 pt-4 w-80'>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Chip, Image } from '@nextui-org/react';
 import ProductService from '@services/productService';
+import { format } from 'date-fns';
 
 const OrderItem = ({ order }) => {
   const [details, setDetails] = useState([]);
@@ -17,6 +18,7 @@ const OrderItem = ({ order }) => {
   };
 
   useEffect(() => {
+    console.log('order', order);
     const fetchProduct = async () => {
       let total = 0;
       const detailsAux = JSON.parse(order.details);
@@ -36,7 +38,7 @@ const OrderItem = ({ order }) => {
   return (
     <Card shadow className="p-6 shadow-lg flex flex-col gap-2">
       <p className="font-bold text-lg">Order ID: {order.order_id}</p>
-      <p>Fecha del pedido: {order.order_date}</p>
+      <p>Fecha del pedido: {format(new Date(order.order_date), 'dd-MM-yyyy HH:mm')}</p>
       <p>Detalles del pedido:</p>
       <ul>
         {details.map((product, index) => (

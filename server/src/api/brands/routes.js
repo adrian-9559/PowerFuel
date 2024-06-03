@@ -17,9 +17,12 @@ router.route('/:brandId')
         try {
             const brandId = req.params.brandId;
             const brand = await getBrandById(brandId);
-            res.status(200).json({brand});
+            if (!brand) {
+                return res.status(404).json({ message: 'Marca no encontrada' });
+            }
+            res.status(200).json(brand);
         } catch (error) {
-            res.status(500).send({message: 'Error get brands by id'});
+            res.status(500).json({message: 'Error al obtener la marca'});
         }
     })
     /**
@@ -37,9 +40,9 @@ router.route('/:brandId')
             const brandId = req.params.brandId;
             const updatedBrand = req.body;
             await updateBrandById(brandId, updatedBrand);
-            res.status(200).json({message: 'Marca actualizada correctamente'});
+            res.status(200).json({message: 'Marca modificada correctamente'});
         } catch (error) {
-            res.status(500).send({message: 'Error uploading product images'});
+            res.status(500).json({message: 'Error al modificar la marca'});
         }
     })
     /**
@@ -57,7 +60,7 @@ router.route('/:brandId')
             await deleteBrandById(brandId);
             res.status(200).json({message: 'Marca eliminada correctamente'});
         } catch (error) {
-            res.status(500).send({message: 'Error eliminar product images'});
+            res.status(500).json({message: 'Error al eliminar la marca'});
         }
     });
 
@@ -77,9 +80,12 @@ router.route('/')
             const page = parseInt(req.query.page) || null; 
             const limit = parseInt(req.query.limit) || null;
             const data = await getBrands(page, limit);
+            if (!data) {
+                return res.status(404);
+            }
             res.status(200).json(data);
         } catch (error) {
-            res.status(500).send({message: 'Error get brands by id'});
+            res.status(500);
         }
     })
     /**
@@ -93,11 +99,11 @@ router.route('/')
      */
     .post(async (req, res) => {
         try{
-            const newBrand = req.body;
-            const brand_id = await addBrand(newBrand);
-            res.status(200).json({ brand_id: brandId, ...newBrand });
+            const brand = req.body;
+            const brandId = await addBrand(brand);
+            res.status(201).json({ brand_id: brandId, ...brand , message: 'Marca añadida correctamente'});
         } catch (error) {
-            res.status(500).send({message: 'Error eliminar product images'});
+            res.status(500).json({message: 'Error al añadir la marca'});
         }
     });
 

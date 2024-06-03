@@ -18,7 +18,7 @@ router.post('/create-checkout-session', async (req, res) => {
         const cart = req.body.cart;
         const userId = req.user.userId;
         const session = await createCheckout(cart, userId);
-        res.json({clientSecret: session.client_secret});
+        res.status(200).json({clientSecret: session.client_secret});
     } catch (error) {
         res.status(500).json({ message: 'Hubo un error al intentar crear la sesión de checkout.' });
     }
@@ -38,9 +38,9 @@ router.get('/get-customer-payment-methods', async (req, res) => {
     try {
         const userId = req.user.userId??req.query.userId;
         const paymentMethods = await getCustomerPaymentMethods(userId);
-        res.send(paymentMethods);
+        res.status(200).json(paymentMethods);
     }catch (error) {
-        res.status(500).send({message: 'Error fetching payment methods'});
+        res.status(500).json({message: 'Error fetching payment methods'});
     }
 });
 
@@ -58,9 +58,9 @@ router.get('/last-payment', async (req, res) => {
     try {
         const userId = req.user.userId??req.query.userId;
         const lastPayment = await getLastPayment(userId);
-        res.send(lastPayment);
+        res.status(200).json(lastPayment);
     } catch (error) {
-        res.status(500).send({message: 'Error fetching last payment'});
+        res.status(500);
     }
 });
 
@@ -78,9 +78,9 @@ router.get('/get-customer-orders', async (req, res) => {
     try {
         const userId = req.user.userId??req.query.userId;
         const orders = await getUserPayments(userId);
-        res.send(orders);
+        res.status(200).json(orders);
     }catch (error) {
-        res.status(500).send({message: 'Error fetching orders'});
+        res.status(500).json({message: 'Erro al obtener los pagos del usuario'});
     }
 });
 

@@ -12,7 +12,7 @@ class model {
      */
     async insertBrand(brand) {
         try {
-            return {id_brand} = await Brand.create({
+            return await Brand.create({
                 brand_name: brand.brand_name
             });
         } catch (error) {

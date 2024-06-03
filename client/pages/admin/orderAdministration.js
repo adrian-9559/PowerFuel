@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Tooltip, Button, Pagination, Chip} from "@nextui-org/react";
 import { useRouter } from 'next/router';
 import { format } from 'date-fns';
-import { Modal, useDisclosure } from '@nextui-org/react';
+import { Modal, useDisclosure, ModalContent } from '@nextui-org/react';
 import OrderItem from '@components/orders/orderItem';
 import OrderService from '@services/orderService';
 import DeleteIcon from '@icons/DeleteIcon';
@@ -21,9 +21,8 @@ const OrderAdministration = () => {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [selectedKeys, setSelectedKeys] = useState([]);
-    const {isOpen, onOpenChange, onOpen } = useDisclosure();
+    const {isOpen, onOpenChange, onOpen, onClose } = useDisclosure();
     const [selectedOrder, setSelectedOrder] = useState(null);
-    const [selectedOrderId, setSelectedOrderId] = useState(null);
 
     useEffect(() => {
         const fetchOrderData = async () => {
@@ -57,7 +56,7 @@ const OrderAdministration = () => {
 
         for (const orderId of selectedKeys) {
             await deleteOrder(orderId);
-         setOrders(orders.filter(order => order.order_id !== orderId));
+            setOrders(orders.filter(order => order.order_id !== orderId));
         }
         setSelectedKeys([]);
 
@@ -65,12 +64,6 @@ const OrderAdministration = () => {
             setPage(page - 1);
         }
 
-    };
-
-    function handleIconClick(order){
-        setSelectedOrder(order);
-        setSelectedOrderId(order.order_id);
-        onOpenChange();
     };
 
     return(
@@ -148,7 +141,7 @@ const OrderAdministration = () => {
                             <TableCell>
                                 <section className="relative flex justify-center items-center gap-2">
                                     <Tooltip color="primary" content="Detalles">
-                                        <Button isIconOnly color="primary" variant="flat" className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={handleIconClick(order)}>
+                                        <Button isIconOnly color="primary" variant="flat" className="text-lg text-default-400 cursor-pointer active:opacity-50" onPress={() => { setSelectedOrder(order); onOpen(); }}>
                                             <EyeIcon color="primary" />
                                         </Button>
                                     </Tooltip>
@@ -168,8 +161,10 @@ const OrderAdministration = () => {
                     ), )}
                 </TableBody>
             </Table>
-            <Modal isOpen={isOpen} onClose={onOpenChange}>
-                <OrderItem order={selectedOrder} key={selectedOrderId} />
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} className='p-6 overflow-hidden max-w-[60%] max-h-[80%]' backdrop="blur">
+                <ModalContent className='w-full'>
+                    {selectedOrder && <OrderItem order={selectedOrder} key={selectedOrder.order_id} />}
+                </ModalContent>
             </Modal>
         </section>
     )

@@ -1,4 +1,4 @@
-import { Button, Input, Select, SelectItem, Textarea, Skeleton, Image } from '@nextui-org/react';
+import { Button, Input, Select, SelectItem, Textarea, Card, Image } from '@nextui-org/react';
 import { useState, useEffect, use } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ProductService from '@services/productService';
@@ -178,118 +178,120 @@ const CreateProduct = () => {
 
     return (
         <main
-            className="max-w-4xl mx-auto mt-10 p-6 rounded-lg shadow-xl mb-10 border-1 border-gray-200"
+            className="max-w-4xl mx-auto mt-10 p-6 "
         >
-            <h1 className="text-2xl font-bold mb-4">Crear Producto</h1>
-            {error && <p className="mb-4 text-red-500">{error}</p>}
-            <form onSubmit={handleSubmit}>
-                <section className="mb-4">
-                    <Input 
-                        type='text' 
-                        label='Nombre del Producto' 
-                        name="product_name" 
-                        value={formState.product_name} 
-                        onValueChange={handleChange('product_name')}
-                        isReadOnly={readOnly}
-                    />
-                </section>
-                <section className="mb-4">
-                    <Textarea 
-                        label='Descripción del Producto' 
-                        value={formState.description} 
-                        onValueChange={handleChange('description')}
-                        isReadOnly={readOnly}
-                    />
-                </section>
-                <section className="mb-4">
-                <Select 
-                    name='brand' 
-                    label='Marca' 
-                    value={formState.id_brand} 
-                    onValueChange={handleChange('id_brand')}
-                    isDisabled={readOnly}
-                >
-                    {brands.map((brand) => (<SelectItem key={brand.id_brand} value={brand.id_brand}>{brand.brand_name}</SelectItem>))}
-                </Select>
-                </section>
-                <section className="mb-4">
-                    <Input 
-                        type='number' 
-                        label='Cantidad en Stock' 
-                        value={formState.stock_quantity} 
-                        onValueChange={handleChange('stock_quantity')}
-                        isReadOnly={readOnly}
-                    />
-                </section>
-                <section className="mb-4">
-                    <Input 
-                        type='number' 
-                        label='Precio del Producto' 
-                        value={formState.price} 
-                        onValueChange={handleChange('price')}
-                        isReadOnly={readOnly}
-                    />
-                </section>
-                <section className="mb-4">
+            <Card shadow className="p-5">
+                <h1 className="text-2xl font-bold mb-4">Crear Producto</h1>
+                {error && <p className="mb-4 text-red-500">{error}</p>}
+                <form onSubmit={handleSubmit}>
+                    <section className="mb-4">
+                        <Input 
+                            type='text' 
+                            label='Nombre del Producto' 
+                            name="product_name" 
+                            value={formState.product_name} 
+                            onValueChange={handleChange('product_name')}
+                            isReadOnly={readOnly}
+                        />
+                    </section>
+                    <section className="mb-4">
+                        <Textarea 
+                            label='Descripción del Producto' 
+                            value={formState.description} 
+                            onValueChange={handleChange('description')}
+                            isReadOnly={readOnly}
+                        />
+                    </section>
+                    <section className="mb-4">
                     <Select 
-                        name='category' 
-                        label='Categoría del Producto' 
-                        value={formState.category_id} 
-                        onChange={handleParentCategoryChange} 
-                        data-filled
+                        name='brand' 
+                        label='Marca' 
+                        value={formState.id_brand} 
+                        onValueChange={handleChange('id_brand')}
                         isDisabled={readOnly}
                     >
-                        {parentCategories.map((category) => (<SelectItem key={category.category_id} defaultValue={category.category_id}>{category.category_name}</SelectItem>))}
+                        {brands.map((brand) => (<SelectItem key={brand.id_brand} value={brand.id_brand}>{brand.brand_name}</SelectItem>))}
                     </Select>
-                </section>
-                <AnimatePresence>
-                    {childCategoriesLevels.map((childCategories, index) => (
-                        childCategories.length > 0 && (
-                            <motion.section 
-                                key={childCategories.category_id}
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: "auto" }}
-                                exit={{ opacity: 0, height: 0 }}
-                                transition={{ duration: 0.225 }}
-                                className="mb-4"
-                            >
-                                <Select 
-                                    name={`childCategory${index}`} 
-                                    label='Subcategoría del Producto' 
-                                    value={formState.category_id}
-                                    onChange={(e) => handleChildCategoryChange(e, index + 1)}
-                                    readOnly={readOnly}
+                    </section>
+                    <section className="mb-4">
+                        <Input 
+                            type='number' 
+                            label='Cantidad en Stock' 
+                            value={formState.stock_quantity} 
+                            onValueChange={handleChange('stock_quantity')}
+                            isReadOnly={readOnly}
+                        />
+                    </section>
+                    <section className="mb-4">
+                        <Input 
+                            type='number' 
+                            label='Precio del Producto' 
+                            value={formState.price} 
+                            onValueChange={handleChange('price')}
+                            isReadOnly={readOnly}
+                        />
+                    </section>
+                    <section className="mb-4">
+                        <Select 
+                            name='category' 
+                            label='Categoría del Producto' 
+                            value={formState.category_id} 
+                            onChange={handleParentCategoryChange} 
+                            data-filled
+                            isDisabled={readOnly}
+                        >
+                            {parentCategories.map((category) => (<SelectItem key={category.category_id} defaultValue={category.category_id}>{category.category_name}</SelectItem>))}
+                        </Select>
+                    </section>
+                    <AnimatePresence>
+                        {childCategoriesLevels.map((childCategories, index) => (
+                            childCategories.length > 0 && (
+                                <motion.section 
+                                    key={childCategories.category_id}
+                                    initial={{ opacity: 0, height: 0 }}
+                                    animate={{ opacity: 1, height: "auto" }}
+                                    exit={{ opacity: 0, height: 0 }}
+                                    transition={{ duration: 0.225 }}
+                                    className="mb-4"
                                 >
-                                    {childCategories.map((category) => (<SelectItem key={category.category_id} defaultValue={category.category_id}>{category.category_name}</SelectItem>))}
-                                </Select>
-                            </motion.section>
-                        )
-                    ))}
-                </AnimatePresence>
-                {id && (    
-                    <section className="mb-4">
-                        <h2 className="text-xl font-bold mb-2">Imágenes del Producto</h2>
-                        <section className="flex flex-row gap-4 w-full max-h-32">
-                            {imageCount === 0 && (
-                                <p>No hay imágenes para mostrar</p>
-                            ) || renderProductImages(true)}
+                                    <Select 
+                                        name={`childCategory${index}`} 
+                                        label='Subcategoría del Producto' 
+                                        value={formState.category_id}
+                                        onChange={(e) => handleChildCategoryChange(e, index + 1)}
+                                        readOnly={readOnly}
+                                    >
+                                        {childCategories.map((category) => (<SelectItem key={category.category_id} defaultValue={category.category_id}>{category.category_name}</SelectItem>))}
+                                    </Select>
+                                </motion.section>
+                            )
+                        ))}
+                    </AnimatePresence>
+                    {id && (    
+                        <section className="mb-4">
+                            <h2 className="text-xl font-bold mb-2">Imágenes del Producto</h2>
+                            <section className="flex flex-row gap-4 w-full max-h-32">
+                                {imageCount === 0 && (
+                                    <p>No hay imágenes para mostrar</p>
+                                ) || renderProductImages(true)}
+                            </section>
                         </section>
-                    </section>
-                )}
-                {!readOnly && readOnly !== "true" && (
-                    <section className="mb-4">
-                        <input type='file' multiple id='images' className="w-full px-4 py-2 border rounded-lg" onChange={(e) => setFormState({...formState, images: e.target.files})}/>
-                    </section>
-                )}
-                <section>
-                    {!readOnly && readOnly !== "true" && (
-                        <Button type='submit' disabled={loading} className="w-full">
-                            {loading ? 'Cargando...' : (id ? 'Guardar cambios' : 'Crear Producto')}
-                        </Button>
                     )}
-                    <Button type='button' color="danger" onClick={() => router.push('/admin/Productos')} className="w-full mt-4">Cancelar</Button>
-                </section>
-            </form>
+                    {!readOnly && readOnly !== "true" && (
+                        <section className="mb-4">
+                            <input type='file' multiple id='images' className="w-full px-4 py-2 border rounded-lg" onChange={(e) => setFormState({...formState, images: e.target.files})}/>
+                        </section>
+                    )}
+                    <section>
+                        {!readOnly && readOnly !== "true" && (
+                            <Button type='submit' disabled={loading} className="w-full">
+                                {loading ? 'Cargando...' : (id ? 'Guardar cambios' : 'Crear Producto')}
+                            </Button>
+                        )}
+                        <Button type='button' color="danger" onClick={() => router.push('/admin/Productos')} className="w-full mt-4">Cancelar</Button>
+                    </section>
+                </form>
+            </Card>
         </main>
     );
 }

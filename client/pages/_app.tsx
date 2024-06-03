@@ -5,6 +5,7 @@ import { fontSans, fontMono } from "@config/fonts";
 import {useRouter} from 'next/router';
 import { AppProvider } from "@context/AppContext";
 import "@styles/globals.css";
+import '@styles/customModal.css';
 require('dotenv').config();
 import DefaultLayout from '@layouts/default';
 import toastr from 'toastr';

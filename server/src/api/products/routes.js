@@ -31,7 +31,7 @@ router.route('/')
             const product = await addProduct(req.body);
             res.status(200).json(product);
         } catch (error) {
-            res.status(500).json({ message: 'Hubo un problema al agregar el producto. Por favor, inténtalo de nuevo.' });
+            res.status(500).json({ message: 'Error al agregar el producto' });
         }
     })
     /**
@@ -49,7 +49,7 @@ router.route('/')
             const data = await getProducts(req.query.page, req.query.limit);
             res.status(200).json(data);
         } catch (error) {
-            res.status(500).json({ message: 'Hubo un problema al obtener la información del producto. Por favor, inténtalo de nuevo.' });
+            res.status(500);
         }
     });
 
@@ -72,7 +72,7 @@ router.route('/:productId')
             }
             res.status(200).json(product);
         } catch (error) {
-            res.status(500).json({ message: 'Hubo un problema al obtener el producto. Por favor, inténtalo de nuevo.' });
+            res.status(500).json({ message: 'Error al obtener el producto' });
         }
     })
     /**
@@ -94,7 +94,7 @@ router.route('/:productId')
             }
             res.status(200).json({ message: 'Producto modificado exitosamente' });
         } catch (error) {
-            res.status(500).json({ message: 'Hubo un problema al modificar el producto. Por favor, inténtalo de nuevo.' });
+            res.status(500).json({ message: 'Error al modificar el producto' });
         }
     })
     /**
@@ -115,7 +115,7 @@ router.route('/:productId')
             }
             res.status(200).json({ message: 'Producto eliminado exitosamente' });
         } catch (error) {
-            res.status(500).json({ message: 'Hubo un problema al eliminar el producto. Por favor, inténtalo de nuevo.' });
+            res.status(500).json({ message: 'Error al eliminar el producto' });
         }
     });
 
@@ -142,7 +142,7 @@ router.route('/search')
             }
             res.status(200).json({products});
         } catch (error) {
-            res.status(500).json({ message: 'Hubo un problema al obtener los productos. Por favor, inténtalo de nuevo.' });
+            res.status(500).json({ message: 'Error al obtener los productos' });
         }
     });
 
@@ -167,7 +167,7 @@ router.route('/category/:id')
             }
             res.status(200).json({products});
         } catch (error) {
-            res.status(500).json({ message: 'Hubo un problema al obtener los productos. Por favor, inténtalo de nuevo.' });
+            res.status(500).json({ message: 'Error al obtener los productos' });
         }
     });
 
@@ -186,7 +186,7 @@ router.route('/img/count/:id')
             const count = await getImageCount(req.params.id);
             res.status(200).json(count);
         } catch (error) {
-            res.status(500).json({ message: 'Hubo un problema al obtener el conteo de imágenes. Por favor, inténtalo de nuevo.' });
+            res.status(500).json({ message: 'Error al obtener el conteo de imágenes' });
         }
     });
 
@@ -213,7 +213,7 @@ router.route('/date')
             }
             res.status(200).json(products);
         } catch (error) {
-            res.status(500).json({ message: 'Hubo un problema al obtener los productos. Por favor, inténtalo de nuevo.' });
+            res.status(500).json({ message: 'Error al obtener los productos' });
         }
     });
 
@@ -238,7 +238,7 @@ router.route('/random')
             }
             res.status(200).json(products);
         } catch (error) {
-            res.status(500).json({ message: 'Hubo un problema al obtener los productos. Por favor, inténtalo de nuevo.' });
+            res.status(500).json({ message: 'Error al obtener los productos' });
         }
     });
 module.exports = router;

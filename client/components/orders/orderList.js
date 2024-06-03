@@ -3,10 +3,13 @@ import { Card, Chip } from '@nextui-org/react';
 import { useAppContext } from '@context/AppContext';
 import OrderService from '@services/orderService';
 import OrderItem from './orderItem';
+import { Modal, useDisclosure, ModalContent } from '@nextui-org/react';
 
 const OrdersList = () => {
   const [userOrders, setUserOrders] = useState([]);
   const { user, isLoggedIn } = useAppContext();
+  const {isOpen, onOpenChange, onOpen } = useDisclosure();
+  const [selectedOrder, setSelectedOrder] = useState(null);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -22,11 +25,23 @@ const OrdersList = () => {
   }, [user, isLoggedIn]);
 
   return (
-    <div className="flex flex-col space-y-4">
-      {userOrders.map((order, index) => (
-        <OrderItem order={order} key={order.order_id}/>
-      )) || 'No tienes ningún pedido aún'}
-    </div>
+    <section className="flex flex-col space-y-4">
+      <section>
+        <h1 className="font-bold text-3xl">Listado de pedidos</h1>
+      </section>
+      <section>
+        {userOrders.map((order, index) => (
+          <section className='w-full cursor-pointer' onClick={() => { setSelectedOrder(order); onOpen(); }}>
+            <OrderItem order={order} key={order.order_id}/>
+          </section>
+        )) || 'No tienes ningún pedido aún'}
+      </section>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} className='p-6 overflow-hidden max-w-[60%] max-h-[80%]' backdrop="blur">
+        <ModalContent className='w-full'>
+          {selectedOrder && <OrderItem order={selectedOrder} key={selectedOrder.order_id} />}
+        </ModalContent>
+      </Modal>
+    </section>
   );
 };
 

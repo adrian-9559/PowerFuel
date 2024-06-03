@@ -22,7 +22,7 @@ router.route('/user')
             const notifications = await getNotificationsByUser(userId, parseInt(limit), parseInt(page));
             res.json(notifications);
         } catch (error) {
-            res.status(500).json({ message: 'Hubo un problema al obtener las notificaciones. Por favor, inténtalo de nuevo.' });
+            res.status(500).json({ message: 'Hubo un problema al obtener las notificaciones' });
         }
     });
 
@@ -43,7 +43,7 @@ router.route('/:notificationId')
             await deleteNotification(notificationId);
             res.json({ message: 'La notificación ha sido eliminada correctamente.' });
         } catch (error) {
-            res.status(500).json({ message: 'Hubo un problema al eliminar la notificación. Por favor, inténtalo de nuevo.' });
+            res.status(500).json({ message: 'Error al eliminar la notificación' });
         }
     });
 
@@ -63,7 +63,7 @@ router.route('/')
             const newNotification = await insertNotification(notificationData);
             res.json(newNotification);
         } catch (error) {
-            res.status(500).json({ message: 'Hubo un problema al crear la notificación. Por favor, inténtalo de nuevo.' });
+            res.status(500).json({ message: 'Hubo un problema al crear la notificación' });
         }
     })
     /**
@@ -79,7 +79,7 @@ router.route('/')
             const notifications = await getAllNotifications();
             res.json(notifications);
         } catch (error) {
-            res.status(500).json({ message: 'Hubo un problema al obtener las notificaciones. Por favor, inténtalo de nuevo.' });
+            res.status(500).json({ message: 'Hubo un problema al obtener las notificaciones' });
         }
     });
 
@@ -99,7 +99,7 @@ router.route('/viewed')
             await markAsViewedUser(userId);
             res.json({ message: 'Todas las notificaciones han sido marcadas como vistas.' });
         } catch (error) {
-            res.status(500).json({ message: 'Hubo un problema al marcar las notificaciones como vistas. Por favor, inténtalo de nuevo.' });
+            res.status(500).json({ message: 'Hubo un problema al marcar las notificaciones como vistas' });
         }
     });
 

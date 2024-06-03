@@ -20,7 +20,7 @@ router.route('/')
             if (!role) {
                 return res.status(400).json({ message: 'Error al añadir el rol'});
             }
-            res.status(200).json(role);
+            res.status(200).json(role, { message: 'Rol añadido correctamente' });
         } catch (error) {
             res.status(500).json({ message: 'Error al añadir el rol' });
         }
@@ -81,11 +81,11 @@ router.route('/:roleId')
         try {
             const role = await updateRoleById(req.params.roleId, req.body.role_name);
             if (!role) {
-                return res.status(404).json({ message: 'Role not found' });
+                return res.status(404).json({ message: 'Rol no encontrado' });
             }
-            res.status(200).json({ message: 'Role updated successfully' });
+            res.status(200).json({ message: 'Rol modificado correctamente' });
         } catch (error) {
-            res.status(500).json({ message: 'Error updating the role' });
+            res.status(500).json({ message: 'Error al modificar el rol' });
         }
     })
     /**
@@ -102,11 +102,11 @@ router.route('/:roleId')
         try {
             const response = await getRoleById(req.params.roleId??null);
             if (!role) {
-                return res.status(404).json({ message: 'Role not found' });
+                return res.status(404).json({ message: 'Rol no encontrado' });
             }
             res.status(200).json(response.Roles);
         } catch (error) {
-            res.status(500).json({ message: 'Error getting the role' });
+            res.status(500);
         }
     });
 
@@ -125,11 +125,11 @@ router.route('/user/:userId')
         try {
             const role = await getRoleByUserId(req.params.userId);
             if (!role) {
-                return res.status(404).json({ message: 'Role not found for this user' });
+                return res.status(404).json({ message: 'Rol no encontrado para este usuario' });
             }
             res.status(200).json(role);
         } catch (error) {
-            res.status(500).json({ message: 'Error getting the role for user' });
+            res.status(500).json({ message: 'Error al obtener el rol del usuario' });
         }
     });
 
@@ -148,11 +148,11 @@ router.route('/user')
         try {
             const role = await getRoleByUserId(req.user.userId);
             if (!role) {
-                return res.status(404).json({ message: 'Role not found for this user' });
+                return res.status(404).json({ message: 'Rol no encontrado para este usuario' });
             }
             res.status(200).json(role);
         } catch (error) {
-            res.status(500).json({ message: 'Error getting the role for user' });
+            res.status(500).json({ message: 'Error al obtener el rol del usuario' });
         }
     });
 

@@ -18,7 +18,7 @@ router.route('/info')
             const result = await getUseServerInfo();
             res.json(result);
         } catch (error) {
-            res.status(500).json(error);
+            res.status(500).json({message: "Ha ocurrido un error al obtener la información del servidor"});
         }
     });
 
@@ -36,7 +36,7 @@ router.route('/cpu')
             const result = await getUseServerCPU();
             res.json(result);
         } catch (error) {
-            res.status(500).json(error);
+            res.status(500).json({message: "Ha ocurrido un error al obtener el uso de CPU"});
         }
     });
 

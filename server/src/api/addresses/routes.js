@@ -18,9 +18,9 @@ router.route('/')
             const newAddress = req.body;
             newAddress.user_id = req.user.userId;
             const address = await addAddress(newAddress);
-            res.status(201).json(address);
+            res.status(201).json({ message: 'Dirección añadida correctamente', address });
         }catch(error){
-            res.status(500).json({ message: 'Error adding the address' });
+            res.status(500).json({ message: 'Error al añadir la dirección' });
         }
     })
     /**
@@ -36,11 +36,11 @@ router.route('/')
         try{
             const address = await getAddresses();
             if (!address) {
-                return res.status(404).json({ message: 'Address not found' });
+                return res.status(404);
             }
-            res.status(201).json(address);
+            res.status(200).json(address);
         }catch(error){
-            res.status(500).json({ message: 'Error get address' });
+            res.status(500);
         }
     });
 
@@ -59,11 +59,11 @@ router.route('/:addressId')
         try{
             const address = await getAddressById(req.params.addressId);
             if (!address) {
-                return res.status(404).json({ message: 'Address not found' });
+                return res.status(404).json({ message: 'Dirección no encontrada' });
             }
-            res.status(201).json(address);
+            res.status(200).json(address);
         }catch(error){
-            res.status(500).json({ message: 'Error get address' });
+            res.status(500).json({ message: 'Error al obtener la dirección' });
         }
     })
     /**
@@ -79,9 +79,9 @@ router.route('/:addressId')
     .put(async(req, res) => {
         try{
             const address = await updateAddress(req.params.addressId, req.body);
-            res.status(201).json({ message: 'Address update successfully' });
+            res.status(200).json({ message: 'Dirección modificada correctamente' });
         }catch(error){
-            res.status(500).json({ message: 'Error update address' });
+            res.status(500).json({ message: 'Error al modificar la dirección' });
         }
     })
     /**
@@ -98,11 +98,11 @@ router.route('/:addressId')
         try{
             const deletedAddress = await deleteAddressById(req.params.addressId);
             if (!deletedAddress) {
-                return res.status(404).json({ message: 'Address not found' });
+                return res.status(404).json({ message: 'Dirección no encontrada' });
             }
-            res.status(201).json({ message: 'Address deleted successfully' });
+            res.status(200).json({ message: 'Dirección eliminada correctamente' });
         }catch(error){
-            res.status(500).json({ message: 'Error delete address' });
+            res.status(500).json({ message: 'Error al eliminar la dirección' });
         }
     });
 

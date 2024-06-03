@@ -16,10 +16,13 @@ const ProductCard = ({ product }) => {
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
-            router.push(`/product/${product.product_id}`);
+            handleAddToCart(event);
         }
     };
-    const handleAddToCart = () => {
+    const handleAddToCart = (event) => {
+        event.stopPropagation();
+        event.preventDefault();
+    
         setIsLoading(true);
         setTimeout(() => {
             setIsLoading(false);
@@ -83,7 +86,8 @@ const ProductCard = ({ product }) => {
                                 radius="full" 
                                 className={`text-black transition-opacity duration-2000`} 
                                 isIconOnly 
-                                onPress={handleAddToCart}
+                                onClick={(e) => handleAddToCart(e)}
+                                onKeyDown={(e)=>handleKeyDown(e)}
                                 onFocus={() => setIsHovered(true)}
                                 onBlur={() => !isLoading && setIsHovered(false)}
                             >

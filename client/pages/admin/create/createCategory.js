@@ -1,5 +1,5 @@
-import { Button, Input, Select, SelectItem } from "@nextui-org/react";
-import { useState, useEffect, use } from 'react';
+import { Button, Input, Select, SelectItem, Card } from "@nextui-org/react";
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import CategoryService from '@services/categoryService';
 import { useRouter } from 'next/router';
@@ -91,79 +91,77 @@ const CreateCategory = () => {
         console.log('parentCategories', parentCategories);
     }, [id]);
     return (
-        <motion.main
-            className="max-w-4xl mx-auto mt-10 p-6 bg-gray-100 rounded-lg shadow-xl"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
+        <main
+            className="max-w-4xl mx-auto my-32 p-6"
         >
-            <h1 className="text-2xl font-bold mb-4">Crear Categoría</h1>
-            <form onSubmit={handleRegister}>
-                <section className="mb-4">
-                    <Select 
-                        name='category' 
-                        label='Categoría padre' 
-                        onChange={handleParentCategoryChange} 
-                        selectedKeys={parentCategory} 
-                        data-filled
-                        isDisabled={readOnly}
-                    >
-                        {parentCategories.map((category) => (
-                            <SelectItem key={category.category_id} value={category.category_id}>
-                                {category.category_name}
-                            </SelectItem>
-                        ))}
-                    </Select>
-                </section>
-                <AnimatePresence>
-                    {childCategoriesLevels.map((childCategories, index) => (
-                        childCategories.length > 0 && (
-                            <motion.section 
-                                key={index}
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: "auto" }}
-                                exit={{ opacity: 0, height: 0 }}
-                                transition={{ duration: 0.225 }}
-                                className="mb-4"
-                            >
-                                <Select 
-                                    name={`childCategory${index}`} 
-                                    label='Subcategoría de la Subcategoría' 
-                                    onChange={(e) => handleChildCategoryChange(e, index + 1)}
-                                    selectedKeys={[childCategoriesLevels[index][0]?.category_id]} 
-                                    isDisabled={readOnly}
+            <Card shadow className="p-5">
+                <h1 className="text-2xl font-bold mb-4">Crear Categoría</h1>
+                <form onSubmit={handleRegister}>
+                    <section className="mb-4">
+                        <Select 
+                            name='category' 
+                            label='Categoría padre' 
+                            onChange={handleParentCategoryChange} 
+                            selectedKeys={parentCategory} 
+                            data-filled
+                            isDisabled={readOnly}
+                        >
+                            {parentCategories.map((category) => (
+                                <SelectItem key={category.category_id} value={category.category_id}>
+                                    {category.category_name}
+                                </SelectItem>
+                            ))}
+                        </Select>
+                    </section>
+                    <AnimatePresence>
+                        {childCategoriesLevels.map((childCategories, index) => (
+                            childCategories.length > 0 && (
+                                <motion.section 
+                                    key={index}
+                                    initial={{ opacity: 0, height: 0 }}
+                                    animate={{ opacity: 1, height: "auto" }}
+                                    exit={{ opacity: 0, height: 0 }}
+                                    transition={{ duration: 0.225 }}
+                                    className="mb-4"
                                 >
-                                    {childCategories.map((category) => (
-                                        <SelectItem key={category.category_id} value={category.category_id}>
-                                            {category.category_name}
-                                        </SelectItem>
-                                    ))}
-                                </Select>
-                            </motion.section>
-                        )
-                    ))}
-                </AnimatePresence>
-                
-                <section className="mb-4">
-                    <Input 
-                        type='text' 
-                        label='Nombre de la categoría' 
-                        value={nameCategory}
-                        onChange={(e) => setName(e.target.value)} 
-                        onClear={readOnly ? undefined : () => setName('')}
-                        readOnly={readOnly === "true"}
-                    />
-                </section>
-                <section>
-                    {!readOnly && readOnly !== "true" && (
-                        <Button type='submit' disabled={loading} className="w-full">{loading ? 'Cargando...' : {id} ? 'Guardar cambios' : 'Crear Producto'}</Button>
-                        
-                    )}
-                    <Button type='button' color="danger" onClick={() => router.push('/admin/Categorias')} className="w-full mt-4">Cancelar</Button>
-                </section>
-            </form>
-        </motion.main>
+                                    <Select 
+                                        name={`childCategory${index}`} 
+                                        label='Subcategoría de la Subcategoría' 
+                                        onChange={(e) => handleChildCategoryChange(e, index + 1)}
+                                        selectedKeys={[childCategoriesLevels[index][0]?.category_id]} 
+                                        isDisabled={readOnly}
+                                    >
+                                        {childCategories.map((category) => (
+                                            <SelectItem key={category.category_id} value={category.category_id}>
+                                                {category.category_name}
+                                            </SelectItem>
+                                        ))}
+                                    </Select>
+                                </motion.section>
+                            )
+                        ))}
+                    </AnimatePresence>
+                    
+                    <section className="mb-4">
+                        <Input 
+                            type='text' 
+                            label='Nombre de la categoría' 
+                            value={nameCategory}
+                            onChange={(e) => setName(e.target.value)} 
+                            onClear={readOnly ? undefined : () => setName('')}
+                            readOnly={readOnly === "true"}
+                        />
+                    </section>
+                    <section>
+                        {!readOnly && readOnly !== "true" && (
+                            <Button type='submit' disabled={loading} className="w-full">{loading ? 'Cargando...' : {id} ? 'Guardar cambios' : 'Crear Producto'}</Button>
+                            
+                        )}
+                        <Button type='button' color="danger" onClick={() => router.push('/admin/Categorias')} className="w-full mt-4">Cancelar</Button>
+                    </section>
+                </form>
+            </Card>
+        </main>
     );
 }
 

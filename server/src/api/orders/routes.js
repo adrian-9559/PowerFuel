@@ -16,9 +16,9 @@ router.route('/user/:userId')
         try {
             const userId = req.params.userId;
             const orders = await getOrdersByUser(userId);
-            res.json(orders);
+            res.status(200).json(orders);
         } catch (error) {
-            res.status(500).json({ message: 'Hubo un problema al obtener las órdenes. Por favor, inténtalo de nuevo.' });
+            res.status(500).json({ message: 'Hubo un problema al obtener los pedidos' });
         }
     });
 
@@ -36,9 +36,9 @@ router.route('/user')
         try {
             const userId = req.user.userId;
             const orders = await getOrdersByUser(userId);
-            res.json(orders);
+            res.status(200).json(orders);
         } catch (error) {
-            res.status(500).json({ message: 'Hubo un problema al obtener las órdenes. Por favor, inténtalo de nuevo.' });
+            res.status(500).json({ message: 'Hubo un problema al obtener los pedidos' });
         }
     });
 
@@ -56,9 +56,9 @@ router.route('/:orderId')
         try {
             const orderId = req.params.orderId;
             const order = await getOrderById(orderId);
-            res.json(order);
+            res.status(200).json(order);
         } catch (error) {
-            res.status(500).json({ message: 'Hubo un problema al obtener la orden. Por favor, inténtalo de nuevo.' });
+            res.status(500).json({ message: 'Hubo un problema al obtener el pedido' });
         }
     })
     /**
@@ -76,9 +76,9 @@ router.route('/:orderId')
             const orderId = req.params.orderId;
             const order = req.body;
             const updatedOrder = await updateOrder(orderId, order);
-            res.json(updatedOrder);
+            res.status(200).json(updatedOrder, { message: 'Pedido modificado correctamente' });
         } catch (error) {
-            res.status(500).json({ message: 'Hubo un problema al actualizar la orden. Por favor, inténtalo de nuevo.' });
+            res.status(500).json({ message: 'Hubo un problema al modificar el pedido' });
         }
     })
     /**
@@ -94,9 +94,9 @@ router.route('/:orderId')
         try {
             const orderId = req.params.orderId;
             const result = await deleteOrder(orderId);
-            res.json({ success: result });
+            res.status(200).json({ success: result });
         } catch (error) {
-            res.status(500).json({ message: 'Hubo un problema al eliminar la orden. Por favor, inténtalo de nuevo.' });
+            res.status(500).json({ message: 'Hubo un problema al eliminar el pedido' });
         }
     });
 
@@ -117,7 +117,7 @@ router.route('/')
             const newOrder = await createOrder(order);
             res.json(newOrder);
         } catch (error) {
-            res.status(500).json({ message: 'Hubo un problema al crear la orden. Por favor, inténtalo de nuevo.' });
+            res.status(500).json({ message: 'Hubo un problema al crear el pedido' });
         }
     })
     .get(async (req, res) => {
@@ -125,7 +125,7 @@ router.route('/')
             const orders = await getAllOrders(req.query.page, req.query.limit);
             res.status(200).json(orders);
         } catch (error) {
-            res.status(500).json({ message: 'Hubo un problema al obtener las órdenes. Por favor, inténtalo de nuevo.' });
+            res.status(500).json({ message: 'Hubo un problema al obtener los pedidos' });
         }
     });
 
@@ -142,9 +142,9 @@ router.route('/count')
     .get(async (req, res) => {
         try {
             const count = await getOrdersCount();
-            res.json({ count });
+            res.status(200).json({ count });
         } catch (error) {
-            res.status(500).json({ message: 'Hubo un problema al obtener el conteo de órdenes. Por favor, inténtalo de nuevo.' });
+            res.status(500);
         }
     });
 
@@ -166,7 +166,7 @@ router.route('/date')
             const orders = await getOrdersByDate(startDate, endDate);
             res.json(orders);
         } catch (error) {
-            res.status(500).json({ message: 'Hubo un problema al obtener las órdenes. Por favor, inténtalo de nuevo.' });
+            res.status(500).json({ message: 'Hubo un problema al obtener los pedidos' });
         }
     });
 

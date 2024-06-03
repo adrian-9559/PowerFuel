@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip, getKeyValue, Button, Pagination } from "@nextui-org/react";
 import { useRouter } from 'next/router';
+import { Modal, useDisclosure, ModalContent } from '@nextui-org/react';
+import ProductAdminPanel from '@components/product/productAdminPanel';
 import ProductService from '@services/productService';
 import DeleteIcon from '@icons/DeleteIcon';
 import EyeIcon from '@icons/EyeIcon';
@@ -18,7 +20,8 @@ const ProductoAdministration = () => {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [selectedKeys, setSelectedKeys] = useState([]);
-
+    const [selectedProduct, setSelectedProduct] = useState(null);
+    const {isOpen, onOpenChange, onOpen, onClose } = useDisclosure();
 
     useEffect(() => {
         const fetchProductData = async () => {
@@ -28,7 +31,6 @@ const ProductoAdministration = () => {
         }
         fetchProductData();
     }, [page]);
-
 
     const deleteProduct = async (productId) => {
         await ProductService.deleteProduct(productId);
@@ -157,7 +159,7 @@ const ProductoAdministration = () => {
                             <TableCell>
                                 <section className=" flex justify-center items-center gap-2">
                                     <Tooltip color="primary" content="Detalles">
-                                        <Button isIconOnly color="primary" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50" onPress={() => router.push(`/admin/create/createProduct?readOnly=true&&id=${product.product_id}`)}>
+                                        <Button isIconOnly color="primary" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50" onPress={() => { setSelectedProduct(product); onOpen(); }}>
                                             <EyeIcon color="primary" />
                                         </Button>
                                     </Tooltip>
@@ -177,6 +179,11 @@ const ProductoAdministration = () => {
                     ), [])}
                 </TableBody>
             </Table>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} className='p-6 overflow-hidden max-w-[60%] max-h-[80%]' backdrop="blur">
+                <ModalContent className='w-full'>
+                    {selectedProduct && <ProductAdminPanel productId={selectedProduct.product_id} key={selectedProduct.product_id} />}
+                </ModalContent>
+            </Modal>
         </section>
     );
 };

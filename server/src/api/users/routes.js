@@ -21,7 +21,7 @@ router.route('/')
             if (!user) {
                 return res.status(400).json({ message: 'error registering the user'});
             }
-            res.json(user);
+            res.status(200).json(user);
         } catch (error) {
             res.status(500).json({ message: 'Error registering the user' });
         }
@@ -58,11 +58,11 @@ router.route('/:userId')
         try {
             const deletedUser = await deleteUserById(req.params.userId);
             if (!deletedUser) {
-                return res.status(404).json({ message: 'User not found' });
+                return res.status(404).json({ message: 'Usuario no encontrado' });
             }
-            res.json({ message: 'User deleted successfully' });
+            res.status(200).json({ message: 'Usuario eliminado correctamente' });
         } catch (error) {
-            res.status(500).json({ message: 'Error deleting the user' });
+            res.status(500).json({ message: 'Error al eliminar el usuario' });
         }
     })
     /**
@@ -80,11 +80,11 @@ router.route('/:userId')
         try {
             const user = await updateUserById(req.params.userId, req.body.user);
             if (!user) {
-                return res.status(404).json({ message: 'User not found' });
+                return res.status(404).json({ message: 'Usuario no encontrado' });
             }
-            res.json({ message: 'User updated successfully' });
+            res.status(200).json({ message: 'Usuario modificado correctamente' });
         } catch (error) {
-            res.status(500).json({ message: 'Error updating the user' });
+            res.status(500).json({ message: 'Error al modificar el usuario' });
         }
     })
     /**
@@ -102,12 +102,12 @@ router.route('/:userId')
         try {
             const user = await getUserById(userId);
             if (!user) {
-                return res.status(404).json({ message: 'User not found' });
+                return res.status(404).json({ message: 'Usuario no encontrado' });
             }
-            return res.json(user); 
+            return res.status(200).json(user); 
         } catch (error) {
             if (!res.headersSent) {
-                return res.status(500).json({ message: 'Error getting the user' });
+                return res.status(500).json({ message: 'Error al obtener el usuario' });
             }
         }
     });
@@ -131,9 +131,9 @@ router.route('/login')
                 return res.status(401).json({ message: 'Inicio de sesión fallido' });
             }
             const { authToken, refreshToken } = tokens;
-            res.json({ message: 'Inicio de sesión correcto', auth_token: authToken, refresh_token: refreshToken});
+            res.status(200).json({ message: 'Inicio de sesión correcto', auth_token: authToken, refresh_token: refreshToken});
         } catch (error) {
-            res.status(500).json({ message: 'Error logging in' });
+            res.status(500).json({ message: 'Error al iniciar sesión' });
         }
     });
 
@@ -152,7 +152,7 @@ router.route('/usersByRegistrationDate')
         const { startDate, endDate } = req.body;
         try {
             const users = await getUsersByRegistrationDate(startDate, endDate);
-            res.json(users);
+            res.status(200).json(users);
         } catch (error) {
             res.status(500).json({ message: 'Error al obtener los usuarios por fecha de registro' });
         }
@@ -174,12 +174,12 @@ router.route('/info')
         try {
             const user = await getUserById(userId);
             if (!user) {
-                return res.status(404).json({ message: 'User not found' });
+                return res.status(404).json({ message: 'Usuario no encontrado' });
             }
-            return res.json(user); 
+            return res.status(200).json(user); 
         } catch (error) {
             if (!res.headersSent) {
-                return res.status(500).json({ message: 'Error getting the user' });
+                return res.status(500).json({ message: 'Error al obtener el usuario' });
             }
         }
     });
@@ -200,12 +200,12 @@ router.route('/resetPassword')
         try {
             const response = await resetPassword(email);
             if (!response) {
-                return res.status(404).json({ message: 'User not found' });
+                return res.status(404).json({ message: 'Usuario no encontrado' });
             }
-            return res.json(response); 
+            return res.status(200).json({ message: 'Contraseña restablecida correctamente' });
         } catch (error) {
             if (!res.headersSent) {
-                return res.status(500).json({ message: 'Error getting the user' });
+                return res.status(500).json({ message: 'Error al restablecer la contraseña del usuario' });
             }
         }
     });

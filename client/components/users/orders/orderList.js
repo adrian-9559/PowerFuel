@@ -12,18 +12,17 @@ const AddressList = () => {
         };
         
         fetchAddress();
-        console.log("orderList", orderList);
     });
-
     
-
     return (
         <main className="py-5">
-            <h1 className="font-bold text-3xl">Lista de pedidos</h1>
+            <section>
+                <h1 className="font-bold text-3xl">Listado de Direcciones</h1>
+            </section>
             <section>
                 <ul>
-                    {orderList && orderList.map((oder, index) => (
-                        <OrderItem key={index} order={oder} />
+                    {orderList && orderList.map((order, index) => (
+                        <OrderItem key={index} order={order}/>
                     ))} 
                     {!orderList && <p>No hay direcciones de envío</p>}
                 </ul>

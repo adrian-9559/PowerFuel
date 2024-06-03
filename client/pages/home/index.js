@@ -175,7 +175,7 @@ const HomeComponent = () => {
                 </Card>
             </section>
             <section>
-                <Card className="max-w-[140rem] shadow-lg bg-gray-200 bg-opacity-50">
+                <Card className="max-w-[140rem] shadow-lg bg-gray-200 bg-opacity-50" >
                     <CardHeader className="flex-col !items-start">
                         <h1 className="font-bold text-2xl bg-blue-800 bg-opacity-50 text-white w-full p-2 pl-4 shadow-lg rounded-lg">
                             Productos

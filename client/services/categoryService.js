@@ -19,8 +19,10 @@ class CategoryService {
           console.error('Error fetching categories:', error.message);
        }
     };
+
      async addCategory(category) {
         try {
+            console.log("Categoria a añadir: ", category)
             const response = await api.post('/categories', category);
             return response.data;
         } catch (error) {

@@ -1,60 +1,60 @@
 import React from 'react';
 import {Card, Button} from '@nextui-org/react';
-import ProductCategory from '@components/category/ProductListCategory';
+import ProductService from '@services/productService';
 import CategoryService from '@services/categoryService';
 import { useRouter } from 'next/router';
 
-const CategoryList = () => {
-
-    const [categories, setCategories] = React.useState([]);
+const CategoryList = ({id}) => {
     const router = useRouter();
+    const [productos, setProductos] = useState([]);
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        const fetchProductos = async () => {
+            try {
+                const data = await ProductService.getAllProductsByCategory(id);
+                try{
+                    const newChildCategories = await CategoryService.getChildCategories(id);
+                    if (newChildCategories.length > 0) {
+                        for(let category of newChildCategories) {
+                            const products = await ProductService.getAllProductsByCategory(category.category_id);
+                            if(data){
+                                data.push(...products);
+                            }else{
+                                setProductos(products);
+                            }
+                        }
+                    }
+                }catch(error){
+                    console.error('Error fetching child categories:', error.message);
+                }
+                if(data){
+                    setProductos(data);
+                }
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching products:', error.message);
+                setLoading(false);
+            }
+        };
 
-    React.useEffect(() => {
-        CategoryService.getCategories().then((response) => {
-            setCategories(response.categories);
-        });
-    }
-    , []);
-
-    // Function to generate a hash from a string
-    const stringToHash = (str) => {
-        let hash = 0;
-        for (let i = 0; i < str.length; i++) {
-            hash = str.charCodeAt(i) + ((hash << 5) - hash);
-        }
-        return hash;
-    }
-
-    // Function to generate a color from a hash
-    const hashToColor = (hash) => {
-        const hue = hash % 280;
-        return `hsl(${hue}, 100%, 80%)`;
-    }
-
-    // Function to lighten a color
-    const lightenColor = (color, percent) => {
-        const [hue, saturation, lightness] = color.match(/\d+/g);
-        return `hsl(${hue}, ${saturation}%, ${Math.min(100, Number(lightness) + percent)}%)`;
-    }
+        fetchProductos();
+    }, [id]);
 
     return (
-        <main className='mx-48'>
-            <section className='flex flex-col gap-4 px-4'>
-                {categories && categories.map((category) => {
-                    const color = hashToColor(stringToHash(category.category_name));
-                    const lightColor = lightenColor(color, 20); // Lighten the color by 20%
-                    return (
-                        <Card key={category.category_id} shadow className='p-4 rounded-lg'> {/* Add padding and rounded corners here */}
-                            <Card className='flex flex-row items-center p-2 justify-between' style={{backgroundColor: color}}> {/* Move the background color here */}
-                                <h2 className='font-bold ml-2'>{category.category_name}</h2> 
-                                <Button className="bg-gray-500 bg-opacity-50" auto onClick={() => {router.push(`/category/${category.category_id}`)}}>Ver más</Button> {/* Use the lightened color here */}
-                            </Card>
-                            <ProductCategory key={category.id} id={category.category_id} />
-                        </Card>
-                    );
-                })}
-            </section>
-        </main>
+        <section className="">
+            <Card className='flex w-full'>
+                <CardHeader>
+                    <h2 className="text-2xl font-bold">Productos</h2>
+                </CardHeader>
+                {loading ? (
+                    <Spinner />
+                ) : productos && productos.length > 0 && (
+                    productos.map((product) => (
+                        <ProductCard product={product} onClick={() => router.push(`/product/${product.product_id}`)}/>
+                    ))
+                )}
+            </Card>
+        </section>
     );
 };
 

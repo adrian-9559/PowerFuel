@@ -16,12 +16,10 @@
 
 
 -- Volcando estructura de base de datos para database_web
-DROP DATABASE IF EXISTS `database_web`;
 CREATE DATABASE IF NOT EXISTS `database_web` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `database_web`;
 
 -- Volcando estructura para tabla database_web.brands
-DROP TABLE IF EXISTS `brands`;
 CREATE TABLE IF NOT EXISTS `brands` (
   `id_brand` int NOT NULL,
   `brand_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
@@ -35,7 +33,6 @@ INSERT INTO `brands` (`id_brand`, `brand_name`) VALUES
 	(1, 'Prozis');
 
 -- Volcando estructura para tabla database_web.categories
-DROP TABLE IF EXISTS `categories`;
 CREATE TABLE IF NOT EXISTS `categories` (
   `category_id` int NOT NULL AUTO_INCREMENT,
   `category_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
@@ -44,31 +41,40 @@ CREATE TABLE IF NOT EXISTS `categories` (
   UNIQUE KEY `category_name` (`category_name`),
   KEY `parent_category_id` (`parent_category_id`),
   CONSTRAINT `categories_ibfk_1` FOREIGN KEY (`parent_category_id`) REFERENCES `categories` (`category_id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla database_web.categories: ~17 rows (aproximadamente)
+-- Volcando datos para la tabla database_web.categories: ~27 rows (aproximadamente)
 DELETE FROM `categories`;
 INSERT INTO `categories` (`category_id`, `category_name`, `parent_category_id`) VALUES
-	(1, 'Suplementación', NULL),
-	(2, 'Proteina', NULL),
-	(3, 'Creatina', NULL),
-	(4, 'Glutamina', NULL),
-	(5, 'Aminoácidos', NULL),
-	(8, 'Cafeína', NULL),
-	(9, 'L-Canitina', NULL),
-	(10, 'Intraentreno', NULL),
-	(11, 'Bebidas Isotonicas y Electrolitos', NULL),
-	(12, 'Carne y Huevo', 2),
-	(13, 'Vegetal', 2),
-	(14, 'Dietetica', 2),
-	(15, 'Barritas', 2),
-	(16, 'Coláheno', 2),
-	(17, 'Estimulantes y Testosterona', NULL),
-	(29, 'Barras', NULL),
-	(30, 'Suero de leche', 2);
+	(75, 'Alimentación Saludable', NULL),
+	(76, 'Barritas y Snacks', 75),
+	(77, 'Barritas', 76),
+	(78, 'Galletas y Cereales', 76),
+	(79, 'Muffins', 76),
+	(80, 'Gofres y Tartas', 76),
+	(81, 'Snacks Salados', 76),
+	(82, 'Snacks Crudos', 76),
+	(83, 'Frutos Secos y Fruta', 76),
+	(84, 'Bebidas', 75),
+	(85, 'Bebidas Proteicas', 84),
+	(86, 'Bebidas Deportivas', 84),
+	(87, 'Bebdas Vegetales', 84),
+	(88, 'Cafe y Té', 84),
+	(89, 'Aromas y Edulcorantes', 84),
+	(90, 'Cremas', 75),
+	(91, 'Cremas de Cacahuete', 90),
+	(92, 'Cremas de Frutos Secos', 90),
+	(93, 'Cremas para Untar', 90),
+	(94, 'Cremas Proteicas', 90),
+	(95, 'Congelados', 75),
+	(96, 'Platos', 95),
+	(97, 'Helados y Postres', 95),
+	(98, 'Salsas, Siropes y Mermeladas', 75),
+	(99, 'Salsa Zero', 98),
+	(100, 'Siropes y Mermeladas', 98),
+	(101, 'Suplementación', NULL);
 
 -- Volcando estructura para tabla database_web.notification
-DROP TABLE IF EXISTS `notification`;
 CREATE TABLE IF NOT EXISTS `notification` (
   `notification_id` int NOT NULL AUTO_INCREMENT,
   `title` varchar(50) NOT NULL,
@@ -85,13 +91,12 @@ CREATE TABLE IF NOT EXISTS `notification` (
   CONSTRAINT `FK_User_Notification` FOREIGN KEY (`notification_user`) REFERENCES `user_credentials` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla database_web.notification: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla database_web.notification: ~0 rows (aproximadamente)
 DELETE FROM `notification`;
 INSERT INTO `notification` (`notification_id`, `title`, `description`, `notification_date`, `viewed`, `reference`, `notification_user`, `type`) VALUES
 	(17, 'Pedido creado', 'Se ha creado un nuevo pedido con el número de orden: py_3PMGKiIqj90TtX551fA0TDp2', '2024-05-30 21:16:33', '1', 'py_3PMGKiIqj90TtX551fA0TDp2', 74, 'Order');
 
 -- Volcando estructura para tabla database_web.old_passwords
-DROP TABLE IF EXISTS `old_passwords`;
 CREATE TABLE IF NOT EXISTS `old_passwords` (
   `user_id` int NOT NULL,
   `previous_password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
@@ -104,7 +109,6 @@ CREATE TABLE IF NOT EXISTS `old_passwords` (
 DELETE FROM `old_passwords`;
 
 -- Volcando estructura para tabla database_web.orders
-DROP TABLE IF EXISTS `orders`;
 CREATE TABLE IF NOT EXISTS `orders` (
   `order_id` varchar(50) NOT NULL,
   `user_id` int NOT NULL,
@@ -119,13 +123,10 @@ CREATE TABLE IF NOT EXISTS `orders` (
 -- Volcando datos para la tabla database_web.orders: ~4 rows (aproximadamente)
 DELETE FROM `orders`;
 INSERT INTO `orders` (`order_id`, `user_id`, `order_date`, `order_status`, `details`) VALUES
-	('py_3PMGKiIqj90TtX551fA0TDp2', 74, '2024-05-30 00:00:00', 'pending', '[{"product_id":49,"quantity":1}]'),
-	('py_3PMxnLIqj90TtX551wPv6dl5', 73, '2024-06-01 19:40:56', 'pending', '[{"product_id":70,"quantity":1}]'),
-	('py_3PMxZYIqj90TtX553FQFpWkf', 73, '2024-06-01 19:26:42', 'pending', '[{"product_id":70,"quantity":1}]'),
+	('py_3PMGKiIqj90TtX551fA0TDp2', 74, '2024-05-30 00:00:00', 'pending', '[{"product_id":70,"quantity":1}]'),
 	('py_3PNIj6Iqj90TtX552XURR2SK', 73, '2024-06-02 18:02:00', 'pending', '[{"product_id":70,"quantity":6},{"product_id":71,"quantity":6}]');
 
 -- Volcando estructura para tabla database_web.password_reset_codes
-DROP TABLE IF EXISTS `password_reset_codes`;
 CREATE TABLE IF NOT EXISTS `password_reset_codes` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
@@ -141,7 +142,6 @@ CREATE TABLE IF NOT EXISTS `password_reset_codes` (
 DELETE FROM `password_reset_codes`;
 
 -- Volcando estructura para tabla database_web.products
-DROP TABLE IF EXISTS `products`;
 CREATE TABLE IF NOT EXISTS `products` (
   `product_id` int NOT NULL AUTO_INCREMENT,
   `product_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
@@ -159,17 +159,20 @@ CREATE TABLE IF NOT EXISTS `products` (
   KEY `category_ibfk_1` (`category_id`),
   CONSTRAINT `category_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`),
   CONSTRAINT `products_ibfk_1` FOREIGN KEY (`id_brand`) REFERENCES `brands` (`id_brand`)
-) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla database_web.products: ~3 rows (aproximadamente)
+-- Volcando datos para la tabla database_web.products: ~4 rows (aproximadamente)
 DELETE FROM `products`;
 INSERT INTO `products` (`product_id`, `product_name`, `description`, `price`, `stock_quantity`, `id_brand`, `status`, `category_id`, `stripe_product_id`, `stripe_price_id`, `registration_date`) VALUES
-	(70, '100% Real Whey Protein 1000 g - Brownie de chocolate', 'Peso neto: 1000 g\r\n\r\nLote:  I2400507\r\n\r\nConsumir preferentemente antes del fin de:  2026-01-31\r\n\r\nDosis:  3 cazo(s)(30 g)\r\n\r\nDosis por envase:  33\r\n\r\nIngredientes\r\nConcentrado de PROTEÍNA DE SUERO de LECHE (88%), Cacao Magro en Polvo (Cacao Magro en Polvo, Corrector de Acidez (Carbonatos de Potasio)), Aroma, Copos de chocolate (LECHE), Espesantes (Goma guar, Goma Xantana), Edulcorantes (Acesulfamo K, Sucralosa), Emulgente (Lecitinas) .\r\n\r\nPuede contener trazas de soja, huevo y gluten.\r\n\r\nModo de empleo: Tomar hasta 4 dosis al día. Para preparar 1 dosis, añadir 3 cazos (30g) del producto en polvo a 300mL de agua u otra bebida de elección. Alterar la cantidad de líquido para obtener la consistencia y el sabor deseados. Para un sabor más rico e intenso, utilizar 250mL de agua. Para un sabor más suave, utilizar 350-400mL de agua. Agitar bien durante unos 5 segundos. El cazo se encuentra en el interior del envase.\r\n\r\nCon edulcorantes. Conservar herméticamente cerrado en su envase original en un lugar fresco, seco y alejado de la luz solar directa.\r\n', 30.99, 1, 1, 'Disabled', 30, 'prod_QDLq7pJaWbN0by', 'price_1PMv8RIqj90TtX55wlIvj4LV', '2024-06-01 16:50:33'),
-	(71, 'Creatina Creapure® 300 g - Cola', 'Peso neto: 300 g\r\n\r\nLote:  I2401885\r\n\r\nConsumir preferentemente antes del fin de:  2025-11-30\r\n\r\nDosis:  4 cazo(s) raso(s)(3 g)\r\n\r\nDosis por envase:  100\r\n\r\nIngredientes\r\nCreapure® (Monohidrato de Creatina).\r\n\r\nPuede contener trazas de leche, soja, huevo y gluten. Código de registro: 18OS13.\r\n\r\nDosis diaria recomendada: Tomar 1 dosis al día. Modo de empleo: Añadir 4 cazos rasos (3g) a 200–250mL de agua. El cazo se encuentra en el interior del envase.\r\n\r\nComplemento Alimenticio\r\nAdvertencias:\r\nDebido a la presencia de creatina, este producto está indicado únicamente para adultos. No tomar durante el embarazo. El efecto beneficioso se obtiene con una ingesta diaria de 3 g de creatina. Este producto está indicado para adultos que realicen ejercicio físico de alta intensidad. Mientras se consumen complementos de creatina, debe garantizarse la ingesta de abundante agua para evitar la deshidratación. No superar la dosis diaria expresamente recomendada. Este producto no debe sustituir una alimentación variada y equilibrada ni un estilo de vida saludable. Mantener fuera del alcance de los niños más pequeños. Conservar herméticamente cerrado en su envase original en un lugar fresco, seco y alejado de la luz solar directa.', 38.99, 1, 1, 'Disabled', 3, 'prod_QDROX6iR4yeRtk', 'price_1PN0W7Iqj90TtX55OdP1TOtj', '2024-06-01 22:35:16'),
-	(104, '1', '1', 1.00, 1, 1, 'Disabled', 3, 'prod_QDoH0iUHFxIorZ', 'price_1PNMfFIqj90TtX55HmwyQcrs', '2024-06-02 22:14:11');
+	(105, '12 x Protein Snack 30g Chocolate belga ', 'Cuando falta demasiado tiempo para la siguiente comida\r\n¿Estás todo el día sentado trabajando? Pruébalo y disfruta de tu dosis de proteínas sin calorías extra. ¡Es deliciosamente equilibrado!\r\n\r\n¿Sabes ese momento en que te apetece algo realmente bueno y te sientes tentado de hincarle el diente a algo apetitoso? ¡Pues es hora de que conozcas Protein Snack de Prozis! Una sabrosa barrita para disfrutar a cualquier hora del día siempre que sientas deseos de algo dulce y delicioso.\r\n\r\nEl aperitivo perfecto para completar tu dieta.\r\n\r\n¿Proteínas extra? ¡Claro!\r\nUna buena fuente de proteínas para satisfacer tus deseos a lo largo del día. ¡La mejor manera de hacer cada día un poquito más dulce!\r\n\r\nA tener en cuenta:\r\n- Fomenta el crecimiento muscular.\r\n- Perfecto para tus objetivos de fitness.\r\n- Sin conservantes.\r\n- Sin edulcorantes.\r\n- Sin aspartamo.', 10.68, 1, 1, 'Enabled', 77, 'prod_QENho9lppwYX6t', 'price_1PNuwDIqj90TtX55JPHelWqz', '2024-06-04 10:49:57'),
+	(106, '12 x Protein Snack 30g Chocolate blanco con frambuesas ', 'Cuando falta demasiado tiempo para la siguiente comida\r\n¿Estás todo el día sentado trabajando? Pruébalo y disfruta de tu dosis de proteínas sin calorías extra. ¡Es deliciosamente equilibrado!\r\n\r\n¿Sabes ese momento en que te apetece algo realmente bueno y te sientes tentado de hincarle el diente a algo apetitoso? ¡Pues es hora de que conozcas Protein Snack de Prozis! Una sabrosa barrita para disfrutar a cualquier hora del día siempre que sientas deseos de algo dulce y delicioso.\r\n\r\nEl aperitivo perfecto para completar tu dieta.\r\n\r\n¿Proteínas extra? ¡Claro!\r\nUna buena fuente de proteínas para satisfacer tus deseos a lo largo del día. ¡La mejor manera de hacer cada día un poquito más dulce!\r\n\r\nA tener en cuenta:\r\n- Fomenta el crecimiento muscular.\r\n- Perfecto para tus objetivos de fitness.\r\n- Sin conservantes.\r\n- Sin edulcorantes.\r\n- Sin aspartamo.', 10.68, 1, 1, 'Disabled', 77, 'prod_QENqAA3MBCprlk', 'price_1PNv4TIqj90TtX552fcfKqo9', '2024-06-04 10:58:29'),
+	(107, '12 x Protein Snack 30g Chocolate-Avellana', 'Cuando falta demasiado tiempo para la siguiente comida\r\n¿Estás todo el día sentado trabajando? Pruébalo y disfruta de tu dosis de proteínas sin calorías extra. ¡Es deliciosamente equilibrado!\r\n\r\n¿Sabes ese momento en que te apetece algo realmente bueno y te sientes tentado de hincarle el diente a algo apetitoso? ¡Pues es hora de que conozcas Protein Snack de Prozis! Una sabrosa barrita para disfrutar a cualquier hora del día siempre que sientas deseos de algo dulce y delicioso.\r\n\r\nEl aperitivo perfecto para completar tu dieta.\r\n\r\n¿Proteínas extra? ¡Claro!\r\nUna buena fuente de proteínas para satisfacer tus deseos a lo largo del día. ¡La mejor manera de hacer cada día un poquito más dulce!\r\n\r\nA tener en cuenta:\r\n- Fomenta el crecimiento muscular.\r\n- Perfecto para tus objetivos de fitness.\r\n- Sin conservantes.\r\n- Sin edulcorantes.\r\n- Sin aspartamo.', 1.00, 1, 1, 'Disabled', 77, 'prod_QENwUDJVe6DUhp', 'price_1PNvApIqj90TtX55Tvtdc0L0', '2024-06-04 11:05:03'),
+	(108, '12 x Protein Snack 30g Chocolate-Coco', 'Cuando falta demasiado tiempo para la siguiente comida\r\n¿Estás todo el día sentado trabajando? Pruébalo y disfruta de tu dosis de proteínas sin calorías extra. ¡Es deliciosamente equilibrado!\r\n\r\n¿Sabes ese momento en que te apetece algo realmente bueno y te sientes tentado de hincarle el diente a algo apetitoso? ¡Pues es hora de que conozcas Protein Snack de Prozis! Una sabrosa barrita para disfrutar a cualquier hora del día siempre que sientas deseos de algo dulce y delicioso.\r\n\r\nEl aperitivo perfecto para completar tu dieta.\r\n\r\n¿Proteínas extra? ¡Claro!\r\nUna buena fuente de proteínas para satisfacer tus deseos a lo largo del día. ¡La mejor manera de hacer cada día un poquito más dulce!\r\n\r\nA tener en cuenta:\r\n- Fomenta el crecimiento muscular.\r\n- Perfecto para tus objetivos de fitness.\r\n- Sin conservantes.\r\n- Sin edulcorantes.\r\n- Sin aspartamo.', 10.68, 1, 1, 'Disabled', 77, 'prod_QENzHVIwUcK85A', 'price_1PNvDNIqj90TtX55dfzqej0R', '2024-06-04 11:07:41'),
+	(109, '12 x Protein Snack 30g Chocolate-Galletas de Crema', 'Cuando falta demasiado tiempo para la siguiente comida\r\n¿Estás todo el día sentado trabajando? Pruébalo y disfruta de tu dosis de proteínas sin calorías extra. ¡Es deliciosamente equilibrado!\r\n\r\n¿Sabes ese momento en que te apetece algo realmente bueno y te sientes tentado de hincarle el diente a algo apetitoso? ¡Pues es hora de que conozcas Protein Snack de Prozis! Una sabrosa barrita para disfrutar a cualquier hora del día siempre que sientas deseos de algo dulce y delicioso.\r\n\r\nEl aperitivo perfecto para completar tu dieta.\r\n\r\n¿Proteínas extra? ¡Claro!\r\nUna buena fuente de proteínas para satisfacer tus deseos a lo largo del día. ¡La mejor manera de hacer cada día un poquito más dulce!\r\n\r\nA tener en cuenta:\r\n- Fomenta el crecimiento muscular.\r\n- Perfecto para tus objetivos de fitness.\r\n- Sin conservantes.\r\n- Sin edulcorantes.\r\n- Sin aspartamo.', 10.68, 1, 1, 'Disabled', 77, 'prod_QEO3X72ujJXrhl', 'price_1PNvHcIqj90TtX55qj6wSTO0', '2024-06-04 11:12:04'),
+	(110, '12 x Protein Snack 30g Chocolate-Helado de Vainilla', 'Cuando falta demasiado tiempo para la siguiente comida\r\n¿Estás todo el día sentado trabajando? Pruébalo y disfruta de tu dosis de proteínas sin calorías extra. ¡Es deliciosamente equilibrado!\r\n\r\n¿Sabes ese momento en que te apetece algo realmente bueno y te sientes tentado de hincarle el diente a algo apetitoso? ¡Pues es hora de que conozcas Protein Snack de Prozis! Una sabrosa barrita para disfrutar a cualquier hora del día siempre que sientas deseos de algo dulce y delicioso.\r\n\r\nEl aperitivo perfecto para completar tu dieta.\r\n\r\n¿Proteínas extra? ¡Claro!\r\nUna buena fuente de proteínas para satisfacer tus deseos a lo largo del día. ¡La mejor manera de hacer cada día un poquito más dulce!\r\n\r\nA tener en cuenta:\r\n- Fomenta el crecimiento muscular.\r\n- Perfecto para tus objetivos de fitness.\r\n- Sin conservantes.\r\n- Sin edulcorantes.\r\n- Sin aspartamo.', 10.68, 1, 1, 'Disabled', 77, 'prod_QEO6RJbyub4ttR', 'price_1PNvKYIqj90TtX5584LNVgJ2', '2024-06-04 11:15:06'),
+	(111, '12 x Protein Snack 30g Chocolate-Tofe', 'Cuando falta demasiado tiempo para la siguiente comida\r\n¿Estás todo el día sentado trabajando? Pruébalo y disfruta de tu dosis de proteínas sin calorías extra. ¡Es deliciosamente equilibrado!\r\n\r\n¿Sabes ese momento en que te apetece algo realmente bueno y te sientes tentado de hincarle el diente a algo apetitoso? ¡Pues es hora de que conozcas Protein Snack de Prozis! Una sabrosa barrita para disfrutar a cualquier hora del día siempre que sientas deseos de algo dulce y delicioso.\r\n\r\nEl aperitivo perfecto para completar tu dieta.\r\n\r\n¿Proteínas extra? ¡Claro!\r\nUna buena fuente de proteínas para satisfacer tus deseos a lo largo del día. ¡La mejor manera de hacer cada día un poquito más dulce!\r\n\r\nA tener en cuenta:\r\n- Fomenta el crecimiento muscular.\r\n- Perfecto para tus objetivos de fitness.\r\n- Sin conservantes.\r\n- Sin edulcorantes.\r\n- Sin aspartamo.', 10.68, 1, 1, 'Disabled', 77, 'prod_QEO97ItjjoQa0b', 'price_1PNvNNIqj90TtX55OX04nZCp', '2024-06-04 11:18:02');
 
 -- Volcando estructura para tabla database_web.roles
-DROP TABLE IF EXISTS `roles`;
 CREATE TABLE IF NOT EXISTS `roles` (
   `role_id` int NOT NULL AUTO_INCREMENT,
   `role_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
@@ -189,7 +192,6 @@ INSERT INTO `roles` (`role_id`, `role_name`) VALUES
 	(10, 'Usuario');
 
 -- Volcando estructura para tabla database_web.user_address
-DROP TABLE IF EXISTS `user_address`;
 CREATE TABLE IF NOT EXISTS `user_address` (
   `address_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
@@ -215,7 +217,6 @@ INSERT INTO `user_address` (`address_id`, `user_id`, `street`, `city`, `country`
 	(64, 74, 'c/ Doctor Fleming', 'a', 'España', '28821', 'Madrid', 602222222, 0);
 
 -- Volcando estructura para tabla database_web.user_credentials
-DROP TABLE IF EXISTS `user_credentials`;
 CREATE TABLE IF NOT EXISTS `user_credentials` (
   `user_id` int NOT NULL AUTO_INCREMENT,
   `email` varchar(50) NOT NULL,
@@ -234,7 +235,6 @@ INSERT INTO `user_credentials` (`user_id`, `email`, `current_password`, `stripe_
 	(74, 'adrian.escribano3@gmail.com', '$2b$10$HXHGnAqfSS0Ol0E3uL0QJO56iWDFgd1.bS5kMyXrks43JuQleMvl.', 'cus_QCI0KGiumt3oRZ', 'Active', '2024-05-29 20:49:15');
 
 -- Volcando estructura para tabla database_web.user_info
-DROP TABLE IF EXISTS `user_info`;
 CREATE TABLE IF NOT EXISTS `user_info` (
   `user_id` int NOT NULL,
   `first_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
@@ -251,7 +251,6 @@ INSERT INTO `user_info` (`user_id`, `first_name`, `last_name`, `dni`) VALUES
 	(74, 'Adrián', 'Escribano', '49814242z');
 
 -- Volcando estructura para tabla database_web.user_roles
-DROP TABLE IF EXISTS `user_roles`;
 CREATE TABLE IF NOT EXISTS `user_roles` (
   `user_id` int NOT NULL,
   `role_id` int NOT NULL DEFAULT '10',
@@ -266,14 +265,6 @@ DELETE FROM `user_roles`;
 INSERT INTO `user_roles` (`user_id`, `role_id`) VALUES
 	(73, 99),
 	(74, 99);
-
-DROP TABLE IF EXISTS `password_reset_codes`;
-CREATE TABLE password_reset_codes (
-    id SERIAL PRIMARY KEY,
-    code VARCHAR(255) NOT NULL,
-    userId INTEGER NOT NULL,
-    createdAt TIMESTAMP NOT NULL DEFAULT NOW()
-);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

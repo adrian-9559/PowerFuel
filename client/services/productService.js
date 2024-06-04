@@ -32,9 +32,10 @@ class ProductService {
         }
     }
 
-    async getAllProductsByCategory(id) {
+    async getAllProductsByCategory(id, limit = 30, page = 1) {
+        console.log("ID buscado: ", id)
         try {
-            const response = await api.get(`/products/category/${id}`);
+            const response = await api.post(`/products/category/${id}?limit=${limit}&page=${page}`);
             return response.data.products;
         } catch (error) {
             throw error;

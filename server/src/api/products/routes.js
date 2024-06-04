@@ -160,8 +160,9 @@ router.route('/category/:id')
      * @returns {Error} 500 - Error al obtener los productos. | Error when getting the products.
      */
     .post(async (req, res) => {
+        console.log(req.query.id, " id")
         try {
-            const products = await getProductsByCategory(req.query.page, req.query.limit, req.params.id);
+            const products = await getProductsByCategory(req.query.page, req.query.limit, req.param.id);
             if (!products) {
                 return res.status(404).json({ message: 'Productos no encontrados' });
             }

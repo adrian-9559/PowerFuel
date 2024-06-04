@@ -32,7 +32,7 @@ const LoginForm = () => {
     };
 
     return (
-        <section className="w-full grid gap-6">
+        <section className="w-full grid gap-6 z-99">
             <form
                 onSubmit={handleLogin}
                 className='flex flex-col w-full justify-between gap-5'

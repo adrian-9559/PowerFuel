@@ -321,7 +321,9 @@ class model {
      */
     async getProductsByDate(limit = 15, skip = 0, startDate, endDate, order = 'ASC') {
         try {
-            let whereCondition = {};
+            let whereCondition = {
+                status: 'Enabled'
+            };
             if(startDate && endDate && !isNaN(new Date(startDate)) && !isNaN(new Date(endDate))) {
                 whereCondition.registration_date = {
                     [Op.between]: [startDate, endDate]

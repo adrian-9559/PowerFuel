@@ -161,7 +161,6 @@ class model {
     getAllCategories = async () => {
         try {
             const categories = await Category.findAll({
-                where: { parent_category_id: null },
                 include: [{
                     model: Category,
                     as: 'children',

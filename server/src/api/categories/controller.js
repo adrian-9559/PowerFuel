@@ -83,6 +83,9 @@ const getCategoryById = async (categoryId) => {
  * @throws {Error} - Error al añadir la categoría. | Error when adding the category.
  */
 const addCategory = async (newCategory) => {
+    if(newCategory.parent_category_id === "" || newCategory.parent_category_id === undefined || newCategory.parent_category_id === "null" || newCategory.parent_category_id === "$.0")
+        newCategory.parent_category_id = null;
+
     try {
         const categoryId = await model.addCategory(newCategory);
         return { category_id: categoryId, ...newCategory };

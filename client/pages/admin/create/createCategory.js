@@ -6,6 +6,8 @@ import { useRouter } from 'next/router';
 
 const CreateCategory = () => {
     const [nameCategory, setName] = useState('');
+    const categoriesSelect = [];
+    const [selectedChildCategory, setSelectedChildCategory] = useState('');
     const [parentCategory, setParentCategory] = useState('');
     const [parentCategories, setParentCategories] = useState([]);
     const [childCategoriesLevels, setChildCategoriesLevels] = useState([]);
@@ -13,10 +15,9 @@ const CreateCategory = () => {
     const router = useRouter();
     const {id, readOnly} = router.query;
 
-
     const handleRegister = async (e) => {
         e.preventDefault();
-        if (!nameCategory || !parentCategory) {
+        if (!nameCategory) {
             setError('Please fill in all required fields.');
             return;
         }
@@ -28,7 +29,7 @@ const CreateCategory = () => {
                 parent_category_id: parentCategory,
             };
     
-            await CategoryService.addCategory(category); 
+            const response = await CategoryService.addCategory(category); 
             router.push('/admin/Categorias');
         } catch (error) {
             setError(error.message);
@@ -45,14 +46,13 @@ const CreateCategory = () => {
 
     const handleChildCategoryChange = async (e, level) => {
         const newChildCategories = await CategoryService.getChildCategories(e.target.value);
-        setParentCategory(e.target.value);
+        setSelectedChildCategory(e.target.value);
         setChildCategoriesLevels(prevState => {
             const newState = [...prevState];
-            newState[level] = newChildCategories;  // Añade las nuevas categorías hijas al nivel correspondiente
-            return newState.slice(0, level + 1);  // Elimina los niveles de categorías hijas que ya no son relevantes
+            newState[level] = newChildCategories; 
+            return newState.slice(0, level + 1); 
         });
     };
-
     
     useEffect(() => {
         const fetchParentCategories = async () => {
@@ -65,13 +65,9 @@ const CreateCategory = () => {
         }
     }, []);
 
-    
-
-
     useEffect(() => {
         const fetchCategoryAndParents = async () => {
             const category = await CategoryService.getCategoryById(id);
-            console.log('category', category);
             const parentCategories = await CategoryService.getAllCategories();
 
             if(category && parentCategories){
@@ -84,12 +80,8 @@ const CreateCategory = () => {
         if (id) {
             fetchCategoryAndParents();
         }
-
-        console.log('id', id);
-        console.log('nameCategory', nameCategory);
-        console.log('parentCategory', parentCategory);
-        console.log('parentCategories', parentCategories);
     }, [id]);
+
     return (
         <main
             className="max-w-4xl mx-auto my-32 p-6"
@@ -102,10 +94,11 @@ const CreateCategory = () => {
                             name='category' 
                             label='Categoría padre' 
                             onChange={handleParentCategoryChange} 
-                            selectedKeys={parentCategory} 
+                            selectedKeys={[parentCategory]} 
                             data-filled
                             isDisabled={readOnly}
                         >
+                            <SelectItem value={null}>Ninguna</SelectItem>
                             {parentCategories.map((category) => (
                                 <SelectItem key={category.category_id} value={category.category_id}>
                                     {category.category_name}
@@ -124,15 +117,18 @@ const CreateCategory = () => {
                                     transition={{ duration: 0.225 }}
                                     className="mb-4"
                                 >
-                                    <Select 
+                                    <Select
                                         name={`childCategory${index}`} 
                                         label='Subcategoría de la Subcategoría' 
                                         onChange={(e) => handleChildCategoryChange(e, index + 1)}
-                                        selectedKeys={[childCategoriesLevels[index][0]?.category_id]} 
+                                        selectedKeys={selectedChildCategory ? [selectedChildCategory] : []} 
                                         isDisabled={readOnly}
                                     >
+                                        <SelectItem value={null}>
+                                            Ninguna
+                                        </SelectItem>
                                         {childCategories.map((category) => (
-                                            <SelectItem key={category.category_id} value={category.category_id}>
+                                            <SelectItem key={category.category_id} value={category.category_id} onClick={() => setParentCategory(category.category_id)}>
                                                 {category.category_name}
                                             </SelectItem>
                                         ))}

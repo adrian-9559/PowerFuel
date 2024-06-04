@@ -1,6 +1,6 @@
 // SideMenu.js
 import React, { useState, useEffect } from 'react';
-import { Button, Accordion, AccordionItem, Card } from "@nextui-org/react";
+import { Button, Accordion, AccordionItem, Card, CardBody, Divider } from "@nextui-org/react";
 import { motion } from 'framer-motion';
 import CategoryService from '@services/categoryService';
 import { useRouter } from 'next/router';
@@ -38,60 +38,64 @@ const SideMenu = () => {
 
     return (
         <section className='h-auto'>
-            <Button isIconOnly onClick={toggleMenuLeft} aria-label="Toggle menu">
+            <Button isIconOnly onClick={toggleMenuLeft} aria-label="Toggle menu" >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" className='w-3 h-3'>
                     <path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z" />
                 </svg>
             </Button>
             <motion.div
-                initial={{ x: '-100%' }}
-                animate={{ x: showMenuLeft ? '0%' : '-100%' }}
-                transition={{ duration: 0.5 }}
-                className="fixed top-0 left-0 w-64 z-50 h-screen max-w-full shadow-2xl border-r bg-default p-5"
+                initial={{ x: -400 }}
+                animate={{ x: showMenuLeft ? 0 : -400 }}
+                transition={{ duration: 0.3 }}
+                className='fixed top-0 left-0 h-screen w-1/5 bg-opacity-75 bg-blue-200 z-50 shadow-lg p-8 pt-20 '
+                id='menu'
                 onClick={(e) => e.stopPropagation()}
                 style={{ zIndex: 2 }}
+                onMouseEnter={() => setHoveredIndex(null)}
+                onMouseLeave={() => setHoveredIndex(null)}
+                onFocus={() => setHoveredIndex(null)}
+                onBlur={() => setHoveredIndex(null)}
+                tabIndex="0"
+                onKeyDown={(e) => {
+                    if (e.key === 'Escape') {
+                        setShowMenuLeft(false);
+                    }
+                }}
+                role="menu"
+                aria-label="Menu"
+                aria-expanded={showMenuLeft}
+                aria-orientation="vertical"
+                aria-haspopup="true"
+                aria-activedescendant={hoveredIndex}
             >
-                <section
-                    className='flex justify-end w-full h-full p-0 m-0'
-                >
-                    <motion.div
-                        id="menu"
-                        initial={{ rotate: 0, translateX: 100 }}
-                        animate={{ rotate: showMenuLeft ? 360 : 0, translateX: showMenuLeft ? 0 : -65 }}
-                        transition={{ duration: 0.5 }}
-                        className={`w-auto h-auto`}
-                        style={{ zIndex: 1 }}
-                    >
-                        <Button
-                            isIconOnly
-                            radius="full"
-                            color='primary'
-                            onClick={(e) => { e.stopPropagation(); toggleMenuLeft(); }}
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-                            </svg>
-                        </Button>
-                    </motion.div>
-                </section>
-                <Accordion
-                    selectedKeys={hoveredIndex}
-                >
-                    {Array.isArray(categories) && categories.map((category, index) => (
-                        <AccordionItem
-                            className='w-full h-auto p-0 m-0 '
-                            aria-label={category.category_name}
-                            title={category.category_name}
-                            key={category.category_id}
-                            onMouseEnter={() => setHoveredIndex(category.category_id.toString())}
-                            onMouseLeave={() => setHoveredIndex(null)}
-                        >
-                            {Array.isArray(category.children) && category.children.map((categoryChild, index) => (
-                                <Button className='w-full' variant='light' color='secondary' key={categoryChild.category_id} radius="none" onClick={() => { router.push(`/category/${categoryChild.category_id}`); }}>{categoryChild.category_name}</Button>
-                            ))}
-                        </AccordionItem>
-                    ))}
+                <Accordion>
+                    {categories.map((category, index) => {
+                        const subcategories = categories.filter(category2 => category2.parent_category_id === category.category_id);
+                        return (
+                            category.parent_category_id === null &&
+                            <AccordionItem key={index} index={index} title={category.category_name}>
+                                <section>
+                                    <Card>
+                                        <CardBody>
+                                            {subcategories.length > 0 ? (
+                                                subcategories.map((subcategory, index2) => (
+                                                    <Button key={subcategory.category_id} className='w-full' variant='light' color='secondary' radius="none" onClick={() => { router.push(`/category/${subcategory.category_id}`); }}>{subcategory.category_name}</Button>
+                                                ))
+                                            ) : (
+                                                <p>No hay subcategorías</p>
+                                            )}
+                                        </CardBody>
+                                    </Card>
+                                </section>
+                            </AccordionItem>
+                        );
+                    })}
                 </Accordion>
+                <Button onClick={toggleMenuLeft} className='absolute top-0 right-0 m-8' isIconOnly color='primary'>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                    </svg>
+                </Button>
             </motion.div>
         </section>
     );

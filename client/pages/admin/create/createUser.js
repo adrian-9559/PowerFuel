@@ -24,7 +24,6 @@ const CreateUser = () => {
         const fetchUser = async () => {
             try {
                 const response = await UserService.getUserById(id);
-                console.log(response.data);
                 const { email, current_password, UserInfo, Roles } = response.data[0];
                 const { first_name, last_name, dni } = UserInfo;
                 const role = Roles[0].role_id;
@@ -38,7 +37,7 @@ const CreateUser = () => {
                     role
                 }));
             } catch (error) {
-                console.log(error);
+                console.error(error);
             }
         }
         fetchUser();
@@ -48,7 +47,7 @@ const CreateUser = () => {
             const response = await RoleService.getAllRoles();
             setRoles(response.data);
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     }
     fetchRoles();

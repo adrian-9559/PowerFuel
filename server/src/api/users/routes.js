@@ -199,9 +199,6 @@ router.route('/resetPassword')
         const email = req.body.email;
         try {
             const response = await resetPassword(email);
-            if (!response) {
-                return res.status(404).json({ message: 'Usuario no encontrado' });
-            }
             return res.status(200).json({ message: 'Contraseña restablecida correctamente' });
         } catch (error) {
             if (!res.headersSent) {

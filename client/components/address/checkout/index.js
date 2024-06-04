@@ -7,7 +7,6 @@ import AddressList from '@components/address/checkout/partials/addressList';
 import AddressForm from '@components/address/checkout/partials/addressForm';
 
 const AddressMenu = ({setSelectedAddress}) => {
-    const router = useRouter();
     const [ UserAddress, SetUserAddress ] = useState([]);
     const [ showForm, setShowForm ] = useState(false);
     const [ editAddress, setEditAddress ] = useState(null);
@@ -15,7 +14,7 @@ const AddressMenu = ({setSelectedAddress}) => {
     const fetchAddress = async () => {
         const addressData = await AddressService.getAddressByUserId();
         SetUserAddress(addressData.addresses);
-        if(addressData.length === 0) {
+        if(!addressData.addresses || addressData.addresses.length === 0) {
             setShowForm(true);
         }
     };
@@ -24,6 +23,7 @@ const AddressMenu = ({setSelectedAddress}) => {
         if(!showForm){
             fetchAddress();
         }
+        console.log(showForm);
     }, [showForm]);
 
     const handleDelete = async (id) => {
@@ -36,10 +36,10 @@ const AddressMenu = ({setSelectedAddress}) => {
         setEditAddress(address);
         fetchAddress();
     }
-
-    const handleAddAddress = async (address) => {
-        setEditAddress(null);
+    const handleOpenAddForm = () => {
         setShowForm(true);
+        setEditAddress(null);
+
     }
 
     return (
@@ -50,7 +50,7 @@ const AddressMenu = ({setSelectedAddress}) => {
                         <h2 className="text-2xl font-bold">Seleccionar dirección</h2>
                             <section className='flex flex-row justify-end items-center w-full p-0'>
                                 <Button 
-                                    onPress={handleAddAddress} 
+                                    onPress={handleOpenAddForm} 
                                     isIconOnly
                                     className='m-o'
                                 >

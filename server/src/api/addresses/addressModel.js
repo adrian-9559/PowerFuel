@@ -1,3 +1,4 @@
+const e = require('express');
 const { UserAddress } = require('../../model');
 const errorDisplay = "(Error en el modelo de Address)";
 
@@ -62,10 +63,11 @@ class model {
      * @throws {Error} Si ocurre un error al intentar insertar la dirección. | If an error occurs trying to insert the address.
      */
     insertAddress = async (address) => {
-        if (!address) {
-            return null;
-        }
+        
         try {
+            if (!address) {
+                return null;
+            }
             const existingAddresses = await UserAddress.findAll({
                 where: {
                     user_id: address.user_id
@@ -74,9 +76,15 @@ class model {
     
             if (existingAddresses.length === 0) {
                 address.is_default = "1";
+            }else{
+                address.is_default = "0";
             }
-            // Rest of the code...
+
+
+            return await UserAddress.create(address);
+
         } catch (error) {
+            console.log(error);
             throw new Error(`Error al intentar insertar la dirección ${errorDisplay}`, error);
         }
     };

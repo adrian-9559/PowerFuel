@@ -1,9 +1,9 @@
 import api from './axios.js';
 
 class CategoryService {
-     async getCategoryById(id) {
+     async getCategoryById(categoryId) {
         try {
-            const response = await api.get(`/categories/${id}`);
+            const response = await api.get(`/categories/${categoryId}`);
             return response.data;
         } catch (error) {
             console.error('Error fetching category:', error.message);
@@ -22,7 +22,6 @@ class CategoryService {
 
      async addCategory(category) {
         try {
-            console.log("Categoria a añadir: ", category)
             const response = await api.post('/categories', category);
             return response.data;
         } catch (error) {

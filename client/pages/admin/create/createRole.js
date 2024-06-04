@@ -20,7 +20,6 @@ const CreateRole = () => {
         setLoading(true);
         try {
             if (id && id.trim() !== '') {
-                console.log('id', id);
                 await RoleService.updateRole(id, name);
             } else {
                 // If no id is provided or it's an empty string, add a new role

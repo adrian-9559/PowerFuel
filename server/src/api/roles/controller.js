@@ -62,7 +62,6 @@ const getRoles = async (limit, page) => {
  */
 const addRole = async (role) => {
     try {
-        console.log('role', role);
         return await model.insertRole(role);
     } catch (error) {
         throw new Error(`Error al intentar añadir el rol ${errorDisplay}`, error);

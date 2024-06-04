@@ -29,7 +29,7 @@ api.interceptors.response.use(response => {
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.accessToken;
             return axios(originalRequest);
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
     }
     return Promise.reject(error);

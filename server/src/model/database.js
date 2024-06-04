@@ -4,6 +4,8 @@ const { Sequelize } = require('sequelize');
 const sequelize = new Sequelize(process.env.DATABASE_NAME, process.env.DATABASE_USER, process.env.DATABASE_PASSWORD, {
     host: process.env.DATABASE_HOST,
     dialect: 'mysql',
+    timezone: '+02:00', // Aquí puedes especificar tu zona horaria
+
     logging: false,
     pool: {
         max: 5,

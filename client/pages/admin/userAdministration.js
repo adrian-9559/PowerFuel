@@ -63,10 +63,6 @@ const UserAdministration = () => {
         }
     };
 
-    useEffect(() => {
-        console.log(selectedKeys);
-    }, [selectedKeys]);
-
     return (
         <section className='h-[100%]'>
             <Table aria-label='Tabla de usuarios'

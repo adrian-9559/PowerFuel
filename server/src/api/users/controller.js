@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const model = require('./userModel');
 const filesUpload = require('../files/controller');
-const { createStripeCustomer } = require('../stripe/controller');
+const { createStripeCustomer, deleteStripeCustomer } = require('../stripe/controller');
 const { generateAuthToken, generateRefreshToken} = require('../../utils/tokenUtils');
 const bcrypt = require('bcrypt');
 const controllerOldPassword = require('./../oldPassword/controller');
@@ -54,6 +54,8 @@ const registerUser = async (user) => {
 const deleteUserById = async (userId) => {
     try {
         const deletedUser = await model.deleteUser(userId);
+        const user = await model.getUsers(null, null, userId);  
+        await deleteStripeCustomer(user.stripe_customer_id);
         return deletedUser;
     } catch (error) {
         throw new Error(`Error al intentar eliminar el usuario ${errorDisplay}`, error);
@@ -256,8 +258,7 @@ const resetPassword = async (email) => {
         }
 
         const code = createCode();
-        await sendMailPassReset(email, code);
-        console.log('Email sent successfully');
+        await sendMailPassReset(email, code, user.user_id);
     } catch (error) {
         throw new Error(`Error al intentar restablecer la contraseña ${errorDisplay}`, error);
     }

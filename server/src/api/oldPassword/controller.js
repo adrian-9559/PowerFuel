@@ -1,4 +1,5 @@
 const model = require('./oldPasswordModel');
+const ControllerCodePasswords = require('../codesPasswordReset/controller');
 const errorDisplay = "(Error en el controlador de oldPassword)";
 
 /**

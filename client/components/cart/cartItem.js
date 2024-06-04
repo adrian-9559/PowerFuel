@@ -38,7 +38,6 @@ function Cartproduct({ item }) {
   };
 
   const handleQuantityChange = (id, quantity) => {
-    console.log(id, quantity);
     changeQuantity(id, quantity);
   }
 

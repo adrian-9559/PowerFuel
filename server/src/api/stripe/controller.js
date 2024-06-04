@@ -21,6 +21,27 @@ const createStripeCustomer = async (email, name) => {
 };
 
 /**
+ * Función para eliminar un cliente de Stripe.
+ * Function to delete a Stripe customer.
+ * 
+ * @param {string} customerId - El ID del cliente. | The customer's ID.
+ * @returns {Promise} - Promesa que resuelve al eliminar el cliente de Stripe. | Promise that resolves when deleting the Stripe customer.
+ * @throws {Error} - Error al intentar eliminar el cliente de Stripe. | Error when trying to delete the Stripe customer.
+ * 
+ * @see https://stripe.com/docs/api/customers/delete
+ * @see https://stripe.com/docs/api/customers/object#customer_object-deleted
+ * @see https://stripe.com/docs/api/customers/object#customer_object
+ * 
+ **/
+const deleteStripeCustomer = async (customerId) => {
+    try {
+        await stripe.customers.deleteStripeCustomer(customerId);
+    } catch (error) {
+        throw new Error(`Error al intentar eliminar el cliente Stripe ${errorDisplay}`, error);
+    }
+};
+
+/**
  * Función para obtener un cliente de Stripe.
  * Function to get a Stripe customer.
  * 
@@ -161,8 +182,10 @@ const updateProduct = async (productId, product) => {
             description: product.description
         });
 
-        await stripe.prices.update(product.stripe_price_id, {
-            unit_amount: product.price*100
+        const precioActualizado = await stripe.prices.update(product.stripe_price_id, {
+            metadata:{
+                unit_amount: product.price * 100
+            }
         });
     } catch (error) {
         throw new Error(`Error al intentar actualizar el producto ${errorDisplay}`, error);
@@ -171,6 +194,7 @@ const updateProduct = async (productId, product) => {
 
 module.exports = {
     createStripeCustomer,
+    deleteStripeCustomer,
     getCustomer,
     getCustomerCharges,
     createCheckoutSession,

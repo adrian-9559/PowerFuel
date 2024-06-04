@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import PaymentService from '@services/paymentService';
 import OrderService from '@services/orderService';
+import AddressService from '@services/addressService';
 import {useAppContext} from '@context/AppContext';
 import PartyIcon from '@icons/PartyIcon';
 import { Card, Button } from '@nextui-org/react';
@@ -14,12 +15,20 @@ const SuccessPage = () => {
     useEffect(() => {
         const handleSuccess = async () => {
             if (success) {
+                const addressId = localStorage.getItem('shipping_address');
+                let shipping = null;
+                if (addressId) 
+                    shipping = await AddressService.getAddressById(addressId);
+                else
+                    shipping = await AddressService.getDefaultAddress();
+    
                 const lastPayment = await PaymentService.getLastPayment();
                 const order = {
                     order_id: lastPayment.id,
                     order_date: new Date(),
                     order_status: 'pending',
-                    details: JSON.stringify(cart)
+                    details: JSON.stringify(cart),
+                    shipping_address: JSON.stringify(shipping), 
                 };
         
                 await OrderService.createOrder(order);

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Chip } from '@nextui-org/react';
+import { ScrollShadow } from '@nextui-org/react';
 import { useAppContext } from '@context/AppContext';
 import OrderService from '@services/orderService';
 import OrderItem from './orderItem';
@@ -29,13 +29,13 @@ const OrdersList = () => {
       <section>
         <h1 className="font-bold text-3xl">Listado de pedidos</h1>
       </section>
-      <section>
-        {userOrders.map((order, index) => (
-          <section className='w-full cursor-pointer' onClick={() => { setSelectedOrder(order); onOpen(); }}>
-            <OrderItem order={order} key={order.order_id}/>
-          </section>
-        )) || 'No tienes ningún pedido aún'}
-      </section>
+        <ScrollShadow  size={20} className='h-[50rem] flex flex-col gap-4 p-4'>
+          {userOrders.map((order, index) => (
+            <section className='w-full cursor-pointer' onClick={() => { setSelectedOrder(order); onOpen(); }}>
+              <OrderItem order={order} key={order.order_id}/>
+            </section>
+          )) || 'No tienes ningún pedido aún'}
+        </ScrollShadow>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} className='p-6 overflow-hidden max-w-[60%] max-h-[80%]' backdrop="blur">
         <ModalContent className='w-full'>
           {selectedOrder && <OrderItem order={selectedOrder} key={selectedOrder.order_id} />}

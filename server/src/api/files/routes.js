@@ -19,7 +19,7 @@ router.route('/uploadProduct/:id')
             const { id } = req.params;
             const { images } = req.files;
             await uploadProduct(id, images);
-            res.send({message: 'Imágenes subidas correctamente'});
+            res.status(200).send({message: 'Imágenes subidas correctamente'});
         } catch (error) {
             res.status(500).send({message: 'Error al subir las imágenes del producto'});
         }

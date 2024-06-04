@@ -58,11 +58,6 @@ const CategoryAdministration = () => {
 
     };
 
-    useEffect(() => {
-        console.log(selectedKeys);
-    }, [selectedKeys]);
-
-
     return (
         <section className='h-full w-full'>
             <Table aria-label='Tabla de categorias'

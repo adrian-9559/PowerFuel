@@ -13,15 +13,16 @@ const nodemailer = require('nodemailer');
  * @property {string} auth.user - El usuario para el servidor de correo electrónico. | The user for the email server.
  * @property {string} auth.pass - La contraseña para el servidor de correo electrónico. | The password for the email server.
  */
-// const transporter = null;
-//     nodemailer.createTransport({
-//     host: process.env.EMAIL_HOST,
-//     port: process.env.EMAIL_PORT, 
-//     secure: true, 
-//     auth: {
-//         user: process.env.EMAIL,
-//         pass: process.env.PASSEMAIL 
-//     }
-// });
+const transporter =
+    nodemailer.createTransport({
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT, 
+    secure: true, 
+    auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASSEMAIL 
+    }
+});
 
-// module.exports = transporter;
+
+module.exports = transporter;

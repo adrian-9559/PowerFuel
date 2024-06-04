@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const ControllerCodePasswords = require('../codesPasswordReset/controller');
 require('dotenv').config();
 const transporter = require('./../../middlewares/mailer');
 const errorDisplay = "(Error en el controlador de Mail)";
@@ -12,7 +13,7 @@ const errorDisplay = "(Error en el controlador de Mail)";
  * @returns {Promise} - Una promesa que se resuelve con la información del correo enviado o se rechaza con un error. | A promise that resolves with the information of the sent email or rejects with an error.
  * @throws {Error} - Si hay un error al intentar enviar el correo. | If there is an error trying to send the email.
  */
-const sendMailPassReset = (email, code) => {
+const sendMailPassReset = (email, code, user_id) => {
     return new Promise((resolve, reject) => {
         try {
             const mailOptions = {
@@ -28,8 +29,9 @@ const sendMailPassReset = (email, code) => {
                     resolve(info);
                 }
             });
+            ControllerCodePasswords.registerCodePasswordReset(code, user_id);
         } catch (error) {
-            reject(new Error(`Error al intentar enviar el correo de restablecimiento de contraseña ${errorDisplay}`, error));
+            throw new Error(`Error al intentar enviar el correo de restablecimiento de contraseña ${errorDisplay}`, error);
         }
     });
 };

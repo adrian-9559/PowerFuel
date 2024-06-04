@@ -6,6 +6,38 @@ const errorDisplay = "(Error en el controlador de Server)";
 // Obtener la cantidad de CPUs disponibles en el sistema
 const numCPUs = os.cpus().length;
 
+// Función para calcular el uso de la CPU
+function getCpuInfo() {
+  const cpus = os.cpus();
+  let totalIdle = 0, totalTick = 0;
+
+  cpus.forEach(cpu => {
+      for (let type in cpu.times) {
+          totalTick += cpu.times[type];
+      }
+      totalIdle += cpu.times.idle;
+  });
+
+  return { idle: totalIdle, total: totalTick };
+}
+
+// Variables para almacenar las estadísticas anteriores de la CPU
+let startMeasure = getCpuInfo();
+
+function calculateCpuUsage() {
+    const endMeasure = getCpuInfo();
+
+    const idleDifference = endMeasure.idle - startMeasure.idle;
+    const totalDifference = endMeasure.total - startMeasure.total;
+
+    const percentageCpu = 100 - ~~(100 * idleDifference / totalDifference);
+
+    // Actualizar las estadísticas anteriores de la CPU
+    startMeasure = endMeasure;
+
+    return percentageCpu.toFixed(2) * 4.75;
+}
+
 /**
  * Función para obtener el uso de la CPU del servidor.
  * Function to get the server's CPU usage.
@@ -13,14 +45,8 @@ const numCPUs = os.cpus().length;
  * @returns {Promise} - Promesa que resuelve al obtener el uso de la CPU del servidor en porcentaje. | Promise that resolves when getting the server's CPU usage in percentage.
  * @throws {Error} - Error al intentar obtener el uso de la CPU del servidor. | Error when trying to get the server's CPU usage.
  */
-const getUseServerCPU = async () => {
-  try {
-      const loadAvg = os.loadavg();
-      const totalUsage = (loadAvg[0] / numCPUs) * 100;
-      return totalUsage.toFixed(2);
-  } catch (error) {
-      throw new Error(`Error al intentar obtener el uso de la CPU del servidor ${errorDisplay}`, error);
-  }
+const getUseServerCPU = () => {
+  return calculateCpuUsage();
 };
 
 /**

@@ -33,7 +33,6 @@ class ProductService {
     }
 
     async getAllProductsByCategory(id, limit = 30, page = 1) {
-        console.log("ID buscado: ", id)
         try {
             const response = await api.post(`/products/category/${id}?limit=${limit}&page=${page}`);
             return response.data.products;
@@ -42,24 +41,46 @@ class ProductService {
         }
     }
 
-    async addProduct(product) {
-        try {
-            const formData = new FormData();
-            formData.append('product_name', product.product_name);
-            formData.append('description', product.description);
-            formData.append('stock_quantity', product.stock);
-            formData.append('price', product.price);
-            formData.append('category_id', product.category_id);
-            formData.append('id_brand', product.id_brand);
+    async addProduct(product, images) {
+        const formData = new FormData();
+    
+        // Agrega los campos del producto al objeto FormData
+        for (const key in product) {
+            formData.append(key, product[key]);
+        }
+    
+        // Agrega las imágenes al objeto FormData
+        if (images) {
+            for (let i = 0; i < images.length; i++) {
+                formData.append('images', images[i]);
+            }
+        }
+    
+        const response = await api.post('/products', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+        });
+    
+        return response.data;
+    }
 
-            const response = await api.post(`/products`, formData, {
+    async uploadImages(id, images) {
+        try {
+
+            if(!images) return;
+
+            const formData = new FormData();
+            for (let i = 0; i < images.length; i++) {
+                formData.append('images', images[i]);
+            }
+    
+            const response = await api.post(`/files/uploadProduct/${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
-                }
+                },
             });
-
-            this.uploadImages(response.data, product.images);
-
+    
             return response.data;
         } catch (error) {
             toastr.error(error);
@@ -127,30 +148,6 @@ class ProductService {
             const response = await api.post(`/products/random?limit=${limit}`);
             return response.data;
         } catch (error) {
-            throw error;
-        }
-    }
-
-    async uploadImages(id, images) {
-        if (!images.length) {
-            throw new Error('Images must be an array or a FileList');
-        }
-    
-        try {
-            const formData = new FormData();
-            for (let i = 0; i < images.length; i++) {
-                formData.append('images', images[i]);
-            }
-    
-            const response = await api.post(`/files/uploadProduct/${id}`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                },
-            });
-    
-            return response.data;
-        } catch (error) {
-            toastr.error(error);
             throw error;
         }
     }

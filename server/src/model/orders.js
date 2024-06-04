@@ -16,7 +16,8 @@ Order.init({
     },
     order_date: DataTypes.DATE,
     order_status: DataTypes.STRING,
-    details: DataTypes.STRING
+    details: DataTypes.STRING,
+    shipping_address: DataTypes.STRING,
 }, {
     sequelize,
     modelName: 'Order',

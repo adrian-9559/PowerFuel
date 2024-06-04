@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useAppContext } from '@context/AppContext';
 import GeneralAdministration from './generalAdministration';
 import SideMenuAdministrador from "./SideMenuAdministrador";
 import UserAdministration from "./userAdministration";
@@ -13,7 +14,14 @@ import OrderAdministration from "./orderAdministration";
 
 const Administrador = () => {
     const router = useRouter();
+    const { user} = useAppContext();
     const [selectedOption, setSelectedOption] = useState(null);
+
+    useEffect(() => {
+        if(user && user?.role_id === 10){
+            router.push("/");
+        }
+    }, []);
 
     const components = {
         'General': <GeneralAdministration />,

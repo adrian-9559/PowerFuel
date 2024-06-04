@@ -12,7 +12,6 @@ const resetPassword = () => {
 
     const handleResetPassword = async (e) => {
         e.preventDefault();
-        console.log(codeSent);
         try{
             if (!codeSent) {
                 const emailInput = email;

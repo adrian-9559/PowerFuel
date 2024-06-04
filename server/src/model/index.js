@@ -9,6 +9,7 @@ const UserInfo = require('./userInfo');
 const Category = require('./category');
 const Order = require('./orders');
 const Notification = require('./notification');
+const PasswordResetCode = require('./passwordResetCodes');
 
 // Relaciones
 UserCredentials.hasOne(UserInfo, { foreignKey: 'user_id' });
@@ -34,10 +35,16 @@ Category.hasMany(Product, { foreignKey: 'category_id' });
 Category.hasMany(Category, { as: 'children', foreignKey: 'parent_category_id' });
 
 Order.belongsTo(UserCredentials, { foreignKey: 'user_id' });
+Order.hasMany(Notification, { foreignKey: 'reference' });
 UserCredentials.hasMany(Order, { foreignKey: 'user_id' });
 
 Notification.belongsTo(Order, { foreignKey: 'reference', onUpdate: 'CASCADE', onDelete: 'NO ACTION' });
 Notification.belongsTo(UserCredentials, { foreignKey: 'notification_user', onUpdate: 'CASCADE', onDelete: 'CASCADE' });
+
+// Relaciones
+UserCredentials.hasMany(PasswordResetCode, { foreignKey: 'user_id' });
+PasswordResetCode.belongsTo(UserCredentials, { foreignKey: 'user_id' });
+
 
 module.exports = {
     Brand,
@@ -50,5 +57,6 @@ module.exports = {
     UserInfo,
     Category,
     Order,
-    Notification
+    Notification,
+    PasswordResetCode
 };

@@ -25,7 +25,6 @@ const Config = () => {
     useEffect(() => {
         const checkLoginStatus = setTimeout(() => {
             if (!isLoggedIn) {
-                console.log("El q me importa:" , isLoggedIn);
                 routerRef.current.push('/');
             } else {
                 setIsLoading(false);

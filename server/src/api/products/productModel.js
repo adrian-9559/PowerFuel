@@ -220,12 +220,12 @@ class model {
      * @returns {Object|null} - El producto modificado o null si el producto no existe. | The modified product or null if the product does not exist.
      * @throws {Error} - Error al intentar modificar el producto. | Error when trying to modify the product.
      */
-    modifyProduct = async (productId, productData) => {
+    updateProduct = async (productId, productData) => {
         try {
             const product = await Product.findByPk(productId);
             if (product) {
                 const updateProduct = await Product.update({
-                    product_name: productData.name,
+                    product_name: productData.product_name,
                     description: productData.description,
                     price: productData.price,
                     stock_quantity: productData.stock_quantity,

@@ -39,7 +39,6 @@ router.route('/:notificationId')
     .delete(async (req, res) => {
         try {
             const { notificationId } = req.params;
-            console.log('notificationId:', notificationId);
             await deleteNotification(notificationId);
             res.json({ message: 'La notificación ha sido eliminada correctamente.' });
         } catch (error) {

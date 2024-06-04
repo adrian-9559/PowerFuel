@@ -52,7 +52,7 @@ const CreateProduct = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            await ProductService.addProduct(formState);
+            await ProductService.addProduct(formState, formState.images);
             router.push('/admin/Productos');
         } catch (error) {
             setError(error.message);
@@ -89,7 +89,6 @@ const CreateProduct = () => {
             setParentCategories(categories);
     
             const response = await BrandService.getAllBrandsNoPagination();
-            console.log(response.brands);
             setBrands(response.brands);
     
             if (id) {

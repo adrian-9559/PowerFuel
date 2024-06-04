@@ -4,7 +4,8 @@ const path = require('path');
 const appRoot = path.dirname(require.main.filename);
 const fs = require('fs');
 const { createProduct, deleteProduct, updateProduct} = require('../stripe/controller');
-const { deleteProductImages } = require('../files/controller');
+const { deleteProductImages, getImageCount, uploadProduct } = require('../files/controller');
+const e = require('express');
 const errorDisplay = "(Error en el controlador de Productos)";
 
 /**
@@ -26,6 +27,8 @@ const addProduct = async (productData) => {
         productData.stripe_product_id = productId;
         productData.stripe_price_id = priceId;
 
+        updateProduct(productId, productData.images);
+
         return await model.insertProduct(productData);
     } catch (error) {
         throw new Error(`Error al intentar añadir el producto ${errorDisplay}`, error);
@@ -46,7 +49,6 @@ const deleteProductById = async (productId) => {
         const product = await model.getProducts(0, 1, productId);
         const deletedProduct = await model.deleteProduct(productId);
         deleteProductImages(productId);
-        console.log("product", product[0].stripe_product_id);
         deleteProduct(product[0].stripe_product_id);
         return deletedProduct;
     } catch (error) {
@@ -64,12 +66,17 @@ const deleteProductById = async (productId) => {
  * @returns {Object} - El producto modificado. | The modified product.
  * @throws {Error} - Error al intentar modificar el producto. | Error when trying to modify the product.
  */
-const modifyProductById = async (productId, productData) => {
+const updateProductById = async (productId, productData) => {
     try {
-        const product = await model.modifyProduct(productId, productData);
-
-        updateProduct(product.stripe_price_id, product);
-        return product;
+        if(productId) {
+            const response = await model.updateProduct(productId, productData);
+            
+            const product = await model.getProducts(0, 1, productId);
+            updateProduct(product[0].stripe_product_id, product[0]);
+            return response;
+        }
+       
+        return false;
     } catch (error) {
         throw new Error(`Error al intentar modificar el producto ${errorDisplay}`, error);
     }
@@ -175,29 +182,7 @@ const getProductsByCategory = async (page, limit, id) => {
     }
 };
 
-/**
- * Función para obtener el conteo de imágenes de un producto.
- * Function to get the image count of a product.
- * 
- * @param {string} id - El ID del producto. | The ID of the product.
- * 
- * @returns {Object} - El conteo de imágenes. | The image count.
- * @property {number} count - El número de imágenes. | The number of images.
- * 
- * @throws {Error} - Error al intentar obtener el conteo de imágenes. | Error when trying to get the image count.
- */
-const getImageCount = async (id) => {
-    try {
-        const directoryPath = path.join(appRoot, `/../public/images/product/${id}`);
-        const files = fs.readdirSync(directoryPath);
-        if (!files) {
-            return { count: 0 };
-        }
-        return { count: files.length };
-    } catch (error) {
-        throw new Error(`Error al intentar obtener el conteo de imágenes ${errorDisplay}`, error);
-    }
-};
+
 
 /**
  * Función para obtener los productos por fecha con paginación.
@@ -245,7 +230,7 @@ module.exports = {
     addProduct,
     getProducts,
     getProductById,
-    modifyProductById,
+    updateProductById,
     deleteProductById,
     getImageCount,
     getProductsByCategory,

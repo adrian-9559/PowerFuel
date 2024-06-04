@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 
 const OrderItem = ({ order }) => {
   const [details, setDetails] = useState([]);
+  const [shippingAddress, setShippingAddress] = useState(null);
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -18,7 +19,6 @@ const OrderItem = ({ order }) => {
   };
 
   useEffect(() => {
-    console.log('order', order);
     const fetchProduct = async () => {
       let total = 0;
       const detailsAux = JSON.parse(order.details);
@@ -30,6 +30,7 @@ const OrderItem = ({ order }) => {
       }
       setDetails(detailsTemp);
       order.total = total.toFixed(2);
+      setShippingAddress(JSON.parse(order.shipping_address)); // Parsear el string JSON de shipping_address en un objeto
     };
     
     fetchProduct();
@@ -48,6 +49,13 @@ const OrderItem = ({ order }) => {
           </li>
         ))}
       </ul>
+      {shippingAddress && (
+        <div>
+          <p>Dirección de envío:</p>
+          <p>{shippingAddress.street}, {shippingAddress.city}, {shippingAddress.province}, {shippingAddress.country}, {shippingAddress.zip}</p>
+          <p>Teléfono: {shippingAddress.phone_number}</p>
+        </div>
+      )}
       <section className='flex flex-row justify-between'>
         <Chip color={getStatusColor(order.order_status)} variant='flat'>{order.order_status}</Chip>
         <p>Total: {order.total} €</p>

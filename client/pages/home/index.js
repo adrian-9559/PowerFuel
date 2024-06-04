@@ -63,8 +63,6 @@ const HomeComponent = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    
-
     return (
         <main className="flex flex-col gap-3 px-32">
             <section className="flex">

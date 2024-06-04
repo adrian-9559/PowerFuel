@@ -17,10 +17,7 @@ class AddressService{
     }
 
     async addAddress(address) {
-        const token = sessionStorage.getItem('token');
-        const response = await api.post(`/address`, address, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
+        const response = await api.post(`/address`, address);
         return response.data;
     }
 

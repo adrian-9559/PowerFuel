@@ -18,7 +18,6 @@ const isAdmin = async (req, res, next) => {
         const token = authHeader.split(' ')[1];
         jwt.verify(token, process.env.JWT_SECRET, async (err, user) => {
             if (err) {
-                console.log("1", err);
                 return res.sendStatus(403);
             }
         

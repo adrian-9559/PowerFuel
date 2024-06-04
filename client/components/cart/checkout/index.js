@@ -23,6 +23,12 @@ const CheckOut = () => {
         setCurrentStep(1);
         setSelectedAddress(null);
     },[isOpen]);
+
+    useEffect(() => {
+        if(currentStep === 2 && selectedAddress){
+            localStorage.setItem('shipping_address', JSON.stringify(selectedAddress));
+        }
+    },[currentStep, selectedAddress]);
     
     return (
         <section className='w-full flex justify-center'>

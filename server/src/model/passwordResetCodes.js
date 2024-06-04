@@ -8,18 +8,22 @@ PasswordResetCode.init({
         primaryKey: true,
         autoIncrement: true
     },
+    user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
     code: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    userId: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    createdAt: {
+    created_at: {
         type: DataTypes.DATE,
-        allowNull: false,
         defaultValue: DataTypes.NOW
+    },
+    used: {
+        type: DataTypes.ENUM,
+        values: ['0', '1'],
+        defaultValue: '0'
     }
 }, {
     sequelize,

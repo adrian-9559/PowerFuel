@@ -23,13 +23,18 @@ const uploadProduct = (productId, files) => {
         } else {
             const existingFiles = fs.readdirSync(newPath);
             fileIndex = existingFiles.length + 1;
+
+            const totalFilesAfterUpload = existingFiles.length + (Array.isArray(files) ? files.length : 1);
+            if (totalFilesAfterUpload > 5) {
+                throw new Error(`El número máximo de imágenes permitidas es 5. Actualmente hay ${existingFiles.length} imágenes y estás intentando subir ${totalFilesAfterUpload - existingFiles.length}.`);
+            }
         }
     } catch (error) {
         throw new Error(`Error al intentar crear el directorio o leer los archivos existentes ${errorDisplay}`, error);
     }
 
     if(Array.isArray(files)) {
-        files.forEach((file, index) => {
+        files.slice(0, 5).forEach((file, index) => {
             const filename = `${fileIndex + index}.png`;
             try{
                 file.mv(path.join(newPath, filename));
@@ -148,8 +153,34 @@ const uploadUser = (userId, files) => {
     }
 };
 
+/**
+ * Función para obtener el conteo de imágenes de un producto.
+ * Function to get the image count of a product.
+ * 
+ * @param {string} id - El ID del producto. | The ID of the product.
+ * 
+ * @returns {Object} - El conteo de imágenes. | The image count.
+ * @property {number} count - El número de imágenes. | The number of images.
+ * 
+ * @throws {Error} - Error al intentar obtener el conteo de imágenes. | Error when trying to get the image count.
+ */
+const getImageCount = async (id) => {
+    try {
+        const directoryPath = path.join(appRoot, `/../public/images/product/${id}`);
+        if (!fs.existsSync(directoryPath)) {
+            return { count: 0 };
+        }
+        const files = fs.readdirSync(directoryPath);
+        return { count: files.length };
+    } catch (error) {
+        console.log(error);
+        throw new Error(`Error al intentar obtener el conteo de imágenes ${errorDisplay}`, error);
+    }
+};
+
 module.exports = {
     uploadProduct,
     uploadUser,
-    deleteProductImages
+    deleteProductImages,
+    getImageCount
 };

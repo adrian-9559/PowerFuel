@@ -18,14 +18,14 @@ const PaymentForm = () => {
   const options = {fetchClientSecret};
 
   return (
-    <div className="w-full">
+    <section className="w-full">
       <EmbeddedCheckoutProvider
         stripe={stripePromise}
         options={options}
       >
         <EmbeddedCheckout />
       </EmbeddedCheckoutProvider>
-    </div>
+    </section>
   )
 }
 

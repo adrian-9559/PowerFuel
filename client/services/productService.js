@@ -6,7 +6,7 @@ class ProductService {
         try {
             const response = await api.get(`/products/${id}`);
             if (!response.data) {
-                throw new Error('Product not found');
+                console.log('Product not found');
             }
             return response.data;
         } catch (error) {
@@ -116,7 +116,7 @@ class ProductService {
     async deleteProduct(id) {
         try {
             const response = await api.delete(`/products/${id}`);
-            this.deleteImage(id);
+            this.deleteImageProduct(id);
             return response.data;
         } catch (error) {
             toastr.error(error);
@@ -133,7 +133,7 @@ class ProductService {
         }
     }
 
-    async deleteImage(id) {
+    async deleteImageProduct(id) {
         try {
             const response = await api.post(`/files/deleteProduct/${id}`);
             return response.data;
@@ -168,6 +168,16 @@ class ProductService {
                 query
             
             });
+            return response.data;
+        } catch (error) {
+            toastr.error(error);
+            throw error;
+        }
+    }
+
+    async generalPanelInfo() {
+        try {
+            const response = await api.post(`/products/generalPanelInfo`);
             return response.data;
         } catch (error) {
             toastr.error(error);

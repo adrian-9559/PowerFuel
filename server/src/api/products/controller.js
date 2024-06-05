@@ -31,7 +31,7 @@ const addProduct = async (productData) => {
 
         return await model.insertProduct(productData);
     } catch (error) {
-        throw new Error(`Error al intentar añadir el producto ${errorDisplay}`, error);
+        console.log(`Error al intentar añadir el producto ${errorDisplay}`, error);
     }
 };
 
@@ -52,7 +52,7 @@ const deleteProductById = async (productId) => {
         deleteProduct(product[0].stripe_product_id);
         return deletedProduct;
     } catch (error) {
-        throw new Error(`Error al intentar eliminar el producto ${errorDisplay}`, error);
+        console.log(`Error al intentar eliminar el producto ${errorDisplay}`, error);
     }
 };
 
@@ -78,7 +78,7 @@ const updateProductById = async (productId, productData) => {
        
         return false;
     } catch (error) {
-        throw new Error(`Error al intentar modificar el producto ${errorDisplay}`, error);
+        console.log(`Error al intentar modificar el producto ${errorDisplay}`, error);
     }
 };
 
@@ -96,7 +96,7 @@ const getProductById = async (productId) => {
         const product = await model.getProducts(0, 1, productId);
         return product[0];
     } catch (error) {
-        throw new Error(`Error al intentar obtener el producto ${errorDisplay}`, error);
+        console.log(`Error al intentar obtener el producto ${errorDisplay}`, error);
     }
 };
 
@@ -137,7 +137,7 @@ const getProducts = async (page, limit) => {
             products
         };
     } catch (error) {
-        throw new Error(`Error al intentar obtener los productos ${errorDisplay}`, error);
+        console.log(`Error al intentar obtener los productos ${errorDisplay}`, error);
     }
 };
 
@@ -156,7 +156,7 @@ const getProductsSearch = async (query, limit, page) => {
     try {
         return await model.getProductsSearch(query, limit, page);
     } catch (error) {
-        throw new Error(`Error al intentar obtener los productos ${errorDisplay}`, error);
+        console.log(`Error al intentar obtener los productos ${errorDisplay}`, error);
     }
 };
 
@@ -178,7 +178,7 @@ const getProductsByCategory = async (page, limit, id) => {
         const skip = (page - 1) * limit;
         return await model.getProductsByCategory(skip, limit, id);
     } catch (error) {
-        throw new Error(`Error al intentar obtener los productos por categoría ${errorDisplay}`, error);
+        console.log(`Error al intentar obtener los productos por categoría ${errorDisplay}`, error);
     }
 };
 
@@ -205,7 +205,7 @@ const getProductsByDate = async (page, limit, startDate, endDate, order) => {
         let products = await model.getProductsByDate(limit, skip, startDate, endDate, order);
         return products;
     } catch (error) {
-        throw new Error(`Error al intentar obtener los productos por fecha ${errorDisplay}`, error);
+        console.log(`Error al intentar obtener los productos por fecha ${errorDisplay}`, error);
     }
 }
 
@@ -222,7 +222,25 @@ const getRandomProducts = async (limit) => {
     try {
         return await model.getRandomProducts(limit);
     } catch (error) {
-        throw new Error(`Error al intentar obtener los productos aleatorios ${errorDisplay}`, error);
+        console.log(`Error al intentar obtener los productos aleatorios ${errorDisplay}`, error);
+    }
+}
+
+const getGeneralPanelInfo = async () => {
+    try {
+        const totalProducts = await model.getProductsCount();
+        const productDisabled = await model.getCountProductStatus("Disabled");
+        const productEnabled = await model.getCountProductStatus("Enabled");
+        const productOutStock = await model.getCountOutStock();
+
+        return {
+            totalProducts,
+            productDisabled,
+            productEnabled,
+            productOutStock
+        };
+    } catch (error) {
+        console.log(`Error al intentar obtener la información general del panel ${errorDisplay}`, error);
     }
 }
 
@@ -236,5 +254,6 @@ module.exports = {
     getProductsByCategory,
     getProductsSearch,
     getProductsByDate,
-    getRandomProducts
+    getRandomProducts,
+    getGeneralPanelInfo
 };

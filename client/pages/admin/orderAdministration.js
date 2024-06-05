@@ -10,9 +10,9 @@ import EyeIcon from '@icons/EyeIcon';
 import EditIcon from '@icons/EditIcon';
 
 const statusColorMap = {
-    complete: "success",
-    incident: "danger",
-    pending: "warning",
+    delivered: "success",
+    delivery: "warning",
+    pending: "danger",
 };  
 
 const OrderAdministration = () => {
@@ -140,7 +140,7 @@ const OrderAdministration = () => {
                             </TableCell>
                             <TableCell>
                                 <section className="relative flex justify-center items-center gap-2">
-                                    <Tooltip color="primary" content="Detalles">
+                                    <Tooltip content="Detalles">
                                         <Button isIconOnly color="primary" variant="flat" className="text-lg text-default-400 cursor-pointer active:opacity-50" onPress={() => { setSelectedOrder(order); onOpen(); }}>
                                             <EyeIcon color="primary" />
                                         </Button>

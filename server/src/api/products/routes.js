@@ -11,7 +11,8 @@ const {
     getProductsByCategory,
     getProductsSearch,
     getProductsByDate,
-    getRandomProducts
+    getRandomProducts,
+    getGeneralPanelInfo
 } = require('./controller');
 
 const router = express.Router();
@@ -243,4 +244,15 @@ router.route('/random')
             res.status(500).json({ message: 'Error al obtener los productos' });
         }
     });
+
+router.route('/generalPanelInfo')
+    .post(async (req, res) => {
+        try {
+            const generalPanelInfo = await getGeneralPanelInfo();
+            res.status(200).json(generalPanelInfo);
+        } catch (error) {
+            res.status(500).json({ message: 'Error al obtener la información general del panel' });
+        }
+    });
+
 module.exports = router;

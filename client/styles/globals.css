@@ -8,3 +8,13 @@
       margin-bottom: 4rem;
     }
   }
+
+.customScrollShadow {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.customScrollShadow::-webkit-scrollbar {
+    display: none;
+}

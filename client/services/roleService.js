@@ -27,6 +27,11 @@ class RoleService{
         return response.data;
     }
 
+    async getAllRoles(){
+        const response = await api.get(`/roles/allRoles`);
+        return response.data;
+    }
+
     async updateRole(id, roleName) {
         const response = await api.put(`/roles/${id}`, {
             role_name: roleName, 

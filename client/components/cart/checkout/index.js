@@ -35,9 +35,9 @@ const CheckOut = () => {
             <Button onPress={onOpen} className='items-center bg-green-200 hover:bg-green-500 sticky bottom-0 z-10 flex justify-center w-1/2' color='success'>
                 <p>Pagar</p>
             </Button>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} className='p-8' backdrop="blur">
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} className='p-6 overflow-hidden max-w-[50%] max-h-[90%]' backdrop="blur">
                 <ModalHeader className="flex flex-col gap-1">Pagar</ModalHeader>
-                <ModalContent className='flex flex-col justify-center items-center'>
+                <ModalContent className='flex flex-col items-center'>
                     {!isLoggedIn && <AuthTabs />}
                     {isLoggedIn && currentStep === 1 && (
                         <AddressMenu 

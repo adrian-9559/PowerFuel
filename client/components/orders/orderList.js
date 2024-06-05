@@ -30,11 +30,15 @@ const OrdersList = () => {
         <h1 className="font-bold text-3xl">Listado de pedidos</h1>
       </section>
         <ScrollShadow  size={20} className='h-[50rem] flex flex-col gap-4 p-4'>
-          {userOrders.map((order, index) => (
-            <section className='w-full cursor-pointer' onClick={() => { setSelectedOrder(order); onOpen(); }}>
-              <OrderItem order={order} key={order.order_id}/>
-            </section>
-          )) || 'No tienes ningún pedido aún'}
+          {userOrders.length > 0 ? (
+            userOrders.map((order, index) => (
+              <section className='w-full cursor-pointer' onClick={() => { setSelectedOrder(order); onOpen(); }}>
+                <OrderItem order={order} key={order.order_id}/>
+              </section>
+            ))
+          ) : (
+            <p>No tienes ningún pedido aún</p>
+          )}
         </ScrollShadow>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} className='p-6 overflow-hidden max-w-[60%] max-h-[80%]' backdrop="blur">
         <ModalContent className='w-full'>

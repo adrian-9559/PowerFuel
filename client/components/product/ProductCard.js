@@ -69,8 +69,8 @@ const ProductCard = ({ product }) => {
                                 transition={{ duration: 0.2 }}
                             >
                                 <p 
-                                    className="overflow-hidden whitespace-nowrap text-overflow-ellipsis max-w-[150px] text-sm text-white font-bold" 
-                                    style={{textOverflow: 'ellipsis'}}
+                                    className="overflow-hidden whitespace-nowrap text-overflow-ellipsis max-w-[150px] text-sm text-black font-bold bg-gray-200 border-gray-600 bg-opacity-50 mt-2 rounded" 
+                                    style={{textOverflow: 'ellipsis', paddingLeft: '2px'}}
                                 >
                                     {product.product_name}
                                     </p>

@@ -13,9 +13,9 @@ function refreshToken() {
       })
       .catch((error) => {
         console.error(error);
-        throw new Error('Error refreshing token');
+        console.log('Error refreshing token');
       });
   }
 
-  throw new Error('No refresh token stored');
+  console.log('No refresh token stored');
 }

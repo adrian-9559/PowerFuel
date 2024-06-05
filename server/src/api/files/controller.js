@@ -26,11 +26,11 @@ const uploadProduct = (productId, files) => {
 
             const totalFilesAfterUpload = existingFiles.length + (Array.isArray(files) ? files.length : 1);
             if (totalFilesAfterUpload > 5) {
-                throw new Error(`El número máximo de imágenes permitidas es 5. Actualmente hay ${existingFiles.length} imágenes y estás intentando subir ${totalFilesAfterUpload - existingFiles.length}.`);
+                console.log(`El número máximo de imágenes permitidas es 5. Actualmente hay ${existingFiles.length} imágenes y estás intentando subir ${totalFilesAfterUpload - existingFiles.length}.`);
             }
         }
     } catch (error) {
-        throw new Error(`Error al intentar crear el directorio o leer los archivos existentes ${errorDisplay}`, error);
+        console.log(`Error al intentar crear el directorio o leer los archivos existentes ${errorDisplay}`, error);
     }
 
     if(Array.isArray(files)) {
@@ -39,7 +39,7 @@ const uploadProduct = (productId, files) => {
             try{
                 file.mv(path.join(newPath, filename));
             }catch(error) {
-                throw new Error(`Error al intentar mover las imagenes del producto ${errorDisplay}`, error);
+                console.log(`Error al intentar mover las imagenes del producto ${errorDisplay}`, error);
             }
         });
     } else {
@@ -47,7 +47,7 @@ const uploadProduct = (productId, files) => {
         try{
             files.mv(path.join(newPath, filename));
         }catch(error) {
-            throw new Error(`Error al intentar mover la imagen del producto ${errorDisplay}`, error);
+            console.log(`Error al intentar mover la imagen del producto ${errorDisplay}`, error);
         }
     }
 };
@@ -105,7 +105,7 @@ const deleteProductImages = (productId, imageId=null) => {
             }
         }
     } catch (error) {
-        throw new Error(`Error al intentar eliminar las imágenes del producto ${errorDisplay}`, error);
+        console.log(`Error al intentar eliminar las imágenes del producto ${errorDisplay}`, error);
     }
 };
 
@@ -131,7 +131,7 @@ const uploadUser = (userId, files) => {
             fileIndex = existingFiles.length + 1;
         }
     } catch (error) {
-        throw new Error(`Error al intentar crear el directorio o leer los archivos existentes ${errorDisplay}`, error);
+        console.log(`Error al intentar crear el directorio o leer los archivos existentes ${errorDisplay}`, error);
     }
 
     if(Array.isArray(files)) {
@@ -140,7 +140,7 @@ const uploadUser = (userId, files) => {
             try {
                 file.mv(path.join(newPath, filename));
             } catch (error) {
-                throw new Error(`Error al intentar mover las imagenes del usuario ${errorDisplay}`, error);
+                console.log(`Error al intentar mover las imagenes del usuario ${errorDisplay}`, error);
             }
         });
     } else {
@@ -148,7 +148,7 @@ const uploadUser = (userId, files) => {
         try {
             files.mv(path.join(newPath, filename));
         } catch (error) {
-            throw new Error(`Error al intentar mover la imagen del usuario ${errorDisplay}`, error);
+            console.log(`Error al intentar mover la imagen del usuario ${errorDisplay}`, error);
         }
     }
 };
@@ -174,7 +174,7 @@ const getImageCount = async (id) => {
         return { count: files.length };
     } catch (error) {
         console.log(error);
-        throw new Error(`Error al intentar obtener el conteo de imágenes ${errorDisplay}`, error);
+        console.log(`Error al intentar obtener el conteo de imágenes ${errorDisplay}`, error);
     }
 };
 

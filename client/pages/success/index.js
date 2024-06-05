@@ -9,13 +9,13 @@ import { Card, Button } from '@nextui-org/react';
 
 const SuccessPage = () => {
     const router = useRouter();
-    const success = router.query.success;
+    let success = router.query.success;
     const {cart, setCart} = useAppContext();
 
     useEffect(() => {
         const handleSuccess = async () => {
             if (success) {
-                const addressId = localStorage.getItem('shipping_address');
+                const addressId = await localStorage.getItem('shipping_address');
                 let shipping = null;
                 if (addressId) 
                     shipping = await AddressService.getAddressById(addressId);
@@ -32,15 +32,15 @@ const SuccessPage = () => {
                 };
         
                 await OrderService.createOrder(order);
-        
                 setCart([]);
             }
         }
         handleSuccess();
+
     }, [success]);
 
     return (
-        <div className='flex justify-center items-center h-full'>
+        <main className='flex justify-center items-center h-full p-20'>
             <Card className='shadow-md px-8 pt-6 pb-8 mb-4 items-center justify-center'>
                 <section className='mb-4 text-center'>
                     <h1 className='font-bold text-xl mb-2'>¡Pedido completado con éxito!</h1> 
@@ -52,7 +52,7 @@ const SuccessPage = () => {
                     <Button color='primary' block onPress={() => router.push('/users/config/OrderList')} className='w-64'>Ver mis pedidos</Button>
                 </section>
             </Card>
-        </div>
+        </main>
     );
 };
 

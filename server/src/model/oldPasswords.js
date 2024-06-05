@@ -3,6 +3,11 @@ const sequelize = require('./database');
 
 class OldPasswords extends Model { }
 OldPasswords.init({
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+    },
     user_id: {
         type: DataTypes.INTEGER,
         references: {
@@ -10,7 +15,7 @@ OldPasswords.init({
             key: 'user_id'
         }
     },
-    previous_password: DataTypes.STRING,
+    old_password: DataTypes.STRING,
     change_date: DataTypes.DATE
 }, {
     sequelize,

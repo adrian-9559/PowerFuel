@@ -31,7 +31,7 @@ const sendMailPassReset = (email, code, user_id) => {
             });
             ControllerCodePasswords.registerCodePasswordReset(code, user_id);
         } catch (error) {
-            throw new Error(`Error al intentar enviar el correo de restablecimiento de contraseña ${errorDisplay}`, error);
+            console.log(`Error al intentar enviar el correo de restablecimiento de contraseña ${errorDisplay}`, error);
         }
     });
 };

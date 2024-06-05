@@ -41,7 +41,7 @@ class model {
         
             return { user_id: newUserCredentials.user_id };
         } catch (error) {
-            throw new Error(`Error al añadir el usuario ${errorDisplay}`, error);
+            console.log(`Error al añadir el usuario ${errorDisplay}`, error);
         }
     };
     
@@ -68,7 +68,7 @@ class model {
 
             return await this.getUserByEmail(user.email);
         } catch (error) {
-            throw new Error(`Error al actualizar el usuario ${errorDisplay}`, error);
+            console.log(`Error al actualizar el usuario ${errorDisplay}`, error);
         }
     };    
 
@@ -86,7 +86,7 @@ class model {
             await UserCredentials.destroy({ where: { user_id: userId } });
             return await UserCredentials.findOne({ where: { user_id: userId } });
         } catch (error) {
-            throw new Error(`Error al eliminar el usuario ${errorDisplay}`, error);
+            console.log(`Error al eliminar el usuario ${errorDisplay}`, error);
         }
     };
 
@@ -108,7 +108,7 @@ class model {
                     include: [{ model: UserInfo, required: true }]
                 });
         } catch (error) {
-            throw new Error(`Error al obtener el usuario por correo electrónico ${errorDisplay}`, error);
+            console.log(`Error al obtener el usuario por correo electrónico ${errorDisplay}`, error);
         }
     };
         
@@ -140,7 +140,7 @@ class model {
                 ]
             });
         } catch (error) {
-            throw new Error(`Error al obtener los usuarios ${errorDisplay}`, error);
+            console.log(`Error al obtener los usuarios ${errorDisplay}`, error);
         }
     };
 
@@ -155,7 +155,7 @@ class model {
         try {
             return await UserCredentials.count();
         } catch (error) {
-            throw new Error(`Error al obtener el conteo de usuarios ${errorDisplay}`, error);
+            console.log(`Error al obtener el conteo de usuarios ${errorDisplay}`, error);
         }
     };
 
@@ -188,9 +188,52 @@ class model {
                 ]
             });
         } catch (error) {
-            throw new Error(`Error al obtener los usuarios por fecha de registro ${errorDisplay}`, error);
+            console.log(`Error al obtener los usuarios por fecha de registro ${errorDisplay}`, error);
         }
     };
+
+    getTotalUsers = async () => {
+        try {
+            return await UserCredentials.count();
+        } catch (error) {
+            console.log(`Error al obtener el total de usuarios ${errorDisplay}`, error);
+        }
+    }
+
+    getTotalActiveUsers = async (status) => {
+        try {
+            return await UserCredentials.count({
+                where: {
+                    status: status
+                }
+            });
+        } catch (error) {
+            console.log(`Error al obtener el total de usuarios activos ${errorDisplay}`, error);
+        }
+    }
+
+    getCountUsersRegistrationWeek = async (startDate, endDate) => {
+        try {
+            return await UserCredentials.count({
+                where: {
+                    registration_date: {
+                        [Op.between]: [startDate, endDate]
+                    }
+                }
+            });
+        } catch (error) {
+            console.log(`Error al obtener el total de usuarios registrados esta semana ${errorDisplay}`, error);
+        }
+    }
+
+    updateUserPassword = async (userId, password) => {
+        try {
+            await UserCredentials.update({ current_password: password }, { where: { user_id: userId } });
+            return await UserCredentials.findOne({ where: { user_id: userId } });
+        } catch (error) {
+            console.log(`Error al actualizar la contraseña del usuario ${errorDisplay}`, error);
+        }
+    }
 }
 
 module.exports = new model();

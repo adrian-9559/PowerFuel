@@ -19,7 +19,7 @@ const NavigationBar = () => {
         <Navbar isBordered className='w-full flex items-center py-4'>
             <NavbarContent className='w-full flex flex-row'>
                 <SideMenu />
-                <NavbarItem className="cursor-pointer " onClick={() => router.push('/')}>
+                <NavbarItem className="cursor-pointer px-1" onClick={() => router.push('/')}>
                     <BrandLogo />
                 </NavbarItem>
                 <NavbarItem className='flex-grow w-full h-full flex flex-row items-center'>

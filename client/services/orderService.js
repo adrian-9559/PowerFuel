@@ -84,6 +84,16 @@ class OrderService {
           throw error;
         }
     }
+
+    async generalPanelInfo(){
+        try {
+            const response = await api.post(`/orders/generalPanelInfo`);
+            return response.data;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
 }
 
 const orderService = new OrderService();

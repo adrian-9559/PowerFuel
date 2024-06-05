@@ -15,7 +15,7 @@ const saveOldPassword = async (userId, oldPassword) => {
         const changeTime = new Date();
         await model.saveOldPassword(userId, oldPassword, changeTime);
     } catch (error) {
-        throw new Error(`Error al intentar guardar la contraseña antigua ${errorDisplay}`, error);
+        console.log(`Error al intentar guardar la contraseña antigua ${errorDisplay}`, error);
     }
 };
 
@@ -31,11 +31,25 @@ const getAllOldPasswordByUserId = async (userId) => {
     try {
         return await model.getAllOldPasswordByUserId(userId);
     } catch (error) {
-        throw new Error(`Error al intentar obtener todas las contraseñas antiguas por ID de usuario ${errorDisplay}`, error);
+        console.log(`Error al intentar obtener todas las contraseñas antiguas por ID de usuario ${errorDisplay}`, error);
     }
+};
+
+
+/**
+ * Función para verificar si una contraseña es antigua o no.
+ * Function to check if a password is old or not.
+ * 
+ * @param {string} password - La contraseña a verificar. | The password to check.
+ * @param {Array} oldPasswords - Un array de todas las contraseñas antiguas del usuario. | An array of all the user's old passwords.
+ * @returns {boolean} - Devuelve true si la contraseña es antigua, de lo contrario devuelve false. | Returns true if the password is old, otherwise returns false.
+ */
+const isOldPassword = (password, oldPasswords) => {
+    return oldPasswords.includes(password);
 };
 
 module.exports = {
     saveOldPassword,
-    getAllOldPasswordByUserId
+    getAllOldPasswordByUserId,
+    isOldPassword
 }

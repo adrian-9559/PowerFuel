@@ -1,5 +1,5 @@
 import { Button, Input, Select, SelectItem, Textarea, Card, Image } from '@nextui-org/react';
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ProductService from '@services/productService';
 import CategoryService from '@services/categoryService';
@@ -11,7 +11,7 @@ const CreateProduct = () => {
     const [formState, setFormState] = useState({
         product_name: '',
         description: '',
-        stock: 1,
+        stock_quantity: 1,
         price: 1,
         category_id: 1,
         id_brand: 1,
@@ -22,6 +22,7 @@ const CreateProduct = () => {
     const [brands, setBrands] = useState([]);
     const [parentCategories, setParentCategories] = useState([]);
     const [childCategoriesLevels, setChildCategoriesLevels] = useState([]);
+    const [isFormValid, setIsFormValid] = useState(false);
     const router = useRouter();
     const [imageCount, setImageCount] = useState(0);
     const {id, readOnly} = router.query;
@@ -78,7 +79,7 @@ const CreateProduct = () => {
         const childCategories = await CategoryService.getChildCategories(e.target.value);
         setFormState({
             ...formState,
-            category_id: childCategories.length === 0 ? e.target.value : null
+            category_id: e.target.value
         });
         setChildCategoriesLevels([childCategories]);
     };
@@ -114,7 +115,7 @@ const CreateProduct = () => {
         const newChildCategories = await CategoryService.getChildCategories(e.target.value);
         setFormState({
             ...formState,
-            category_id: newChildCategories.length === 0 ? e.target.value : null
+            category_id: e.target.value
         });
         setChildCategoriesLevels(prevState => {
             const newState = [...prevState];
@@ -124,23 +125,34 @@ const CreateProduct = () => {
     };
 
     const handleSubmit = (e) => {
-        e.preventDefault()
+        e.preventDefault();
         if (id) {
             handleUpdate(e);
-        }
-        else {  
+        } else {
             handleRegister(e);
         }
-    }
+    };
 
     useEffect(() => {
         if (id) {
-            ProductService.getImageCount(id)
-                .then(count => {
-                    setImageCount(count);
-                });
+            ProductService.getImageCount(id).then(count => {
+                setImageCount(count);
+            });
         }
     }, [id]);
+
+    useEffect(() => {
+        const validateForm = () => {
+            const { product_name, description, stock_quantity, price, category_id, id_brand, images } = formState;
+            if (product_name && description && stock_quantity > 0 && price > 0 && category_id && id_brand && (images && images.length > 0 || imageCount > 0)) {
+                setIsFormValid(true);
+            } else {
+                setIsFormValid(false);
+            }
+        };
+
+        validateForm();
+    }, [formState, imageCount]);
 
     const renderProductImages = (isThumbnail = false) => {
         const images = [];
@@ -176,9 +188,7 @@ const CreateProduct = () => {
 
 
     return (
-        <main
-            className="max-w-4xl mx-auto mt-10 p-6 "
-        >
+        <main className="max-w-4xl mx-auto mt-10 p-6">
             <Card shadow className="p-5">
                 <h1 className="text-2xl font-bold mb-4">Crear Producto</h1>
                 {error && <p className="mb-4 text-red-500">{error}</p>}
@@ -270,20 +280,36 @@ const CreateProduct = () => {
                         <section className="mb-4">
                             <h2 className="text-xl font-bold mb-2">Imágenes del Producto</h2>
                             <section className="flex flex-row gap-4 w-full max-h-32">
-                                {imageCount === 0 && (
+                                {imageCount === 0 ? (
                                     <p>No hay imágenes para mostrar</p>
-                                ) || renderProductImages(true)}
+                                ) : renderProductImages(true)}
                             </section>
                         </section>
                     )}
                     {!readOnly && readOnly !== "true" && (
                         <section className="mb-4">
-                            <input type='file' multiple id='images' className="w-full px-4 py-2 border rounded-lg" onChange={(e) => setFormState({...formState, images: e.target.files})}/>
-                        </section>
+                            <input 
+                                type='file' 
+                                multiple 
+                                id='images' 
+                                className="w-full px-4 py-2 border rounded-lg" 
+                                onChange={(e) => {
+                                    if (e.target.files.length > 5) {
+                                        alert('No puedes subir más de 5 imágenes');
+                                    } else {
+                                        setFormState({...formState, images: e.target.files})
+                                    }
+                                }}
+                            />  
+                       </section>
                     )}
                     <section>
                         {!readOnly && readOnly !== "true" && (
-                            <Button type='submit' disabled={loading} className="w-full">
+                            <Button 
+                                type='submit' 
+                                disabled={loading || !isFormValid}
+                                className="w-full" 
+                            >
                                 {loading ? 'Cargando...' : (id ? 'Guardar cambios' : 'Crear Producto')}
                             </Button>
                         )}

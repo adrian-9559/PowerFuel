@@ -32,7 +32,7 @@ class model {
             });
             return products;
         } catch (error) {
-            throw new Error(`Error al obtener los productos por categoría ${errorDisplay}`, error);
+            console.log(`Error al obtener los productos por categoría ${errorDisplay}`, error);
         }
     };
     
@@ -64,7 +64,7 @@ class model {
             });
             return products;
         } catch (error) {
-            throw new Error(`Error al obtener los productos ${errorDisplay}`, error);
+            console.log(`Error al obtener los productos ${errorDisplay}`, error);
         }
     };
 
@@ -88,7 +88,7 @@ class model {
             });
             return products;
         } catch (error) {
-            throw new Error(`Error al obtener los IDs de los productos ${errorDisplay}`, error);
+            console.log(`Error al obtener los IDs de los productos ${errorDisplay}`, error);
         }
     }
     
@@ -112,7 +112,7 @@ class model {
             }
             return childCategories;
         } catch (error) {
-            throw new Error(`Error al obtener las categorías hijas ${errorDisplay}`, error);
+            console.log(`Error al obtener las categorías hijas ${errorDisplay}`, error);
         }
     }
     
@@ -177,7 +177,7 @@ class model {
         
             return products;
         } catch (error) {
-            throw new Error(`Error al buscar productos ${errorDisplay}`, error);
+            console.log(`Error al buscar productos ${errorDisplay}`, error);
         }
     }
     
@@ -206,7 +206,7 @@ class model {
     
             return newProduct.product_id;
         } catch (error) {
-            throw new Error(`Error al insertar el producto ${errorDisplay}`, error);
+            console.log(`Error al insertar el producto ${errorDisplay}`, error);
         }
     };
     
@@ -241,7 +241,7 @@ class model {
             }
             return null;
         } catch (error) {
-            throw new Error(`Error al modificar el producto ${errorDisplay}`, error);
+            console.log(`Error al modificar el producto ${errorDisplay}`, error);
         }
     };
     
@@ -266,7 +266,7 @@ class model {
             });
             return result;
         } catch (error) {
-            throw new Error(`Error al eliminar el producto ${errorDisplay}`, error);
+            console.log(`Error al eliminar el producto ${errorDisplay}`, error);
         }
     };
     
@@ -281,7 +281,7 @@ class model {
         try {
             return await Product.count();
         } catch (error) {
-            throw new Error(`Error al obtener el conteo de productos ${errorDisplay}`, error);
+            console.log(`Error al obtener el conteo de productos ${errorDisplay}`, error);
         }
     };
     
@@ -302,7 +302,7 @@ class model {
                 }
             });
         } catch (error) {
-            throw new Error(`Error al obtener el conteo de productos por categoría ${errorDisplay}`, error);
+            console.log(`Error al obtener el conteo de productos por categoría ${errorDisplay}`, error);
         }
     };
 
@@ -341,7 +341,7 @@ class model {
             
             return products;
         } catch (error) {
-            throw new Error(`Error al obtener los productos por fecha ${errorDisplay}`, error);
+            console.log(`Error al obtener los productos por fecha ${errorDisplay}`, error);
         }
     }
 
@@ -361,9 +361,33 @@ class model {
                 limit: limit
             });
         } catch (error) {
-            throw new Error(`Error al obtener productos aleatorios ${errorDisplay}`, error);
+            console.log(`Error al obtener productos aleatorios ${errorDisplay}`, error);
         }
     };
+
+    getCountProductStatus = async (status) => {
+        try {
+            return await Product.count({
+                where: {
+                    status: status
+                }
+            });
+        } catch (error) {
+            console.log(`Error al obtener el conteo de productos por estado ${errorDisplay}`, error);
+        }
+    };
+
+    getCountOutStock = async () => {
+        try {
+            return await Product.count({
+                where: {
+                    stock_quantity: 0
+                }
+            });
+        } catch (error) {
+            console.log(`Error al obtener el conteo de productos sin stock ${errorDisplay}`, error);
+        }
+    }
 }
 
 module.exports = new model();

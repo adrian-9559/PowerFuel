@@ -9,10 +9,12 @@ const OrderItem = ({ order }) => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'succeeded':
+      case 'delivered':
         return 'success';
-      case 'pending':
+      case 'delivery':
         return 'warning';
+      case 'pending':
+        return 'danger';
       default:
         return 'default';
     }
@@ -30,7 +32,7 @@ const OrderItem = ({ order }) => {
       }
       setDetails(detailsTemp);
       order.total = total.toFixed(2);
-      setShippingAddress(JSON.parse(order.shipping_address)); // Parsear el string JSON de shipping_address en un objeto
+      setShippingAddress(JSON.parse(order.shipping_address));
     };
     
     fetchProduct();

@@ -18,7 +18,7 @@ class Model {
             });
             return newRole.role_id;
         } catch (error) {
-            throw new Error(`Error al insertar el rol ${errorDisplay}`, error);
+            console.log(`Error al insertar el rol ${errorDisplay}`, error);
         }
     };
 
@@ -42,7 +42,7 @@ class Model {
                 }
             });
         } catch (error) {
-            throw new Error(`Error al actualizar el rol ${errorDisplay}`, error);
+            console.log(`Error al actualizar el rol ${errorDisplay}`, error);
         }
     };
     
@@ -62,7 +62,7 @@ class Model {
                 }
             });
         } catch (error) {
-            throw new Error(`Error al eliminar el rol ${errorDisplay}`, error);
+            console.log(`Error al eliminar el rol ${errorDisplay}`, error);
         }
     }; 
 
@@ -87,7 +87,7 @@ class Model {
                 });
             }
         } catch (error) {
-            throw new Error(`Error al obtener los roles ${errorDisplay}`, error);
+            console.log(`Error al obtener los roles ${errorDisplay}`, error);
         }
     };
     
@@ -102,7 +102,7 @@ class Model {
         try {
             return await Role.count();
         } catch (error) {
-            throw new Error(`Error al obtener el conteo de roles ${errorDisplay}`, error);
+            console.log(`Error al obtener el conteo de roles ${errorDisplay}`, error);
         }
     };
     
@@ -123,7 +123,15 @@ class Model {
                 include: Role
             });
         } catch (error) {
-            throw new Error(`Error al obtener el rol por ID de usuario ${errorDisplay}`, error);
+            console.log(`Error al obtener el rol por ID de usuario ${errorDisplay}`, error);
+        }
+    };
+
+    getAllRoles = async () => {
+        try {
+            return await Role.findAll();
+        } catch (error) {
+            console.log(`Error al obtener todos los roles ${errorDisplay}`, error);
         }
     };
 }

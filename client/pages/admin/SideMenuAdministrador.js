@@ -12,7 +12,6 @@ const ADMIN_ACTIONS = {
         'Categorias',
         'Pedidos',
         'Marcas',
-        'Dashboard'
     ],
     '96': [
         'General',

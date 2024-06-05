@@ -1,6 +1,6 @@
 const express = require('express');
 const isAdmin = require('../../middlewares/isAdmin');
-const { registerUser, deleteUserById, updateUserById, getUserById, getUsers, loginUser, getUsersByRegistrationDate, resetPassword } = require('./controller');
+const { registerUser, deleteUserById, updateUserById, getUserById, getUsers, loginUser, getUsersByRegistrationDate, changePassword, resetPasswordCode, verifyPasswordResetCode, getGeneralPanelInfo } = require('./controller');
 
 const router = express.Router();
 
@@ -19,7 +19,7 @@ router.route('/')
         try {
             const user = await registerUser(req.body.user);
             if (!user) {
-                return res.status(400).json({ message: 'error registering the user'});
+                 res.status(400).json({ message: 'error registering the user'});
             }
             res.status(200).json(user);
         } catch (error) {
@@ -58,7 +58,7 @@ router.route('/:userId')
         try {
             const deletedUser = await deleteUserById(req.params.userId);
             if (!deletedUser) {
-                return res.status(404).json({ message: 'Usuario no encontrado' });
+                 res.status(404).json({ message: 'Usuario no encontrado' });
             }
             res.status(200).json({ message: 'Usuario eliminado correctamente' });
         } catch (error) {
@@ -80,7 +80,7 @@ router.route('/:userId')
         try {
             const user = await updateUserById(req.params.userId, req.body.user);
             if (!user) {
-                return res.status(404).json({ message: 'Usuario no encontrado' });
+                 res.status(404).json({ message: 'Usuario no encontrado' });
             }
             res.status(200).json({ message: 'Usuario modificado correctamente' });
         } catch (error) {
@@ -102,12 +102,12 @@ router.route('/:userId')
         try {
             const user = await getUserById(userId);
             if (!user) {
-                return res.status(404).json({ message: 'Usuario no encontrado' });
+                 res.status(404).json({ message: 'Usuario no encontrado' });
             }
-            return res.status(200).json(user); 
+             res.status(200).json(user); 
         } catch (error) {
             if (!res.headersSent) {
-                return res.status(500).json({ message: 'Error al obtener el usuario' });
+                 res.status(500).json({ message: 'Error al obtener el usuario' });
             }
         }
     });
@@ -128,7 +128,7 @@ router.route('/login')
         try {
             const tokens = await loginUser(req.body.email, req.body.password);
             if (!tokens && tokens == null) {
-                return res.status(401).json({ message: 'Inicio de sesión fallido' });
+                 res.status(401).json({ message: 'Inicio de sesión fallido' });
             }
             const { authToken, refreshToken } = tokens;
             res.status(200).json({ message: 'Inicio de sesión correcto', auth_token: authToken, refresh_token: refreshToken});
@@ -174,17 +174,17 @@ router.route('/info')
         try {
             const user = await getUserById(userId);
             if (!user) {
-                return res.status(404).json({ message: 'Usuario no encontrado' });
+                 res.status(404).json({ message: 'Usuario no encontrado' });
             }
-            return res.status(200).json(user); 
+             res.status(200).json(user); 
         } catch (error) {
             if (!res.headersSent) {
-                return res.status(500).json({ message: 'Error al obtener el usuario' });
+                 res.status(500).json({ message: 'Error al obtener el usuario' });
             }
         }
     });
 
-router.route('/resetPassword')
+router.route('/resetPasswordCode')
     /**
      * @route POST /resetPassword
      * Endpoint para restablecer la contraseña de un usuario.
@@ -198,13 +198,69 @@ router.route('/resetPassword')
     .post(async (req, res) => {
         const email = req.body.email;
         try {
-            const response = await resetPassword(email);
-            return res.status(200).json({ message: 'Contraseña restablecida correctamente' });
+            const response = await resetPasswordCode(email);
+            if(response)
+                res.status(200).json({ message: 'Código de reseteo de contraseña enviado correctamente' });
+            else
+                res.status(404).json({ message: 'Usuario no encontrado' });
         } catch (error) {
-            if (!res.headersSent) {
-                return res.status(500).json({ message: 'Error al restablecer la contraseña del usuario' });
-            }
+            res.status(500).json({ message: 'Error al obtener el código de reseteo de contraseña' });
         }
     });
+
+
+router.route('/verifyPasswordResetCode')
+    .post(async (req, res) => {
+        const code = req.body.code;
+        const email = req.body.email;
+        try {
+            const isValid = await verifyPasswordResetCode(email, code);
+
+            if (isValid) {
+                 res.status(200).json({ message: 'Código de reseteo de contraseña válido' });
+            }
+             res.status(400).json({ message: 'Código de reseteo de contraseña inválido' });
+
+        } catch (error) {
+             res.status(500).json({ message: 'Error al verificar el código de reseteo de contraseña' });
+        }
+    });
+
+router.route('/resetPassword')
+    /**
+     * @route POST /resetPassword
+     * Endpoint para restablecer la contraseña de un usuario.
+     * Endpoint to reset a user's password.
+     * 
+     * @param {string} req.body.email - El correo electrónico del usuario que quiere restablecer su contraseña. | The email of the user who wants to reset their password.
+     * @param {string} req.body.code - El código de restablecimiento de contraseña. | The password reset code.
+     * @param {string} req.body.currentPassword - La contraseña actual del usuario. | The current password of the user.
+     * @param {string} req.body.newPassword - La nueva contraseña del usuario. | The new password of the user.
+     * @param {string} req.body.confirmPassword - La confirmación de la nueva contraseña del usuario. | The confirmation of the new password of the user.
+     * @returns {Object} 200 - La respuesta del proceso de restablecimiento de contraseña. | The response from the password reset process.
+     * @returns {Object} 404 - Error cuando el usuario no se encuentra. | Error when the user is not found.
+     * @returns {Error} 500 - Error interno del servidor al restablecer la contraseña del usuario. | Internal server error when resetting the user's password.
+     */
+    .post(async (req, res) => {
+        const { email, code, currentPassword, newPassword, confirmPassword } = req.body;
+        try {
+            const response = await changePassword(email, code, currentPassword, newPassword, confirmPassword);
+            res.status(200).json(response);
+        } catch (error) {
+            console.log("error", error);
+             res.status(500).json({ message: 'Error al restablecer la contraseña del usuario' });
+        }
+    });
+
+router.route('/generalPanelInfo')
+    .post(async (req, res) => {
+        try {
+            const response = await getGeneralPanelInfo();
+             res.status(200).json(response);
+        } catch (error) {
+             res.status(500).json({ message: 'Error al obtener la información general del panel' });
+        }
+    });
+
 
 module.exports = router;

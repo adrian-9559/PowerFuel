@@ -17,7 +17,7 @@ class OrderModel {
                 where: { user_id: userId }
             });
         } catch (error) {
-            throw new Error(`Error al obtener los pedidos del usuario ${errorDisplay}`, error);
+            console.log(`Error al obtener los pedidos del usuario ${errorDisplay}`, error);
         }
     };
 
@@ -35,7 +35,7 @@ class OrderModel {
                 where: { order_id: orderId }
             });
         } catch (error) {
-            throw new Error(`Error al obtener el pedido por ID ${errorDisplay}`, error);
+            console.log(`Error al obtener el pedido por ID ${errorDisplay}`, error);
         }
     };
 
@@ -51,7 +51,7 @@ class OrderModel {
         try {
             return await Order.create(orderData);
         } catch (error) {
-            throw new Error(`Error al crear el pedido ${errorDisplay}`, error);
+            console.log(`Error al crear el pedido ${errorDisplay}`, error);
         }
     };
 
@@ -70,7 +70,7 @@ class OrderModel {
                 where: { order_id: orderId }
             });
         } catch (error) {
-            throw new Error(`Error al actualizar el pedido ${errorDisplay}`, error);
+            console.log(`Error al actualizar el pedido ${errorDisplay}`, error);
         }
     };
 
@@ -89,7 +89,7 @@ class OrderModel {
             });
             return result > 0;
         } catch (error) {
-            throw new Error(`Error al eliminar el pedido ${errorDisplay}`, error);
+            console.log(`Error al eliminar el pedido ${errorDisplay}`, error);
         }
     };
 
@@ -104,7 +104,7 @@ class OrderModel {
         try {
             return await Order.count();
         } catch (error) {
-            throw new Error(`Error al obtener el conteo de pedidos ${errorDisplay}`, error);
+            console.log(`Error al obtener el conteo de pedidos ${errorDisplay}`, error);
         }
     };
 
@@ -135,7 +135,7 @@ class OrderModel {
     
             return orders;
         } catch (error) {
-            throw new Error(`Error al obtener los pedidos por fecha ${errorDisplay}`, error);
+            console.log(`Error al obtener los pedidos por fecha ${errorDisplay}`, error);
         }
     };
 
@@ -151,9 +151,36 @@ class OrderModel {
             });
             return orders;
         } catch (error) {
-            throw new Error(`Error al obtener los pedidos ${errorDisplay}`, error);
+            console.log(`Error al obtener los pedidos ${errorDisplay}`, error);
         }
     };
+
+    getCountOrdersWeek = async (startDate, endDate) => {
+        try{
+            return await Order.count({
+                where: {
+                    order_date: {
+                        [Op.between]: [startDate, endDate]
+                    }
+                }
+            });
+        }catch (error) {
+            console.log(`Error al obtener el conteo de pedidos por semana ${errorDisplay}`, error);
+        }
+    }
+
+    getCountStatusOrder = async (status) => {
+        try{
+            return await Order.count({
+                where: {
+                    order_status: status
+                }
+            });
+        }catch (error) {
+            console.log(`Error al obtener el conteo de pedidos por estado ${errorDisplay}`, error);
+        }
+    }
+    
 }
 
 module.exports = new OrderModel();

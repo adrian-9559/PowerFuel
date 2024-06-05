@@ -14,7 +14,7 @@ class model {
         try {
             return await UserAddress.findAll();
         } catch (error) {
-            throw new Error(`Error al intentar obtener todas las direcciones ${errorDisplay}`, error);
+            console.log(`Error al intentar obtener todas las direcciones ${errorDisplay}`, error);
         }
     };
     
@@ -30,7 +30,7 @@ class model {
         try {
             return await UserAddress.findByPk(AddressId);
         } catch (error) {
-            throw new Error(`Error al intentar obtener la dirección por ID ${errorDisplay}`, error);
+            console.log(`Error al intentar obtener la dirección por ID ${errorDisplay}`, error);
         }
     };
 
@@ -50,7 +50,7 @@ class model {
                 }
             });
         } catch (error) {
-            throw new Error(`Error al intentar obtener las direcciones por ID de usuario ${errorDisplay}`, error);
+            console.log(`Error al intentar obtener las direcciones por ID de usuario ${errorDisplay}`, error);
         }
     };
     
@@ -85,7 +85,7 @@ class model {
 
         } catch (error) {
             console.log(error);
-            throw new Error(`Error al intentar insertar la dirección ${errorDisplay}`, error);
+            console.log(`Error al intentar insertar la dirección ${errorDisplay}`, error);
         }
     };
 
@@ -111,7 +111,7 @@ class model {
             }
             return null;
         } catch (error) {
-            throw new Error(`Error al intentar actualizar la dirección ${errorDisplay}`, error);
+            console.log(`Error al intentar actualizar la dirección ${errorDisplay}`, error);
         }
     };
     
@@ -135,7 +135,7 @@ class model {
             });
             return result > 0;
         } catch (error) {
-            throw new Error(`Error al intentar eliminar la dirección ${errorDisplay}`, error);
+            console.log(`Error al intentar eliminar la dirección ${errorDisplay}`, error);
         }
     };
 
@@ -154,7 +154,7 @@ class model {
             const result= await UserAddress.update({ is_default: 1 }, { where: { address_id: addressId } });
             return result;
         }catch (error) {
-            throw new Error(`Error al intentar establecer la dirección por defecto ${errorDisplay}`, error);
+            console.log(`Error al intentar establecer la dirección por defecto ${errorDisplay}`, error);
         }
     };
 }

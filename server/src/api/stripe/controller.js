@@ -16,7 +16,7 @@ const createStripeCustomer = async (email, name) => {
     try {
         return await stripe.customers.create({ email, name });
     } catch (error) {
-        throw new Error(`Error al intentar crear el cliente Stripe ${errorDisplay}`, error);
+        console.log(`Error al intentar crear el cliente Stripe ${errorDisplay}`, error);
     }
 };
 
@@ -37,7 +37,7 @@ const deleteStripeCustomer = async (customerId) => {
     try {
         await stripe.customers.deleteStripeCustomer(customerId);
     } catch (error) {
-        throw new Error(`Error al intentar eliminar el cliente Stripe ${errorDisplay}`, error);
+        console.log(`Error al intentar eliminar el cliente Stripe ${errorDisplay}`, error);
     }
 };
 
@@ -53,7 +53,7 @@ const getCustomer = async (userId) => {
     try {
         return await stripe.customers.retrieve(userId);
     } catch (error) {
-        throw new Error(`Error al intentar obtener el cliente Stripe ${errorDisplay}`, error);
+        console.log(`Error al intentar obtener el cliente Stripe ${errorDisplay}`, error);
     }
 };
 
@@ -69,7 +69,7 @@ const getCustomerCharges = async (userId) => {
     try {
         return await stripe.charges.list({ customer: userId });
     } catch (error) {
-        throw new Error(`Error al intentar obtener los cargos del cliente ${errorDisplay}`, error);
+        console.log(`Error al intentar obtener los cargos del cliente ${errorDisplay}`, error);
     }
 };
 
@@ -89,10 +89,10 @@ const createCheckoutSession = async (customerId, line_items) => {
             line_items,
             mode: 'payment',
             ui_mode: 'embedded',
-            return_url: `http://${process.env.SERVER_HOST}:3000/success?success=true`,
+            return_url: `${process.env.SERVER_FRONTEND}/success`,
         });
     } catch (error) {
-        throw new Error(`Error al intentar crear la sesión de pago ${errorDisplay}`, error);
+        console.log(`Error al intentar crear la sesión de pago ${errorDisplay}`, error);
     }
 };
 
@@ -113,7 +113,7 @@ const getCustomerPaymentMethods = async (customerId) => {
 
         return paymentMethods;
     } catch (error) {
-        throw new Error(`Error al intentar obtener los métodos de pago del cliente ${errorDisplay}`, error);
+        console.log(`Error al intentar obtener los métodos de pago del cliente ${errorDisplay}`, error);
     }
 };
 
@@ -142,7 +142,7 @@ const createProduct = async (name, description, price) => {
 
         return { productId: product.id, priceId: priceObject.id };
     } catch (error) {
-        throw new Error(`Error al intentar crear el producto ${errorDisplay}`, error);
+        console.log(`Error al intentar crear el producto ${errorDisplay}`, error);
     }
 };
 
@@ -158,7 +158,7 @@ const deleteProduct = async (productId) => {
     try {
         await stripe.products.update(productId, { active: false });
     } catch (error) {
-        throw new Error(`Error al intentar eliminar el producto: ${error.message}`);
+        console.log(`Error al intentar eliminar el producto: ${error.message}`);
     }
 };
 
@@ -188,7 +188,7 @@ const updateProduct = async (productId, product) => {
             }
         });
     } catch (error) {
-        throw new Error(`Error al intentar actualizar el producto ${errorDisplay}`, error);
+        console.log(`Error al intentar actualizar el producto ${errorDisplay}`, error);
     }
 };
 

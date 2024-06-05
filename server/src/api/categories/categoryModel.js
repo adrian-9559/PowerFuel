@@ -18,7 +18,7 @@ class model {
             });
             return newCategory.category_id;
         } catch (error) {
-            throw new Error(`Error al añadir la categoría ${errorDisplay}`, error);
+            console.log(`Error al añadir la categoría ${errorDisplay}`, error);
         }
     };
     
@@ -41,7 +41,7 @@ class model {
                 }
             });
         } catch (error) {
-            throw new Error(`Error al actualizar la categoría ${errorDisplay}`, error);
+            console.log(`Error al actualizar la categoría ${errorDisplay}`, error);
         }
     };
     
@@ -71,7 +71,7 @@ class model {
 
             return await Category.findAll(query);
         } catch (error) {
-            throw new Error(`Error al obtener las categorías ${errorDisplay}`, error);
+            console.log(`Error al obtener las categorías ${errorDisplay}`, error);
         }
     };
     
@@ -91,7 +91,7 @@ class model {
             });
             return categories;
         } catch (error) {
-            throw new Error(`Error al obtener las categorías principales ${errorDisplay}`, error);
+            console.log(`Error al obtener las categorías principales ${errorDisplay}`, error);
         }
     };
     
@@ -112,7 +112,7 @@ class model {
             });
             return categories;
         } catch (error) {
-            throw new Error(`Error al obtener las categorías hijas ${errorDisplay}`, error);
+            console.log(`Error al obtener las categorías hijas ${errorDisplay}`, error);
         }
     };
     
@@ -132,7 +132,7 @@ class model {
             });
         } catch (error) {
             console.error(error);
-            throw new Error(`Error al eliminar la categoría ${errorDisplay}`, error);
+            console.log(`Error al eliminar la categoría ${errorDisplay}`, error);
         }
     };
     
@@ -147,7 +147,7 @@ class model {
         try {
             return await Category.count();
         } catch (error) {
-            throw new Error(`Error al obtener el conteo de categorías ${errorDisplay}`, error);
+            console.log(`Error al obtener el conteo de categorías ${errorDisplay}`, error);
         }
     };
 
@@ -169,7 +169,7 @@ class model {
             });
             return categories;
         } catch (error) {
-            throw new Error(`Error al obtener todas las categorías ${errorDisplay}`, error);
+            console.log(`Error al obtener todas las categorías ${errorDisplay}`, error);
         }
     };
 }

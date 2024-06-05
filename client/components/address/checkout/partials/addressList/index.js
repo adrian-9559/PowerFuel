@@ -19,10 +19,11 @@ const AddressList = ({addressList, handleDelete, handleEdit, setSelectedAddress}
     }
 
     return (
-        <section className="flex flex-col justify-center items-center">
+        <section className="flex flex-col w-full items-center">
             <RadioGroup 
                 value={selectedRadio} 
                 onValueChange={handleValueChange}
+                className='w-full'
             >
                 {addressList.map((address) => (
                     <Radio
@@ -30,8 +31,8 @@ const AddressList = ({addressList, handleDelete, handleEdit, setSelectedAddress}
                         value={address.address_id}
                         classNames={{
                             base: cn(
-                            "inline-flex m-0 bg-content1 hover:bg-content2 items-center justify-between",
-                            " max-w-[300px] cursor-pointer rounded-lg gap-4 p-4 border-2 border-transparent",
+                            " m-0 bg-content1 hover:bg-content2 items-center",
+                            " max-w-[100%] cursor-pointer rounded-lg gap-4 p-4 border-2 border-transparent",
                             "data-[selected=true]:border-primary border-default",
                             ),
                         }}

@@ -19,7 +19,7 @@ const getRoleById = async (roleId) => {
 
         return role[0];
     } catch (error) {
-        throw new Error(`Error al intentar obtener el rol por ID ${errorDisplay}`, error);
+        console.log(`Error al intentar obtener el rol por ID ${errorDisplay}`, error);
     }
 };
 
@@ -48,7 +48,7 @@ const getRoles = async (limit, page) => {
             roles
         };
     } catch (error) {
-        throw new Error(`Error al intentar obtener los roles ${errorDisplay}`, error);
+        console.log(`Error al intentar obtener los roles ${errorDisplay}`, error);
     }
 };
 
@@ -64,7 +64,7 @@ const addRole = async (role) => {
     try {
         return await model.insertRole(role);
     } catch (error) {
-        throw new Error(`Error al intentar añadir el rol ${errorDisplay}`, error);
+        console.log(`Error al intentar añadir el rol ${errorDisplay}`, error);
     }
 };
 
@@ -81,7 +81,7 @@ const updateRoleById = async (roleId, role) => {
     try {
         return await model.updateRole(roleId, role);
     } catch (error) {
-        throw new Error(`Error al intentar actualizar el rol ${errorDisplay}`, error);
+        console.log(`Error al intentar actualizar el rol ${errorDisplay}`, error);
     }
 };
 
@@ -97,7 +97,7 @@ const deleteRoleById = async (roleId) => {
     try {
         return await model.deleteRole(roleId);
     } catch (error) {
-        throw new Error(`Error al intentar eliminar el rol ${errorDisplay}`, error);
+        console.log(`Error al intentar eliminar el rol ${errorDisplay}`, error);
     }
 };
 
@@ -113,8 +113,16 @@ const getRoleByUserId = async (userId) => {
     try {
         return await model.getRoleByUserId(userId);
     } catch (error) {
-        throw new Error(`Error al intentar obtener el rol por ID de usuario ${errorDisplay}`, error);
+        console.log(`Error al intentar obtener el rol por ID de usuario ${errorDisplay}`, error);
     }
 };
 
-module.exports = { getRoles, getRoleById, addRole, updateRoleById, deleteRoleById, getRoleByUserId };
+const getAllRoles = async () => {
+    try {
+        return await model.getAllRoles();
+    } catch (error) {
+        console.log(`Error al intentar obtener todos los roles ${errorDisplay}`, error);
+    }
+};
+
+module.exports = { getRoles, getRoleById, addRole, updateRoleById, deleteRoleById, getRoleByUserId, getAllRoles};

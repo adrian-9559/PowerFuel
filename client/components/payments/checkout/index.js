@@ -9,7 +9,7 @@ const PaymentMenu = ({handleSelectPayment}) => {
   const { isLoggedIn } = useAppContext();
 
   return (
-    <section className="flex flex-col items-center w-96 max-h-96 overflow-scroll">
+    <section className="flex flex-col items-center w-full overflow-scroll">
       {isLoggedIn ? (
        <PaymentForm />
       ) : (

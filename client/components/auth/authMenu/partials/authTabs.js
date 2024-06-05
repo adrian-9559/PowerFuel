@@ -97,7 +97,7 @@ const AuthTabs = () => {
                 )}
                 {selectedTab === 'resetPassword' && (
                     <motion.div                      
-                        className='absolute top-24 left-16 right-16 w-auto h-auto flex flex-col gap-16 justify-center items-center p-2 overflow-hidden'
+                        className='absolute top-14 left-16 right-16 w-auto h-auto flex flex-col gap-8 justify-center items-center p-2 overflow-hidden'
                         key="resetPasswordMotion"
                         initial="outRight"
                         animate="inRight"
@@ -110,13 +110,13 @@ const AuthTabs = () => {
                     >
                         <h2 className='font-bold text-xl'>Restablecer contraseña</h2>
                         <section className='w-full flex flex-col gap-3 justify-center items-center'>
-                        <ResetPassword />
-                        <Button 
-                            className="text-center text-sm text-gray-500 bg-transparent h-fit w-fit"
-                            onPress={() => setSelectedTab('login')}
-                        >
-                            Iniciar sesión
-                        </Button>
+                            <ResetPassword />
+                            <Button 
+                                className="text-center text-sm text-gray-500 bg-transparent h-fit w-fit"
+                                onPress={() => setSelectedTab('login')}
+                            >
+                                Iniciar sesión
+                            </Button>
                         </section>
                     </motion.div>
                 )}

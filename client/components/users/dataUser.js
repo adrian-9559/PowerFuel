@@ -16,7 +16,7 @@ const DataUser = () => {
             try {
                 const response = await UserService.updateUser(user);
                 if (!response) {
-                    throw new Error('Error updating user');
+                    console.log('Error updating user');
                 }
             } catch (error) {
                 console.error('Error updating user:', error.message);

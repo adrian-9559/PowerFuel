@@ -56,7 +56,7 @@ const fetchRole = async (userId) => {
         const role = await getRoleByUserId(userId);
         return role;
     } catch (error) {
-        throw new Error(`Error al obtener el rol del usuario ${errorDisplay}`, error);
+        console.log(`Error al obtener el rol del usuario ${errorDisplay}`, error);
     }
 };
 

@@ -16,7 +16,7 @@ class model {
                 brand_name: brand.brand_name
             });
         } catch (error) {
-            throw new Error(`Error al intentar insertar la marca ${errorDisplay}`, error);
+            console.log(`Error al intentar insertar la marca ${errorDisplay}`, error);
         }
     }
 
@@ -38,7 +38,7 @@ class model {
                 }
             });
         } catch (error) {
-            throw new Error(`Error al intentar actualizar la marca ${errorDisplay}`, error);
+            console.log(`Error al intentar actualizar la marca ${errorDisplay}`, error);
         }
     }
 
@@ -68,7 +68,7 @@ class model {
 
             return await Brand.findAll(query);
         } catch (error) {
-            throw new Error(`Error al intentar obtener las marcas ${errorDisplay}`, error);
+            console.log(`Error al intentar obtener las marcas ${errorDisplay}`, error);
         }
     }
 
@@ -87,7 +87,7 @@ class model {
                 }
             });
         } catch (error) {
-            throw new Error(`Error al intentar eliminar la marca ${errorDisplay}`, error);
+            console.log(`Error al intentar eliminar la marca ${errorDisplay}`, error);
         }
     }
     
@@ -102,7 +102,7 @@ class model {
         try {
             return await Brand.count();
         } catch (error) {
-            throw new Error(`Error al intentar obtener el conteo de marcas ${errorDisplay}`, error);
+            console.log(`Error al intentar obtener el conteo de marcas ${errorDisplay}`, error);
         }
     }
 }

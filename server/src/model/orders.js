@@ -15,7 +15,10 @@ Order.init({
         }
     },
     order_date: DataTypes.DATE,
-    order_status: DataTypes.STRING,
+    order_status: {
+        type: DataTypes.ENUM('pending','delivery','delivered'),
+        defaultValue: 'pending'
+    },
     details: DataTypes.STRING,
     shipping_address: DataTypes.STRING,
 }, {

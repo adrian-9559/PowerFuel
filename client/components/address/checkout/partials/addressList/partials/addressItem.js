@@ -4,9 +4,9 @@ import { Button, Tooltip } from '@nextui-org/react';
 
 const AddressItem = ({ address, handleDelete, handleEdit }) => {
     return (
-        <section className="flex-row justify-center items-center w-full ">
+        <section className="grid w-full gap-2">
             <p>{address.street}</p>
-            <section className="flex justify-between">
+            <section className="flex gap-4">
                 <Tooltip color="primary" content="Editar" delay={750} closeDelay={1000}>
                     <Button 
                         color="primary" 

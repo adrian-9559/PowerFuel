@@ -35,7 +35,7 @@ function calculateCpuUsage() {
     // Actualizar las estadísticas anteriores de la CPU
     startMeasure = endMeasure;
 
-    return percentageCpu.toFixed(2) * 4.75;
+    return percentageCpu.toFixed(2);
 }
 
 /**
@@ -66,7 +66,7 @@ const getUseServerRAM = async () => {
 
       return totalUsage.toFixed(2);
   } catch (error) {
-      throw new Error(`Error al intentar obtener el uso de la RAM del servidor ${errorDisplay}`, error);
+      console.log(`Error al intentar obtener el uso de la RAM del servidor ${errorDisplay}`, error);
   }
 };
 
@@ -107,7 +107,7 @@ const getUseServerInfo = async () => {
           disk: diskUsage
       }
   } catch (error) {
-      throw new Error(`Error al intentar obtener la información del servidor ${errorDisplay}`, error);
+      console.log(`Error al intentar obtener la información del servidor ${errorDisplay}`, error);
   }
 };
 

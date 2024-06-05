@@ -61,7 +61,7 @@ const SearchBar = () => {
         <div className='w-full relative'>
             <form onSubmit={handleSubmit}>
                 <Input 
-                    className="w-full" variant='faded' placeholder="Buscar..." type="text" 
+                    className="w-full bg-transparent" variant='faded' placeholder="Buscar..." type="text" 
                     onChange={(e) => setSearchTerm(e.target.value)}
                     value={searchTerm}
                     startContent={<SearchIcon size={16}/>}

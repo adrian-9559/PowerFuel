@@ -43,11 +43,11 @@ const AddressMenu = ({setSelectedAddress}) => {
     }
 
     return (
-        <section className="flex flex-col justify-center items-center w-96">
-                <section>
+        <section className="flex flex-col items-center w-full">
+                <section className='w-full'>
                     {!showForm && UserAddress?.length > 0 && (
-                        <section className="flex flex-col justify-center items-center gap-4">
-                        <h2 className="text-2xl font-bold">Seleccionar dirección</h2>
+                        <section className="flex flex-col items-center gap-4 w-full p-8">
+                            <h2 className="text-2xl font-bold">Seleccionar dirección</h2>
                             <section className='flex flex-row justify-end items-center w-full p-0'>
                                 <Button 
                                     onPress={handleOpenAddForm} 
@@ -59,16 +59,18 @@ const AddressMenu = ({setSelectedAddress}) => {
                                     </svg>
                                 </Button>
                             </section>
-                            <AddressList 
-                                addressList={UserAddress}
-                                handleDelete={handleDelete}
-                                handleEdit={handleEdit}
-                                setSelectedAddress={setSelectedAddress}
-                            />
+                            <section className="w-full">
+                                <AddressList 
+                                    addressList={UserAddress}
+                                    handleDelete={handleDelete}
+                                    handleEdit={handleEdit}
+                                    setSelectedAddress={setSelectedAddress}
+                                />
+                            </section>
                         </section>
                     )}
                     {showForm &&(
-                        <section className="flex flex-col justify-center items-center gap-4">
+                        <section className="flex flex-col items-center gap-4">
                             <AddressForm setShowForm={setShowForm} editAddress={editAddress} setEditAddress={setEditAddress}/>
                             {UserAddress?.length !== 0 && (
                                 <Button onPress={() => setShowForm(false)} className="w-full">Cancelar</Button>

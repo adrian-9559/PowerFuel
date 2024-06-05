@@ -13,7 +13,7 @@ const handleInternalServerError = (error) => {
     try {
         return { status: 500, json: { message: `Error al manejar el error interno del servidor ${errorDisplay}` } };
     } catch (error) {
-        throw new Error(`Error al manejar el error interno del servidor ${errorDisplay}`, error);
+        console.log(`Error al manejar el error interno del servidor ${errorDisplay}`, error);
     }
 };
 

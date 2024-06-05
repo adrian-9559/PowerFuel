@@ -16,6 +16,11 @@ class UserService {
         return response.data;
     }
 
+    async generalPanelInfo(){
+        const response = await api.post(`/users/generalPanelInfo`);
+        return response.data;
+    }
+
     async updateUser(user) {
         return api.put(`/users/${user.user_id}`, { user });
     }
@@ -54,14 +59,30 @@ class UserService {
         return response;
     }
 
-    async resetPassword(email) {
-        const response = await api.post(`/users/resetPassword`, {
+    async getPasswordResetCode(email) {
+        const response = await api.post(`/users/resetPasswordCode`, {
             email: email,
         });
-
         return response.data
     }
     
+    async verifyPasswordResetCode(email, code) {
+        return api.post(`/users/verifyPasswordResetCode`, {
+            email: email,
+            code: code,
+        });
+    }
+
+    async resetPassword(email, code, newPassword, confirmPassword) {
+        const response = await api.post(`/users/resetPassword`, {
+            email: email,
+            code: code,
+            currentPassword: currentPassword,
+            newPassword: newPassword,
+            confirmPassword: confirmPassword
+        });
+        return response.data;
+    }
 }
 
 const userService = new UserService();

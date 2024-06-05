@@ -21,7 +21,9 @@ class model {
                 change_date: changeTime 
             });
         } catch (error) {
-            throw new Error(`Error al guardar la antigua contraseña ${errorDisplay}`, error);
+            
+            console.log(error);
+            console.log(`Error al guardar la antigua contraseña ${errorDisplay}`, error);
         }
     };
 
@@ -39,7 +41,7 @@ class model {
                 where: { user_id: userId } 
             });
         } catch (error) {
-            throw new Error(`Error al obtener todas las antiguas contraseñas por ID de usuario ${errorDisplay}`, error);
+            console.log(`Error al obtener todas las antiguas contraseñas por ID de usuario ${errorDisplay}`, error);
         }
     };
 }

@@ -1,5 +1,5 @@
 const express = require('express');
-const { getRoles, getRoleById, addRole, updateRoleById, deleteRoleById, getRoleByUserId } = require('./controller');
+const { getRoles, getRoleById, addRole, updateRoleById, deleteRoleById, getRoleByUserId, getAllRoles } = require('./controller');
 
 const router = express.Router();
 
@@ -38,6 +38,16 @@ router.route('/')
     .get(async (req, res) => {
         try {
             const roles = await getRoles(req.query.limit, req.query.page);
+            res.status(200).json(roles);
+        } catch (error) {
+            res.status(500).json({ message: 'Error al obtener los roles' });
+        }
+    });
+
+router.route('/allRoles')
+    .get(async (req, res) => {
+        try {
+            const roles = await getAllRoles();
             res.status(200).json(roles);
         } catch (error) {
             res.status(500).json({ message: 'Error al obtener los roles' });

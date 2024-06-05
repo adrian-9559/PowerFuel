@@ -22,7 +22,7 @@ const getBrands = async (page = 1, limit = 10) => {
             brands
         };
     } catch (error) {
-        throw new Error(`Error al obtener las marcas ${errorDisplay}`);
+        console.log(`Error al obtener las marcas ${errorDisplay}`);
     }
 };
 
@@ -38,7 +38,7 @@ const getBrandById = async (brandId) => {
     try {
         return await model.getBrands(null, null , brandId);
     } catch (error) {
-        throw new Error(`Error al obtener la marca por ID ${errorDisplay}`);
+        console.log(`Error al obtener la marca por ID ${errorDisplay}`);
     }
 };
 
@@ -54,7 +54,7 @@ const addBrand = async (newBrand) => {
     try {
         return await model.insertBrand(newBrand);
     } catch (error) {
-        throw new Error(`Error al añadir la marca ${errorDisplay}`);
+        console.log(`Error al añadir la marca ${errorDisplay}`);
     }
 };
 
@@ -71,7 +71,7 @@ const updateBrandById = async (brandId, updatedBrand) => {
     try {
         return await model.updateBrand(brandId, updatedBrand);
     } catch (error) {
-        throw new Error(`Error al actualizar la marca por ID ${errorDisplay}`);
+        console.log(`Error al actualizar la marca por ID ${errorDisplay}`);
     }
 };
 
@@ -86,7 +86,7 @@ const deleteBrandById = async (brandId) => {
     try {
         await model.deleteBrand(brandId);
     } catch (error) {
-        throw new Error(`Error al eliminar la marca por ID ${errorDisplay}`);
+        console.log(`Error al eliminar la marca por ID ${errorDisplay}`);
     }
 };
 

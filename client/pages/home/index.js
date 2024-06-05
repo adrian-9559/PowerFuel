@@ -173,33 +173,22 @@ const HomeComponent = () => {
                 </Card>
             </section>
             <section>
-                <Card className="max-w-[140rem] shadow-lg bg-gray-200 bg-opacity-50" >
+            <Card className="max-w-[140rem] shadow-lg bg-gray-200 bg-opacity-50" >
                     <CardHeader className="flex-col !items-start">
                         <h1 className="font-bold text-2xl bg-blue-800 bg-opacity-50 text-white w-full p-2 pl-4 shadow-lg rounded-lg">
                             Productos
                         </h1>
                     </CardHeader>
-                    <CardBody >
+                    <CardBody className='w-full flex flex-row gap-3 items-center justify-center'>
                         {loading ? (
                             <Spinner />
-                        ) : productos && productos.length > 0 ? (
-                                (() => {
-                                    let rows = [];
-                                    for (let i = 0; i < productos.length; i += 5) {
-                                        rows.push(
-                                            <div key={i} className="w-full flex flex-row gap-3 justify-start items-center">
-                                                {productos.slice(i, i + 5).map((product) => (
-                                                    <ProductCard product={product} key={product.product_id} />
-                                                ))}
-                                            </div>
-                                        );
-                                    }
-                                    return rows;
-                                })()
-                            ) : (
-                                <p className="text-center">No se encontraron productos.</p>
-                            )
-                        }
+                        ) : productos && (
+                            <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-10">
+                                {productos.map((product) => (
+                                    <ProductCard key={product.id} product={product} />
+                                ))}
+                            </section>
+                        )}
                     </CardBody>
                 </Card>
             </section>

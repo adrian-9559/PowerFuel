@@ -64,13 +64,15 @@ const ProductListCategory = () => {
                             </h1>
                         }
                     </CardHeader>
-                    <CardBody className='w-full flex flex-row gap-3 justify-start items-center'>
+                    <CardBody className='w-full flex flex-row gap-3 items-center justify-center'>
                         {loading ? (
                             <Spinner />
                         ) : productos && (
-                            productos.map((product) => (
-                                <ProductCard key={product.product_id} product={product} onClick={() => router.push(`/product/${product.product_id}`)}/>
-                            ))
+                            <section className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-8">
+                                {productos.map((product) => (
+                                    <ProductCard key={product.id} product={product} />
+                                ))}
+                            </section>
                         )}
                     </CardBody>
                 </Card>

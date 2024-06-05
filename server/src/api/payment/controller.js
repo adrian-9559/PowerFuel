@@ -32,7 +32,7 @@ const createCheckout = async (cart, userId) => {
 
         return session;
     } catch (error) {
-        throw new Error(`Error al intentar crear el checkout ${errorDisplay}`, error);
+        console.log(`Error al intentar crear el checkout ${errorDisplay}`, error);
     }
 };
 
@@ -55,7 +55,7 @@ const getCustomerPaymentMethods = async (userId) => {
 
         return paymentMethods;
     } catch (error) {
-        throw new Error(`Error al intentar obtener los métodos de pago del cliente ${errorDisplay}`, error);
+        console.log(`Error al intentar obtener los métodos de pago del cliente ${errorDisplay}`, error);
     }
 };
 
@@ -73,7 +73,7 @@ const getUserPayments = async (userId) => {
 
         return await getCustomerCharges(user.stripe_customer_id);
     } catch (error) {
-        throw new Error(`Error al intentar obtener los pagos del usuario ${errorDisplay}`, error);
+        console.log(`Error al intentar obtener los pagos del usuario ${errorDisplay}`, error);
     }
 };
 
@@ -94,7 +94,7 @@ const getLastPayment = async (userId) => {
 
         return lastCharge;
     } catch (error) {
-        throw new Error(`Error al intentar obtener el último pago ${errorDisplay}`, error);
+        console.log(`Error al intentar obtener el último pago ${errorDisplay}`, error);
     }
 };
 

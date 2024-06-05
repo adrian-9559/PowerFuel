@@ -14,7 +14,7 @@ const getOrdersByUser = async (userId) => {
     try {
         return await OrderModel.getOrdersByUser(userId);
     } catch (error) {
-        throw new Error(`Error al intentar obtener los pedidos del usuario ${errorDisplay}`, error);
+        console.log(`Error al intentar obtener los pedidos del usuario ${errorDisplay}`, error);
     }
 };
 
@@ -30,7 +30,7 @@ const getOrderById = async (orderId) => {
     try {
         return await OrderModel.getOrderById(orderId);
     } catch (error) {
-        throw new Error(`Error al intentar obtener el pedido por ID ${errorDisplay}`, error);
+        console.log(`Error al intentar obtener el pedido por ID ${errorDisplay}`, error);
     }
 };
 
@@ -62,7 +62,7 @@ const createOrder = async (orderData) => {
 
         return response;
     } catch(err) {
-        throw new Error(`Error al intentar crear el pedido ${errorDisplay}`, err);
+        console.log(`Error al intentar crear el pedido ${errorDisplay}`, err);
     }
 };
 
@@ -79,7 +79,7 @@ const updateOrder = async (orderId, orderData) => {
     try {
         return await OrderModel.updateOrder(orderId, orderData);
     } catch (error) {
-        throw new Error(`Error al intentar actualizar el pedido ${errorDisplay}`, error);
+        console.log(`Error al intentar actualizar el pedido ${errorDisplay}`, error);
     }
 };
 
@@ -95,7 +95,7 @@ const deleteOrder = async (orderId) => {
     try {
         return await OrderModel.deleteOrder(orderId);
     } catch (error) {
-        throw new Error(`Error al intentar eliminar el pedido ${errorDisplay}`, error);
+        console.log(`Error al intentar eliminar el pedido ${errorDisplay}`, error);
     }
 };
 
@@ -110,7 +110,7 @@ const getOrdersCount = async () => {
     try {
         return await OrderModel.getOrdersCount();
     } catch (error) {
-        throw new Error(`Error al intentar obtener el conteo de pedidos ${errorDisplay}`, error);
+        console.log(`Error al intentar obtener el conteo de pedidos ${errorDisplay}`, error);
     }
 };
 
@@ -127,7 +127,7 @@ const getOrdersByDate = async (startDate, endDate) => {
     try {
         return await OrderModel.getOrdersByDate(startDate, endDate);
     } catch (error) {
-        throw new Error(`Error al intentar obtener los pedidos por fecha ${errorDisplay}`, error);
+        console.log(`Error al intentar obtener los pedidos por fecha ${errorDisplay}`, error);
     }
 };
 
@@ -144,7 +144,28 @@ const getAllOrders = async (page, limit) => {
             orders
         };
     } catch (error) {
-        throw new Error(`Error al intentar obtener todos los pedidos ${errorDisplay}`, error);
+        console.log(`Error al intentar obtener todos los pedidos ${errorDisplay}`, error);
+    }
+};
+
+const getGeneralPanelInfo = async () => {
+    try {
+        const date = new Date();
+        date.setDate(date.getDate() - 7);
+
+        const orders = await OrderModel.getOrdersCount();
+        const ordersWeek = await OrderModel.getCountOrdersWeek(new Date(), date);
+        const orderDelivery = await OrderModel.getCountStatusOrder('delivery');
+        const orderDelivered = await OrderModel.getCountStatusOrder('delivered');
+
+        return {
+            orders,
+            ordersWeek,
+            orderDelivery,
+            orderDelivered,
+        };
+    } catch (error) {
+        console.log(`Error al intentar obtener la información general del panel ${errorDisplay}`, error);
     }
 };
 
@@ -156,5 +177,6 @@ module.exports = {
     deleteOrder,
     getOrdersCount,
     getOrdersByDate,
+    getGeneralPanelInfo,
     getAllOrders
 };

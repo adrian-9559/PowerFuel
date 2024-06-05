@@ -1,5 +1,5 @@
 const express = require('express');
-const {getOrdersByDate, getOrdersByUser, getOrderById, createOrder, updateOrder, deleteOrder, getOrdersCount, getAllOrders} = require('./controller');
+const {getOrdersByDate, getOrdersByUser, getOrderById, createOrder, updateOrder, deleteOrder, getOrdersCount, getAllOrders, getGeneralPanelInfo} = require('./controller');
 const router = express.Router();
 
 router.route('/user/:userId')
@@ -168,6 +168,16 @@ router.route('/date')
             res.json(orders);
         } catch (error) {
             res.status(500).json({ message: 'Hubo un problema al obtener los pedidos' });
+        }
+    });
+
+router.route('/generalPanelInfo')
+    .post(async (req, res) => {
+        try {
+            const info = await getGeneralPanelInfo();
+            res.status(200).json(info);
+        } catch (error) {
+            res.status(500).json({ message: 'Hubo un problema al obtener la información general del panel' });
         }
     });
 

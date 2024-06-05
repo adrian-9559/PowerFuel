@@ -38,7 +38,6 @@ router.route('/user')
             const orders = await getOrdersByUser(userId);
             res.status(200).json(orders);
         } catch (error) {
-            console.log(error);
             res.status(500).json({ message: 'Hubo un problema al obtener los pedidos' });
         }
     });

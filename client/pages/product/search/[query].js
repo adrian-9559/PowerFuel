@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import ProductList from '@components/product/ProductList';
 import { useRouter } from 'next/router';
 import ProductService from '@services/productService';
+import useTitle from '@hooks/useTitle';
 
-const Category = () => {
+const Search = () => {
     const router = useRouter();
     const { query } = router.query;
     const [products, setProducts] = useState([]);
+    useTitle(`"${query}"`);
 
     useEffect(() => {
         if (query) {
@@ -26,4 +28,4 @@ const Category = () => {
     );
 };
 
-export default Category;
+export default Search;

@@ -6,12 +6,15 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { useRouter } from 'next/router';
 import QuantityInput from '@components/product/productPage/QuantityInput';
 import ProductCarousel from '@components/product/productPage/ProductCarousel';
+import useTitle from '@hooks/useTitle'; 
+import { set } from 'date-fns';
 
 const Product = () => {
     const router = useRouter();
     const { id } = router.query
     const [product, setProduct] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
+    const {setTitle} = useTitle("Página de Producto");
 
     useEffect(() => {
         const fetchProducto = async () => {
@@ -19,6 +22,7 @@ const Product = () => {
                 setIsLoaded(false); // Muestra el esqueleto
                 const productData = await ProductService.getProductById(id);
                     setProduct(productData);
+                    setTitle(productData.product_name);
                     setIsLoaded(true); 
             } catch (error) {
                 console.error('Error fetching product:', error.message);
@@ -48,7 +52,7 @@ const Product = () => {
                         </Skeleton>
                     </section>
                     <QuantityInput
-                        id={id}
+                        dataProduct={product}
                     />
                 </section>
             </section>

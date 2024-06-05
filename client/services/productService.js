@@ -41,26 +41,23 @@ class ProductService {
         }
     }
 
-    async addProduct(product, images) {
+    async addProduct(product) {
+
         const formData = new FormData();
-    
-        // Agrega los campos del producto al objeto FormData
-        for (const key in product) {
-            formData.append(key, product[key]);
-        }
-    
-        // Agrega las imágenes al objeto FormData
-        if (images) {
-            for (let i = 0; i < images.length; i++) {
-                formData.append('images', images[i]);
-            }
-        }
-    
+        formData.append('product_name', product.product_name);
+        formData.append('description', product.description);
+        formData.append('stock_quantity', product.stock_quantity);
+        formData.append('price', product.price);
+        formData.append('category_id', product.category_id);
+        formData.append('id_brand', product.id_brand);
+
         const response = await api.post('/products', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             },
         });
+
+        this.uploadImages(response.data, product.images);
     
         return response.data;
     }

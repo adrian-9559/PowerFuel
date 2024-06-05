@@ -11,16 +11,20 @@ import NotificationMenu from '@components/navigation/partials/notificationMenu';
 import BrandLogo from '@icons/BrandLogo';
 
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 const NavigationBar = () => {
     const { isLoggedIn } = useAppContext();
     const router = useRouter();
     return (
         <Navbar isBordered className='w-full flex items-center py-4'>
-            <NavbarContent className='w-full flex flex-row'>
+            <NavbarContent className='w-full flex flex-row '>
                 <SideMenu />
-                <NavbarItem className="cursor-pointer px-1" onClick={() => router.push('/')}>
-                    <BrandLogo />
+                <NavbarItem className="px-1 ">
+                    <Link href='/'  className='flex flex-row justify-center items-center gap-2 focus:outline-primary'>
+                        <BrandLogo />
+                        <h1 className="font-bold text-3xl">PowerFuel</h1>
+                    </Link>
                 </NavbarItem>
                 <NavbarItem className='flex-grow w-full h-full flex flex-row items-center'>
                     <SearchBar />

@@ -4,6 +4,7 @@ import ProductCard from '@components/product/ProductCard';
 import ProductService from '@services/productService';
 import CategoryService from '@services/categoryService';
 import { useRouter } from 'next/router';
+import useTitle from '@hooks/useTitle'; 
 
 const ProductListCategory = () => {
     const router = useRouter();
@@ -11,12 +12,14 @@ const ProductListCategory = () => {
     const [category, setCategory] = useState({});
     const [productos, setProductos] = useState([]);
     const [loading, setLoading] = useState(true);
+    const {setTitle} = useTitle("Página de Categoría");
 
     useEffect(() => {
         const fetchProductos = async () => {
             try {
                 const dataCategory = await CategoryService.getCategoryById(id);
                 setCategory(dataCategory);
+                setTitle(dataCategory.category_name);
                 const data = await ProductService.getAllProductsByCategory(id);
                 try{
                     const newChildCategories = await CategoryService.getChildCategories(id);
@@ -40,7 +43,7 @@ const ProductListCategory = () => {
         if(id){
             fetchProductos();
         }
-    }, [id]);
+    }, []);
 
     const addUniqueProducts = (existingProducts, newProducts) => {
         const productIds = new Set(existingProducts.map(product => product.product_id));

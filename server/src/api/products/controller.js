@@ -27,7 +27,7 @@ const addProduct = async (productData) => {
         productData.stripe_product_id = productId;
         productData.stripe_price_id = priceId;
 
-        updateProduct(productId, productData.images);
+        uploadProduct(productId, productData.images);
 
         return await model.insertProduct(productData);
     } catch (error) {

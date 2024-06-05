@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import UserService from '@services/userService';
 import RoleService from '@services/roleService';
 import { useRouter } from 'next/router';
+import useTitle from '@hooks/useTitle'; 
 
 const CreateUser = () => {
     const router = useRouter();
@@ -17,6 +18,7 @@ const CreateUser = () => {
         dni: '',
         role: ''
     });
+    useTitle(id?'Editar Usuario':'Crear Usuario');
 
     useEffect(() => {
     
@@ -71,7 +73,7 @@ const CreateUser = () => {
     return (
         <main className="max-w-4xl mx-auto my-32 p-6">
             <Card shadow className="p-5">
-                    <h1>Create User</h1>
+                    <h1>{id ? 'Editar Usuario' : 'Crear Usuario'}</h1>
                     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                         <Input
                             name="email"

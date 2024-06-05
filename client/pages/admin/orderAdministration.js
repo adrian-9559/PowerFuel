@@ -8,12 +8,17 @@ import OrderService from '@services/orderService';
 import DeleteIcon from '@icons/DeleteIcon';
 import EyeIcon from '@icons/EyeIcon';
 import EditIcon from '@icons/EditIcon';
+import useTitle from '@hooks/useTitle'; 
 
 const statusColorMap = {
-    delivered: "success",
-    delivery: "warning",
-    pending: "danger",
-};  
+    'entregado': 'success',
+    'enviado': 'warning',
+    'pendiente': 'warning',
+    'en proceso': 'warning',
+    'cancelado': 'danger',
+    'devuelto': 'primary',
+    'fallido': 'danger'
+};
 
 const OrderAdministration = () => {
     const [orders, setOrders] = useState([]);
@@ -23,6 +28,7 @@ const OrderAdministration = () => {
     const [selectedKeys, setSelectedKeys] = useState([]);
     const {isOpen, onOpenChange, onOpen, onClose } = useDisclosure();
     const [selectedOrder, setSelectedOrder] = useState(null);
+    useTitle('Administración de Pedidos');
 
     useEffect(() => {
         const fetchOrderData = async () => {
@@ -146,7 +152,7 @@ const OrderAdministration = () => {
                                         </Button>
                                     </Tooltip>
                                     <Tooltip color="success" content="Editar Pedido" className="text-white">
-                                        <Button isIconOnly color="success" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => router.push(`/admin/create/createOrder?id=${order.order_id}`)}>
+                                        <Button isIconOnly color="success" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => router.push(`/admin/create/createOrder?idOrder=${order.order_id}`)}>
                                             <EditIcon color="green"/>
                                         </Button>
                                     </Tooltip>

@@ -5,6 +5,7 @@ import 'react-multi-carousel/lib/styles.css';
 import ProductService from '@services/productService';
 import { Card, CardHeader, CardBody, Image, Spinner } from '@nextui-org/react';
 import ProductCard from '@components/product/ProductCard';
+import useTitle from '@hooks/useTitle'; 
 
 const HomeComponent = () => {
     const router = useRouter();
@@ -12,6 +13,7 @@ const HomeComponent = () => {
     const [productos, setProductos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [itemsCount, setItemsCount] = useState(4);
+    useTitle('Inicio');
     
     useEffect(() => {
         fetchProductos();
@@ -96,44 +98,42 @@ const HomeComponent = () => {
                     </Card>
                 </section>
             </section>
-            <section className="max-w-[140rem]">
-                <Card className="shadow-lg ">
-                    <CardHeader className="flex-col !items-start">
-                        <h1 className="font-bold text-2xl bg-blue-800 bg-opacity-50 text-white w-full p-2 pl-4 shadow-lg rounded-lg">
-                            Novedades
-                        </h1>
-                    </CardHeader>
-                    <CardBody className='w-full flex justify-center items-center'>
-                            <Carousel
-                                additionalTransfrom={0}
-                                infinite
-                                arrows={false}
-                                autoPlaySpeed={1500}
-                                autoPlay={true}
-                                centerMode={true}
-                                containerClass="w-full"
-                                draggable
-                                focusOnSelect={false}
-                                keyBoardControl
-                                minimumTouchDrag={80}
-                                renderButtonGroupOutside={false}
-                                renderDotsOutside={false}
-                                showDots={false}
-                                slidesToSlide={1}
-                                swipeable
+            <Card className="shadow-lg w-full">
+                <CardHeader className="flex-col !items-start">
+                    <h1 className="font-bold text-2xl bg-blue-800 bg-opacity-50 text-white w-full p-2 pl-4 shadow-lg rounded-lg">
+                        Novedades
+                    </h1>
+                </CardHeader>
+                <CardBody className='w-full flex justify-center items-center'>
+                        <Carousel
+                            additionalTransfrom={0}
+                            infinite
+                            arrows={false}
+                            autoPlaySpeed={1500}
+                            autoPlay={true}
+                            centerMode={true}
+                            containerClass="w-full"
+                            draggable
+                            focusOnSelect={false}
+                            keyBoardControl
+                            minimumTouchDrag={80}
+                            renderButtonGroupOutside={false}
+                            renderDotsOutside={false}
+                            showDots={false}
+                            slidesToSlide={1}
+                            swipeable
 
-                                responsive={{
-                                    superLargeDesktop: {
-                                        breakpoint: { max: 4000, min: 0 },
-                                        items: itemsCount
-                                    }
-                                }}
-                            >
-                            {renderProductosNovedades()}
-                            </Carousel>
-                    </CardBody>
-                </Card>
-            </section>
+                            responsive={{
+                                superLargeDesktop: {
+                                    breakpoint: { max: 4000, min: 0 },
+                                    items: itemsCount
+                                }
+                            }}
+                        >
+                        {renderProductosNovedades()}
+                        </Carousel>
+                </CardBody>
+            </Card>
             <section className="gap-3 grid grid-cols-12">
                 <Card className="col-span-12 sm:col-span-4 h-72">
                     <CardHeader className="absolute z-10 top-1 flex-col !items-start">
@@ -173,7 +173,7 @@ const HomeComponent = () => {
                 </Card>
             </section>
             <section>
-            <Card className="max-w-[140rem] shadow-lg bg-gray-200 bg-opacity-50" >
+            <Card className="w-full shadow-lg bg-gray-200 bg-opacity-50" >
                     <CardHeader className="flex-col !items-start">
                         <h1 className="font-bold text-2xl bg-blue-800 bg-opacity-50 text-white w-full p-2 pl-4 shadow-lg rounded-lg">
                             Productos
@@ -183,7 +183,7 @@ const HomeComponent = () => {
                         {loading ? (
                             <Spinner />
                         ) : productos && (
-                            <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-10">
+                            <section className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5 gap-10">
                                 {productos.map((product) => (
                                     <ProductCard key={product.id} product={product} />
                                 ))}

@@ -6,6 +6,8 @@ import DeleteIcon from '@icons/DeleteIcon';
 import EyeIcon from '@icons/EyeIcon';
 import EditIcon from '@icons/EditIcon';
 import PlusIcon from '@icons/PlusIcon';
+import useTitle from '@hooks/useTitle'; 
+
 
 const statusColorMap = {
     Active: "success",
@@ -20,6 +22,7 @@ const UserAdministration = () => {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [selectedKeys, setSelectedKeys] = useState([]);
+    useTitle('Administración de Usuarios');
 
     useEffect(() => {
         const fetchUserData = async () => {

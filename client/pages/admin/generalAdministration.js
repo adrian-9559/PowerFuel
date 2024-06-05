@@ -8,6 +8,7 @@ import serverService from '@services/serverService';
 import CategoryService from '@services/categoryService';
 import RoleService from '@services/roleService';
 import BrandService from '@services/brandService';
+import useTitle from '@hooks/useTitle'; 
 
 const GeneralAdministration = () => {
     const [numUsersRegisterWeek, setNumUsersRegisterWeek] = useState(0);
@@ -25,12 +26,15 @@ const GeneralAdministration = () => {
     const [usoRAMPorcentaje, setUsoRAMPorcentaje] = useState(0);
     const [usoCPUPorcentaje, setUsoCPUPorcentaje] = useState(0);
     const [usoDiskPorcentaje, setUsoDiskPorcentaje] = useState(0);
+    const [temperatureCPU, setTemperatureCPU] = useState(0);
     const [categories, setCategories] = useState([]);
     const [roles, setRoles] = useState([]);
     const [brands, setBrands] = useState([]);
     const [colorCPU, setColorCPU] = useState(null);
     const [colorRAM, setColorRAM] = useState(null);
     const [colorDisk, setColorDisk] = useState(null);
+    const [colorTemperature, setColorTemperature] = useState(null);
+    useTitle('Administración General');
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -39,11 +43,13 @@ const GeneralAdministration = () => {
                     setUsoCPUPorcentaje(result.cpu);
                     setUsoRAMPorcentaje(result.ram);
                     setUsoDiskPorcentaje(result.disk);
+                    setTemperatureCPU(result.temperature);
                 })
                 .then(() => {
                     setColorCPU(colores(usoCPUPorcentaje));
                     setColorRAM(colores(usoRAMPorcentaje));
                     setColorDisk(colores(usoDiskPorcentaje));
+                    setColorTemperature(colores(temperatureCPU));
                 })
                 .catch((err) => {
                     console.error("Error al obtener la información del rendimiento del servidor")
@@ -333,7 +339,7 @@ const GeneralAdministration = () => {
                             <CardHeader >
                                 <h4 className="font-medium text-2xs text-tiny">Uso de la CPU</h4>
                             </CardHeader>
-                            <CardBody>
+                            <CardBody className='justify-center items-center'>
                                 <CircularProgress
                                     classNames={{
                                         svg: "w-20 h-20 drop-shadow-md",
@@ -350,7 +356,7 @@ const GeneralAdministration = () => {
                             <CardHeader >
                                 <h4 className="font-medium text-2xs text-tiny">Uso de la RAM</h4>
                             </CardHeader>
-                            <CardBody>
+                            <CardBody className='justify-center items-center'>
                                 <CircularProgress
                                     classNames={{
                                         svg: "w-20 h-20 drop-shadow-md",
@@ -367,7 +373,7 @@ const GeneralAdministration = () => {
                             <CardHeader >
                                 <h4 className="font-medium text-2xs text-tiny">Uso de la RAM</h4>
                             </CardHeader>
-                            <CardBody>
+                            <CardBody className='flex justify-center items-center'>
                                 <CircularProgress
                                     classNames={{
                                         svg: "w-20 h-20 drop-shadow-md",

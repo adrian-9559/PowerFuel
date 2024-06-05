@@ -16,8 +16,8 @@ Order.init({
     },
     order_date: DataTypes.DATE,
     order_status: {
-        type: DataTypes.ENUM('pending','delivery','delivered'),
-        defaultValue: 'pending'
+        type: DataTypes.ENUM('pendiente','en proceso','enviado','entregado','cancelado','devuelto','fallido'),
+        defaultValue: 'pendiente'
     },
     details: DataTypes.STRING,
     shipping_address: DataTypes.STRING,

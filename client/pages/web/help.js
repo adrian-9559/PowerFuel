@@ -1,7 +1,10 @@
 import React from 'react';
 import { Card, CardBody, Textarea, Button, Input } from '@nextui-org/react';
+import useTitle from '@hooks/useTitle';
 
 const Help = () => {
+
+    useTitle('Ayuda');
     return (
         <section className='w-full grid gap-8 p-8'>
             <section className='w-full flex justify-center text-5xl'>

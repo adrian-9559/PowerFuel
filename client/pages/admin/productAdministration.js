@@ -8,6 +8,7 @@ import DeleteIcon from '@icons/DeleteIcon';
 import EyeIcon from '@icons/EyeIcon';
 import EditIcon from '@icons/EditIcon';
 import PlusIcon from '@icons/PlusIcon';
+import useTitle from '@hooks/useTitle'; 
 
 const statusColorMap = {
     Enabled: "success",
@@ -22,6 +23,7 @@ const ProductoAdministration = () => {
     const [selectedKeys, setSelectedKeys] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const {isOpen, onOpenChange, onOpen, onClose } = useDisclosure();
+    useTitle('Administración de Productos');
 
     useEffect(() => {
         const fetchProductData = async () => {

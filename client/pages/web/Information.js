@@ -1,7 +1,10 @@
 import React from "react";
 import { Card, CardHeader, CardBody, Image, Spinner, CardFooter, Button, Divider } from '@nextui-org/react';
+import useTitle from '@hooks/useTitle';
 
 const InformationComponent = () => {
+
+    useTitle('Información');
     return (
         <section className="grid my-5 mx-16 justify-center gap-5">
             <section className="flex justify-center">

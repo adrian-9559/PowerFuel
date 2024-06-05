@@ -48,15 +48,26 @@ class UserService {
         return response.data;
     }
 
-    async setUserImage(image) {
-        const formData = new FormData();
-        formData.append('images', image);
-        const response = await api.post(`/files/uploadUser`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
+    async setUserImage(images) {
+        try {
+
+            if(!images) return;
+
+            const formData = new FormData();
+            for (let i = 0; i < images.length; i++) {
+                formData.append('images', images[i]);
             }
-        });
-        return response;
+    
+            const response = await api.post(`/files/uploadUser`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+            });
+    
+            return response.data;
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     async getPasswordResetCode(email) {

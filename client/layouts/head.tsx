@@ -1,11 +1,14 @@
 import React from "react";
 import NextHead from "next/head";
-import { siteConfig } from "@config/site";
-import NavigationBar from "../components/navigation/NavigationBar";
 
-export const Head = () => {
-	return (
-		<NextHead>
-		</NextHead>
-	);
+interface HeadProps {
+  title: string;
+}
+
+export const Head = ({ title }: HeadProps) => {
+    return (
+        <NextHead>
+            <title>{title}</title>
+        </NextHead>
+    );
 };

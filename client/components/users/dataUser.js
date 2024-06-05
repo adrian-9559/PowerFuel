@@ -4,11 +4,13 @@ import UserImage from '@components/users/userImage';
 import UserService from '@services/userService';
 import { Input, Button, Image, Link , Skeleton, Badge } from "@nextui-org/react";
 import { useAppContext } from '@context/AppContext';
+import useTitle from '@hooks/useTitle';
 
 const DataUser = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const { user, setUser} = useAppContext();
+    useTitle('Mis Datos');
 
     const toggleEdit = async () => {
         setIsEditing(!isEditing);

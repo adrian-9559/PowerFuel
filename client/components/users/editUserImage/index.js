@@ -28,12 +28,12 @@ const EditUserImage = ({ children }) => {
                 { children }
             </section>
         </Badge>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} className="p-8">
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange} className="p-8">
             <ModalContent>
                 <AddImageForm onOpenChange={onOpenChange}/>
             </ModalContent>
-            </Modal>
-        </section>
+        </Modal>
+    </section>
   );
 };
 

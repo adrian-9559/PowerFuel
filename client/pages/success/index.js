@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { use, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import PaymentService from '@services/paymentService';
 import OrderService from '@services/orderService';
@@ -6,11 +6,13 @@ import AddressService from '@services/addressService';
 import {useAppContext} from '@context/AppContext';
 import PartyIcon from '@icons/PartyIcon';
 import { Card, Button } from '@nextui-org/react';
+import useTitle from '@hooks/useTitle';
 
 const SuccessPage = () => {
     const router = useRouter();
     let success = router.query.success;
     const {cart, setCart} = useAppContext();
+    useTitle('Pedido Completado');
 
     useEffect(() => {
         const handleSuccess = async () => {
@@ -26,7 +28,7 @@ const SuccessPage = () => {
                 const order = {
                     order_id: lastPayment.id,
                     order_date: new Date(),
-                    order_status: 'pending',
+                    order_status: 'pendiente',
                     details: JSON.stringify(cart),
                     shipping_address: JSON.stringify(shipping), 
                 };

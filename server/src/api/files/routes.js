@@ -57,12 +57,15 @@ router.route('/uploadUser')
      * @param {Object} req.body.images - Las imágenes que se quieren subir. | The images to be uploaded.
      */
     .post(async (req, res) => {
-        try{
+        try {
+            console.log(req.user);
+            console.log(req.files);
             const { userId } = req.user;
-            const { images } = req.body;
-            await uploadUser(userId.toString(), images)
+            const { images } = req.files;
+            await uploadUser(userId, images);
+            res.status(200).send({message: 'Imágenes subidas correctamente'});
         } catch (error) {
-            res.status(500).send({message: 'Error al subir las imágenes del usuario'});
+            res.status(500).send({message: 'Error al subir las imágenes del producto'});
         }
     });
 

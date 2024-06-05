@@ -36,9 +36,9 @@ api.interceptors.response.use(response => {
 });
 
 api.interceptors.response.use((response) => {
-    if (response.data.message) {
+    if (response && response.data && response.data.message)
         toastr.success(response.data.message);
-    }
+    
     return response;
 
 }, (error) => {

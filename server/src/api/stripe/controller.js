@@ -89,7 +89,7 @@ const createCheckoutSession = async (customerId, line_items) => {
             line_items,
             mode: 'payment',
             ui_mode: 'embedded',
-            return_url: `${process.env.SERVER_FRONTEND}/success`,
+            return_url: `${process.env.SERVER_FRONTEND}/success?success=true`,
         });
     } catch (error) {
         console.log(`Error al intentar crear la sesión de pago ${errorDisplay}`, error);

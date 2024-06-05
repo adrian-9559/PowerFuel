@@ -1,4 +1,4 @@
-import { Card, CardBody, Button, Chip} from "@nextui-org/react";
+import { Card, CardBody, Button, Chip, Tooltip} from "@nextui-org/react";
 import { useState } from 'react';
 import { useAppContext } from '@context/AppContext';
 import { useRouter } from 'next/router';
@@ -86,36 +86,46 @@ const ProductCard = ({ product }) => {
                                 radius="full" 
                                 className={`text-black transition-opacity duration-2000`} 
                                 isIconOnly 
+                                disabled={product ? 1 > product.stock_quantity : true}
                                 onClick={(e) => handleAddToCart(e)}
                                 onKeyDown={(e)=>handleKeyDown(e)}
                                 onFocus={() => setIsHovered(true)}
                                 onBlur={() => !isLoading && setIsHovered(false)}
                             >
-                                <motion.div
-                                    key={isAdded ? 'added' : 'not-added'}
-                                    initial={{ opacity: 0, scale: 0.9, rotate: 0 }}
-                                    animate={{ opacity: 1, scale: 1, rotate: isAdded ? 360 : 0 }}
-                                    exit={{ opacity: 0, scale: 0.9, rotate: 0 }}
-                                    transition={{ duration: 0.2 }}
-                                    className="flex justify-center items-center"
+                                <Tooltip 
+                                    content={product && product.stock_quantity <= 0 ? "No quedan unidades" : "Añadir al carrito"}
+                                    className="mb-2 font-bold" 
                                 >
-                                    {isLoading ? (
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24">
-                                            <path fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity="0.25"/>
-                                            <path fill="currentColor" d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z">
-                                                <animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/>
-                                            </path>
-                                        </svg>
-                                    ) : isAdded ? (
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-5 h-5">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                                        </svg>
-                                    ) : (
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 576 512">
-                                            <path d="M253.3 35.1c6.1-11.8 1.5-26.3-10.2-32.4s-26.3-1.5-32.4 10.2L117.6 192H32c-17.7 0-32 14.3-32 32s14.3 32 32 32L83.9 463.5C91 492 116.6 512 146 512H430c29.4 0 55-20 62.1-48.5L544 256c17.7 0 32-14.3 32-32s-14.3-32-32-32H458.4L365.3 12.9C359.2 1.2 344.7-3.4 332.9 2.7s-16.3 20.6-10.2 32.4L404.3 192H171.7L253.3 35.1zM192 304v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16s16 7.2 16 16zm96-16c8.8 0 16 7.2 16 16v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16zm128 16v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16s16 7.2 16 16z"/>
-                                        </svg>
-                                    )}
-                                </motion.div>
+                                    <motion.div
+                                        key={isAdded ? 'added' : 'not-added'}
+                                        initial={{ opacity: 0, scale: 0.9, rotate: 0 }}
+                                        animate={{ opacity: 1, scale: 1, rotate: isAdded ? 360 : 0 }}
+                                        exit={{ opacity: 0, scale: 0.9, rotate: 0 }}
+                                        transition={{ duration: 0.2 }}
+                                        className="flex justify-center items-center"
+                                    >
+                                        {product && product.stock_quantity <= 0 ? 
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 rotate-45">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                            </svg>
+                                        : isLoading ? (
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24">
+                                                <path fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity="0.25"/>
+                                                <path fill="currentColor" d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z">
+                                                    <animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/>
+                                                </path>
+                                            </svg>
+                                        ) : isAdded ? (
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-5 h-5">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                                            </svg>
+                                        ) : (
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 576 512">
+                                                <path d="M253.3 35.1c6.1-11.8 1.5-26.3-10.2-32.4s-26.3-1.5-32.4 10.2L117.6 192H32c-17.7 0-32 14.3-32 32s14.3 32 32 32L83.9 463.5C91 492 116.6 512 146 512H430c29.4 0 55-20 62.1-48.5L544 256c17.7 0 32-14.3 32-32s-14.3-32-32-32H458.4L365.3 12.9C359.2 1.2 344.7-3.4 332.9 2.7s-16.3 20.6-10.2 32.4L404.3 192H171.7L253.3 35.1zM192 304v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16s16 7.2 16 16zm96-16c8.8 0 16 7.2 16 16v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16zm128 16v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16s16 7.2 16 16z"/>
+                                            </svg>
+                                        )}
+                                    </motion.div>
+                                </Tooltip>
                             </Button>
                         </motion.section>
                     </section>

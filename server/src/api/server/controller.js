@@ -1,6 +1,7 @@
 const pidusage = require('pidusage');
 const fs = require('fs');
 const os = require('os');
+const { exec } = require('child_process');
 const errorDisplay = "(Error en el controlador de Server)";
 
 // Obtener la cantidad de CPUs disponibles en el sistema
@@ -24,7 +25,7 @@ function getCpuInfo() {
 // Variables para almacenar las estadísticas anteriores de la CPU
 let startMeasure = getCpuInfo();
 
-function calculateCpuUsage() {
+function getUseServerCPU() {
     const endMeasure = getCpuInfo();
 
     const idleDifference = endMeasure.idle - startMeasure.idle;
@@ -37,17 +38,6 @@ function calculateCpuUsage() {
 
     return percentageCpu.toFixed(2);
 }
-
-/**
- * Función para obtener el uso de la CPU del servidor.
- * Function to get the server's CPU usage.
- * 
- * @returns {Promise} - Promesa que resuelve al obtener el uso de la CPU del servidor en porcentaje. | Promise that resolves when getting the server's CPU usage in percentage.
- * @throws {Error} - Error al intentar obtener el uso de la CPU del servidor. | Error when trying to get the server's CPU usage.
- */
-const getUseServerCPU = () => {
-  return calculateCpuUsage();
-};
 
 /**
  * Función para obtener el uso de la RAM del servidor.
@@ -104,7 +94,7 @@ const getUseServerInfo = async () => {
       return {
           cpu: cpuUsage,
           ram: ramUsage,
-          disk: diskUsage
+          disk: diskUsage,
       }
   } catch (error) {
       console.log(`Error al intentar obtener la información del servidor ${errorDisplay}`, error);
@@ -115,5 +105,6 @@ module.exports = {
   getUseServerInfo,
   getUseServerCPU,
   getUseServerRAM,
-  // getDiskUsage
+  getDiskUsage,
+  
 }

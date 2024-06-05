@@ -37,7 +37,9 @@ const AppContext = createContext({
   onOpenCartChange: (value: boolean) => {},
   onOpenCart : () => {},
   notifications: [] as NotificationItem[],
-  setNotifications: (() => {}) as React.Dispatch<React.SetStateAction<NotificationItem[]>>
+  setNotifications: (() => {}) as React.Dispatch<React.SetStateAction<NotificationItem[]>>,
+  webTitle: 'POWERFUEL',
+  setWebTitle: (value: string) => {}
 });
 
 // Crear el proveedor de contexto
@@ -48,6 +50,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [webTitle, setWebTitle] = useState('POWERFUEL');
 
   
 
@@ -123,7 +126,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           onOpenCartChange,
           onOpenCart,
           notifications,
-          setNotifications
+          setNotifications,
+          webTitle,
+          setWebTitle
         }
       }
     >

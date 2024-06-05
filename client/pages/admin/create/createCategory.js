@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import CategoryService from '@services/categoryService';
 import { useRouter } from 'next/router';
+import useTitle from '@hooks/useTitle'; 
 
 const CreateCategory = () => {
     const [nameCategory, setName] = useState('');
@@ -14,13 +15,10 @@ const CreateCategory = () => {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
     const {id, readOnly} = router.query;
+    useTitle(id?'Editar Categoría':'Crear Categoría');
 
     const handleRegister = async (e) => {
         e.preventDefault();
-        if (!nameCategory) {
-            setError('Please fill in all required fields.');
-            return;
-        }
 
         setLoading(true);
         try {
@@ -30,11 +28,10 @@ const CreateCategory = () => {
             };
     
             const response = await CategoryService.addCategory(category); 
+            setLoading(false);
             router.push('/admin/Categorias');
         } catch (error) {
-            setError(error.message);
-        } finally {
-            setLoading(false);
+            console.error(error);
         }
     };
 
@@ -87,7 +84,7 @@ const CreateCategory = () => {
             className="max-w-4xl mx-auto my-32 p-6"
         >
             <Card shadow className="p-5">
-                <h1 className="text-2xl font-bold mb-4">Crear Categoría</h1>
+                <h1 className="text-2xl font-bold mb-4">{id ? 'Editar Categoría' : 'Crear Categoría'}</h1>
                 <form onSubmit={handleRegister}>
                     <section className="mb-4">
                         <Select 
@@ -140,6 +137,7 @@ const CreateCategory = () => {
                     
                     <section className="mb-4">
                         <Input 
+                            isRequired
                             type='text' 
                             label='Nombre de la categoría' 
                             value={nameCategory}

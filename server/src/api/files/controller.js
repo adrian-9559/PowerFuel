@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const errorDisplay = "(Error en el controlador de Productos)";
+const errorDisplay = "(Error en el controlador de Archivos)";
 const appRoot = path.dirname(require.main.filename);
 
 /**
@@ -15,6 +15,7 @@ const appRoot = path.dirname(require.main.filename);
 const uploadProduct = (productId, files) => {
     const newPath = path.join(appRoot, '/../public/images/product/', productId);
 
+    console.log("files: ", files);
     let fileIndex = 1;
 
     try {
@@ -30,6 +31,7 @@ const uploadProduct = (productId, files) => {
             }
         }
     } catch (error) {
+        console.error(error);
         console.log(`Error al intentar crear el directorio o leer los archivos existentes ${errorDisplay}`, error);
     }
 
@@ -37,7 +39,11 @@ const uploadProduct = (productId, files) => {
         files.slice(0, 5).forEach((file, index) => {
             const filename = `${fileIndex + index}.png`;
             try{
-                file.mv(path.join(newPath, filename));
+                if (file.mv) {
+                    file.mv(path.join(newPath, filename));
+                } else {
+                    console.log('El archivo no tiene un método mv');
+                }
             }catch(error) {
                 console.log(`Error al intentar mover las imagenes del producto ${errorDisplay}`, error);
             }
@@ -45,7 +51,11 @@ const uploadProduct = (productId, files) => {
     } else {
         const filename = `${fileIndex}.png`;
         try{
-            files.mv(path.join(newPath, filename));
+            if (files.mv) {
+                files.mv(path.join(newPath, filename));
+            } else {
+                console.log('El archivo no tiene un método mv');
+            }
         }catch(error) {
             console.log(`Error al intentar mover la imagen del producto ${errorDisplay}`, error);
         }
@@ -118,9 +128,10 @@ const deleteProductImages = (productId, imageId=null) => {
  * @throws {Error} Si hay un error al intentar crear el directorio o leer los archivos existentes. | If there is an error trying to create the directory or read the existing files.
  * @throws {Error} Si hay un error al intentar mover las imágenes del usuario. | If there is an error trying to move the user images.
  */
-const uploadUser = (userId, files) => {
-    const newPath = path.join(appRoot, '/../public/images/user/', userId);
-    
+const uploadUser = (productId, files) => {
+    const newPath = path.join(appRoot, '/../public/images/product/', productId);
+
+    console.log("files: ", files);
     let fileIndex = 1;
 
     try {
@@ -129,26 +140,40 @@ const uploadUser = (userId, files) => {
         } else {
             const existingFiles = fs.readdirSync(newPath);
             fileIndex = existingFiles.length + 1;
+
+            const totalFilesAfterUpload = existingFiles.length + (Array.isArray(files) ? files.length : 1);
+            if (totalFilesAfterUpload > 5) {
+                console.log(`El número máximo de imágenes permitidas es 5. Actualmente hay ${existingFiles.length} imágenes y estás intentando subir ${totalFilesAfterUpload - existingFiles.length}.`);
+            }
         }
     } catch (error) {
+        console.error(error);
         console.log(`Error al intentar crear el directorio o leer los archivos existentes ${errorDisplay}`, error);
     }
 
     if(Array.isArray(files)) {
-        files.forEach((file, index) => {
+        files.slice(0, 5).forEach((file, index) => {
             const filename = `${fileIndex + index}.png`;
-            try {
-                file.mv(path.join(newPath, filename));
-            } catch (error) {
-                console.log(`Error al intentar mover las imagenes del usuario ${errorDisplay}`, error);
+            try{
+                if (file.mv) {
+                    file.mv(path.join(newPath, filename));
+                } else {
+                    console.log('El archivo no tiene un método mv');
+                }
+            }catch(error) {
+                console.log(`Error al intentar mover las imagenes del producto ${errorDisplay}`, error);
             }
         });
     } else {
         const filename = `${fileIndex}.png`;
-        try {
-            files.mv(path.join(newPath, filename));
-        } catch (error) {
-            console.log(`Error al intentar mover la imagen del usuario ${errorDisplay}`, error);
+        try{
+            if (files.mv) {
+                files.mv(path.join(newPath, filename));
+            } else {
+                console.log('El archivo no tiene un método mv');
+            }
+        }catch(error) {
+            console.log(`Error al intentar mover la imagen del producto ${errorDisplay}`, error);
         }
     }
 };

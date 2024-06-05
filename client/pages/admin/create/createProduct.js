@@ -6,6 +6,7 @@ import CategoryService from '@services/categoryService';
 import BrandService from '@services/brandService';
 import { useRouter } from 'next/router';
 import DeleteIcon from '@icons/DeleteIcon';
+import useTitle from '@hooks/useTitle'; 
 
 const CreateProduct = () => {
     const [formState, setFormState] = useState({
@@ -23,9 +24,10 @@ const CreateProduct = () => {
     const [parentCategories, setParentCategories] = useState([]);
     const [childCategoriesLevels, setChildCategoriesLevels] = useState([]);
     const [isFormValid, setIsFormValid] = useState(false);
-    const router = useRouter();
     const [imageCount, setImageCount] = useState(0);
+    const router = useRouter();
     const {id, readOnly} = router.query;
+    useTitle(id?'Editar Producto':'Crear Producto');
 
     useEffect(() => {
         const fetchParentCategories = async () => {
@@ -53,7 +55,7 @@ const CreateProduct = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            await ProductService.addProduct(formState, formState.images);
+            await ProductService.addProduct(formState);
             router.push('/admin/Productos');
         } catch (error) {
             setError(error.message);
@@ -190,7 +192,7 @@ const CreateProduct = () => {
     return (
         <main className="max-w-4xl mx-auto mt-10 p-6">
             <Card shadow className="p-5">
-                <h1 className="text-2xl font-bold mb-4">Crear Producto</h1>
+                <h1 className="text-2xl font-bold mb-4">{id ? 'Editar Producto' : 'Crear Producto'}</h1>
                 {error && <p className="mb-4 text-red-500">{error}</p>}
                 <form onSubmit={handleSubmit}>
                     <section className="mb-4">
@@ -246,10 +248,11 @@ const CreateProduct = () => {
                             label='Categoría del Producto' 
                             value={formState.category_id} 
                             onChange={handleParentCategoryChange} 
+                            defaultSelectedKeys={"75"}
                             data-filled
                             isDisabled={readOnly}
                         >
-                            {parentCategories.map((category) => (<SelectItem key={category.category_id} defaultValue={category.category_id}>{category.category_name}</SelectItem>))}
+                            {parentCategories.map((category) => (<SelectItem key={category.category_id.toString()} value={category.category_id.toString()}>{category.category_name}</SelectItem>))}
                         </Select>
                     </section>
                     <AnimatePresence>
@@ -269,8 +272,9 @@ const CreateProduct = () => {
                                         value={formState.category_id}
                                         onChange={(e) => handleChildCategoryChange(e, index + 1)}
                                         readOnly={readOnly}
+                                        defaultSelectedKeys={childCategories.map((category) => category.category_id)}
                                     >
-                                        {childCategories.map((category) => (<SelectItem key={category.category_id} defaultValue={category.category_id}>{category.category_name}</SelectItem>))}
+                                        {childCategories.map((category) => (<SelectItem key={category.category_id} value={category.category_id}>{category.category_name}</SelectItem>))}
                                     </Select>
                                 </motion.section>
                             )

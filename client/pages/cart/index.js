@@ -8,12 +8,13 @@ import { useAppContext } from '@context/AppContext';
 import CheckOut from '@components/cart/checkout';
 import CartItemPageComponent from '@components/cart/cartItemPage';
 import DeleteIcon from '@icons/DeleteIcon';
-import PaymentService from '@services/paymentService';
+import useTitle from '@hooks/useTitle'; 
 
 const ViewCart = () => {
     const { cart, setCart } = useAppContext();
     const [total, setTotal] = useState(0);
     const router = useRouter();
+    useTitle('Carrito de Compras');
 
     const handleDeleteCart = () => {
         setCart([]);

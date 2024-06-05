@@ -6,6 +6,7 @@ import EditIcon from '@icons/EditIcon';
 import DeleteIcon from '@icons/DeleteIcon';
 import PlusIcon from '@icons/PlusIcon';
 import EyeIcon from '@icons/EyeIcon';
+import useTitle from '@hooks/useTitle'; 
 
 const CategoryAdministration = () => {
     const router = useRouter();
@@ -14,6 +15,7 @@ const CategoryAdministration = () => {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [selectedKeys, setSelectedKeys] = useState([]);
+    useTitle('Administración de Categorías');
 
     useEffect(() => {
         const fetchCategoryData = async () => {

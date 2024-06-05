@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Chip, Image } from '@nextui-org/react';
+import { Card, Chip, Image, ScrollShadow } from '@nextui-org/react';
 import ProductService from '@services/productService';
 import { format } from 'date-fns';
 
@@ -9,16 +9,24 @@ const OrderItem = ({ order }) => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'delivered':
+      case 'entregado':
         return 'success';
-      case 'delivery':
+      case 'enviado':
         return 'warning';
-      case 'pending':
+      case 'pendiente':
+        return 'warning';
+      case 'en_proceso':
+        return 'warning';
+      case 'cancelado':
+        return 'danger';
+      case 'devuelto':
+        return 'primary';
+      case 'fallido':
         return 'danger';
       default:
         return 'default';
     }
-  };
+};
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -43,14 +51,14 @@ const OrderItem = ({ order }) => {
       <p className="font-bold text-lg">Order ID: {order.order_id}</p>
       <p>Fecha del pedido: {format(new Date(order.order_date), 'dd-MM-yyyy HH:mm')}</p>
       <p>Detalles del pedido:</p>
-      <ul>
+      <ScrollShadow className="mb-4 h-[13rem] bg-zinc-600 bg-opacity-10 rounded-lg p-4 grid gap-2">        
         {details.map((product, index) => (
-          <li key={index} className='flex flex-row gap-2 items-center'>
+          <section key={index} className='flex flex-row gap-2 items-center'>
             <Image src={`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/product/${product.product_id}/1.png`} alt={product.product_name} width={50} height={50} />
             <p>{product.product_name} x {product.quantity} {product.quantity>1?'unidades':'unidad'}  Precio: {product.price} €</p>
-          </li>
+          </section>
         ))}
-      </ul>
+      </ScrollShadow>
       {shippingAddress && (
         <div>
           <p>Dirección de envío:</p>

@@ -56,9 +56,11 @@ const ProductListCategory = () => {
 
     return (
         loading ? (
-            <Spinner />
+            <div className='w-[20rem] h-[20rem] flex justify-center items-center'>
+                <Spinner />
+            </div>
         ) : (
-            <main className="w-full p-16">
+            <main className="flex flex-col p-6 gap-4">
                 <Card className="max-w-[140rem] shadow-lg bg-gray-200 bg-opacity-50" >
                     <CardHeader className="flex-col !items-start">
                         {category && category.category_name &&

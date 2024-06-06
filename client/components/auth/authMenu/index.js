@@ -9,7 +9,7 @@ const AuthMenu = () => {
         <motion.section layout className="flex flex-col gap-2">
             <Button onPress={onOpen}>Iniciar sesión</Button>
             <Modal isOpen={isOpen} onClose={onClose} className='p-8 overflow-hidden z-99' backdrop="blur" >
-                <ModalContent className="w-20%">
+                <ModalContent className="w-auto">
                     <AuthTabs/>
                 </ModalContent>
             </Modal>

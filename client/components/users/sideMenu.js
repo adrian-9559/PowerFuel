@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 const SideMenu = ({setSelectedOption}) => {
 
     return (
-        <nav className='h-full ml-5 mr-20 border-r border-gray-300 pt-4 w-80'>
+        <nav className='h-100% ml-5 mr-20 border-r border-gray-300 pt-4 w-80'>
             <section className='flex flex-row items-center px-3 gap-1 font-medium mb-5 select-none text-xl'>
                 <p>Mi cuenta</p>
             </section>

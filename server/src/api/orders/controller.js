@@ -48,7 +48,7 @@ const createOrder = async (orderData) => {
 
         if(response.order_id != null){
             const notificationData = {
-                title: "Pedido creado",
+                title: "Pedido " + response.order_id + " creado",
                 description: "Se ha creado un nuevo pedido con el número de orden: " + response.order_id,
                 notification_date: new Date(),
                 viewed: "0",

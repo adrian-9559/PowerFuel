@@ -66,16 +66,16 @@ const HomeComponent = () => {
     }, []);
 
     return (
-        <main className="flex flex-col gap-3 px-32">
-            <section className="flex">
+        <main className="flex flex-col p-6 gap-4">
+            <section >
                 <h1 className="font-bold text-4xl">Bienvenido a <span className='text-blue-500'>PowerFuel!</span></h1>
             </section>
             <section>
-                <section className="flex grid-cols-2 gap-3 h-60">
-                    <Card className='w-full h-full shadow-lg' isPressable onPress={() => router.push(`/category/novedades`)}>
+                <section className="flex flex-col sm:flex-row gap-3 h-60 w-full">
+                    <Card className='w-full h-full shadow-lg' isPressable onPress={() => router.push(`/search/novedades`)}> 
                         <CardHeader className="absolute z-10 top-1 flex-col !items-start">
                             <p className="text-tiny text-white/60 uppercase font-bold">Productos</p>
-                            <h4 className="text-white font-medium text-large">Más vendidos</h4>
+                            <h4 className="text-white font-medium text-large">Novedades</h4>
                         </CardHeader>
                         <Image
                             removeWrapper
@@ -84,10 +84,10 @@ const HomeComponent = () => {
                             src={`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/web/home/novedades.webp`}
                         />
                     </Card>
-                    <Card className='w-full h-full shadow-lg' isPressable onPress={() => router.push(`/category/ofertas`)}>
+                    <Card className='w-full h-full shadow-lg' isPressable onPress={() => router.push(`/search/antiguos`)}>
                         <CardHeader className="absolute z-10 top-1 flex-col !items-start">
                             <p className="text-tiny text-white/60 uppercase font-bold">Productos</p>
-                            <h4 className="text-white font-medium text-large">Ofertas</h4>
+                            <h4 className="text-white font-medium text-large">Más antiguos</h4>
                         </CardHeader>
                         <Image
                             removeWrapper
@@ -173,7 +173,7 @@ const HomeComponent = () => {
                 </Card>
             </section>
             <section>
-            <Card className="w-full shadow-lg bg-gray-200 bg-opacity-50" >
+                <Card className="w-full shadow-lg" >
                     <CardHeader className="flex-col !items-start">
                         <h1 className="font-bold text-2xl bg-blue-800 bg-opacity-50 text-white w-full p-2 pl-4 shadow-lg rounded-lg">
                             Productos
@@ -183,7 +183,7 @@ const HomeComponent = () => {
                         {loading ? (
                             <Spinner />
                         ) : productos && (
-                            <section className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5 gap-10">
+                            <section key={productos} className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5 gap-10">
                                 {productos.map((product) => (
                                     <ProductCard key={product.id} product={product} />
                                 ))}

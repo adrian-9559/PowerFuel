@@ -39,7 +39,7 @@ const SideMenu = () => {
     }, [showMenuLeft]);
 
     return (
-        <section className='h-auto'>
+        <section className='h-auto z-50'>
             <Button isIconOnly onClick={toggleMenuLeft} aria-label="Toggle menu" >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" className='w-3 h-3'>
                     <path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z" />
@@ -54,7 +54,7 @@ const SideMenu = () => {
                         onStart: () => setIsAnimating(true),
                         onComplete: () => setIsAnimating(false)
                     }}
-                    className='fixed top-0 left-0 h-screen w-1/5  bg-default-200 z-50 shadow-lg p-8 pt-20 '
+                    className='fixed top-0 left-0 h-screen w-full md:w-1/5 bg-default-200 shadow-lg p-8 pt-20 z-50'
                     id='menu'
                     onClick={(e) => e.stopPropagation()}
                     style={{ zIndex: 2 }}
@@ -70,9 +70,7 @@ const SideMenu = () => {
                     }}
                     role="menu"
                     aria-label="Menu"
-                    aria-expanded={showMenuLeft}
                     aria-orientation="vertical"
-                    aria-haspopup="true"
                     aria-activedescendant={hoveredIndex}
                 >
                     <Accordion>

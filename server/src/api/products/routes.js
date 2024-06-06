@@ -48,7 +48,7 @@ router.route('/')
      */
     .get(async (req, res) => {
         try {
-            const data = await getProducts(req.query.page, req.query.limit);
+            const data = await getProducts(req.query.page, req.query.limit, req.query.status);
             res.status(200).json(data);
         } catch (error) {
             res.status(500);
@@ -131,21 +131,27 @@ router.route('/search')
      * 
      * @param {Object} req.body - El cuerpo de la solicitud, que contiene la consulta de búsqueda, el límite de productos por página y la página a obtener. | The request body, which contains the search query, the limit of products per page, and the page to get.
      * @param {string} req.body.query - La consulta de búsqueda. | The search query.
-     * @param {number} req.body.limit - El límite de productos por página. | The limit of products per page.
-     * @param {number} req.body.page - La página de productos a obtener. | The page of products to get.
+     * @param {number} req.body.query - El límite de productos por página. | The limit of products per page.
+     * @param {number} req.body.query - La página de productos a obtener. | The page of products to get.
      * @returns {Object} 200 - Los productos encontrados. | The found products.
      * @returns {Object} 404 - Productos no encontrados. | Products not found.
      * @returns {Error} 500 - Error al buscar los productos. | Error when searching for the products.
      */
     .post(async (req, res) => {
         try {
-            const { query, limit = 10, page = 1 } = req.body;
+            const { page } = req.body;
+            let {query, limit} = req.query
+            limit = parseInt(limit);
+
+            console.log(query, limit, page);
+             
             const products = await getProductsSearch(query, limit, page);
             if (!products) {
                 return res.status(404).json({ message: 'Productos no encontrados' });
             }
             res.status(200).json({products});
         } catch (error) {
+            console.log(error);
             res.status(500).json({ message: 'Error al obtener los productos' });
         }
     });
@@ -211,7 +217,7 @@ router.route('/date')
      */
     .post(async (req, res) => {
         try {
-            const products = await getProductsByDate(req.query.page, req.query.limit, req.query.startDate, req.query.endDate, req.query.order);
+            const products = await getProductsByDate(req.query.page, req.query.limit, req.query.startDate, req.query.endDate, req.query.order, req.query.status);
             if (!products) {
                 return res.status(404).json({ message: 'Productos no encontrados' });
             }

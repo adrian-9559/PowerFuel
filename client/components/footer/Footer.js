@@ -1,6 +1,9 @@
 import React from 'react';
+import {Link} from "@nextui-org/link";
+import { useRouter } from 'next/router';
 
 export default function Footer(){
+    const router = useRouter();
     
     return (
         <footer className="text-center lg:text-left marginy-0">
@@ -87,16 +90,16 @@ export default function Footer(){
                             Tu destino para suplementos de calidad que impulsan tu rendimiento y bienestar. Descubre nuestra selección premium de productos para nutrir tu cuerpo y alcanzar tus metas fitness. ¡Empieza tu viaje hacia una vida más saludable hoy mismo!
                         </p>
                     </section>
-                    <section>
+                    <section className='flex flex-col items-center justify-center'>
                         <h6 className="mb-4 flex justify-center font-semibold uppercase md:justify-start">
-                            Products
+                            PowerFuel
                         </h6>
-                        <p className="mb-4">
-                            <a href="#!">Angular</a>
-                        </p>
-                        <p className="mb-4">
-                            <a href="#!">React</a>
-                        </p>
+                        <Link className="cursor-pointer mb-4" color='foreground' onClick={() => router.push('/web/termsConditions')}>
+                            <span>Términos y Condiciones</span>
+                        </Link>
+                        <Link className="cursor-pointer mb-4" color='foreground' onClick={() => router.push('/web/about')}>
+                            <span>Sobre Nosotros</span>
+                        </Link>
                         <p className="mb-4">
                             <a href="#!">Vue</a>
                         </p>
@@ -138,7 +141,7 @@ export default function Footer(){
                                         d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" />
                                 </svg>
                             </span>
-                            Madrid, 28821, ES
+                            <a href='https://www.google.com/maps/place//data=!4m2!3m1!1s0xd42300e669f51a1:0xfac2e4067e66eeb4?sa=X&ved=1t:8290&ictx=111'>Coslada, Madrid, 28821, ES</a>
                         </p>
                         <p className="mb-4 flex items-center justify-center md:justify-start">
                             <span className="me-3 [&>svg]:h-5 [&>svg]:w-5">
@@ -152,7 +155,7 @@ export default function Footer(){
                                         d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
                                 </svg>
                             </span>
-                            powerFuel@gmail.com
+                            <a href='mailto:contactopowerfuel@gmail.com'>contactopowerfuel@gmail.com</a>
                         </p>
                         <p className="mb-4 flex items-center justify-center md:justify-start">
                             <span className="me-3 [&>svg]:h-5 [&>svg]:w-5">
@@ -166,7 +169,7 @@ export default function Footer(){
                                         clipRule="evenodd" />
                                 </svg>
                             </span>
-                            +34 602 24 07 48
+                            <a href='tel:+34602240748'>+34 602 24 07 48</a>
                         </p>
                         <p className="flex items-center justify-center md:justify-start">
                             <span className="me-3 [&>svg]:h-5 [&>svg]:w-5">

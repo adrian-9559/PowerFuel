@@ -31,7 +31,7 @@ const CartMenu = () => {
     }, [cart, getTotal])
     
     return (
-        <Dropdown 
+        <Dropdown
             isOpen={isCartOpen}
             onOpenChange={onOpenCartChange}
             showArrow 
@@ -56,7 +56,7 @@ const CartMenu = () => {
             </Badge>
             <DropdownMenu
                 aria-label="Cart Actions" 
-                className="w-96 p-1 overflow-y-auto " 
+                className="w-96 p-1 overflow-y-auto sm:block" 
                 closeOnSelect={false}
             >
                 {cart && cart.length > 0 &&

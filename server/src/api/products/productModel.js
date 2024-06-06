@@ -47,12 +47,22 @@ class model {
      * @returns {Array} - Los productos obtenidos. | The obtained products.
      * @throws {Error} - Error al intentar obtener los productos. | Error when trying to get the products.
      */
-    getProducts = async (skip = 0, limit = 10, productId) => {
+    getProducts = async (skip = 0, limit = 10, productId, status) => {
         try {
             skip = parseInt(skip);
             limit = parseInt(limit);
+
+            let where = {};
+            if (productId) {
+                where.product_id = productId;
+            }
+            if (status) {
+                if(status !== "null")
+                    where.status = status;
+            }
+
             const products = await Product.findAll({
-                where: productId ? { product_id: productId } : {},
+                where: where,
                 offset: skip,
                 limit: limit,
                 include: [{
@@ -319,11 +329,13 @@ class model {
      * @returns {Array} - Los productos que coinciden con las fechas de búsqueda. | The products that match the search dates.
      * @throws {Error} - Error al intentar obtener los productos por fecha. | Error when trying to get the products by date.
      */
-    async getProductsByDate(limit = 15, skip = 0, startDate, endDate, order = 'ASC') {
+    async getProductsByDate(limit = 15, skip = 0, startDate, endDate, order = 'ASC', status) {
         try {
-            let whereCondition = {
-                status: 'Enabled'
-            };
+            let whereCondition = {};
+            if (status) {
+                if(status !== "null")
+                    whereCondition.status = status;
+            }
             if(startDate && endDate && !isNaN(new Date(startDate)) && !isNaN(new Date(endDate))) {
                 whereCondition.registration_date = {
                     [Op.between]: [startDate, endDate]

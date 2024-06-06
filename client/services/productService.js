@@ -14,18 +14,18 @@ class ProductService {
         }
     }
 
-    async getProducts(page = 1, limit = 10) {
+    async getProducts(page = 1, limit = 10, status = null) {
         try {
-            const response = await api.get(`/products?page=${page}&limit=${limit}`);
+            const response = await api.get(`/products?page=${page}&limit=${limit}&status=${status}`);
             return response.data;
         } catch (error) {
             throw error;
         }
     }
 
-    async getProductsNovedades(limit = 15, page = 1, order = "ASC", startDate = null, endDate = null) {
+    async getProductsNovedades(limit = 15, page = 1, order = "ASC", startDate = null, endDate = null, status = "Enabled") {
         try {
-            const response = await api.post(`/products/date?startDate=${startDate}&endDate=${endDate}&page=${page}&limit=${limit}&order=${order}`);
+            const response = await api.post(`/products/date?startDate=${startDate}&endDate=${endDate}&page=${page}&limit=${limit}&order=${order}&status=${status}`);
             return response.data;
         } catch (error) {
             throw error;

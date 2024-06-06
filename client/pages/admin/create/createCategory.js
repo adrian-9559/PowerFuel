@@ -6,10 +6,9 @@ import { useRouter } from 'next/router';
 import useTitle from '@hooks/useTitle'; 
 
 const CreateCategory = () => {
-    const [nameCategory, setName] = useState('');
-    const categoriesSelect = [];
-    const [selectedChildCategory, setSelectedChildCategory] = useState('');
-    const [parentCategory, setParentCategory] = useState('');
+    const [nameCategory, setName] = useState(null);
+    const [selectedChildCategory, setSelectedChildCategory] = useState(null);
+    const [parentCategory, setParentCategory] = useState(null);
     const [parentCategories, setParentCategories] = useState([]);
     const [childCategoriesLevels, setChildCategoriesLevels] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -17,8 +16,15 @@ const CreateCategory = () => {
     const {id, readOnly} = router.query;
     useTitle(id?'Editar Categoría':'Crear Categoría');
 
+
+    const isFormValid = () => nameCategory && nameCategory.trim() !== '' && parentCategory && selectedChildCategory;
+
     const handleRegister = async (e) => {
         e.preventDefault();
+
+        if (!isFormValid()) {
+            return;
+        }
 
         setLoading(true);
         try {
@@ -94,6 +100,8 @@ const CreateCategory = () => {
                             selectedKeys={[parentCategory]} 
                             data-filled
                             isDisabled={readOnly}
+                            isInvalid={!isFormValid()}
+                            errorMessage='Este campo es obligatorio'
                         >
                             <SelectItem value={null}>Ninguna</SelectItem>
                             {parentCategories.map((category) => (
@@ -120,6 +128,8 @@ const CreateCategory = () => {
                                         onChange={(e) => handleChildCategoryChange(e, index + 1)}
                                         selectedKeys={selectedChildCategory ? [selectedChildCategory] : []} 
                                         isDisabled={readOnly}
+                                        isInvalid={!isFormValid()}
+                                        errorMessage='Este campo es obligatorio'
                                     >
                                         <SelectItem value={null}>
                                             Ninguna
@@ -144,6 +154,8 @@ const CreateCategory = () => {
                             onChange={(e) => setName(e.target.value)} 
                             onClear={readOnly ? undefined : () => setName('')}
                             readOnly={readOnly === "true"}
+                            isInvalid={!isFormValid()}
+                            errorMessage='Este campo es obligatorio'
                         />
                     </section>
                     <section>

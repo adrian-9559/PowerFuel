@@ -7,7 +7,7 @@ import HomeComponent from '@pages/home/index';
 
 const HomePage = () => {
     return (
-        <NextUIProvider className="m-5">
+        <NextUIProvider >
             <HomeComponent />
         </NextUIProvider>
     );

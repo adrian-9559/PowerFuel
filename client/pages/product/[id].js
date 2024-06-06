@@ -35,11 +35,13 @@ const Product = () => {
 
     return (
         <main className='flex flex-col items-center justify-center p-6'>
-            <section className='w-full max-w-4xl p-8 flex flex-row bg-gray-500 bg-opacity-25 rounded-lg'>
-                <ProductCarousel
-                    id={id}
-                />
-                <section className='w-full md:w-1/2 md:pl-8'>
+            <section className='w-full max-w-4xl p-8 flex flex-col lg:flex-row justify-center bg-gray-500 bg-opacity-25 rounded-lg'>
+                <section className="sm:w-96 sm:h-auto">
+                    <ProductCarousel
+                        id={id}
+                    />
+                </section>
+                <section className='w-full md:w-1/2 md:pl-8 h-full'>
                     <section className='w-full max-w-4xl rounded-lg flex items-center'>
                         <Skeleton isLoaded={isLoaded} className="rounded-lg h-auto py-2">
                             <h1 className='text-3xl font-bold'>{product?.product_name}</h1>

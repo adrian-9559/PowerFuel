@@ -20,17 +20,20 @@ api.interceptors.response.use(response => {
     return response;
 }, async error => {
     const originalRequest = error.config;
+    localStorage.removeItem('auth_token');
+    // originalRequest._retry = false;
     if (error.response && error.response.status === 401 && !originalRequest._retry) {
-        originalRequest._retry = false;
-        const refreshToken = localStorage.getItem('refresh_token');
-        try {
-            const res = await api.post('/token/refresh', { refreshToken });
-            localStorage.setItem('auth_token', res.data.accessToken);
-            axios.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.accessToken;
-            return axios(originalRequest);
-        } catch (err) {
-            console.error(err);
-        }
+        localStorage.removeItem('auth_token');
+        // originalRequest._retry = false;
+        // const refreshToken = localStorage.getItem('refresh_token');
+        // try {
+        //     const res = await api.post('/token/refresh', { refreshToken });
+        //     localStorage.setItem('auth_token', res.data.accessToken);
+        //     axios.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.accessToken;
+        //     return axios(originalRequest);
+        // } catch (err) {
+        //     console.error(err);
+        // }
     }
     return Promise.reject(error);
 });

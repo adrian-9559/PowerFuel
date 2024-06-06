@@ -47,6 +47,7 @@ const AuthTabs = () => {
                     aria-label="Admin Tabs"
                     selectedKey={selectedTab}
                     onSelectionChange={handleTabChange}
+                    className="w-auto"
                 >
                     <Tab key="login" title="Iniciar sesión" className="w-full" />
                     <Tab key="register" title="Registrarse" className="w-full" />

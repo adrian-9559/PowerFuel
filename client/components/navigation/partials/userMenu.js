@@ -57,6 +57,9 @@ const UserMenu = () => {
                     <DropdownItem key="information" textValue="Help" onClick={() => router.push('/web/Information')}>
                         Información
                     </DropdownItem>
+                    <DropdownItem key="Terminos y condiciones" textValue='Terms and conditions' onClick={() => router.push('/web/termsConditions')}>
+                        Términos y condiciones
+                    </DropdownItem>
                     <DropdownItem key="help_and_feedback" textValue="Help" onClick={() => router.push('/web/help')}>
                         Ayuda
                     </DropdownItem>

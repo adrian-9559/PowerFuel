@@ -36,7 +36,7 @@ const ProductCarousel = ({id}) => {
                             isZoomed
                             src={`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/product/${id}/${i}.png`}
                             alt={`Imagen ${i} del producto ${id}`}
-                            className={`rounded shadow-lg object-cover cursor-pointer ${isThumbnail ? "w-16 h-16 z-1" : ""}`}
+                            className={`rounded shadow-lg object-cover cursor-pointer ${isThumbnail ? "w-16 h-16 z-1" :""}`}
                             onClick={() => handleImageClick(i - 1)}
                             disableSkeleton={isLoaded}
                         />
@@ -47,7 +47,7 @@ const ProductCarousel = ({id}) => {
         return images;
     };
     return (
-        <section className='w-96 h-auto flex flex-col'>
+        <section className='w-full h-auto flex flex-col'>
             <Carousel
                 additionalTransfrom={0}
                 arrows={imageCount > 1}

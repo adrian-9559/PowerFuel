@@ -4,7 +4,6 @@ import React, { createContext, useState, useEffect, useContext, ReactNode } from
 import UserService from '@services/userService';
 import RoleService from '@services/roleService';
 import NotificationService from '@services/notificationService';
-import { useRouter } from 'next/router';
 
 // Definir la forma de la información del usuario y del carrito
 interface User {
@@ -82,7 +81,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const token = localStorage.getItem('auth_token');
-    if (token && !user) {
+    if (token && token != "" && !user) {
         setIsLoggedIn(true);
         const fetchUserInfo = async () => {
             const userInfo = await UserService.getUserInfo();
@@ -109,6 +108,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         setUser(null);
         setIsAdmin(false);
     }
+    
 
 }, [isLoggedIn]);
 

@@ -114,12 +114,12 @@ const getProductById = async (productId) => {
  * 
  * @throws {Error} - Error al intentar obtener los productos. | Error when trying to get the products.
  */
-const getProducts = async (page, limit) => {
+const getProducts = async (page, limit, status) => {
     try {
         page = parseInt(page) || 1;
         limit = parseInt(limit) || 10;
         const skip = (page - 1) * limit;
-        let products = await model.getProducts(skip, limit);
+        let products = await model.getProducts(skip, limit, null, status);
         const total = await model.getProductsCount();
 
         if (products.length > 0) {
@@ -197,12 +197,12 @@ const getProductsByCategory = async (page, limit, id) => {
  * @returns {Array} - Los productos obtenidos. | The obtained products.
  * @throws {Error} - Error al intentar obtener los productos por fecha. | Error when trying to get the products by date.
  */
-const getProductsByDate = async (page, limit, startDate, endDate, order) => {
+const getProductsByDate = async (page, limit, startDate, endDate, order, status) => {
     try {
         page = parseInt(page) || 1;
         limit = parseInt(limit) || 15;
         const skip = (page - 1) * limit;
-        let products = await model.getProductsByDate(limit, skip, startDate, endDate, order);
+        let products = await model.getProductsByDate(limit, skip, startDate, endDate, order, status);
         return products;
     } catch (error) {
         console.log(`Error al intentar obtener los productos por fecha ${errorDisplay}`, error);

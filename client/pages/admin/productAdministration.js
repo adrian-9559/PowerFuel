@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip, getKeyValue, Button, Pagination } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip, Button, Pagination, Select, SelectItem } from "@nextui-org/react";
 import { useRouter } from 'next/router';
 import { Modal, useDisclosure, ModalContent } from '@nextui-org/react';
 import ProductAdminPanel from '@components/product/productAdminPanel';
@@ -22,17 +22,18 @@ const ProductoAdministration = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [selectedKeys, setSelectedKeys] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState(null);
-    const {isOpen, onOpenChange, onOpen, onClose } = useDisclosure();
+    const {isOpen, onOpenChange, onOpen } = useDisclosure();
+    const [statusProducts, setStatusProducts] = useState();
     useTitle('Administración de Productos');
 
     useEffect(() => {
         const fetchProductData = async () => {
-            const response = await ProductService.getProducts(page);
+            const response = await ProductService.getProducts(page, 10, statusProducts);
             setProducts(response.products ?? []);
             setTotalPages(response.pages);
         }
         fetchProductData();
-    }, [page]);
+    }, [page, statusProducts]);
 
     const deleteProduct = async (productId) => {
         await ProductService.deleteProduct(productId);
@@ -61,6 +62,9 @@ const ProductoAdministration = () => {
         setSelectedKeys([]);
     };
 
+    const handleStatusChange = (event) => {
+        setStatusProducts(event.target.value);
+    }
 
     return (
         <section className='h-full w-full'>
@@ -70,9 +74,8 @@ const ProductoAdministration = () => {
                 onSelectionChange={setSelectedKeys}
                 className="w-full h-full"
                 topContent={
-                    <section className='flex flex-row w-full h-full'>
-
-                        <section className="absolute flex justify-left gap-2">
+                    <section className='flex w-full h-full justify-between'>
+                        <section className="flex justify-left gap-2 w-full">
                             <Tooltip color="danger" content="Eliminar Producto/s">
                                 <Button isIconOnly color="danger" className="text-lg cursor-pointer active:opacity-50" onClick={deleteSelectedProducts}>
                                     <DeleteIcon color="white" />
@@ -86,6 +89,13 @@ const ProductoAdministration = () => {
                         </section>
                         <section className='flex justify-center items-center h-auto w-full'>
                             <h1 className="text-center text-2xl font-bold">Listado de Productos</h1>
+                        </section>
+                        <section className='w-full flex justify-end'>
+                            <Select aria-label='selectStatus' content="Filtro" className='w-3/6' placeholder='Filtrado' radius='lg' defaultSelectedKeys={["null"]} onChange={handleStatusChange}>
+                                <SelectItem key="null">Nunguno</SelectItem>
+                                <SelectItem key="Enabled">Habilitado</SelectItem>
+                                <SelectItem key="Disabled">Desabilitado</SelectItem>
+                            </Select>
                         </section>
                     </section>
                 }

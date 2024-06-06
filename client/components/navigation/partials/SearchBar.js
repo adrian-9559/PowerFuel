@@ -25,7 +25,7 @@ const SearchBar = () => {
     useEffect(() => {
         const searchProduct = async (data) => {
             if (data && data != null && data != undefined && data != '') {
-                const response = await ProductService.getAllProductsSearch(data, 5, 1);
+                const response = await ProductService.getAllProductsSearch(data, 4, 1);
                 if (response && Array.isArray(response.products)) {
                     setResults(response.products);
                     setSearched(true); // Se ha realizado una búsqueda

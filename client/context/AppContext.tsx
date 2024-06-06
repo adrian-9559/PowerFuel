@@ -38,7 +38,7 @@ const AppContext = createContext({
   notifications: [] as NotificationItem[],
   setNotifications: (() => {}) as React.Dispatch<React.SetStateAction<NotificationItem[]>>,
   webTitle: 'POWERFUEL',
-  setWebTitle: (value: string) => {}
+  setWebTitle: (value: string) => {},
 });
 
 // Crear el proveedor de contexto

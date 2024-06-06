@@ -16,12 +16,13 @@ const RoleAdministration = () => {
     useTitle('Administración de Roles');
     
 
+    const fetchRoleData = async () => {
+        const response = await RoleService.getRoles(page);
+        setRoles(response.roles ?? []);
+        setTotalPages(response.pages);
+    }
+    
     useEffect(() => {
-        const fetchRoleData = async () => {
-            const response = await RoleService.getRoles(page);
-            setRoles(response.roles ?? []);
-            setTotalPages(response.pages);
-        }
         fetchRoleData();
     }, [page]);
 
@@ -32,6 +33,8 @@ const RoleAdministration = () => {
         if(Roles.length === 1 && page > 1) {
             setPage(page - 1);
         }
+
+        fetchRoleData();
     };
 
     const deleteSelectedRoles = async () => {
@@ -51,6 +54,8 @@ const RoleAdministration = () => {
             setRoles(Roles.filter(role => role.role_id !== roleId));
         }
         setSelectedKeys([]);
+
+        fetchRoleData();
     };
 
     return (

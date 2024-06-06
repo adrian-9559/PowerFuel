@@ -17,15 +17,17 @@ const CategoryAdministration = () => {
     const [selectedKeys, setSelectedKeys] = useState([]);
     useTitle('Administración de Categorías');
 
+    const fetchCategoryData = async () => {
+        const response = await CategoryService.getCategories(page);
+        setCategories(response.categories??[]);
+        setTotalPages(response.pages);
+        setIsLoading(false);
+    }
+
     useEffect(() => {
-        const fetchCategoryData = async () => {
-            const response = await CategoryService.getCategories(page);
-            setCategories(response.categories??[]);
-            setTotalPages(response.pages);
-            setIsLoading(false);
-        }
         fetchCategoryData();
     }, [page]);
+
 
     const deleteCategory = async (categoryId) => {
         await CategoryService.deleteCategory(categoryId);
@@ -34,13 +36,14 @@ const CategoryAdministration = () => {
         if (Categories.length === 1 && page > 1) {
             setPage(page - 1);
         }
+        fetchCategoryData();
     };
 
     const deleteSelectedCategories = async () => {
 
         if (selectedKeys === "all") {
             for (const category of Categories) {
-                await deleteCategory(category.category_id);
+                await deleteCategory(category.cate);
             }
             setCategories([]);
             setSelectedKeys([]);
@@ -52,11 +55,14 @@ const CategoryAdministration = () => {
             await deleteCategory(categoryId);
             setCategories(Categories.filter(category => category.category_id !== categoryId));
         }
+        setPage(1);
         setSelectedKeys([]);
 
         if (Categories.length === 1 && page > 1) {
             setPage(page - 1);
         }
+
+        fetchCategoryData();
 
     };
 
@@ -106,9 +112,6 @@ const CategoryAdministration = () => {
                         <p>Categoría</p>
                     </TableColumn>
                     <TableColumn>
-                        <p>ID</p>
-                    </TableColumn>
-                    <TableColumn>
                         <p>Categoria Padre</p>
                     </TableColumn>
                     <TableColumn className='flex justify-center items-center'>
@@ -121,13 +124,11 @@ const CategoryAdministration = () => {
                     {Categories.map((category) => (
                         <TableRow key={category.category_id}>
                             <TableCell>
-                                <p>{category.category_name}</p>
+                                <p className="text-bold text-sm capitalize">{category.category_name}</p>
+                                <p className="text-bold text-sm capitalize text-default-400"> Id de la categoría: {category.category_id}</p>
                             </TableCell>
                             <TableCell>
-                                <p>{category.category_id}</p>
-                            </TableCell>
-                            <TableCell>
-                                <p className="text-bold text-sm capitalize">{Categories.filter(cat => cat.category_id === category.parent_category_id)[0]?.category_name||'Ninguna'}</p>
+                                <p className="text-bold text-sm capitalize">{category.parent_category_name||"Ninguna"}</p>
                                 <p className="text-bold text-sm capitalize text-default-400"> {category.parent_category_id?`Id de la categoría: ${category.parent_category_id}`:''}</p>
                             </TableCell>
                             <TableCell>

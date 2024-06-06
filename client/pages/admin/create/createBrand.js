@@ -23,22 +23,18 @@ const CreateBrand = () => {
     }, [id]);
 
     useEffect(() => {
-        if (brandName === '') {
-            setIsInvalid(true);
-        } else {
-            setIsInvalid(false);
-        }
+        const brandNameRegex = /^[a-zA-Z0-9\s]{1,50}$/;
+        setIsInvalid(!brandNameRegex.test(brandName));
     }, [brandName]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        try {
-            if(isInvalid || brandName === null) {
-                setIsInvalid(true) 
-                return;
-            }
+        if(isInvalid) {
+            return;
+        }
 
+        try {
             setIsLoading(true);
             if (id) {
                 await BrandService.updateBrand(id, brandName);
@@ -68,7 +64,7 @@ const CreateBrand = () => {
                             readOnly={readOnly === "true"}
                             isInvalid={isInvalid}
                             isRequired
-                            errorMessage='Este campo es obligatorio'
+                            errorMessage='Formato inválido. Solo se permiten letras, números y espacios. Máximo 50 caracteres.'
                         />
                     </section>
                     <section>

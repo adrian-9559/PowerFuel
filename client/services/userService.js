@@ -7,7 +7,6 @@ class UserService {
             password: password,
         });
         localStorage.setItem('auth_token', response.data.auth_token);
-        localStorage.setItem('refresh_token', response.data.refresh_token);
         return response.data;
     }
 

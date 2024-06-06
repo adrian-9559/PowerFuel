@@ -15,12 +15,20 @@ class model {
      * @returns {Array} - Los productos de la categoría obtenidos. | The obtained products of the category.
      * @throws {Error} - Error al intentar obtener los productos por categoría. | Error when trying to get the products by category.
      */
-    getProductsByCategory = async (skip = 0, limit = 10, categoryId) => {
+    getProductsByCategory = async (skip = 0, limit = 10, categoryId, status) => {
         try {
             skip = parseInt(skip);
             limit = parseInt(limit);
+            let where = {};
+            if (status && status != 'null' && status != null) {
+                where.status = status;
+            }
+    
+            const categories = await this.getSubCategories(categoryId);
+            where.category_id = categories;
+    
             const products = await Product.findAll({
-                where: categoryId ? { category_id: categoryId } : {},
+                where: where,
                 offset: skip,
                 limit: limit,
                 include: [{
@@ -34,6 +42,22 @@ class model {
         } catch (error) {
             console.log(`Error al obtener los productos por categoría ${errorDisplay}`, error);
         }
+    };
+
+    getSubCategories = async (categoryId) => {
+        let categories = [categoryId];
+        const subCategories = await Category.findAll({
+            where: {
+                parent_category_id: categoryId
+            }
+        });
+    
+        for (let i = 0; i < subCategories.length; i++) {
+            const subSubCategories = await this.getSubCategories(subCategories[i].category_id);
+            categories = [...categories, ...subSubCategories];
+        }
+    
+        return categories;
     };
     
     /**
@@ -56,9 +80,8 @@ class model {
             if (productId) {
                 where.product_id = productId;
             }
-            if (status) {
-                if(status !== "null")
-                    where.status = status;
+            if (status && status != 'null' && status != null) {
+                where.status = status;
             }
 
             const products = await Product.findAll({
@@ -137,17 +160,21 @@ class model {
      * @returns {Array} - Los productos que coinciden con la consulta de búsqueda. | The products that match the search query.
      * @throws {Error} - Error al intentar buscar los productos. | Error when trying to search for the products.
      */
-    getProductsSearch = async (query, limit = 10, page = 1) => {
+    getProductsSearch = async (query, limit = 10, page = 1, status) => {
         try {
             const skip = (page - 1) * limit;
+            let where = {
+                [Op.or]: [
+                    {product_name: {[Op.like]: `%${query}%`}},
+                    {'$Category.category_name$': {[Op.like]: `%${query}%`}},
+                    {'$Brand.brand_name$': {[Op.like]: `%${query}%`}}
+                ]
+            };
+            if (status && status != 'null' && status != null) {
+                where.status = status;
+            }
             let products = await Product.findAll({
-                where: {
-                    [Op.or]: [
-                        {product_name: {[Op.like]: `%${query}%`}},
-                        {'$Category.category_name$': {[Op.like]: `%${query}%`}},
-                        {'$Brand.brand_name$': {[Op.like]: `%${query}%`}}
-                    ],
-                },
+                where: where,
                 offset: skip,
                 limit: limit,
                 include: [{
@@ -332,9 +359,8 @@ class model {
     async getProductsByDate(limit = 15, skip = 0, startDate, endDate, order = 'ASC', status) {
         try {
             let whereCondition = {};
-            if (status) {
-                if(status !== "null")
-                    whereCondition.status = status;
+            if (status && status != 'null' && status != null) {
+                whereCondition.status = status;
             }
             if(startDate && endDate && !isNaN(new Date(startDate)) && !isNaN(new Date(endDate))) {
                 whereCondition.registration_date = {
@@ -366,9 +392,14 @@ class model {
      * @returns {Array} - Los productos aleatorios obtenidos. | The obtained random products.
      * @throws {Error} - Error al intentar obtener los productos aleatorios. | Error when trying to get the random products.
      */
-    getRandomProducts = async (limit) => {
+    getRandomProducts = async (limit, status) => {
         try {
+            let where = {};
+            if (status && status != 'null' && status != null) {
+                where.status = status;
+            }
             return await Product.findAll({
+                where: where,
                 order: sequelize.random(),
                 limit: limit
             });
@@ -377,6 +408,17 @@ class model {
         }
     };
 
+    /**
+     * Función para obtener el conteo de productos por estado.
+     * Function to get the count of products by status.
+     * 
+     * @param {string} status - El estado de los productos. | The status of the products.
+     * @returns {number} - El conteo de productos por estado. | The count of products by status.
+     * @throws {Error} - Error al intentar obtener el conteo de productos por estado. | Error when trying to get the count of products by status.
+     * 
+     * @returns {number} - El conteo de productos por estado. | The count of products by status.
+     * @throws {Error} - Error al intentar obtener el conteo de productos por estado. | Error when trying to get the count of products by status.
+     **/
     getCountProductStatus = async (status) => {
         try {
             return await Product.count({
@@ -389,6 +431,17 @@ class model {
         }
     };
 
+    /**
+     * Función para obtener el conteo de productos sin stock.
+     * Function to get the count of products out of stock.
+     * 
+     * @returns {number} - El conteo de productos sin stock. | The count of products out of stock.
+     * @throws {Error} - Error al intentar obtener el conteo de productos sin stock. | Error when trying to get the count of products out of stock.
+     * 
+     * @returns {number} - El conteo de productos sin stock. | The count of products out of stock.
+     * @throws {Error} - Error al intentar obtener el conteo de productos sin stock. | Error when trying to get the count of products out of stock.
+     */
+
     getCountOutStock = async () => {
         try {
             return await Product.count({
@@ -400,6 +453,30 @@ class model {
             console.log(`Error al obtener el conteo de productos sin stock ${errorDisplay}`, error);
         }
     }
+
+    /**
+     * Función para actualizar el stock de un producto en la base de datos.
+     * Function to update the stock of a product in the database.
+     * 
+     * @param {string} productId - El ID del producto a actualizar. | The ID of the product to update.
+     * @param {number} quantity - La cantidad de stock a actualizar. | The quantity of stock to update.
+     * 
+     * @returns {boolean} - Verdadero si se actualizó el stock correctamente, falso en caso contrario. | True if the stock was updated successfully, false otherwise.
+     * @throws {Error} - Error al intentar actualizar el stock del producto. | Error when trying to update the product stock.
+     */
+    updateProductStock = async (productId, quantity) => {
+        try {
+            const product = await Product.findByPk(productId);
+            if (product) {
+                product.stock_quantity = product.stock_quantity+quantity;
+                await product.save();
+                return true;
+            }
+            return false;
+        } catch (error) {
+            console.log(`Error al intentar actualizar el stock del producto ${errorDisplay}`, error);
+        }
+    };
 }
 
 module.exports = new model();

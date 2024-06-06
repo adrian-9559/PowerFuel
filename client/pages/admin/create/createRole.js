@@ -9,36 +9,33 @@ const CreateRole = () => {
     const [roleName, setRoleName] = useState(null); 
     const [isInvalid, setIsInvalid] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const { id, readOnly } = router.query;
+    const { id } = router.query;
     useTitle(id ? 'Editar Role' : 'Crear Role');
 
+
+    
+    const fetchRole = async () => {
+        
+        const res = await RoleService.getRoleById(id);
+        setRoleName(res.role_name);
+    }
     useEffect(() => {
-        if (id) {
-            const fetchRole = async () => {
-                const res = await RoleService.getRoleById(id);
-                setRoleName(res.role_name);
-            }
             fetchRole();
-        }
     }, [id]);
 
     useEffect(() => {
-        if (roleName === '') {
-            setIsInvalid(true);
-        } else {
-            setIsInvalid(false);
-        }
+        const roleNameRegex = /^[a-zA-Z\s]{1,50}$/;
+        setIsInvalid(!roleNameRegex.test(roleName));
     }, [roleName]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        try {
-            if(isInvalid || roleName === null) {
-                setIsInvalid(true) 
-                return;
-            }
+        if(isInvalid) {
+            return;
+        }
 
+        try {
             setIsLoading(true);
             if (id) {
                 await RoleService.updateRole(id, roleName);
@@ -65,10 +62,9 @@ const CreateRole = () => {
                             value={roleName}
                             onChange={(e) => setRoleName(e.target.value.trim())}
                             onClear={() => setRoleName('')}
-                            readOnly={readOnly === "true"}
                             isInvalid={isInvalid}
                             isRequired
-                            errorMessage='Este campo es obligatorio'
+                            errorMessage='Formato inválido. Solo se permiten letras y espacios. Máximo 50 caracteres.'
                         />
                     </section>
                     <section>

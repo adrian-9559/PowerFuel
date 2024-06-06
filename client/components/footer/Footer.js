@@ -7,7 +7,7 @@ export default function Footer(){
     
     return (
         <footer className="text-center lg:text-left marginy-0">
-            <section className="border-b-2 border-t-2 border-default-200 p-6  mx-auto">
+            <section className="border-b-2 border-t-2 border-default-200 p-6  mx-auto bg-gray-200 bg-opacity-10">
                 <section className='w-full max-w-[76rem] mx-auto flex items-center justify-center lg:justify-between'>
                     <section className="me-12 hidden lg:block">
                         <span>Redes Sociales:</span>
@@ -90,7 +90,7 @@ export default function Footer(){
                             Tu destino para suplementos de calidad que impulsan tu rendimiento y bienestar. Descubre nuestra selección premium de productos para nutrir tu cuerpo y alcanzar tus metas fitness. ¡Empieza tu viaje hacia una vida más saludable hoy mismo!
                         </p>
                     </section>
-                    <section className='flex flex-col items-center justify-center'>
+                    <section className='grid'>
                         <h6 className="mb-4 flex justify-center font-semibold uppercase md:justify-start">
                             PowerFuel
                         </h6>
@@ -107,7 +107,7 @@ export default function Footer(){
                             <a href="#!">Laravel</a>
                         </p>
                     </section>
-                    <section>
+                    <section className="grid">
                         <h6
                             className="mb-4 flex justify-center font-semibold uppercase md:justify-start">
                             Useful links
@@ -121,9 +121,9 @@ export default function Footer(){
                         <p className="mb-4">
                             <a href="#!">Orders</a>
                         </p>
-                        <p>
-                            <a href="#!">Help</a>
-                        </p>
+                        <Link className="cursor-pointer mb-4" color='foreground' onClick={() => router.push('/web/help')}>
+                            <span>Ayuda</span>
+                        </Link>
                     </section>
                     <section>
                         <h6 className="mb-4 flex justify-center font-semibold uppercase md:justify-start">

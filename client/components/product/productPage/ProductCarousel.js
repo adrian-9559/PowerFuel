@@ -54,12 +54,10 @@ const ProductCarousel = ({id}) => {
                 centerMode={false}
                 className=""
                 containerClass="container"
-                draggable
                 focusOnSelect={false}
                 infinite
                 itemClass=""
                 keyBoardControl
-                minimumTouchDrag={80}
                 renderButtonGroupOutside={false}
                 renderDotsOutside={false}
                 responsive={{
@@ -91,10 +89,9 @@ const ProductCarousel = ({id}) => {
                         partialVisibilityGutter: 30
                     }
                 }}
-                showDots={false}
+                showDots={true}
                 sliderClass=""
                 slidesToSlide={1}
-                swipeable
             >
                 {renderProductImages()}
             </Carousel>

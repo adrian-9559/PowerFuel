@@ -16,11 +16,14 @@ router.route('/')
      */
     .post(async (req, res) => {
         try {
+            if (!req.body.role_name) {
+                return res.status(400).json({ message: 'El nombre del rol es requerido' });
+            }
             const role = await addRole(req.body.role_name);
             if (!role) {
                 return res.status(400).json({ message: 'Error al añadir el rol'});
             }
-            res.status(200).json(role, { message: 'Rol añadido correctamente' });
+            res.status(200).json({role,  message: 'Rol añadido correctamente' });
         } catch (error) {
             res.status(500).json({ message: 'Error al añadir el rol' });
         }
@@ -89,7 +92,7 @@ router.route('/:roleId')
      */
     .put(async (req, res) => {
         try {
-            const role = await updateRoleById(req.params.roleId, req.body.role_name);
+            const role = await updateRoleById(roleId, role_name);
             if (!role) {
                 return res.status(404).json({ message: 'Rol no encontrado' });
             }
@@ -110,11 +113,12 @@ router.route('/:roleId')
      */
     .get(async (req, res) => {
         try {
-            const response = await getRoleById(req.params.roleId??null);
-            if (!role) {
+                const roleId = req.params.roleId;
+            const response = await getRoleById(roleId);
+            if (response === null) {
                 return res.status(404).json({ message: 'Rol no encontrado' });
             }
-            res.status(200).json(response.Roles);
+            res.status(200).json(response);
         } catch (error) {
             res.status(500);
         }

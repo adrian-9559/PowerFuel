@@ -6,7 +6,6 @@ const UserImage = ({user}) => {
     const [image, setImage] = useState(true);
     const [URLImage, setURLImage] = useState();
 
-
     const [style, setStyle] = useState({
         display: 'flex',
         justifyContent: 'center',

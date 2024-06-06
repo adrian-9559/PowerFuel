@@ -10,10 +10,6 @@ const errorDisplay = "(Error en authTokenInterceptor)";
  * @param {Function} next - La función de callback para pasar al siguiente middleware. | The callback function to pass to the next middleware.
  */
 const authTokenInterceptor = async (req, res, next) => {
-    if (req.url === '/api/token/refresh') {
-        next();
-        return;
-    }
 
     let authorization = req.headers['authorization'];
     if (authorization) {

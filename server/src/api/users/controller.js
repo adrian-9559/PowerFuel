@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const model = require('./userModel');
 const filesUpload = require('../files/controller');
 const { createStripeCustomer, deleteStripeCustomer } = require('../stripe/controller');
-const { generateAuthToken, generateRefreshToken} = require('../../utils/tokenUtils');
+const { generateAuthToken } = require('../../utils/tokenUtils');
 const bcrypt = require('bcrypt');
 const { isOldPassword, saveOldPassword } = require('./../oldPassword/controller');
 const { sendMailPassReset } = require('./../mail/controller');
@@ -171,12 +171,8 @@ const loginUser = async (email, password) => {
         
         if (user && await bcrypt.compare(password, user.current_password) && user.status === 'Active'){
             const authToken = generateAuthToken(user);
-            const refreshToken = generateRefreshToken(user);
 
-            return {
-                authToken,
-                refreshToken
-            };
+            return authToken;
         }
 
         return null;

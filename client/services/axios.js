@@ -22,22 +22,12 @@ api.interceptors.response.use(response => {
     const originalRequest = error.config;
     localStorage.removeItem('auth_token');
     // originalRequest._retry = false;
-    if (error.response && error.response.status === 401 && !originalRequest._retry) {
+    if (error.response && (error.response.status === 401 || error.response.status === 403) && !originalRequest._retry) {
         localStorage.removeItem('auth_token');
-        // originalRequest._retry = false;
-        // const refreshToken = localStorage.getItem('refresh_token');
-        // try {
-        //     const res = await api.post('/token/refresh', { refreshToken });
-        //     localStorage.setItem('auth_token', res.data.accessToken);
-        //     axios.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.accessToken;
-        //     return axios(originalRequest);
-        // } catch (err) {
-        //     console.error(err);
-        // }
+        window.location.href = '/';
     }
     return Promise.reject(error);
 });
-
 api.interceptors.response.use((response) => {
     if (response && response.data && response.data.message)
         toastr.success(response.data.message);

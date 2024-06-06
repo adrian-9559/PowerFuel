@@ -1,6 +1,8 @@
 const {insertNotification} = require('../notifications/controller');
+const { updateProductStock } = require('../products/controller');
 const OrderModel = require('./ordersModel');
 const errorDisplay = "(Error en el controlador de Orders)";
+
 
 /**
  * Función para obtener las órdenes de un usuario específico.
@@ -45,6 +47,7 @@ const getOrderById = async (orderId) => {
 const createOrder = async (orderData) => {
     try {
         const response = await OrderModel.createOrder(orderData);
+        console.log(orderData);
 
         if(response.order_id != null){
             const notificationData = {
@@ -58,6 +61,13 @@ const createOrder = async (orderData) => {
             };
 
             await insertNotification(notificationData);
+
+            // Parse details to get products and quantities
+            const details = JSON.parse(orderData.details);
+            for (let detail of details) {
+                // Update stock for each product
+                await updateProductStock(detail.product_id, -detail.quantity);
+            }
         }
 
         return response;

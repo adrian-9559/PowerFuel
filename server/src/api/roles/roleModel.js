@@ -11,10 +11,10 @@ class Model {
      * @returns {string} - El ID del rol insertado. | The ID of the inserted role.
      * @throws {Error} - Error al insertar el rol. | Error when inserting the role.
      */
-    insertRole = async (role) => {
+    insertRole = async (role_name) => {
         try {
             const newRole = await Role.create({
-                role_name: role.role_name
+                role_name: role_name
             });
             return newRole.role_id;
         } catch (error) {
@@ -32,10 +32,10 @@ class Model {
      * @returns {Promise} - Promesa que resuelve al actualizar el rol. | Promise that resolves when updating the role.
      * @throws {Error} - Error al actualizar el rol. | Error when updating the role.
      */
-    updateRole = async (roleId, role) => {
+    updateRole = async (roleId, role_name) => {
         try {
             return await Role.update({
-                role_name: role.role_name
+                role_name: role_name
             }, {
                 where: {
                     role_id: roleId

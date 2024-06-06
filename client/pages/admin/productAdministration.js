@@ -92,7 +92,7 @@ const ProductoAdministration = () => {
                         </section>
                         <section className='w-full flex justify-end'>
                             <Select aria-label='selectStatus' content="Filtro" className='w-3/6' placeholder='Filtrado' radius='lg' defaultSelectedKeys={["null"]} onChange={handleStatusChange}>
-                                <SelectItem key="null">Nunguno</SelectItem>
+                                <SelectItem key="null">Ninguno</SelectItem>
                                 <SelectItem key="Enabled">Habilitado</SelectItem>
                                 <SelectItem key="Disabled">Desabilitado</SelectItem>
                             </Select>

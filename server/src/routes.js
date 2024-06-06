@@ -63,12 +63,6 @@ router.use('/api/stripe', require('./api/stripe/routes'));
 router.use('/api/server', require('./api/server/routes'));
 
 /**
- * @route /api/token
- * Rutas para la gestión de tokens. | Routes for token management.
- */
-router.use('/api/token', require('./api/token/routes'));
-
-/**
  * @route /api/orders
  * Rutas para la gestión de pedidos. | Routes for order management.
  */

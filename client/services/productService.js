@@ -2,9 +2,9 @@ import api from './axios';
 import toastr from 'toastr';
 class ProductService {
 
-    async getProductById(id) {
+    async getProductById(id, status = "Enabled") {
         try {
-            const response = await api.get(`/products/${id}`);
+            const response = await api.get(`/products/${id}?status=${status}`);
             if (!response.data) {
                 console.log('Product not found');
             }
@@ -32,9 +32,9 @@ class ProductService {
         }
     }
 
-    async getAllProductsByCategory(id, limit = 30, page = 1) {
+    async getAllProductsByCategory(id, limit = 30, page = 1, status = "Enabled") {
         try {
-            const response = await api.post(`/products/category/${id}?limit=${limit}&page=${page}`);
+            const response = await api.post(`/products/category/${id}?limit=${limit}&page=${page}&status=${status}`);
             return response.data.products;
         } catch (error) {
             throw error;
@@ -140,9 +140,9 @@ class ProductService {
         }
     }
 
-    async getRandomProducts(limit) {
+    async getRandomProducts(limit, status = "Enabled") {
         try {
-            const response = await api.post(`/products/random?limit=${limit}`);
+            const response = await api.post(`/products/random?limit=${limit}&status=${status}`);
             return response.data;
         } catch (error) {
             throw error;
@@ -159,9 +159,9 @@ class ProductService {
         }
     }
 
-    async getAllProductsSearch(query, limit = 10, page = 1) {
+    async getAllProductsSearch(query, limit = 10, page = 1, status = 'Enabled') {
         try {
-            const response = await api.post(`/products/search?page=${page}&limit=${limit}`, {
+            const response = await api.post(`/products/search?page=${page}&limit=${limit}&status=${status}`, {
                 query
             
             });

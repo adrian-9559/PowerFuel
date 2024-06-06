@@ -1,6 +1,5 @@
 import { Card, CardBody, Image, Button, Select, SelectItem, Input } from "@nextui-org/react";
 import { useAppContext } from "@context/AppContext";
-import { motion } from 'framer-motion';
 import { useEffect, useState } from "react";
 import ProductService from '@services/productService';
 import { useCart } from "@hooks/useCart";
@@ -10,35 +9,37 @@ function CartItemPageComponent({ item }) {
   const { cart, setCart } = useAppContext();
   const { changeQuantity } = useCart();
   const [product, setProduct] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     const fetchProducto = async () => {
       try {
-        setIsLoaded(false);
         const productData = await ProductService.getProductById(item.product_id);
         if (productData) {
           setQuantity(item.quantity);
           setProduct(productData);
         }
-        setIsLoaded(true);
-      } catch (error) { 
+      } catch (error) {
         console.error('Error fetching product:', error.message);
-        setIsLoaded(true);
       }
     };
 
     fetchProducto();
   }, [item]);
 
-  const handleQuantityChange = (id, quantity) => {
-    changeQuantity(id, quantity);
-  }
-
   const handleDeleteCartProduct = (id) => {
     setCart(cart.filter(product => product.product_id !== id));
   };
+
+  const handleQuantityChange = (delta) => {
+    const newQuantity = quantity + delta;
+  
+    if (newQuantity >= 1 && newQuantity <= product.stock_quantity) {
+      setQuantity(newQuantity);
+      changeQuantity(item.product_id, newQuantity);
+    }
+  };
+
 
   return (
     product && quantity && (
@@ -83,13 +84,13 @@ function CartItemPageComponent({ item }) {
                   {
                     quantity > 9 ? (
                       <section className='flex gap-2 justify-center items-center'>
-                        <Button isIconOnly onClick={() => handleQuantityChange(product.product_id, quantity - 1)}>
+                        <Button isIconOnly onClick={() => handleQuantityChange(-1)}>
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
                           </svg>
                         </Button>
                         <Input className={`min-w-2 max-w-10 m-0`} value={quantity.toString()} readOnly/>
-                        <Button isIconOnly onClick={() => handleQuantityChange(product.product_id, quantity + 1)}>
+                        <Button isIconOnly onClick={() => handleQuantityChange(1)}>
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                           </svg>
@@ -99,12 +100,16 @@ function CartItemPageComponent({ item }) {
                       <section className='flex gap-2 justify-center items-center mx-6'>
                         <Select
                           className='min-w-24 justify-center items-center w-auto'
-                          onChange={(e) => handleQuantityChange(product.product_id, e.target.value)} 
+                          onChange={(e) => {changeQuantity(product.product_id, parseInt(e.target.value)); }}
                           aria-label="Quantity Select"
                           selectedKeys={quantity.toString()}
                         >
-                          {[...Array(9).keys()].map((i) => <SelectItem key={(i+1).toString()} value={(i+1).toString()} textValue={(i+1).toString()}>{i+1}</SelectItem>)}
-                          <SelectItem key="10" value="10" textValue="10">+10</SelectItem>
+                          {
+                          [...Array(Math.min(product.stock_quantity, 9)).keys()].map((i) => 
+                            <SelectItem key={(i+1).toString()} value={(i+1).toString()} textValue={(i+1).toString()}>{i+1}</SelectItem>
+                          )
+                        }
+                        {product.stock_quantity > 10 && <SelectItem key="10" value="10" textValue="10">+10</SelectItem>}
                         </Select>
                       </section>
                     )

@@ -57,6 +57,10 @@ class model {
      */
     getCategories = async (skip = null, limit = null, categoryId) => {
         try {
+            if (categoryId === null) {
+                return null;
+            }
+            
             const query = {
                 where: categoryId ? {category_id: categoryId} : {},
             };

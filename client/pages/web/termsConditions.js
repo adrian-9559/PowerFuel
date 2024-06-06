@@ -4,26 +4,26 @@ import BrandLogo from '@icons/BrandLogo';
 
 const TermsConditions = () => {
     return (
-        <main className='py-16 px-32 max-w-[1024px]'>
+        <main className='py-8 px-4 md:px-8 lg:px-16 xl:px-32 max-w-full lg:max-w-[1024px] mx-auto'>
             <section className='grid gap-5'>
                 <section>
-                    <h1 className='text-4xl font-bold'>Términos y condiciones de PowerFuel</h1>
+                    <h1 className='text-2xl md:text-3xl lg:text-4xl font-bold'>Términos y condiciones de PowerFuel</h1>
                 </section>
-                <section className='flex flex-row justify-center items-center gap-10'>
+                <section className='flex flex-col lg:flex-row justify-center items-center gap-5 lg:gap-10'>
                     <section>
-                        <p>Bienvenido a PowerFuel, tu fuente confiable de alimentos y suplementos alimenticios diseñados para apoyar un estilo de vida saludable y activo. Nos complace ofrecerte una amplia gama de productos de alta calidad, cuidadosamente seleccionados para satisfacer tus necesidades nutricionales y ayudarte a alcanzar tus objetivos de bienestar. Estos Términos y Condiciones están diseñados para establecer un marco claro y transparente para el uso de nuestro sitio web y la compra de nuestros productos. Al navegar por nuestro sitio web, realizar una compra o interactuar con cualquiera de nuestras funcionalidades, reconoces que has leído, comprendido y aceptado estar sujeto a estos Términos y Condiciones. Este documento no solo cubre tus derechos y responsabilidades como usuario y cliente, sino que también describe nuestras políticas y procedimientos para garantizar una experiencia de compra segura, justa y satisfactoria. Te recomendamos que revises detenidamente cada sección para entender completamente nuestras prácticas y cómo afectan tu relación con PowerFuel. Estamos comprometidos a ofrecerte un servicio excepcional y esperamos que disfrutes de nuestros productos tanto como nosotros disfrutamos ofrecerlos.</p>                
+                        <p>Bienvenido a PowerFuel, tu fuente confiable de alimentos y suplementos alimenticios diseñados para apoyar un estilo de vida saludable y activo. Nos complace ofrecerte una amplia gama de productos de alta calidad, cuidadosamente seleccionados para satisfacer tus necesidades nutricionales y ayudarte a alcanzar tus objetivos de bienestar. Estos Términos y Condiciones están diseñados para establecer un marco claro y transparente para el uso de nuestro sitio web y la compra de nuestros productos. Al navegar por nuestro sitio web, realizar una compra o interactuar con cualquiera de nuestras funcionalidades, reconoces que has leído, comprendido y aceptado estar sujeto a estos Términos y Condiciones. Este documento no solo cubre tus derechos y responsabilidades como usuario y cliente, sino que también describe nuestras políticas y procedimientos para garantizar una experiencia de compra segura, justa y satisfactoria. Te recomendamos que revises detenidamente cada sección para entender completamente nuestras prácticas y cómo afectan tu relación con PowerFuel. Estamos comprometidos a ofrecerte un servicio excepcional y esperamos que disfrutes de nuestros productos tanto como nosotros disfrutamos ofrecerlos.</p>
                     </section>
-                    <section className='w-10/12 h-fit mr-5 flex flex-row justify-center items-center' style={{marginTop: '-2%'}}>
+                    <section className='w-full lg:w-10/12 lg:mr-5 flex justify-center items-center mt-5 lg:mt-0'>
                         <BrandLogo />
                     </section>
                 </section>
             </section>
-            <Accordion selectionMode="multiple" className='px-10 py-5'>
-                <AccordionItem title={<h3 style={{fontSize: '30px', fontWeight: 'bold'}}>1. General</h3>}>
+            <Accordion selectionMode="multiple" className='px-2 md:px-4 lg:px-10 py-5'>
+                <AccordionItem title={<h3 className="text-lg md:text-xl lg:text-2xl font-bold">1. General</h3>}>
                     <section className="grid gap-2 p-2">
                         <Card>
                             <CardHeader>
-                                <h3 className="text-2xl font-bold">1.1 Propiedad del Sitio Web</h3>
+                                <h3 className="text-xl md:text-2xl font-bold">1.1 Propiedad del Sitio Web</h3>
                             </CardHeader>
                             <Divider />
                             <CardBody>
@@ -32,7 +32,7 @@ const TermsConditions = () => {
                         </Card>
                         <Card>
                             <CardHeader>
-                                <h3 className="text-2xl font-bold">1.2 Modificación de Términos</h3>
+                                <h3 className="text-xl md:text-2xl font-bold">1.2 Modificación de Términos</h3>
                             </CardHeader>
                             <Divider />
                             <CardBody>
@@ -41,11 +41,11 @@ const TermsConditions = () => {
                         </Card>
                     </section>
                 </AccordionItem>
-                <AccordionItem title={<h3 style={{fontSize: '30px', fontWeight: 'bold'}}>2. Productos y Servicios</h3>}>
+                <AccordionItem title={<h3 className="text-lg md:text-xl lg:text-2xl font-bold">2. Productos y Servicios</h3>}>
                     <section className="grid gap-2 p-2">
                         <Card>
                             <CardHeader>
-                                <h3 className="text-2xl font-bold">2.1 Descripción de Productos</h3>
+                                <h3 className="text-xl md:text-2xl font-bold">2.1 Descripción de Productos</h3>
                             </CardHeader>
                             <Divider />
                             <CardBody>
@@ -54,7 +54,7 @@ const TermsConditions = () => {
                         </Card>
                         <Card>
                             <CardHeader>
-                                <h3 className="text-2xl font-bold">2.2 Disponibilidad de Productos</h3>
+                                <h3 className="text-xl md:text-2xl font-bold">2.2 Disponibilidad de Productos</h3>
                             </CardHeader>
                             <Divider />
                             <CardBody>
@@ -63,7 +63,7 @@ const TermsConditions = () => {
                         </Card>
                         <Card>
                             <CardHeader>
-                                <h3 className="text-2xl font-bold">2.3 Precios</h3>
+                                <h3 className="text-xl md:text-2xl font-bold">2.3 Precios</h3>
                             </CardHeader>
                             <Divider />
                             <CardBody>
@@ -72,11 +72,11 @@ const TermsConditions = () => {
                         </Card>
                     </section>
                 </AccordionItem>
-                <AccordionItem title={<h3 style={{fontSize: '30px', fontWeight: 'bold'}}>3. Pedidos y Pagos</h3>}>
+                <AccordionItem title={<h3 className="text-lg md:text-xl lg:text-2xl font-bold">3. Pedidos y Pagos</h3>}>
                     <section className="grid gap-2 p-2">
                         <Card>
                             <CardHeader>
-                                <h3 className="text-2xl font-bold">3.1 Aceptación de Pedidos</h3>
+                                <h3 className="text-xl md:text-2xl font-bold">3.1 Aceptación de Pedidos</h3>
                             </CardHeader>
                             <Divider />
                             <CardBody>
@@ -85,7 +85,7 @@ const TermsConditions = () => {
                         </Card>
                         <Card>
                             <CardHeader>
-                                <h3 className="text-2xl font-bold">3.2 Política de Pago</h3>
+                                <h3 className="text-xl md:text-2xl font-bold">3.2 Política de Pago</h3>
                             </CardHeader>
                             <Divider />
                             <CardBody>
@@ -94,7 +94,7 @@ const TermsConditions = () => {
                         </Card>
                         <Card>
                             <CardHeader>
-                                <h3 className="text-2xl font-bold">3.3 Errores en Pedidos</h3>
+                                <h3 className="text-xl md:text-2xl font-bold">3.3 Errores en Pedidos</h3>
                             </CardHeader>
                             <Divider />
                             <CardBody>
@@ -103,11 +103,11 @@ const TermsConditions = () => {
                         </Card>
                     </section>
                 </AccordionItem>
-                <AccordionItem title={<h3 style={{fontSize: '30px', fontWeight: 'bold'}}>4. Envíos y Devoluciones</h3>}>
+                <AccordionItem title={<h3 className="text-lg md:text-xl lg:text-2xl font-bold">4. Envíos y Devoluciones</h3>}>
                     <section className="grid gap-2 p-2">
                         <Card>
                             <CardHeader>
-                                <h3 className="text-2xl font-bold">4.1 Política de Envío</h3>
+                                <h3 className="text-xl md:text-2xl font-bold">4.1 Política de Envío</h3>
                             </CardHeader>
                             <Divider />
                             <CardBody>
@@ -116,7 +116,7 @@ const TermsConditions = () => {
                         </Card>
                         <Card>
                             <CardHeader>
-                                <h3 className="text-2xl font-bold">4.2 Política de Devolución</h3>
+                                <h3 className="text-xl md:text-2xl font-bold">4.2 Política de Devolución</h3>
                             </CardHeader>
                             <Divider />
                             <CardBody>
@@ -125,7 +125,7 @@ const TermsConditions = () => {
                         </Card>
                         <Card>
                             <CardHeader>
-                                <h3 className="text-2xl font-bold">4.3 Reembolsos</h3>
+                                <h3 className="text-xl md:text-2xl font-bold">4.3 Reembolsos</h3>
                             </CardHeader>
                             <Divider />
                             <CardBody>
@@ -134,11 +134,11 @@ const TermsConditions = () => {
                         </Card>
                     </section>
                 </AccordionItem>
-                <AccordionItem title={<h3 style={{fontSize: '30px', fontWeight: 'bold'}}>5. Uso del Sitio Web</h3>}>
+                <AccordionItem title={<h3 className="text-lg md:text-xl lg:text-2xl font-bold">5. Uso del Sitio Web</h3>}>
                     <section className="grid gap-2 p-2">
                         <Card>
                             <CardHeader>
-                                <h3 className="text-2xl font-bold">5.1 Propiedad Intelectual</h3>
+                                <h3 className="text-xl md:text-2xl font-bold">5.1 Propiedad Intelectual</h3>
                             </CardHeader>
                             <Divider />
                             <CardBody>
@@ -147,7 +147,7 @@ const TermsConditions = () => {
                         </Card>
                         <Card>
                             <CardHeader>
-                                <h3 className="text-2xl font-bold">5.2 Uso Permitido</h3>
+                                <h3 className="text-xl md:text-2xl font-bold">5.2 Uso Permitido</h3>
                             </CardHeader>
                             <Divider />
                             <CardBody>
@@ -156,11 +156,11 @@ const TermsConditions = () => {
                         </Card>
                     </section>
                 </AccordionItem>
-                <AccordionItem title={<h3 style={{fontSize: '30px', fontWeight: 'bold'}}>6. Limitación de Responsabilidad</h3>}>
+                <AccordionItem title={<h3 className="text-lg md:text-xl lg:text-2xl font-bold">6. Limitación de Responsabilidad</h3>}>
                     <section className="grid gap-2 p-2">
                         <Card>
                             <CardHeader>
-                                <h3 className="text-2xl font-bold">6.1 Uso del Sitio</h3>
+                                <h3 className="text-xl md:text-2xl font-bold">6.1 Uso del Sitio</h3>
                             </CardHeader>
                             <Divider />
                             <CardBody>
@@ -169,7 +169,7 @@ const TermsConditions = () => {
                         </Card>
                         <Card>
                             <CardHeader>
-                                <h3 className="text-2xl font-bold">6.2 Responsabilidad de Productos</h3>
+                                <h3 className="text-xl md:text-2xl font-bold">6.2 Responsabilidad de Productos</h3>
                             </CardHeader>
                             <Divider />
                             <CardBody>
@@ -178,12 +178,12 @@ const TermsConditions = () => {
                         </Card>
                     </section>
                 </AccordionItem>
-                <AccordionItem title={<h3 style={{fontSize: '30px', fontWeight: 'bold'}}>7. Ley Aplicable</h3>}>
+                <AccordionItem title={<h3 className="text-lg md:text-xl lg:text-2xl font-bold">7. Ley Aplicable</h3>}>
                     <section>
                         <p>Estos Términos y Condiciones se regirán e interpretarán de acuerdo con las leyes de España sin dar efecto a ningún principio de conflictos de ley.</p>
                     </section>
                 </AccordionItem>
-                <AccordionItem title={<h3 style={{fontSize: '30px', fontWeight: 'bold'}}>8. Contacto</h3>}>
+                <AccordionItem title={<h3 className="text-lg md:text-xl lg:text-2xl font-bold">8. Contacto</h3>}>
                     <section>
                         <p>Si tienes alguna pregunta sobre estos Términos y Condiciones, por favor contáctanos a través de contactopowerfuel@gmail.com o +34 602 24 07 48.</p>
                     </section>

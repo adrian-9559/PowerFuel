@@ -1,18 +1,32 @@
-import { Card, CardBody, Button, Chip, Tooltip} from "@nextui-org/react";
-import { useState } from 'react';
-import { useAppContext } from '@context/AppContext';
-import { useRouter } from 'next/router';
+import { Card, CardBody, Button, Chip, Tooltip, } from "@nextui-org/react";
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useCart } from '@hooks/useCart';
 import Link from 'next/link';
 
+
 const ProductCard = ({ product }) => {
-    const { cart, setCart } = useAppContext();
+    const [isMobile, setIsMobile] = useState(false);
     const [isAdded, setIsAdded] = useState(false);
-    const [isHovered, setIsHovered] = useState(false);
+    const [isHovered, setIsHovered] = useState(isMobile);
     const [isLoading, setIsLoading] = useState(false);
     const { addToCart } = useCart();
-    const router = useRouter();
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth <= 640);
+    
+        // Check mobile on mount
+        checkMobile();
+    
+        // Add resize event listener
+        window.addEventListener('resize', checkMobile);
+    
+        // Cleanup function
+        return () => {
+            // Remove resize event listener
+            window.removeEventListener('resize', checkMobile);
+        };
+    }, []);
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
@@ -40,8 +54,8 @@ const ProductCard = ({ product }) => {
             <Card 
                 tabIndex="10" 
                 onKeyDown={handleKeyDown} 
-                onMouseEnter={() => setIsHovered(true)} 
-                onMouseLeave={() => !isLoading && setIsHovered(false)} 
+                onMouseEnter={() => !isMobile && setIsHovered(true)} 
+                onMouseLeave={() => !isMobile && !isLoading && setIsHovered(false)} 
                 className={`w-64 h-80 shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 }`}
             >
                 <CardBody className="overflow-visible p-0 relative h-full">
@@ -49,7 +63,7 @@ const ProductCard = ({ product }) => {
                         <motion.section 
                             className="absolute bottom-2 left-2"
                             initial={{ y: 20, opacity: 0 }}
-                            animate={{ y: isHovered ? 0 : 20, opacity: 1 }}
+                            animate={{ y: isHovered ? 0 : 27, opacity: 1 }}
                             transition={{ duration: 0.2 }}
                         >
                             <Chip 

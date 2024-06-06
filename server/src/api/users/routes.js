@@ -126,12 +126,11 @@ router.route('/login')
      */
     .post(async (req, res) => {
         try {
-            const tokens = await loginUser(req.body.email, req.body.password);
-            if (!tokens) {
+            const token = await loginUser(req.body.email, req.body.password);
+            if (!token) {
                 return res.status(401).json({ message: 'Inicio de sesión fallido' });
             }
-            const { authToken, refreshToken } = tokens;
-            res.status(200).json({ message: 'Inicio de sesión correcto', auth_token: authToken, refresh_token: refreshToken});
+            res.status(200).json({ message: 'Inicio de sesión correcto', auth_token: token});
         } catch (error) {
             console.error(error);
             res.status(500).json({ message: 'Error al iniciar sesión' });

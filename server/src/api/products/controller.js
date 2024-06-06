@@ -91,9 +91,9 @@ const updateProductById = async (productId, productData) => {
  * @returns {Object} - El producto obtenido. | The obtained product.
  * @throws {Error} - Error al intentar obtener el producto. | Error when trying to get the product.
  */
-const getProductById = async (productId) => {
+const getProductById = async (productId, status) => {
     try {
-        const product = await model.getProducts(0, 1, productId);
+        const product = await model.getProducts(0, 1, productId, status);
         return product[0];
     } catch (error) {
         console.log(`Error al intentar obtener el producto ${errorDisplay}`, error);
@@ -152,9 +152,9 @@ const getProducts = async (page, limit, status) => {
  * @returns {Array} - Los productos obtenidos. | The obtained products.
  * @throws {Error} - Error al intentar obtener los productos. | Error when trying to get the products.
  */
-const getProductsSearch = async (query, limit, page) => {
+const getProductsSearch = async (query, limit, page, status) => {
     try {
-        return await model.getProductsSearch(query, limit, page);
+        return await model.getProductsSearch(query, limit, page, status);
     } catch (error) {
         console.log(`Error al intentar obtener los productos ${errorDisplay}`, error);
     }
@@ -171,12 +171,12 @@ const getProductsSearch = async (query, limit, page) => {
  * @returns {Array} - Los productos de la categoría obtenidos. | The obtained products of the category.
  * @throws {Error} - Error al intentar obtener los productos por categoría. | Error when trying to get the products by category.
  */
-const getProductsByCategory = async (page, limit, id) => {
+const getProductsByCategory = async (page, limit, id, status) => {
     try {
         page = parseInt(page) || 1;
         limit = parseInt(limit) || 10;
         const skip = (page - 1) * limit;
-        return await model.getProductsByCategory(skip, limit, id);
+        return await model.getProductsByCategory(skip, limit, id, status);
     } catch (error) {
         console.log(`Error al intentar obtener los productos por categoría ${errorDisplay}`, error);
     }
@@ -218,13 +218,26 @@ const getProductsByDate = async (page, limit, startDate, endDate, order, status)
  * @returns {Array} - Los productos aleatorios obtenidos. | The obtained random products.
  * @throws {Error} - Error al intentar obtener los productos aleatorios. | Error when trying to get the random products.
  */
-const getRandomProducts = async (limit) => {
+const getRandomProducts = async (limit, status) => {
     try {
-        return await model.getRandomProducts(limit);
+        return await model.getRandomProducts(limit, status);
     } catch (error) {
         console.log(`Error al intentar obtener los productos aleatorios ${errorDisplay}`, error);
     }
 }
+
+/**
+ * Función para obtener la información general del panel.
+ * Function to get the general panel information.
+ * 
+ * @returns {Object} - La información general del panel. | The general panel information.
+ * @property {number} totalProducts - El total de productos. | The total of products.
+ * @property {number} productDisabled - El total de productos deshabilitados. | The total of disabled products.
+ * @property {number} productEnabled - El total de productos habilitados. | The total of enabled products.
+ * @property {number} productOutStock - El total de productos sin stock. | The total of products out of stock.
+ * 
+ * @throws {Error} - Error al intentar obtener la información general del panel. | Error when trying to get the general panel information.
+ */
 
 const getGeneralPanelInfo = async () => {
     try {
@@ -244,6 +257,14 @@ const getGeneralPanelInfo = async () => {
     }
 }
 
+const updateProductStock = async (productId, quantity) => {
+    try {
+        return await model.updateProductStock(productId, quantity);
+    } catch (error) {
+        console.log(`Error al intentar modificar el stock del producto ${errorDisplay}`, error);
+    }
+};
+
 module.exports = {
     addProduct,
     getProducts,
@@ -255,5 +276,6 @@ module.exports = {
     getProductsSearch,
     getProductsByDate,
     getRandomProducts,
-    getGeneralPanelInfo
+    getGeneralPanelInfo,
+    updateProductStock
 };

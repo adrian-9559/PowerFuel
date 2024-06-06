@@ -35,7 +35,7 @@ const Product = () => {
 
     return (
         <main className='flex flex-col items-center justify-center p-6'>
-            <section className='w-full max-w-4xl p-8 flex flex-col lg:flex-row justify-center bg-gray-500 bg-opacity-25 rounded-lg'>
+            <section className='w-full max-w-4xl p-8 flex flex-col sm:flex-row justify-center bg-gray-500 bg-opacity-25 rounded-lg'>
                 <section className="sm:w-96 sm:h-auto">
                     <ProductCarousel
                         id={id}

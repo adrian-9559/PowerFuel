@@ -68,7 +68,7 @@ router.route('/:productId')
      */
     .get(async (req, res) => {
         try {
-            const product = await getProductById(req.params.productId);
+            const product = await getProductById(req.params.productId, req.query.status);
             if (!product) {
                 return res.status(404).json({ message: 'Producto no encontrado' });
             }
@@ -145,7 +145,7 @@ router.route('/search')
 
             console.log(query, limit, page);
              
-            const products = await getProductsSearch(query, limit, page);
+            const products = await getProductsSearch(query, limit, page, req.query.status);
             if (!products) {
                 return res.status(404).json({ message: 'Productos no encontrados' });
             }
@@ -171,7 +171,7 @@ router.route('/category/:id')
      */
     .post(async (req, res) => {
         try {
-            const products = await getProductsByCategory(req.query.page, req.query.limit, req.param.id);
+            const products = await getProductsByCategory(req.query.page, req.query.limit, req.params.id, req.query.status);
             if (!products) {
                 return res.status(404).json({ message: 'Productos no encontrados' });
             }
@@ -241,7 +241,7 @@ router.route('/random')
      */
     .post(async (req, res) => {
         try {
-            const products = await getRandomProducts(parseInt(req.query.limit));
+            const products = await getRandomProducts(parseInt(req.query.limit), req.query.status);
             if (!products) {
                 return res.status(404).json({ message: 'Productos no encontrados' });
             }

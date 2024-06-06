@@ -38,12 +38,15 @@ const getCategories = async (page, limit) => {
         const categoriesWithParentNames = await Promise.all(
             categories.map(async category => {
                 const parentCategory = await getCategoryById(category.parent_category_id);
-                return {
+                const categoryWithParentName = {
                     "category_id": category.category_id,
                     "category_name": category.category_name,
                     "parent_category_id": category.parent_category_id ?? null,
-                    "parent_category_name": parentCategory ? parentCategory.category_name : null
+                    "parent_category_name": parentCategory.category_name ?? null
                 };
+
+                console.log(categoryWithParentName);
+                return categoryWithParentName;
             })
         );
 

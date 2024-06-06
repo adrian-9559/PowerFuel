@@ -15,13 +15,13 @@ const SearchComponent = () => {
 
     useEffect(() => {
         const searchNovedades = async () => {
-            const data = await ProductService.getProductsNovedades(20, page);
+            const data = await ProductService.getProductsNovedades(20, page, 'DESC');
             setProductos(data);
             setLoading(false);
         }
 
         const searchAntiguos = async () => {
-            const data = await ProductService.getProductsNovedades(20, page, 'DESC');
+            const data = await ProductService.getProductsNovedades(20, page, 'ASC');
             setProductos(data);
             setLoading(false);
         }

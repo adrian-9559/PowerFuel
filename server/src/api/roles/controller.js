@@ -17,6 +17,10 @@ const getRoleById = async (roleId) => {
             "role_name": role.role_name ,
         }));
 
+        if (role.length === 0) {
+            return null;
+        }
+
         return role[0];
     } catch (error) {
         console.log(`Error al intentar obtener el rol por ID ${errorDisplay}`, error);
@@ -77,9 +81,9 @@ const addRole = async (role) => {
  * @returns {Promise} - Promesa que resuelve al actualizar el rol. | Promise that resolves when updating the role.
  * @throws {Error} - Error al intentar actualizar el rol. | Error when trying to update the role.
  */
-const updateRoleById = async (roleId, role) => {
+const updateRoleById = async (roleId, role_name) => {
     try {
-        return await model.updateRole(roleId, role);
+        return await model.updateRole(roleId, role_name);
     } catch (error) {
         console.log(`Error al intentar actualizar el rol ${errorDisplay}`, error);
     }

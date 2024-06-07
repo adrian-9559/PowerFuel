@@ -179,11 +179,11 @@ const GeneralAdministration = () => {
                                 <h4 className="font-medium text-large">Listado</h4>
                             </CardHeader>
                             <CardBody>
-                                <ScrollShadow aria-label='Brands' className='max-h-[240px] w-full rounded-lg bg-default-100 p-1'>
+                                <ScrollShadow aria-label='Brands' className='max-h-[240px] w-full rounded-lg p-1'>
                                     <ul className="gap-2 flex flex-col divide-y divide-divider">
                                         {
                                             brands?.map((brand) => (
-                                                <li className="w-full rounded-lg px-3 py-2 text-small hover:bg-default-200" key={brand.id_brand}>
+                                                <li className="w-full rounded-lg px-3 py-2 text-small  bg-default-100 hover:bg-default-200" key={brand.id_brand}>
                                                     <p className="font-bold">{brand.brand_name}</p>
                                                 </li>
                                             ))
@@ -201,11 +201,11 @@ const GeneralAdministration = () => {
                                 <h4 className="font-medium text-large">Listado</h4>
                             </CardHeader>
                             <CardBody>
-                                <ScrollShadow aria-label='Roles' className='max-h-[240px] w-full rounded-lg bg-default-100 p-1'>
+                                <ScrollShadow aria-label='Roles' className='max-h-[240px] w-full rounded-lg p-1'>
                                     <ul className="gap-2 flex flex-col divide-y divide-divider">
                                         {
                                             roles?.map((rol) => (
-                                                <li className="w-full rounded-lg px-3 py-2 text-small hover:bg-default-200" key={rol.role_id}>
+                                                <li className="w-full rounded-lg px-3 py-2 text-small bg-default-100 hover:bg-default-200" key={rol.role_id}>
                                                     <p className="font-bold">{rol.role_name}</p>
                                                 </li>
                                             ))
@@ -309,22 +309,55 @@ const GeneralAdministration = () => {
                                 <h4 className="font-medium text-large">Estado</h4>
                             </CardHeader>
                             <CardBody className="justify-center h-auto w-full grid grid-cols-2 grid-row-2 gap-2">
-                                <CircularProgress value={usoCPUPorcentaje} color={colorCPU} className="w-36 h-36">
-                                    <span className="text-2xl">{`${usoCPUPorcentaje}%`}</span>
-                                    <span className="text-tiny text-default-500">Uso CPU</span>
-                                </CircularProgress>
-                                <CircularProgress value={usoRAMPorcentaje} color={colorRAM} className="w-36 h-36">
-                                    <span className="text-2xl">{`${usoRAMPorcentaje}%`}</span>
-                                    <span className="text-tiny text-default-500">Uso RAM</span>
-                                </CircularProgress>
-                                <CircularProgress value={usoDiskPorcentaje} color={colorDisk} className="w-36 h-36">
-                                    <span className="text-2xl">{`${usoDiskPorcentaje}%`}</span>
-                                    <span className="text-tiny text-default-500">Uso Disco</span>
-                                </CircularProgress>
-                                <CircularProgress value={temperatureCPU} color={colorTemperature} className="w-36 h-36">
-                                    <span className="text-2xl">{`${temperatureCPU}°`}</span>
-                                    <span className="text-tiny text-default-500">Temperatura CPU</span>
-                                </CircularProgress>
+                                <section className='w-full h-full flex flex-col justify-center items-center'>
+                                    <h3 className='text-center text-xl font-bold'>Uso de Procesador</h3>
+                                    <CircularProgress 
+                                        value={usoCPUPorcentaje} 
+                                        color={colorCPU}
+                                        classNames={{
+                                            svg: "w-36 h-36 drop-shadow-md",
+                                            track: "stroke-white/10",
+                                            value: "text-3xl font-semibold text-white",
+                                        }}
+                                        showValueLabel={true}
+                                    >
+                                    </CircularProgress>
+                                </section>
+                                <section className='w-full h-full flex flex-col justify-center items-center'>
+                                    <h3 className='text-center text-xl font-bold'>Uso de RAM</h3>
+                                    <CircularProgress value={usoRAMPorcentaje} color={colorRAM} classNames={{
+                                            svg: "w-36 h-36 drop-shadow-md",
+                                            track: "stroke-white/10",
+                                            value: "text-3xl font-semibold text-white",
+                                        }}
+                                        showValueLabel={true}
+                                    />
+                                </section>
+                                <section className='w-full h-full flex flex-col justify-center items-center'>
+                                    <h3 className='text-center text-xl font-bold'>Uso de Disco</h3>
+                                    <CircularProgress 
+                                        value={usoDiskPorcentaje}
+                                        color={colorDisk}
+                                        classNames={{
+                                            svg: "w-36 h-36 drop-shadow-md",
+                                            track: "stroke-white/10",
+                                            value: "text-3xl font-semibold text-white",
+                                        }}
+                                        showValueLabel={true}
+                                    />
+                                </section>
+                                {/* <section className='w-full h-full flex flex-col justify-center items-center'>
+                                    <CircularProgress 
+                                        value={temperatureCPU}
+                                        color={colorTemperature}
+                                        classNames={{
+                                            svg: "w-36 h-36 drop-shadow-md",
+                                            track: "stroke-white/10",
+                                            value: "text-3xl font-semibold text-white",
+                                        }}
+                                        showValueLabel={true}
+                                    />
+                                </section> */}
                             </CardBody>
                         </Card>
                         <Card className="col-span-12 sm:col-span-6 h-auto w-full">
@@ -333,11 +366,11 @@ const GeneralAdministration = () => {
                                 <h4 className="font-medium text-large">Listado</h4>
                             </CardHeader>
                             <CardBody>
-                                <ScrollShadow aria-label='Categorías' className='max-h-[240px] w-full rounded-lg bg-default-100 p-1'>
+                                <ScrollShadow aria-label='Roles' className='max-h-[20rem] w-full rounded-lg p-1'>
                                     <ul className="gap-2 flex flex-col divide-y divide-divider">
                                         {
                                             categories?.map((category) => (
-                                                <li className="w-full rounded-lg px-3 py-2 text-small hover:bg-default-200" key={category.category_id}>
+                                                <li className="w-full rounded-lg px-3 py-2 text-small  bg-default-100 hover:bg-default-200" key={category.category_id}>
                                                     <p className="font-bold">{category.category_name}</p>
                                                     <p className="text-2xs text-default-600">{category.parent_category_id ? `Categoria padre: ${category.parent_category_id}` : null}</p>
                                                 </li>

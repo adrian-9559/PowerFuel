@@ -17,6 +17,7 @@ const HomeComponent = () => {
     const [loading, setLoading] = useState(true);
     const [cargando, setCargando] = useState(true);
     const [itemsCount, setItemsCount] = useState(4);
+    const [isLoading, setIsLoading] = useState(true);
     useTitle('Inicio');
 
     const responsive = {
@@ -95,6 +96,7 @@ const HomeComponent = () => {
         window.addEventListener('resize', handleResize);
         handleResize();
 
+        setIsLoading(false);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
@@ -119,7 +121,7 @@ const HomeComponent = () => {
 
             return (
                 categoria && (
-                    <Card key={categoria.category_id} className="hover:scale-105 col-span-12 sm:col-span-4 h-40" isPressable onPress={() => router.push(`/category/${categoria.category_id}`)} style={{backgroundColor: colores.colorFondo, color: colores.colorTexto}}>
+                   <Card key={categoria.category_id} className="hover:scale-10 col-span-12 sm:col-span-4 h-40" isPressable onPress={() => router.push(`/category/${categoria.category_id}`)} style={{backgroundColor: colores.colorFondo, color: colores.colorTexto}}>
                         <CardHeader className="absolute z-10 top-1 flex-col !items-start">
                             <p className="text-tiny uppercase font-bold">Categoria</p>
                             <h4 className="font-medium text-large">{categoria.category_name}</h4>
@@ -152,25 +154,37 @@ const HomeComponent = () => {
         return categoriasSeleccionadas.map((categoria, index) => generarCard(categoria));
     }
 
-    const CategoryGroup = () => {
+        const CategoryGroup = () => {
+            const [isLoading, setIsLoading] = useState(true);
+            const rand1 = Math.floor(Math.random() * 3 + 2);
+            let rand2;
+            do {
+                rand2 = Math.floor(Math.random() * 3 + 2);
+            } while(rand1 === rand2);
 
-        const rand = Math.floor(Math.random() * 3 + 2);
-        let rand2 = Math.floor(Math.random() * 3 + 2);
+            useEffect(() => {
+                const timer = setTimeout(() => {
+                    setIsLoading(false);
+                }, 500);
 
-        while (rand === rand2) {
-            rand2 = Math.floor(Math.random() * 3 + 2);
+                return () => clearTimeout(timer);
+            }, []);
+
+            return (
+                !isLoading ? (
+                    <section className='flex flex-col gap-3'>
+                        <section className="grid grid-flow-row sm:grid-flow-col gap-3">
+                            {seleccionarCategoriasYGenerarCards(rand1)}
+                        </section>
+                        <section className="grid grid-flow-row sm:grid-flow-col gap-3">
+                            {seleccionarCategoriasYGenerarCards(rand2)}
+                        </section>
+                    </section>
+                ) : (
+                    <Spinner />
+                )
+            );
         }
-        return (
-            <section className='flex flex-col gap-3'>
-    <section className="grid grid-flow-row sm:grid-flow-col gap-3">
-        {seleccionarCategoriasYGenerarCards(rand)}
-    </section>
-    <section className="grid grid-flow-row sm:grid-flow-col gap-3">
-        {seleccionarCategoriasYGenerarCards(rand2)}
-    </section>
-</section>
-        );
-    }
 
     return (
         loading ? (

@@ -39,17 +39,15 @@ const DataUser = () => {
     }, [user]);
 
     return (
-        <main className='grid pt-6 pb-20 w-full lg:w-3/4 gap-6'>
-            <section className='flex flex-col sm:flex-row items-center gap-3 pb-5'>
-                <section className="w-24 h-24 sm:w-1/12 sm:h-1/12">
-                    <Skeleton isLoaded={!isLoading} className="rounded-lg h-full w-full">
-                        {user && 
-                            <EditUserImage>
-                                <UserImage user={user}/>
-                            </EditUserImage>
-                        }
-                    </Skeleton>
-                </section>
+        <main className='grid pt-6 pb-20 w-64 sm:w-1/3 gap-6 mx-auto'>
+            <section className='flex flex-raw pb-5 lg:gap-5 items-center'>
+                <Skeleton isLoaded={!isLoading} className="rounded-lg">
+                    {user &&
+                        <EditUserImage>
+                            <UserImage user={user} />
+                        </EditUserImage>
+                    }
+                </Skeleton>
                 <Skeleton isLoaded={!isLoading} className="rounded-lg h-auto py-2 w-full sm:w-auto">
                     <p className="font-bold text-center sm:text-left">{user ? user.email : ''}</p>
                 </Skeleton>

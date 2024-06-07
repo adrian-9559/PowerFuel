@@ -22,20 +22,22 @@ const SideMenu = ({ setSelectedOption }) => {
     }, []);
 
     return (
-        <nav className='py-4 sm:w-64 h-full border-r flex flex-col items-center lg:items-start ml-5 mr-5'>
-            <div className="w-full px-4">
+        <nav className='py-4 w-full sm:max-w-64 h-full flex flex-col items-center lg:items-start'>
+            <div className="w-full ">
                 <h1 className="font-bold text-xl text-center py-4 border-b border-gray-300">Mi cuenta</h1>
                 {isMobile ? (
-                    <Select
-                        className="w-full mt-4"
-                        placeholder="Selecciona una opción"
-                        value="DataUser"
-                    >
-                        <SelectItem value="DataUser" onClick={() => setSelectedOption('DataUser')} startContent={<UserIcon3/>}>Mis datos</SelectItem>
-                        <SelectItem value="AddressList" onClick={() => setSelectedOption('AddressList')} startContent={<IdentifyTargetIcon/>}>Mis direcciones</SelectItem>
-                        <SelectItem value="NotificationList" onClick={() => setSelectedOption('NotificationList')} startContent={<NotificationIcon/>}>Mis notificaciones</SelectItem>
-                        <SelectItem value="OrderList" onClick={() => setSelectedOption('OrderList')} startContent={<OrderIcon/>}>Mis pedidos</SelectItem>
-                    </Select>
+                    <section className='w-64 flex justify-center mx-auto'>
+                        <Select
+                            className="w-full mt-4"
+                            placeholder="Selecciona una opción"
+                            value="DataUser"
+                        >
+                            <SelectItem value="DataUser" onClick={() => setSelectedOption('DataUser')} startContent={<UserIcon3/>}>Mis datos</SelectItem>
+                            <SelectItem value="AddressList" onClick={() => setSelectedOption('AddressList')} startContent={<IdentifyTargetIcon/>}>Mis direcciones</SelectItem>
+                            <SelectItem value="NotificationList" onClick={() => setSelectedOption('NotificationList')} startContent={<NotificationIcon/>}>Mis notificaciones</SelectItem>
+                            <SelectItem value="OrderList" onClick={() => setSelectedOption('OrderList')} startContent={<OrderIcon/>}>Mis pedidos</SelectItem>
+                        </Select>
+                    </section>
                 ) : (
                     <ul className="flex flex-col items-center gap-2 w-full mt-4 h-full">
                         <li className="w-full">

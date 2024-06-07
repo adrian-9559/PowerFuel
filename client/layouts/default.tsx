@@ -23,7 +23,7 @@ export default function DefaultLayout({
       <div className={`${isFullScreen ? '': 'flex justify-center'}`}>
         <motion.main
           key={router.route} 
-          className={`${isFullScreen?' md:px-4 lg:px-8':'max-w-[1000px] overflow-x-auto'}`}
+          className={`${isFullScreen?'':'max-w-[1000px] overflow-x-auto'}`}
         >
           {children}
         </motion.main>

@@ -53,7 +53,7 @@ const Config = () => {
     }
 
     return (
-        <section className='flex flex-col lg:flex-row h-full items-stretch w-full'>
+        <section className='flex flex-col sm:flex-row h-full items-stretch w-full'>
             <SideMenu setSelectedOption={setSelectedOption} />
             <section className="w-full p-4 lg:p-8 flex-1">
                 <AnimatePresence mode="wait">

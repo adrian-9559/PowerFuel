@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Tooltip, Button, Pagination} from "@nextui-org/react";
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Tooltip, Button, Pagination, Spinner} from "@nextui-org/react";
 import { useRouter } from 'next/router';
 import CategoryService from '@services/categoryService';
 import EditIcon from '@icons/EditIcon';
@@ -25,6 +25,7 @@ const CategoryAdministration = () => {
     }
 
     useEffect(() => {
+        setIsLoading(true);
         fetchCategoryData();
     }, [page]);
 
@@ -67,89 +68,95 @@ const CategoryAdministration = () => {
     };
 
     return (
-        <section className='h-full w-full'>
-            <Table aria-label='Tabla de categorias'
-                selectionMode="multiple"
-                selectedKeys={selectedKeys}
-                onSelectionChange={setSelectedKeys}
-                className="w-full h-full"
-                topContent={
-                    <section className='flex flex-row w-full h-full'>
-                        <section className="absolute flex justify-left gap-2">
-                            <Tooltip color="danger" content="Eliminar Categoría/s">
-                                <Button isIconOnly color="danger" className="text-lg cursor-pointer active:opacity-50" onClick={deleteSelectedCategories}>
-                                    <DeleteIcon color="white" />
-                                </Button>
-                            </Tooltip>
-                            <Tooltip color="success" content="Añadir Categoría" className='text-white'>
-                                <Button isIconOnly color="success" className="text-lg  cursor-pointer active:opacity-50" onClick={() => router.push('/admin/create/createCategory')}>
-                                    <PlusIcon color="white" />
-                                </Button>
-                            </Tooltip>
+        isLoading ? (
+            <div className='w-[20rem] h-[20rem] flex justify-center items-center'>
+                <Spinner />
+            </div>
+        ) : (
+            <section className='h-full w-full'>
+                <Table aria-label='Tabla de categorias'
+                    selectionMode="multiple"
+                    selectedKeys={selectedKeys}
+                    onSelectionChange={setSelectedKeys}
+                    className="w-full h-full"
+                    topContent={
+                        <section className='grid flex-row w-full h-full lg:flex gap-2'>
+                            <section className="relative lg:absolute flex justify-left gap-2">
+                                <Tooltip color="danger" content="Eliminar Categoría/s">
+                                    <Button isIconOnly color="danger" className="text-lg cursor-pointer active:opacity-50" onClick={deleteSelectedCategories}>
+                                        <DeleteIcon color="white" />
+                                    </Button>
+                                </Tooltip>
+                                <Tooltip color="success" content="Añadir Categoría" className='text-white'>
+                                    <Button isIconOnly color="success" className="text-lg  cursor-pointer active:opacity-50" onClick={() => router.push('/admin/create/createCategory')}>
+                                        <PlusIcon color="white" />
+                                    </Button>
+                                </Tooltip>
+                            </section>
+                            <section className='flex justify-center items-center h-auto w-full'>
+                                <h1 className="text-center text-2xl font-bold">Listado de Categorias</h1>
+                            </section>
                         </section>
-                        <section className='flex justify-center items-center h-auto w-full'>
-                            <h1 className="text-center text-2xl font-bold">Listado de Categorias</h1>
-                        </section>
-                    </section>
-                }
-                bottomContent={
-                    totalPages > 0 ? (
-                        <section className="flex w-full justify-center">
-                            <Pagination
-                                isCompact
-                                showControls
-                                showShadow
-                                color="primary"
-                                page={page}
-                                total={totalPages}
-                                onChange={(page) => setPage(page)}
-                            />
-                        </section>
-                    ) : null
-                }>
-                <TableHeader>
-                    <TableColumn>
-                        <p>Categoría</p>
-                    </TableColumn>
-                    <TableColumn>
-                        <p>Categoria Padre</p>
-                    </TableColumn>
-                    <TableColumn className='flex justify-center items-center'>
-                        <p>Acciones</p>
-                    </TableColumn>
-                </TableHeader>
-                <TableBody
-                    emptyContent="No hay categorías disponibles"
-                >
-                    {Categories.map((category) => (
-                        <TableRow key={category.category_id}>
-                            <TableCell>
-                                <p className="text-bold text-sm capitalize">{category.category_name}</p>
-                                <p className="text-bold text-sm capitalize text-default-400"> Id de la categoría: {category.category_id}</p>
-                            </TableCell>
-                            <TableCell>
-                                <p className="text-bold text-sm capitalize">{category.parent_category_name||"Ninguna"}</p>
-                                <p className="text-bold text-sm capitalize text-default-400"> {category.parent_category_id?`Id de la categoría: ${category.parent_category_id}`:''}</p>
-                            </TableCell>
-                            <TableCell>
-                                <section className="relative flex justify-center items-center gap-2">
-                                    <Tooltip color="success" content="Editar Categoría" className="text-white">
-                                        <Button isIconOnly color="success" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => router.push(`/admin/create/createCategory?id=${category.category_id}`)}>
-                                            <EditIcon color="green"/>
-                                        </Button>
-                                    </Tooltip>
-                                    <Tooltip color="danger" content="Eliminar Categoría">
-                                        <Button isIconOnly color="danger" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => deleteCategory(category.category_id)}>
-                                            <DeleteIcon color="red" />
-                                        </Button>
-                                    </Tooltip>
-                                </section>
-                            </TableCell>
-                        </TableRow>   
-                    ), )}
-                </TableBody>
-            </Table>
-        </section>
+                    }
+                    bottomContent={
+                        totalPages > 0 ? (
+                            <section className="flex w-full justify-center">
+                                <Pagination
+                                    isCompact
+                                    showControls
+                                    showShadow
+                                    color="primary"
+                                    page={page}
+                                    total={totalPages}
+                                    onChange={(page) => setPage(page)}
+                                />
+                            </section>
+                        ) : null
+                    }>
+                    <TableHeader>
+                        <TableColumn>
+                            <p>Categoría</p>
+                        </TableColumn>
+                        <TableColumn>
+                            <p>Categoria Padre</p>
+                        </TableColumn>
+                        <TableColumn className='flex justify-center items-center'>
+                            <p>Acciones</p>
+                        </TableColumn>
+                    </TableHeader>
+                    <TableBody
+                        emptyContent="No hay categorías disponibles"
+                    >
+                        {Categories.map((category) => (
+                            <TableRow key={category.category_id}>
+                                <TableCell>
+                                    <p className="text-bold text-sm capitalize">{category.category_name}</p>
+                                    <p className="text-bold text-sm capitalize text-default-400"> Id de la categoría: {category.category_id}</p>
+                                </TableCell>
+                                <TableCell>
+                                    <p className="text-bold text-sm capitalize">{category.parent_category_name||"Ninguna"}</p>
+                                    <p className="text-bold text-sm capitalize text-default-400"> {category.parent_category_id?`Id de la categoría: ${category.parent_category_id}`:''}</p>
+                                </TableCell>
+                                <TableCell>
+                                    <section className="relative flex justify-center items-center gap-2">
+                                        <Tooltip color="success" content="Editar Categoría" className="text-white">
+                                            <Button isIconOnly color="success" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => router.push(`/admin/create/createCategory?id=${category.category_id}`)}>
+                                                <EditIcon color="green"/>
+                                            </Button>
+                                        </Tooltip>
+                                        <Tooltip color="danger" content="Eliminar Categoría">
+                                            <Button isIconOnly color="danger" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => deleteCategory(category.category_id)}>
+                                                <DeleteIcon color="red" />
+                                            </Button>
+                                        </Tooltip>
+                                    </section>
+                                </TableCell>
+                            </TableRow>   
+                        ), )}
+                    </TableBody>
+                </Table>
+            </section>
+        )
     );
 };
 

@@ -123,9 +123,9 @@ router.route('/default/:addressId')
             const addressId = req.params.addressId;
             const userId = req.user.userId;
             await setDefaultAddress(userId, addressId);
-            res.status(200).json({ message: 'Default address updated successfully' });
+            res.status(200).json({ message: 'Dirección predeterminada establecida correctamente' });
         } catch (error) {
-            res.status(500).json({ message: 'Error updating default address' });
+            res.status(500).json({ message: 'Error al establecer la dirección por defecto' });
         }
     });
 
@@ -145,7 +145,7 @@ router.route('/user/:userId')
             const addresses = await getAddressesByUserId(userId);
             res.status(200).json({addresses});
         } catch (error) {
-            res.status(500).json({ message: 'Error getting addresses by user ID' });
+            res.status(500).json({ message: 'Error al obtener las direcciones del usuario' });
         }
     });
 

@@ -1,4 +1,4 @@
-const { Brand, Category, Product } = require('../../model');
+const { Brand, Category, Product, Order} = require('../../model');
 const sequelize = require('../../model/database');
 const { Op } = require('sequelize');
 const errorDisplay = "(Error en el modelo de Product)";
@@ -80,7 +80,7 @@ class model {
             if (productId) {
                 where.product_id = productId;
             }
-            if (status && status != 'null' && status != null) {
+            if (status && status != 'null' && status != null && status != 'undefined') {
                 where.status = status;
             }
 
@@ -268,6 +268,7 @@ class model {
                     stock_quantity: productData.stock_quantity,
                     id_brand: productData.id_brand,
                     category_id: productData.category_id,
+                    stripe_product_id: productData.stripe_product_id,
                 }, {
                     where: {
                         product_id: parseInt(productId)
@@ -292,19 +293,29 @@ class model {
      * @throws {Error} - Error al intentar eliminar el producto. | Error when trying to delete the product.
      */
     deleteProduct = async (productId) => {
-        try {
-            if (!productId) {
-                return false;
-            }
-            const result = await Product.destroy({
-                where: {
-                    product_id: productId
+        // Verifica si el producto está en algún pedido
+        const orderExists = await Order.findOne({
+            where: {
+                details: {
+                    [Op.like]: `%\"product_id\":${productId}%`
                 }
-            });
-            return result;
-        } catch (error) {
-            console.log(`Error al eliminar el producto ${errorDisplay}`, error);
+            }
+        });
+    
+        // Si el producto está en algún pedido, no permitas la eliminación
+        if (orderExists) {
+            return 3;
         }
+    
+        // Si el producto no está en ningún pedido, procede a eliminarlo
+        const deletedProduct = await Product.destroy({
+            where: {
+                product_id: productId
+            }
+        });
+
+        return deletedProduct;
+
     };
     
     /**

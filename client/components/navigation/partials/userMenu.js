@@ -31,8 +31,8 @@ const UserMenu = () => {
     return (
         isLoading ? <Spinner size="large" /> :
             <Dropdown>
-                <DropdownTrigger>
-                    <Button radius="full" size="lg" className='flex justify-center items-center pt-0' isIconOnly aria-label="User Menu">
+                <DropdownTrigger style={{ zIndex: 1 }}>
+                    <Button radius="full" size="lg" className='flex justify-center items-center pt-0 ' isIconOnly aria-label="User Menu">
                         <UserImage user={user}/>
                     </Button>
                 </DropdownTrigger>
@@ -47,13 +47,14 @@ const UserMenu = () => {
                     <DropdownItem key="settings" textValue="Settings" onClick={() => router.push('/users/config/DataUser')}>
                         Configuración
                     </DropdownItem>
-                    <DropdownItem key="team_settings" textValue="Delivered" showDivider onClick={() => router.push('/users/config/OrderList')}>Pedidos</DropdownItem>
-                    
                     {isAdmin && isAdmin === true ? (
                             <DropdownItem key="panel" textValue="panel" onClick={() => router.push('/admin/General')}>
                                 <p>Panel de Administración </p>
                             </DropdownItem>
                     ) : null}
+                    <DropdownItem key="team_settings" showDivider textValue="Delivered" onClick={() => router.push('/users/config/OrderList')}>
+                        Pedidos
+                    </DropdownItem>
                     <DropdownItem key="information" textValue="Help" onClick={() => router.push('/web/Information')}>
                         Información
                     </DropdownItem>

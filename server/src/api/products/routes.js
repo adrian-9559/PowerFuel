@@ -114,10 +114,17 @@ router.route('/:productId')
     .delete(async (req, res) => {
         try {
             const deletedProduct = await deleteProductById(req.params.productId);
-            if (!deletedProduct) {
+            if(deletedProduct === 3)
+                return res.status(409).json({ message: 'Error al eliminar el producto, existen pedidos con este producto, no se puede eliminar, solo desactivar' });
+
+            if(deletedProduct === 4)
                 return res.status(404).json({ message: 'Producto no encontrado' });
-            }
-            res.status(200).json({ message: 'Producto eliminado exitosamente' });
+
+            if(deletedProduct === 1)
+                return res.status(200).json({ message: 'Producto desactivado exitosamente' });
+
+            if(deletedProduct === 0)
+                return res.status(500).json({ message: 'Error al eliminar el producto' });
         } catch (error) {
             res.status(500).json({ message: 'Error al eliminar el producto' });
         }

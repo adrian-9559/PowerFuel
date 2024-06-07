@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {Card, CardHeader, CardBody, CardFooter, Button, Calendar, Slider, CircularProgress, ScrollShadow, Listbox, ListboxItem} from "@nextui-org/react";
+import {Card, CardHeader, CardBody, CardFooter, Button, Calendar, Spinner, CircularProgress, ScrollShadow, Listbox, ListboxItem} from "@nextui-org/react";
 import {today, getLocalTimeZone} from "@internationalized/date";
 import UserService from '@services/userService';
 import OrderService from '@services/orderService';
@@ -34,6 +34,7 @@ const GeneralAdministration = () => {
     const [colorRAM, setColorRAM] = useState(null);
     const [colorDisk, setColorDisk] = useState(null);
     const [colorTemperature, setColorTemperature] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
     useTitle('Administración General');
 
     useEffect(() => {
@@ -120,276 +121,282 @@ const GeneralAdministration = () => {
         fetchAllCategories();
         fetchAllRoles();
         fetchAllBrands();
+        setIsLoading(false);
     }, [])
 
     return (
-        <section className='grid gap-3'>
-            <section className="w-full flex flex-col gap-8">
-                <section className='w-full flex gap-3'>
-                    <Card className="col-span-12 sm:col-span-4 h-auto w-full">
-                        <CardHeader className="flex-col !items-start pb-0">
-                            <p className="text-tiny uppercase font-bold">Usuarios</p>
-                            <h4 className="font-medium text-large">Estadísticas</h4>
-                        </CardHeader>
-                        <CardBody className="justify-center h-auto w-full grid grid-cols-2 grid-row-2 gap-2">
-                            <Card className='bg-blue-500 bg-opacity-50 rounded-[0.375rem] '>
-                                <CardHeader >
-                                    <h4 className="font-medium text-2xs text-tiny">Número total de usuarios</h4>
-                                </CardHeader>
-                                <CardBody>
-                                    <p className="uppercase text-6xl">{numTotalUsers}</p>
-                                </CardBody>
-                            </Card>
-                            <Card className='bg-blue-500 w-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
-                                <CardHeader className="z-10 flex-col !items-start pb-0">
-                                    <h4 className="font-medium text-2xs  text-tiny">Usuarios registrados esta semana</h4>
-                                </CardHeader>
-                                <CardBody>
-                                    <p className="uppercase text-6xl">{numUsersRegisterWeek}</p>
-                                </CardBody>
-                            </Card>
-                            <Card className='bg-blue-500 w-auto  bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
-                                <CardHeader className="z-10 flex-col !items-start pb-0">
-                                    <h4 className="font-medium text-2xs text-tiny">Usuarios activos</h4>
-                                </CardHeader>
-                                <CardBody>
-                                    <p className="uppercase text-6xl">{numTotalUsersActive}</p>
-                                </CardBody>
-                            </Card>
-                            <Card className='bg-blue-500 w-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
-                                <CardHeader className="z-10 flex-col !items-start pb-0">
-                                    <h4 className="font-medium text-2xs text-tiny">Usuarios desabilitados</h4>
-                                </CardHeader>
-                                <CardBody>
-                                    <p className="uppercase text-6xl">{numTotalUsersDisabled}</p>
-                                </CardBody>
-                            </Card>
-                        </CardBody>
-                    </Card>
-                    <Card className="col-span-12 sm:col-span-4 h-auto w-full">
-                        <CardHeader className="flex-col !items-start pb-0">
-                            <p className="text-tiny uppercase font-bold">Marcas</p>
-                            <h4 className="font-medium text-large">Listado</h4>
-                        </CardHeader>
-                        <CardBody>
-                            <ScrollShadow aria-label='marcas scroll' className='h-[20rem] bg-orange-500 bg-opacity-30 rounded-lg'>
-                                <Listbox
-                                    items={brands}
-                                    aria-label="Marcas"
-                                >
-                                        {(brand) => (
-                                            <ListboxItem
-                                                key={brand.id_brand}
-                                            >
-                                                {brand.brand_name}
-                                            </ListboxItem>
-                                        )}
-                                </Listbox>
-                            </ScrollShadow>
-                        </CardBody>
-                    </Card>
-                    <Card className="col-span-12 sm:col-span-4 h-auto w-full">
-                    <CardHeader className="flex-col !items-start pb-0">
-                            <p className="text-tiny uppercase font-bold">Productos</p>
-                            <h4 className="font-medium text-large">Estadísticas</h4>
-                        </CardHeader>
-                        <CardBody className=" justify-center h-auto w-full grid grid-cols-2 grid-row-2 gap-2">
-                            <Card className='bg-green-500 w-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem] '>
-                                <CardHeader className="z-10 flex-col !items-start pb-0">
-                                    <h4 className="font-medium text-2xs text-tiny">Número total de productos</h4>
-                                </CardHeader>
-                                <CardBody>
-                                    <p className="uppercase text-6xl ">{numTotalProducts}</p>
-                                </CardBody>
-                            </Card>
-                            <Card className='bg-green-500 w-auto h-auto bg-opacity-50 flex flex-col rounded-[0.375rem]'>
-                                <CardHeader className="z-10 flex-col !items-start pb-0">
-                                    <h4 className="font-medium text-2xs  text-tiny">Productos habilitados</h4>
-                                </CardHeader>
-                                <CardBody>
-                                    <p className="uppercase text-6xl">{numTotalProductsEnabled}</p>
-                                </CardBody>
-                            </Card>
-                            <Card className='bg-green-500 w-auto  bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
-                                <CardHeader className="z-10 flex-col !items-start pb-0">
-                                    <h4 className="font-medium text-2xs  text-tiny">Productos sin stock</h4>
-                                </CardHeader>
-                                <CardBody>
-                                    <p className="uppercase text-6xl">{numTotalProductsOutOfStock}</p>
-                                </CardBody>
-                            </Card>
-                            <Card className='bg-green-500 w-auto h-auto bg-opacity-50  flex flex-col rounded-[0.375rem]'>
-                                <CardHeader className="z-10 flex-col !items-start pb-0">
-                                    <h4 className="font-medium text-2xs  text-tiny">Productos desabilitados</h4>
-                                </CardHeader>
-                                <CardBody>
-                                    <p className="uppercase text-6xl">{numTotalProductsDisabled}</p>
-                                </CardBody>
-                            </Card>
-                        </CardBody>    
-                    </Card>
-                    <Card className=" h-auto w-full">
-                        <CardHeader className="absolute z-10 top-1 flex-col !items-start">
-                            <p className="text-tiny uppercase font-bold">Calendario</p>
-                        </CardHeader>
-                        <CardBody className="flex justify-center items-center mt-6">
-                        <Calendar
-                            isReadOnly
-                            showMonthAndYearPickers
-                            aria-label="Date (Max Date Value)"
-                            defaultValue={today(getLocalTimeZone())}
-                            maxValue={today(getLocalTimeZone())}
-                        />
-                        </CardBody>
-                    </Card>
+        isLoading ? (
+            <div className='w-[20rem] h-[20rem] flex justify-center items-center'>
+                <Spinner />
+            </div>
+        ) : (
+            <section className='grid gap-3'>
+                <section className="w-full flex flex-col gap-3">
+                    <section className='w-full flex flex-col sm:flex-row gap-3'>
+                        <Card className="col-span-12 sm:col-span-4 h-auto w-full">
+                            <CardHeader className="flex-col !items-start pb-0">
+                                <p className="text-tiny uppercase font-bold">Usuarios</p>
+                                <h4 className="font-medium text-large">Estadísticas</h4>
+                            </CardHeader>
+                            <CardBody className="justify-center h-auto w-full grid grid-cols-2 grid-row-2 gap-2">
+                                <Card className='bg-blue-500 bg-opacity-50 rounded-[0.375rem] '>
+                                    <CardHeader >
+                                        <h4 className="font-medium text-2xs text-tiny">Número total de usuarios</h4>
+                                    </CardHeader>
+                                    <CardBody>
+                                        <p className="uppercase text-6xl">{numTotalUsers}</p>
+                                    </CardBody>
+                                </Card>
+                                <Card className='bg-blue-500 w-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
+                                    <CardHeader className="z-10 flex-col !items-start pb-0">
+                                        <h4 className="font-medium text-2xs  text-tiny">Usuarios registrados esta semana</h4>
+                                    </CardHeader>
+                                    <CardBody>
+                                        <p className="uppercase text-6xl">{numUsersRegisterWeek}</p>
+                                    </CardBody>
+                                </Card>
+                                <Card className='bg-blue-500 w-auto  bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
+                                    <CardHeader className="z-10 flex-col !items-start pb-0">
+                                        <h4 className="font-medium text-2xs text-tiny">Usuarios activos</h4>
+                                    </CardHeader>
+                                    <CardBody>
+                                        <p className="uppercase text-6xl">{numTotalUsersActive}</p>
+                                    </CardBody>
+                                </Card>
+                                <Card className='bg-blue-500 w-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
+                                    <CardHeader className="z-10 flex-col !items-start pb-0">
+                                        <h4 className="font-medium text-2xs text-tiny">Usuarios deshabilitados</h4>
+                                    </CardHeader>
+                                    <CardBody>
+                                        <p className="uppercase text-6xl">{numTotalUsersDisabled}</p>
+                                    </CardBody>
+                                </Card>
+                            </CardBody>
+                        </Card>
+                        <Card className="col-span-12 sm:col-span-4 h-auto w-full">
+                            <CardHeader className="flex-col !items-start pb-0">
+                                <p className="text-tiny uppercase font-bold">Marcas</p>
+                                <h4 className="font-medium text-large">Listado</h4>
+                            </CardHeader>
+                            <CardBody>
+                                <ScrollShadow aria-label='Brands' className='max-h-[240px] w-full rounded-lg bg-default-100 p-1'>
+                                    <ul className="gap-2 flex flex-col divide-y divide-divider">
+                                        {
+                                            brands?.map((brand) => (
+                                                <li className="w-full rounded-lg px-3 py-2 text-small hover:bg-default-200" key={brand.id_brand}>
+                                                    <p className="font-bold">{brand.brand_name}</p>
+                                                </li>
+                                            ))
+                                        }
+                                    </ul>
+                                </ScrollShadow>
+                            </CardBody>
+                            <CardFooter className="pt-0">
+                                <Button isFullWidth color="primary">Ver todas las marcas</Button>
+                            </CardFooter>
+                        </Card>
+                        <Card className="col-span-12 sm:col-span-4 h-auto w-full">
+                            <CardHeader className="flex-col !items-start pb-0">
+                                <p className="text-tiny uppercase font-bold">Roles</p>
+                                <h4 className="font-medium text-large">Listado</h4>
+                            </CardHeader>
+                            <CardBody>
+                                <ScrollShadow aria-label='Roles' className='max-h-[240px] w-full rounded-lg bg-default-100 p-1'>
+                                    <ul className="gap-2 flex flex-col divide-y divide-divider">
+                                        {
+                                            roles?.map((rol) => (
+                                                <li className="w-full rounded-lg px-3 py-2 text-small hover:bg-default-200" key={rol.role_id}>
+                                                    <p className="font-bold">{rol.role_name}</p>
+                                                </li>
+                                            ))
+                                        }
+                                    </ul>
+                                </ScrollShadow>
+                            </CardBody>
+                            <CardFooter className="pt-0">
+                                <Button isFullWidth color="primary">Ver todos los roles</Button>
+                            </CardFooter>
+                        </Card>
+                    </section>
+
+                    <section className='w-full flex flex-col sm:flex-row gap-3'>
+                        <Card className="col-span-12 sm:col-span-6 h-auto w-full">
+                            <CardHeader className="flex-col !items-start pb-0">
+                                <p className="text-tiny uppercase font-bold">Pedidos</p>
+                                <h4 className="font-medium text-large">Estadísticas</h4>
+                            </CardHeader>
+                            <CardBody className="justify-center h-auto w-full grid grid-cols-2 grid-row-2 gap-2">
+                                <Card className='bg-pink-500 w-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
+                                    <CardHeader className="z-10 flex-col !items-start pb-0">
+                                        <h4 className="font-medium text-2xs text-tiny">Número total de pedidos</h4>
+                                    </CardHeader>
+                                    <CardBody>
+                                        <p className="uppercase text-6xl">{numTotalOrders}</p>
+                                    </CardBody>
+                                </Card>
+                                <Card className='bg-pink-500 w-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
+                                    <CardHeader className="z-10 flex-col !items-start pb-0">
+                                        <h4 className="font-medium text-2xs text-tiny">Pedidos de esta semana</h4>
+                                    </CardHeader>
+                                    <CardBody>
+                                        <p className="uppercase text-6xl">{numTotalOrdersWeek}</p>
+                                    </CardBody>
+                                </Card>
+                                <Card className='bg-pink-500 w-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
+                                    <CardHeader className="z-10 flex-col !items-start pb-0">
+                                        <h4 className="font-medium text-2xs text-tiny">Pedidos en delivery</h4>
+                                    </CardHeader>
+                                    <CardBody>
+                                        <p className="uppercase text-6xl">{numTotalOrdersDelivey}</p>
+                                    </CardBody>
+                                </Card>
+                                <Card className='bg-pink-500 w-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
+                                    <CardHeader className="z-10 flex-col !items-start pb-0">
+                                        <h4 className="font-medium text-2xs text-tiny">Pedidos entregados</h4>
+                                    </CardHeader>
+                                    <CardBody>
+                                        <p className="uppercase text-6xl">{numTotalOrdersDelivered}</p>
+                                    </CardBody>
+                                </Card>
+                            </CardBody>
+                        </Card>
+                        <Card className="col-span-12 sm:col-span-6 h-auto w-full">
+                            <CardHeader className="flex-col !items-start pb-0">
+                                <p className="text-tiny uppercase font-bold">Productos</p>
+                                <h4 className="font-medium text-large">Estadísticas</h4>
+                            </CardHeader>
+                            <CardBody className="justify-center h-auto w-full grid grid-cols-2 grid-row-2 gap-2">
+                                <Card className='bg-yellow-500 w-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
+                                    <CardHeader className="z-10 flex-col !items-start pb-0">
+                                        <h4 className="font-medium text-2xs text-tiny">Número total de productos</h4>
+                                    </CardHeader>
+                                    <CardBody>
+                                        <p className="uppercase text-6xl">{numTotalProducts}</p>
+                                    </CardBody>
+                                </Card>
+                                <Card className='bg-yellow-500 w-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
+                                    <CardHeader className="z-10 flex-col !items-start pb-0">
+                                        <h4 className="font-medium text-2xs text-tiny">Productos habilitados</h4>
+                                    </CardHeader>
+                                    <CardBody>
+                                        <p className="uppercase text-6xl">{numTotalProductsEnabled}</p>
+                                    </CardBody>
+                                </Card>
+                                <Card className='bg-yellow-500 w-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
+                                    <CardHeader className="z-10 flex-col !items-start pb-0">
+                                        <h4 className="font-medium text-2xs text-tiny">Productos deshabilitados</h4>
+                                    </CardHeader>
+                                    <CardBody>
+                                        <p className="uppercase text-6xl">{numTotalProductsDisabled}</p>
+                                    </CardBody>
+                                </Card>
+                                <Card className='bg-yellow-500 w-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
+                                    <CardHeader className="z-10 flex-col !items-start pb-0">
+                                        <h4 className="font-medium text-2xs text-tiny">Productos agotados</h4>
+                                    </CardHeader>
+                                    <CardBody>
+                                        <p className="uppercase text-6xl">{numTotalProductsOutOfStock}</p>
+                                    </CardBody>
+                                </Card>
+                            </CardBody>
+                        </Card>
+                    </section>
+
+                    <section className='w-full flex flex-col sm:flex-row gap-3'>
+                        <Card className="col-span-12 sm:col-span-6 h-auto w-full">
+                            <CardHeader className="flex-col !items-start pb-0">
+                                <p className="text-tiny uppercase font-bold">Rendimiento del servidor</p>
+                                <h4 className="font-medium text-large">Estado</h4>
+                            </CardHeader>
+                            <CardBody className="justify-center h-auto w-full grid grid-cols-2 grid-row-2 gap-2">
+                                <CircularProgress value={usoCPUPorcentaje} color={colorCPU} className="w-36 h-36">
+                                    <span className="text-2xl">{`${usoCPUPorcentaje}%`}</span>
+                                    <span className="text-tiny text-default-500">Uso CPU</span>
+                                </CircularProgress>
+                                <CircularProgress value={usoRAMPorcentaje} color={colorRAM} className="w-36 h-36">
+                                    <span className="text-2xl">{`${usoRAMPorcentaje}%`}</span>
+                                    <span className="text-tiny text-default-500">Uso RAM</span>
+                                </CircularProgress>
+                                <CircularProgress value={usoDiskPorcentaje} color={colorDisk} className="w-36 h-36">
+                                    <span className="text-2xl">{`${usoDiskPorcentaje}%`}</span>
+                                    <span className="text-tiny text-default-500">Uso Disco</span>
+                                </CircularProgress>
+                                <CircularProgress value={temperatureCPU} color={colorTemperature} className="w-36 h-36">
+                                    <span className="text-2xl">{`${temperatureCPU}°`}</span>
+                                    <span className="text-tiny text-default-500">Temperatura CPU</span>
+                                </CircularProgress>
+                            </CardBody>
+                        </Card>
+                        <Card className="col-span-12 sm:col-span-6 h-auto w-full">
+                            <CardHeader className="flex-col !items-start pb-0">
+                                <p className="text-tiny uppercase font-bold">Categorías</p>
+                                <h4 className="font-medium text-large">Listado</h4>
+                            </CardHeader>
+                            <CardBody>
+                                <ScrollShadow aria-label='Categorías' className='max-h-[240px] w-full rounded-lg bg-default-100 p-1'>
+                                    <ul className="gap-2 flex flex-col divide-y divide-divider">
+                                        {
+                                            categories?.map((category) => (
+                                                <li className="w-full rounded-lg px-3 py-2 text-small hover:bg-default-200" key={category.category_id}>
+                                                    <p className="font-bold">{category.category_name}</p>
+                                                    <p className="text-2xs text-default-600">{category.parent_category_id ? `Categoria padre: ${category.parent_category_id}` : null}</p>
+                                                </li>
+                                            ))
+                                        }
+                                    </ul>
+                                </ScrollShadow>
+                            </CardBody>
+                            <CardFooter className="pt-0">
+                                <Button isFullWidth color="primary">Ver todas las categorías</Button>
+                            </CardFooter>
+                        </Card>
+                    </section>
+
+                    <section className='w-full flex flex-col sm:flex-row gap-3'>
+                        <Card className="col-span-12 sm:col-span-6 h-auto w-full">
+                            <CardHeader className="flex-col !items-start pb-0">
+                                <p className="text-tiny uppercase font-bold">Usuarios</p>
+                                <h4 className="font-medium text-large">Estadísticas</h4>
+                            </CardHeader>
+                            <CardBody className="justify-center h-auto w-full grid grid-cols-2 grid-row-2 gap-2">
+                                <Card className='bg-blue-500 w-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
+                                    <CardHeader className="z-10 flex-col !items-start pb-0">
+                                        <h4 className="font-medium text-2xs text-tiny">Número total de usuarios</h4>
+                                    </CardHeader>
+                                    <CardBody>
+                                        <p className="uppercase text-6xl">{numTotalUsers}</p>
+                                    </CardBody>
+                                </Card>
+                                <Card className='bg-blue-500 w-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
+                                    <CardHeader className="z-10 flex-col !items-start pb-0">
+                                        <h4 className="font-medium text-2xs text-tiny">Usuarios habilitados</h4>
+                                    </CardHeader>
+                                    <CardBody>
+                                        <p className="uppercase text-6xl">{numTotalUsersActive}</p>
+                                    </CardBody>
+                                </Card>
+                                <Card className='bg-blue-500 w-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
+                                    <CardHeader className="z-10 flex-col !items-start pb-0">
+                                        <h4 className="font-medium text-2xs text-tiny">Usuarios deshabilitados</h4>
+                                    </CardHeader>
+                                    <CardBody>
+                                        <p className="uppercase text-6xl">{numTotalUsersDisabled}</p>
+                                    </CardBody>
+                                </Card>
+                                <Card className='bg-blue-500 w-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
+                                    <CardHeader className="z-10 flex-col !items-start pb-0">
+                                        <h4 className="font-medium text-2xs text-tiny">Usuarios con bloqueos</h4>
+                                    </CardHeader>
+                                    <CardBody>
+                                        <p className="uppercase text-6xl">{numTotalUsersDisabled}</p>
+                                    </CardBody>
+                                </Card>
+                            </CardBody>
+                        </Card>
+                    </section>
                 </section>
             </section>
-            <section className='w-full flex gap-3'>
-                <Card className="col-span-12 sm:col-span-4 h-auto w-full">
-                    <CardHeader className="flex-col !items-start pb-0">
-                        <p className="text-tiny uppercase font-bold">Categorias</p>
-                        <h4 className="font-medium text-large">Listado</h4>
-                    </CardHeader>
-                    <CardBody className="mt-2">
-                        <ScrollShadow aria-label='categorias scroll' className='h-[20rem] bg-rose-500 bg-opacity-30 rounded-lg'>
-                            <Listbox
-                                items={categories}
-                                aria-label="Categorias"
-                            >
-                                    {(category) => (
-                                        <ListboxItem
-                                            key={category.category_id}
-                                        >
-                                            {category.category_name}
-                                        </ListboxItem>
-                                    )}
-                            </Listbox>
-                        </ScrollShadow>
-                    </CardBody>
-                </Card>
-                <Card className="col-span-12 sm:col-span-4 h-auto w-full">
-                    <CardHeader className="flex-col !items-start pb-0">
-                        <p className="text-tiny uppercase font-bold">Pedidos</p>
-                        <h4 className="font-medium text-large">Estadísticas</h4>
-                    </CardHeader>
-                    <CardBody className=" justify-center h-auto w-full grid grid-cols-2 grid-row-2 gap-2">
-                        <Card className='bg-purple-500 w-auto h-auto bg-opacity-50 flex flex-col rounded-[0.375rem] '>
-                            <CardHeader className="z-10 flex-col !items-start pb-0">
-                                <h4 className="font-medium text-2xs text-tiny">Número total de pedidos</h4>
-                            </CardHeader>
-                            <CardBody>
-                                <p className="uppercase text-6xl ">{numTotalOrders}</p>
-                            </CardBody>
-                        </Card>
-                        <Card className='bg-purple-500 w-auto h-auto bg-opacity-50 flex flex-col rounded-[0.375rem]'>
-                            <CardHeader className="z-10 flex-col !items-start pb-0">
-                                <h4 className="font-medium text-2xs text-tiny">Pedidos semanales</h4>
-                            </CardHeader>
-                            <CardBody>
-                                <p className="uppercase text-6xl">{numTotalOrdersWeek}</p>
-                            </CardBody>
-                        </Card>
-                        <Card className='bg-purple-500 w-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
-                            <CardHeader className="z-10 flex-col !items-start pb-0">
-                                <h4 className="font-medium text-2xs text-tiny">Pedidos en reparto</h4>
-                            </CardHeader>
-                            <CardBody>
-                                <p className="uppercase text-6xl">{numTotalOrdersDelivey}</p>
-                            </CardBody>
-                        </Card>
-                        <Card className='bg-purple-500 w-auto h-auto bg-opacity-50 flex flex-col rounded-[0.375rem]'>
-                            <CardHeader className="z-10 flex-col !items-start pb-0">
-                                <h4 className="font-medium text-2xs  text-tiny">Pedidos entregados</h4>
-                            </CardHeader>
-                            <CardBody>
-                                <p className="uppercase text-6xl">{numTotalOrdersDelivered}</p>
-                            </CardBody>
-                        </Card>
-                    </CardBody>
-                </Card>
-                <Card className="col-span-12 sm:col-span-4 h-auto w-full">
-                    <CardHeader className="flex-col !items-start pb-0">
-                        <p className="text-tiny uppercase font-bold">Rol</p>
-                        <h4 className="font-medium text-large">Listado</h4>
-                    </CardHeader>
-                    <CardBody>
-                        <ScrollShadow aria-label='roles scroll' className='h-[20rem] bg-blue-500 bg-opacity-30 rounded-lg'>
-                            <Listbox
-                                items={roles}
-                                aria-label="Roles"
-                            >
-                                    {(role) => (
-                                        <ListboxItem
-                                            key={role.role_id}
-                                        >
-                                            {role.role_name}
-                                        </ListboxItem>
-                                    )}
-                            </Listbox>
-                        </ScrollShadow>
-                    </CardBody>
-                </Card>
-                <Card className="col-span-12 sm:col-span-4 h-auto w-full">
-                    <CardHeader className="flex-col !items-start pb-0">
-                        <p className="text-tiny uppercase font-bold">Hardware</p>
-                        <h4 className="font-medium text-large">Estadísticas</h4>
-                    </CardHeader>
-                    <CardBody className="justify-center h-auto w-full grid grid-cols-2 grid-row-2 gap-2">
-                        <Card className='bg-emerald-700 bg-opacity-50 rounded-[0.375rem] '>
-                            <CardHeader >
-                                <h4 className="font-medium text-2xs text-tiny">Uso de la CPU</h4>
-                            </CardHeader>
-                            <CardBody className='justify-center items-center'>
-                                <CircularProgress
-                                    classNames={{
-                                        svg: "w-20 h-20 drop-shadow-md",
-                                        value: "text-xl font-semibold",
-                                    }}
-                                    aria-label="Loading..."
-                                    value={usoCPUPorcentaje || 0}
-                                    color={colorCPU}
-                                    showValueLabel={true}
-                                />
-                            </CardBody>
-                        </Card>
-                        <Card className='bg-emerald-700 bg-opacity-50 rounded-[0.375rem] '>
-                            <CardHeader >
-                                <h4 className="font-medium text-2xs text-tiny">Uso de la RAM</h4>
-                            </CardHeader>
-                            <CardBody className='justify-center items-center'>
-                                <CircularProgress
-                                    classNames={{
-                                        svg: "w-20 h-20 drop-shadow-md",
-                                        value: "text-xl font-semibold",
-                                    }}
-                                    aria-label="Loading..."
-                                    value={usoRAMPorcentaje || 0}
-                                    color={colorRAM}
-                                    showValueLabel={true}
-                                />
-                            </CardBody>
-                        </Card>
-                        <Card className='bg-emerald-700 bg-opacity-50 rounded-[0.375rem] '>
-                            <CardHeader >
-                                <h4 className="font-medium text-2xs text-tiny">Uso de la RAM</h4>
-                            </CardHeader>
-                            <CardBody className='flex justify-center items-center'>
-                                <CircularProgress
-                                    classNames={{
-                                        svg: "w-20 h-20 drop-shadow-md",
-                                        value: "text-xl font-semibold",
-                                    }}
-                                    aria-label="Loading..."
-                                    value={usoDiskPorcentaje || 0}
-                                    color={colorDisk}
-                                    showValueLabel={true}
-                                />
-                            </CardBody>
-                        </Card>
-                    </CardBody>
-                </Card>
-            </section>
-        </section>
+        )
     )
 }
 

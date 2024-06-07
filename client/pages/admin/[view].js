@@ -9,18 +9,20 @@ import RoleAdministration from "./roleAdministration";
 import ProductoAdministration from "./productAdministration";
 import CategoryAdministration from "./categoryAdministration";
 import BrandAdministration from './brandAdministration';
-import OrderAdministration from "./orderAdministration";
+import OrderAdministration from "./orderAdministration"
+import {Divider} from '@nextui-org/react';
 
 const Administrador = () => {
     const router = useRouter();
-    const { user} = useAppContext();
-    const [selectedOption, setSelectedOption] = useState(null);
+    const { user } = useAppContext();
+    const [selectedOption, setSelectedOption] = useState('General');
+    const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
-        if(user && user?.role_id === 10){
+        if (!user || user?.role_id === 10) {
             router.push("/");
         }
-    }, []);
+    }, [user, router]);
 
     const components = {
         'General': <GeneralAdministration />,
@@ -33,7 +35,7 @@ const Administrador = () => {
     };
 
     useEffect(() => {
-        if (router.isReady) { 
+        if (router.isReady) {
             const view = router.asPath.split('/')[2] || 'General';
             setSelectedOption(view);
         }
@@ -41,24 +43,42 @@ const Administrador = () => {
 
     useEffect(() => {
         if (selectedOption && router.asPath.split('/')[2] !== selectedOption) {
-            router.replace(`/admin/${selectedOption}`, undefined, { shallow: true }); 
+            router.replace(`/admin/${selectedOption}`, undefined, { shallow: true });
         }
     }, [selectedOption, router]);
 
-    if (!selectedOption) {
-        return null;
-    }
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 640);
+        };
+
+        window.addEventListener('resize', handleResize);
+        handleResize();
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     return (
-        <section className="h-full flex w-full gap-0">
-            <SideMenuAdministrador setSelectedOption={setSelectedOption}/>
-            <section className='w-full p-8 h-full'>
+        <section className="h-full flex flex-col sm:flex-row w-full gap-0">
+            {isMobile ? (
+                <div className="p-4 w-full">
+                    <SideMenuAdministrador setSelectedOption={setSelectedOption} />
+                </div>
+            ) : (
+                <section className='h-full'>
+                    <SideMenuAdministrador setSelectedOption={setSelectedOption} />
+                    <Divider orientation='vertical'/>
+                </section>
+            )}
+            <section className='w-full p-4 sm:p-8 h-full'>
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={selectedOption}
-                        initial={{opacity: 0}}
-                        animate={{opacity: 1}}
-                        exit={{opacity: 0}}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
                         className='w-full h-full'
                     >
                         {components[selectedOption]}
@@ -66,7 +86,7 @@ const Administrador = () => {
                 </AnimatePresence>
             </section>
         </section>
-    )
+    );
 }
 
 export default Administrador;

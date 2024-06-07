@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Tooltip, Button, Pagination} from "@nextui-org/react";
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Tooltip, Button, Pagination, Spinner} from "@nextui-org/react";
 import { useRouter } from 'next/router';
 import BrandService from '@services/brandService';
 import EditIcon from '@icons/EditIcon';
@@ -18,6 +18,7 @@ const BrandAdministration = () => {
     useTitle('Administración de Marcas');
 
     useEffect(() => {
+        setIsLoading(true);
         const fetchBrandData = async () => {
             const response = await BrandService.getBrands(page);
             setBrands(response.brands??[]);
@@ -62,87 +63,93 @@ const BrandAdministration = () => {
     };
 
     return (
-        <section className='h-full w-full'>
-            <Table aria-label='Tabla de marcas'
-                selectionMode="multiple"
-                selectedKeys={selectedKeys}
-                onSelectionChange={setSelectedKeys}
-                className="w-full h-full"
-                topContent={
-                    <section className='flex flex-row w-full h-full'>
-                        <section className="absolute flex justify-left gap-2">
-                            <Tooltip color="danger" content="Eliminar Marca/s">
-                                <Button isIconOnly color="danger" className="text-lg cursor-pointer active:opacity-50" onClick={deleteSelectedBrands}>
-                                    <DeleteIcon color="white" />
-                                </Button>
-                            </Tooltip>
-                            <Tooltip color="success" content="Añadir Marca" className='text-white'>
-                                <Button isIconOnly color="success" className="text-lg  cursor-pointer active:opacity-50" onClick={() => router.push('/admin/create/createBrand')}>
-                                    <PlusIcon color="white" />
-                                </Button>
-                            </Tooltip>
+        isLoading ? (
+            <div className='w-[20rem] h-[20rem] flex justify-center items-center'>
+                <Spinner />
+            </div>
+        ) : (
+            <section className='h-full w-full'>
+                <Table aria-label='Tabla de marcas'
+                    selectionMode="multiple"
+                    selectedKeys={selectedKeys}
+                    onSelectionChange={setSelectedKeys}
+                    className="w-full h-full"
+                    topContent={
+                        <section className='grid flex-row w-full h-full lg:flex gap-2'>
+                            <section className="relative lg:absolute flex justify-left gap-2">
+                                <Tooltip color="danger" content="Eliminar Marca/s">
+                                    <Button isIconOnly color="danger" className="text-lg cursor-pointer active:opacity-50" onClick={deleteSelectedBrands}>
+                                        <DeleteIcon color="white" />
+                                    </Button>
+                                </Tooltip>
+                                <Tooltip color="success" content="Añadir Marca" className='text-white'>
+                                    <Button isIconOnly color="success" className="text-lg  cursor-pointer active:opacity-50" onClick={() => router.push('/admin/create/createBrand')}>
+                                        <PlusIcon color="white" />
+                                    </Button>
+                                </Tooltip>
+                            </section>
+                            <section className='flex justify-center items-center h-auto w-full'>
+                                <h1 className="text-center text-2xl font-bold">Listado de Marcas</h1>
+                            </section>
                         </section>
-                        <section className='flex justify-center items-center h-auto w-full'>
-                            <h1 className="text-center text-2xl font-bold">Listado de Marcas</h1>
-                        </section>
-                    </section>
-                }
-                bottomContent={
-                    totalPages > 0 ? (
-                        <section className="flex w-full justify-center">
-                            <Pagination
-                                isCompact
-                                showControls
-                                showShadow
-                                color="primary"
-                                page={page}
-                                total={totalPages}
-                                onChange={(page) => setPage(page)}
-                            />
-                        </section>
-                    ) : null
-                }>
-                <TableHeader>
-                    <TableColumn>
-                        <p>Marca</p>
-                    </TableColumn>
-                    <TableColumn>
-                        <p>ID</p>
-                    </TableColumn>
-                    <TableColumn className='flex justify-center items-center'>
-                        <p>Acciones</p>
-                    </TableColumn>
-                </TableHeader>
-                <TableBody
-                    emptyContent="No hay marcas disponibles"
-                >
-                    {Brands.map((brand) => (
-                        <TableRow key={brand.id_brand}>
-                            <TableCell>
-                                <p>{brand.brand_name}</p>
-                            </TableCell>
-                            <TableCell>
-                                <p>{brand.id_brand}</p>
-                            </TableCell>
-                            <TableCell>
-                                <section className="relative flex justify-center items-center gap-2">
-                                    <Tooltip color="success" content="Editar Marca" className="text-white">
-                                        <Button isIconOnly color="success" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => router.push(`/admin/create/createBrand?id=${brand.id_brand}`)}>
-                                            <EditIcon color="green"/>
-                                        </Button>
-                                    </Tooltip>
-                                    <Tooltip color="danger" content="Eliminar Marca">
-                                        <Button isIconOnly color="danger" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => deleteBrand(brand.id_brand)}>
-                                            <DeleteIcon color="red" />
-                                        </Button>
-                                    </Tooltip>
-                                </section>
-                            </TableCell>
-                        </TableRow>   
-                    ), )}
-                </TableBody>
-            </Table>
-        </section>
+                    }
+                    bottomContent={
+                        totalPages > 0 ? (
+                            <section className="flex w-full justify-center">
+                                <Pagination
+                                    isCompact
+                                    showControls
+                                    showShadow
+                                    color="primary"
+                                    page={page}
+                                    total={totalPages}
+                                    onChange={(page) => setPage(page)}
+                                />
+                            </section>
+                        ) : null
+                    }>
+                    <TableHeader>
+                        <TableColumn>
+                            <p>Marca</p>
+                        </TableColumn>
+                        <TableColumn>
+                            <p>ID</p>
+                        </TableColumn>
+                        <TableColumn className='flex justify-center items-center'>
+                            <p>Acciones</p>
+                        </TableColumn>
+                    </TableHeader>
+                    <TableBody
+                        emptyContent="No hay marcas disponibles"
+                    >
+                        {Brands.map((brand) => (
+                            <TableRow key={brand.id_brand}>
+                                <TableCell>
+                                    <p>{brand.brand_name}</p>
+                                </TableCell>
+                                <TableCell>
+                                    <p>{brand.id_brand}</p>
+                                </TableCell>
+                                <TableCell>
+                                    <section className="relative flex justify-center items-center gap-2">
+                                        <Tooltip color="success" content="Editar Marca" className="text-white">
+                                            <Button isIconOnly color="success" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => router.push(`/admin/create/createBrand?id=${brand.id_brand}`)}>
+                                                <EditIcon color="green"/>
+                                            </Button>
+                                        </Tooltip>
+                                        <Tooltip color="danger" content="Eliminar Marca">
+                                            <Button isIconOnly color="danger" variant="light" className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => deleteBrand(brand.id_brand)}>
+                                                <DeleteIcon color="red" />
+                                            </Button>
+                                        </Tooltip>
+                                    </section>
+                                </TableCell>
+                            </TableRow>   
+                        ), )}
+                    </TableBody>
+                </Table>
+            </section>
+        )
     );
 };
 

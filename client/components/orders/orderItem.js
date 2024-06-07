@@ -34,9 +34,12 @@ const OrderItem = ({ order }) => {
       const detailsAux = JSON.parse(order.details);
       const detailsTemp = [];
       for (const item of detailsAux) {
-        const productData = await ProductService.getProductById(item.product_id);
-        detailsTemp.push({ ...productData, quantity: item.quantity });
-        total += productData.price * item.quantity;
+        console.log(item.product_id, " producto")
+        const productData = await ProductService.getProductById(item.product_id, null);
+        if(productData){
+          detailsTemp.push({ ...productData, quantity: item.quantity });
+          total += productData.price * item.quantity;
+        }
       }
       setDetails(detailsTemp);
       order.total = total.toFixed(2);

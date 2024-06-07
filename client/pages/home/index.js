@@ -119,7 +119,7 @@ const HomeComponent = () => {
 
             return (
                 categoria && (
-                    <Card key={categoria.category_id} className="col-span-12 sm:col-span-4 h-40" isPressable onPress={() => router.push(`/category/${categoria.category_id}`)} style={{backgroundColor: colores.colorFondo, color: colores.colorTexto}}>
+                    <Card key={categoria.category_id} className="hover:scale-105 col-span-12 sm:col-span-4 h-40" isPressable onPress={() => router.push(`/category/${categoria.category_id}`)} style={{backgroundColor: colores.colorFondo, color: colores.colorTexto}}>
                         <CardHeader className="absolute z-10 top-1 flex-col !items-start">
                             <p className="text-tiny uppercase font-bold">Categoria</p>
                             <h4 className="font-medium text-large">{categoria.category_name}</h4>
@@ -173,95 +173,101 @@ const HomeComponent = () => {
     }
 
     return (
-        <main className="flex flex-col p-6 gap-4">
-            <section >
-                <h1 className="font-bold text-4xl">Bienvenido a <span className='text-blue-500'>PowerFuel!</span></h1>
-            </section>
-            <section>
-                <section className="flex flex-col sm:flex-row gap-3 h-60 w-full">
-                    <Card className='w-full h-full shadow-lg' isPressable onPress={() => router.push(`/search/novedades`)}> 
-                        <CardHeader className="absolute z-10 top-1 flex-col !items-start">
-                            <p className="text-tiny text-white/60 uppercase font-bold">Productos</p>
-                            <h4 className="text-white font-medium text-large">Novedades</h4>
+        loading ? (
+            <div className='w-[20rem] h-[20rem] flex justify-center items-center'>
+                <Spinner />
+            </div>
+        ) : (
+            <main className="flex flex-col p-6 gap-4">
+                <section >
+                    <h1 className="font-bold text-4xl">Bienvenido a <span className='text-blue-500'>PowerFuel!</span></h1>
+                </section>
+                <section>
+                    <section className="flex flex-col sm:flex-row gap-3 h-60 w-full">
+                        <Card className='w-full h-full shadow-lg' isPressable onPress={() => router.push(`/search/novedades`)}> 
+                            <CardHeader className="absolute z-10 top-1 flex-col !items-start">
+                                <p className="text-tiny text-white/60 uppercase font-bold">Productos</p>
+                                <h4 className="text-white font-medium text-large">Novedades</h4>
+                            </CardHeader>
+                            <Image
+                                removeWrapper
+                                alt="Card backgroun Novedades"
+                                className="z-0 w-full h-full object-cover"
+                                src={`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/web/home/novedades.webp`}
+                            />
+                        </Card>
+                        <Card className='w-full h-full shadow-lg' isPressable onPress={() => router.push(`/search/antiguos`)}>
+                            <CardHeader className="absolute z-10 top-1 flex-col !items-start">
+                                <p className="text-tiny text-white/60 uppercase font-bold">Productos</p>
+                                <h4 className="text-white font-medium text-large">Más antiguos</h4>
+                            </CardHeader>
+                            <Image
+                                removeWrapper
+                                alt="Card background Ofertas"
+                                className="z-0 w-full h-full object-cover"
+                                src={`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/web/home/ofertas.webp`}
+                            />
+                        </Card>
+                    </section>
+                </section>
+                <CategoryGroup/>
+                <section className='flex flex-col sm:flex-row'>
+                    <Card className="shadow-lg max-w-7xl">
+                        <CardHeader className="flex-col !items-start">
+                            <h1 className="font-bold text-2xl bg-blue-800 bg-opacity-50 text-white w-full p-2 pl-4 shadow-lg rounded-lg">
+                                Lo mas nuevo
+                            </h1>
                         </CardHeader>
-                        <Image
-                            removeWrapper
-                            alt="Card backgroun Novedades"
-                            className="z-0 w-full h-full object-cover"
-                            src={`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/web/home/novedades.webp`}
-                        />
-                    </Card>
-                    <Card className='w-full h-full shadow-lg' isPressable onPress={() => router.push(`/search/antiguos`)}>
-                        <CardHeader className="absolute z-10 top-1 flex-col !items-start">
-                            <p className="text-tiny text-white/60 uppercase font-bold">Productos</p>
-                            <h4 className="text-white font-medium text-large">Más antiguos</h4>
-                        </CardHeader>
-                        <Image
-                            removeWrapper
-                            alt="Card background Ofertas"
-                            className="z-0 w-full h-full object-cover"
-                            src={`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/web/home/ofertas.webp`}
-                        />
+                        <CardBody className='w-full'>
+                                <Carousel
+                                    swipeable={true}
+                                    draggable={true}
+                                    arrows={false}
+                                    showDots={false}
+                                    responsive={responsive}
+                                    centerMode={true}
+                                    infinite={true}
+                                    autoPlay={true}
+                                    autoPlaySpeed={1300}
+                                    minimumTouchDrag={40}
+                                    keyBoardControl={false}
+                                    transitionDuration={1000}
+                                    removeArrowOnDeviceType={["tablet", "mobile"]}
+                                    dotListClass="custom-dot-list-style"
+                                    itemClass="carousel-item-padding-40-px px-32 mx-4"
+                                    
+                                >
+                                    {renderProductosNovedades()}
+                                </Carousel>
+                        </CardBody>
                     </Card>
                 </section>
-            </section>
-            <CategoryGroup/>
-            <section className='flex flex-col sm:flex-row'>
-                <Card className="shadow-lg max-w-7xl">
-                    <CardHeader className="flex-col !items-start">
-                        <h1 className="font-bold text-2xl bg-blue-800 bg-opacity-50 text-white w-full p-2 pl-4 shadow-lg rounded-lg">
-                            Lo mas nuevo
-                        </h1>
-                    </CardHeader>
-                    <CardBody>
-                            <Carousel
-                                swipeable={true}
-                                draggable={true}
-                                arrows={false}
-                                showDots={false}
-                                responsive={responsive}
-                                centerMode={true}
-                                infinite={true}
-                                autoPlay={true}
-                                autoPlaySpeed={1300}
-                                minimumTouchDrag={40}
-                                keyBoardControl={false}
-                                transitionDuration={1000}
-                                removeArrowOnDeviceType={["tablet", "mobile"]}
-                                dotListClass="custom-dot-list-style"
-                                itemClass="carousel-item-padding-40-px px-32 mx-4"
-                                
-                            >
-                                {renderProductosNovedades()}
-                            </Carousel>
-                    </CardBody>
-                </Card>
-            </section>
-            <CategoryGroup/>
-            <section>
-                <Card className="w-full shadow-lg" >
-                    <CardHeader className="flex-col !items-start">
-                        <h1 className="font-bold text-2xl bg-blue-800 bg-opacity-50 text-white w-full p-2 pl-4 shadow-lg rounded-lg">
-                            Productos
-                        </h1>
-                    </CardHeader>
-                    <CardBody className='w-full flex flex-row gap-3 items-center justify-center'>
-                    {loading ? (
-                        <Spinner />
-                    ) : productos ? (
-                        <section className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
-                            {productos.map((product) => (
-                                <ProductCard key={product.product_id} product={product} />
-                            ))}
-                        </section>
-                    ) : (
-                        <p>No hay productos disponibles.</p>
-                    )}
-                    </CardBody>
-                </Card>
-            </section>
-            <CategoryGroup/>
-        </main>
+                <CategoryGroup/>
+                <section>
+                    <Card className="w-full shadow-lg" >
+                        <CardHeader className="flex-col !items-start">
+                            <h1 className="font-bold text-2xl bg-blue-800 bg-opacity-50 text-white w-full p-2 pl-4 shadow-lg rounded-lg">
+                                Productos
+                            </h1>
+                        </CardHeader>
+                        <CardBody className='w-full flex flex-row gap-3 items-center justify-center'>
+                        {loading ? (
+                            <Spinner />
+                        ) : productos ? (
+                            <section className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
+                                {productos.map((product) => (
+                                    <ProductCard key={product.product_id} product={product} />
+                                ))}
+                            </section>
+                        ) : (
+                            <p>No hay productos disponibles.</p>
+                        )}
+                        </CardBody>
+                    </Card>
+                </section> 
+                <CategoryGroup/>
+            </main>
+        )
     );
 }
 

@@ -32,9 +32,9 @@ const SuccessPage = () => {
                     details: JSON.stringify(cart),
                     shipping_address: JSON.stringify(shipping), 
                 };
-        
-                await OrderService.createOrder(order);
+                
                 setCart([]);
+                await OrderService.createOrder(order);
             }
         }
         handleSuccess();

@@ -11,8 +11,6 @@ const CreateRole = () => {
     const [isLoading, setIsLoading] = useState(false);
     const { id } = router.query;
     useTitle(id ? 'Editar Role' : 'Crear Role');
-
-
     
     const fetchRole = async () => {
         

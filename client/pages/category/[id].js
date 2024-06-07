@@ -48,7 +48,7 @@ const ProductListCategory = () => {
 
     return (
         loading ? (
-            <div className=' flex justify-center items-center'>
+            <div className='w-[20rem] h-[20rem] flex justify-center items-center'>
                 <Spinner />
             </div>
         ) : (

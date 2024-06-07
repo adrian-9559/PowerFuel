@@ -38,7 +38,7 @@ export const useCart = () => {
     const getTotal = async () => {
         let total = 0;
         await Promise.all(cart.map(async (item) => {
-            const product = await ProductService.getProductById(item.product_id);
+            const product = await ProductService.getProductById(item.product_id, null);
             total += product.price * item.quantity;
         }));
         return parseFloat(total.toFixed(2));

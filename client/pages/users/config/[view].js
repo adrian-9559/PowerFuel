@@ -53,17 +53,17 @@ const Config = () => {
     }
 
     return (
-        <section className='flex h-full items-stretch w-auto'>
+        <section className='flex flex-col lg:flex-row h-full items-stretch w-full'>
             <SideMenu setSelectedOption={setSelectedOption} />
-            <section className="w-full p-8">
+            <section className="w-full p-4 lg:p-8 flex-1">
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={selectedOption}
-                        initial={{opacity: 0}}
-                        animate={{opacity: 1}}
-                        exit={{opacity: 0}}
-                        className='pr-36'
-                    >  
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className='lg:pr-36'
+                    >
                         {components[selectedOption]}
                     </motion.div>
                 </AnimatePresence>

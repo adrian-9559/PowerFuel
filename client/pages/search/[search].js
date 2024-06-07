@@ -53,7 +53,7 @@ const SearchComponent = () => {
 
     return (
         loading ? (
-            <div className='w-96 h-96'>
+            <div className='w-[20rem] h-[20rem] flex justify-center items-center'>
                 <Spinner />
             </div>
         ) : (

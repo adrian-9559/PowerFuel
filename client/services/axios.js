@@ -21,8 +21,8 @@ api.interceptors.response.use(response => {
 }, async error => {
     const originalRequest = error.config;
     localStorage.removeItem('auth_token');
-    // originalRequest._retry = false;
-    if (error.response && (error.response.status === 401 || error.response.status === 403) && !originalRequest._retry) {
+    if (error.response && (error.response.status === 401 || error.response.status === 403) && localStorage.getItem('auth_token')) {
+        toastr.error(error);
         localStorage.removeItem('auth_token');
         window.location.href = '/';
     }

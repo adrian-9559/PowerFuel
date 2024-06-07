@@ -69,10 +69,12 @@ const deleteProductById = async (productId) => {
 const updateProductById = async (productId, productData) => {
     try {
         if(productId) {
-            const response = await model.updateProduct(productId, productData);
             
             const product = await model.getProducts(0, 1, productId);
-            updateProduct(product[0].stripe_product_id, product[0]);
+            const newPrice = updateProduct(product[0].stripe_product_id, productData);
+            productData.stripe_price_id = newPrice;
+            const response = await model.updateProduct(productId, productData);
+            
             return response;
         }
        

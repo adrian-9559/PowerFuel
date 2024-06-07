@@ -7,7 +7,7 @@ import useTitle from '@hooks/useTitle';
 
 const CreateOrder = () => {
     const router = useRouter();
-    const idOrder = router.query.idOrder;
+    const id = router.query.id;
     const [formState, setFormState] = useState({
         order_id: '',
         user_id: '',
@@ -50,8 +50,8 @@ const CreateOrder = () => {
     };
 
     const getOrder = async () => {
-        if(idOrder) {
-            const orderDetails = await OrderService.getOrderById(idOrder);
+        if(id) {
+            const orderDetails = await OrderService.getOrderById(id);
             console.log(orderDetails);
             setOrder(orderDetails);
             formatForm(orderDetails); 
@@ -97,13 +97,13 @@ const CreateOrder = () => {
     }, [order]);
 
     useEffect(() => {
-        if(idOrder) {
+        if(id) {
             setLoading(true);
             getOrder();
             formatForm();
             console.log(order);
         }
-    }, [idOrder]);
+    }, [id]);
 
     const handleChange = (name) => (value) => {
         setFormState({
@@ -128,7 +128,7 @@ const CreateOrder = () => {
     return (
         <main className="max-w-4xl mx-auto mt-10 p-6 ">
             <Card shadow className="p-5">
-                <h1 className="text-2xl font-bold mb-4">{idOrder ? 'Editar Pedido' : 'Crear Pedido'}</h1>
+                <h1 className="text-2xl font-bold mb-4">{id ? 'Editar Pedido' : 'Crear Pedido'}</h1>
                 {error && <p className="mb-4 text-red-500">{error}</p>}
                 <form onSubmit={handleRegister}>
                     <section className="mb-4">

@@ -1,6 +1,6 @@
 const express = require('express');
 const isAdmin = require('../../middlewares/isAdmin');
-const { registerUser, deleteUserById, updateUserById, getUserById, getUsers, loginUser, getUsersByRegistrationDate, changePassword, resetPasswordCode, verifyPasswordResetCode, getGeneralPanelInfo } = require('./controller');
+const { registerUser, deleteUserById, updateUserById, getUserById, getUsers, loginUser, getUsersByRegistrationDate, changePassword, resetPasswordCode, verifyPasswordResetCode, getGeneralPanelInfo, changePasswordUser } = require('./controller');
 
 const router = express.Router();
 
@@ -249,6 +249,17 @@ router.route('/resetPassword')
         } catch (error) {
             console.log("error", error);
              res.status(500).json({ message: 'Error al restablecer la contraseña del usuario' });
+        }
+    });
+
+router.route('/changePasswordUser')
+    .post(async (req, res) => {
+        const { oldPassword, newPassword, confirmPassword } = req.body;
+        try {
+            const response = await changePasswordUser(req.user.userId, oldPassword, newPassword, confirmPassword);
+            res.status(200).json(response);
+        } catch (error) {
+             res.status(500).json({ message: 'Error al cambiar la contraseña del usuario' });
         }
     });
 

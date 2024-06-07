@@ -23,7 +23,6 @@ const AddressMenu = ({setSelectedAddress}) => {
         if(!showForm){
             fetchAddress();
         }
-        console.log(showForm);
     }, [showForm]);
 
     const handleDelete = async (id) => {

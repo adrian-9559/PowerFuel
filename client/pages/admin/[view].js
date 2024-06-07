@@ -18,12 +18,6 @@ const Administrador = () => {
     const [selectedOption, setSelectedOption] = useState('General');
     const [isMobile, setIsMobile] = useState(false);
 
-    useEffect(() => {
-        if (!user || user?.role_id === 10) {
-            router.push("/");
-        }
-    }, [user, router]);
-
     const components = {
         'General': <GeneralAdministration />,
         'Usuarios': <UserAdministration />,

@@ -48,25 +48,12 @@ class UserService {
     }
 
     async setUserImage(images) {
-        try {
-
-            if(!images) return;
-
-            const formData = new FormData();
-            for (let i = 0; i < images.length; i++) {
-                formData.append('images', images[i]);
-            }
+        const formData = new FormData();
+        formData.append('image', images);
     
-            const response = await api.post(`/files/uploadUser`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                },
-            });
+        const response = await api.post(`/files/uploadUser`, formData);
     
-            return response.data;
-        } catch (error) {
-            console.error(error);
-        }
+        return response.data;
     }
 
     async getPasswordResetCode(email) {
@@ -91,6 +78,16 @@ class UserService {
             newPassword: newPassword,
             confirmPassword: confirmPassword
         });
+        return response.data;
+    }
+
+    async changePasswordUser(oldPassword, newPassword, confirmPassword) {
+        const response = api.post(`/users/changePasswordUser`, {
+            oldPassword: oldPassword,
+            newPassword: newPassword,
+            confirmPassword: confirmPassword,
+        });
+
         return response.data;
     }
 }

@@ -5,7 +5,6 @@ import AddImageForm from "@components/users/editUserImage/partials/addImageForm"
 const EditUserImage = ({ children }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-
   return (
     <section className="w-full">
         <Badge 

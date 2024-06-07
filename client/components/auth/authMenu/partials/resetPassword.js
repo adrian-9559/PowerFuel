@@ -34,7 +34,6 @@ const resetPassword = () => {
                     await UserService.verifyPasswordResetCode(email, code);
                     setIsLoading(false);
                     setCodeVerified(true);
-                    console.log("Código de verificación", codeVerified);
                 } catch (error) {
                     console.error("Error al verificar el código de reseteo de contraseña", error);
                 }

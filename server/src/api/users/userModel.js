@@ -144,6 +144,26 @@ class model {
         }
     };
 
+    getUserId = async (userId) => {
+        try {
+            return await UserCredentials.findOne({
+                where: { user_id: userId },
+                include: [
+                    { model: UserInfo, required: true, attributes: ['first_name', 'last_name', 'dni'] },
+                    { 
+                        model: Role, 
+                        required: true, 
+                        attributes: ['role_id', 'role_name'],
+                        through: { model: UserRoles, attributes: [] } 
+                    }
+                ]
+            });
+        }
+        catch (error) {
+            console.log(`Error al obtener el usuario ${errorDisplay}`, error);
+        }
+    };
+
     /**
      * Función para obtener el conteo total de usuarios.
      * Function to get the total count of users.

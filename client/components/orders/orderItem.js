@@ -34,7 +34,6 @@ const OrderItem = ({ order }) => {
       const detailsAux = JSON.parse(order.details);
       const detailsTemp = [];
       for (const item of detailsAux) {
-        console.log(item.product_id, " producto")
         const productData = await ProductService.getProductById(item.product_id, null);
         if(productData){
           detailsTemp.push({ ...productData, quantity: item.quantity });

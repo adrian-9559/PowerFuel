@@ -58,13 +58,12 @@ router.route('/uploadUser')
      */
     .post(async (req, res) => {
         try {
-            console.log(req.user);
-            console.log(req.files);
-            const { userId } = req.user;
-            const { images } = req.files;
-            await uploadUser(userId, images);
-            res.status(200).send({message: 'Imágenes subidas correctamente'});
+            const userId = req.user.userId;
+            const image = req.files.image; 
+            const response = await uploadUser(userId, image);
+            res.status(200).send({data: response, message: 'Imágenes subidas correctamente'});
         } catch (error) {
+            console.log(error);
             res.status(500).send({message: 'Error al subir las imágenes del producto'});
         }
     });

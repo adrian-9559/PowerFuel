@@ -86,7 +86,7 @@ const OrderAdministration = () => {
                     selectionMode="multiple"
                     selectedKeys={selectedKeys}
                     onSelectionChange={setSelectedKeys}
-                    className="w-full h-full"
+                    className="w-full h-full "
                     topContent={
                         <section className='grid flex-row w-full h-full lg:flex gap-2'>
                             <section className="relative lg:absolute flex justify-left gap-2">

@@ -78,9 +78,8 @@ const CategoryAdministration = () => {
                     selectionMode="multiple"
                     selectedKeys={selectedKeys}
                     onSelectionChange={setSelectedKeys}
-                    className="w-full h-full"
                     topContent={
-                        <section className='grid flex-row w-full h-full lg:flex gap-2'>
+                        <section className='grid flex-row w-full lg:flex gap-2'>
                             <section className="relative lg:absolute flex justify-left gap-2">
                                 <Tooltip color="danger" content="Eliminar Categoría/s">
                                     <Button isIconOnly color="danger" className="text-lg cursor-pointer active:opacity-50" onClick={deleteSelectedCategories}>

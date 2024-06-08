@@ -61,7 +61,7 @@ const Administrador = () => {
     }, []);
 
     return (
-        <section className="h-full flex flex-col sm:flex-row w-full gap-0">
+        <section className="h-full flex flex-col sm:flex-row w-full gap-0 ">
             {isMobile ? (
                 <div className="p-4 w-full">
                     <SideMenuAdministrador setSelectedOption={setSelectedOption} />
@@ -69,10 +69,9 @@ const Administrador = () => {
             ) : (
                 <section className='h-full'>
                     <SideMenuAdministrador setSelectedOption={setSelectedOption} />
-                    <Divider orientation='vertical'/>
                 </section>
             )}
-            <section className='w-full p-4 sm:p-8 h-full'>
+            <section className='w-full p-4  h-full'>
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={selectedOption}

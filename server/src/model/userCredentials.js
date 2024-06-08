@@ -17,8 +17,8 @@ UserCredentials.init({
     stripe_customer_id: DataTypes.STRING,
     status: {
         type: DataTypes.ENUM,
-        values: ['Active', 'Inactive', 'Suspended'],
-        defaultValue: 'Active'
+        values: ['Activo','Inactivo','Suspendido'],
+        defaultValue: 'Activo'
     },
     registration_date:{
         type: DataTypes.DATE,

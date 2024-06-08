@@ -6,7 +6,7 @@ export default function Footer(){
     const router = useRouter();
     
     return (
-        <footer className="text-center lg:text-left marginy-0">
+        <footer className="text-center lg:text-left marginy-0" >
             <section className="border-b-2 border-t-2 border-default-200 p-6  mx-auto bg-gray-200 bg-opacity-10">
                 <section className='w-full max-w-[76rem] mx-auto flex items-center justify-center lg:justify-between'>
                     <section className="me-12 hidden lg:block">

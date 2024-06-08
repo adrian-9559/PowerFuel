@@ -71,7 +71,7 @@ const RoleAdministration = () => {
                     selectionMode="multiple"
                     selectedKeys={selectedKeys}
                     onSelectionChange={setSelectedKeys}
-                    className="w-full h-full"
+                    className="w-full h-full "
                     topContent={
                         <section className='flex flex-row w-full h-full gap-2'>
                             <section className="flex justify-left gap-2 lg:absolute">

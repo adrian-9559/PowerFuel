@@ -168,8 +168,10 @@ const getUsers = async (limit, page) => {
 const loginUser = async (email, password) => {
     try {
         const user = await model.getUserByEmail(email);
+
         
-        if (user && await bcrypt.compare(password, user.current_password) && user.status === 'Active'){
+        if (user && await bcrypt.compare(password, user.current_password) && user.status === 'Activo'){
+
             const authToken = generateAuthToken(user);
 
             return authToken;

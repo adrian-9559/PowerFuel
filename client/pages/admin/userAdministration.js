@@ -74,7 +74,8 @@ const UserAdministration = () => {
             </div>
         ) : (
             <section className='h-[100%]'>
-                <Table aria-label='Tabla de usuarios'
+                <Table 
+                    aria-label='Tabla de usuarios'
                     selectionMode="multiple"
                     selectedKeys={selectedKeys}
                     onSelectionChange={setSelectedKeys}

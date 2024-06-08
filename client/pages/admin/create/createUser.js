@@ -18,7 +18,8 @@ const CreateUser = () => {
         first_name:  '',
         last_name:  '',
         dni: '',
-        role: ''
+        role: '',
+        status: 'Activo' // New state field
     });
     useTitle(id?'Editar Usuario':'Crear Usuario');
 
@@ -67,8 +68,8 @@ const CreateUser = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (userToEdit) {
-            await UserService.updateUser(userToEdit.id, user);
+        if (id) {
+            await UserService.updateUser(id, user);
         } else {
             await UserService.registerUser(user);
         }
@@ -166,6 +167,19 @@ const CreateUser = () => {
                                         {role.role_name}
                                     </SelectItem>
                                 ))}
+                            </Select>
+                            <Select // New Select for status
+                                name="status"
+                                placeholder="Status"
+                                value={user.status}
+                                onChange={handleChange}
+                                aria-label="Status"
+                                fullWidth
+                                required
+                            >
+                                <SelectItem value="Activo">Activo</SelectItem>
+                                <SelectItem value="Inactivo">Inactivo</SelectItem>
+                                <SelectItem value="Suspendido">Suspendido</SelectItem>
                             </Select>
                         </CardBody>
                         <Divider />

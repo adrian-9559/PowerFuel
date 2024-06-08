@@ -10,6 +10,14 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        'xs': '480px',
+        'sm': '640px',
+        'md': '768px',
+        'lg': '1024px',
+        'xl': '1280px',
+        '2xl': '1536px',
+      },
       colors: {
         black: '#000000',
         primary: '#0d6efd',
@@ -21,10 +29,19 @@ module.exports = {
         light: '#f4f4f4',
         dark: '#212529',
       },
+      textShadow: {
+        default: '0 2px 5px rgba(0, 0, 0, 0.5)',
+      },
     },
   },
   darkMode: "class",
+  variants: {
+    extend: {
+      textShadow: ['responsive'],
+    },
+  },
   plugins: [
     nextui(),
+    require('tailwindcss-textshadow')
   ],
 }

@@ -57,7 +57,7 @@ const ProductCard = ({ product }) => {
                 onKeyDown={handleKeyDown} 
                 onMouseEnter={() => !isMobile && setIsHovered(true)} 
                 onMouseLeave={() => !isMobile && !isLoading && setIsHovered(false)} 
-                className={`w-64 h-80 shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 }`}
+                className={`w-32 sm:w-64 h-40 sm:h-80 shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 }`}
             >
                 <CardBody className="overflow-visible p-0 relative h-full">
                     <section className='bg-cover bg-center h-full w-full relative' style={{ backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/product/${product.product_id}/1.png)` }}> 
@@ -68,13 +68,10 @@ const ProductCard = ({ product }) => {
                             transition={{ duration: 0.2 }}
                         >
                             <Chip 
-                                size="lg" 
+                                size="auto" 
                                 radius="full"
-                                endContent= { 
-                                    <EuroIcon/>
-                                }
                             >
-                                <p className="font-bold">{product.price}</p>
+                                <p className="font-bold">{product.price} €</p>
                             </Chip>
                             <motion.section 
                                 initial={{ y: 20, opacity: 0 }}
@@ -90,10 +87,10 @@ const ProductCard = ({ product }) => {
                             </motion.section>
                         </motion.section>
                         <motion.section
-                            className="absolute bottom-2 right-2 z-10"
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: isHovered || isAdded ? 1 : 0, scale: isHovered ? 1 : 0.9 }} 
                             transition={{ duration: 0.2 }}
+                            className="absolute bottom-2 right-2 z-0"
                         >
                             <Button 
                                 radius="full" 

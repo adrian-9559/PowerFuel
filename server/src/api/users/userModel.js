@@ -101,12 +101,13 @@ class model {
      */
     getUserByEmail = async (email) => {
         try {
-            return await UserCredentials.findOne(
+            const user =  await UserCredentials.findOne(
                 {
                     where:
                         { email: email },
                     include: [{ model: UserInfo, required: true }]
                 });
+            return user;
         } catch (error) {
             console.log(`Error al obtener el usuario por correo electrónico ${errorDisplay}`, error);
         }

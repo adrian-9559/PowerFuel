@@ -25,7 +25,7 @@ const NavigationBar = () => {
         setIsSearchVisible(!isSearchVisible);
       };
     return (
-        <Navbar isBordered className={`w-full flex items-center py-4 ${currentPath === '/home' ? 'bg-transparent' : ''}`}>
+        <Navbar isBordered className={`w-full flex items-center py-4 ${currentPath === '/' ? '' : 'bg-default-50'}`}>
             <NavbarContent className='w-full flex flex-row '>
                 <NavbarItem>
                     <SideMenu />

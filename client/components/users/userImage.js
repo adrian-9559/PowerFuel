@@ -1,6 +1,6 @@
 // UserImage.js
 import React, { useEffect, useState } from 'react';
-import { Avatar } from "@nextui-org/react";
+import { Image } from "@nextui-org/react";
 
 const UserImage = ({user}) => {
     const [style, setStyle] = useState({
@@ -41,10 +41,15 @@ const UserImage = ({user}) => {
 
     return (
         <section style={style} className='w-full h-full rounded-full'>
-            <p 
-            >
-                {user.first_name.charAt(0)}{user.last_name.charAt(0)}
-            </p>
+            <img 
+                src={`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/user/${user.user_id}/1.png`} 
+                alt={`${user.first_name.charAt(0)}${user.last_name.charAt(0)}`}
+                style={{style}}
+                onError={(e) => {
+                    e.target.onerror = null; 
+                    e.target.replaceWith(document.createTextNode(e.target.alt));
+                }}
+            />        
         </section>
     );
 };

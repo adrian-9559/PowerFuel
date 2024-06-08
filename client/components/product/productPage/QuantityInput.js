@@ -14,7 +14,6 @@ const QuantityInput = ({ dataProduct }) => {
         if (countProduct < dataProduct.stock_quantity) {
             setCountProduct(countProduct + 1);
         }
-        console.log(countProduct);
     };
 
     const handleMinusClick = () => {
@@ -22,8 +21,6 @@ const QuantityInput = ({ dataProduct }) => {
             setCountProduct(countProduct - 1);
         else
             setCountProduct(1);
-
-            console.log(countProduct);
     };
 
     const handleAddToCart = () => {

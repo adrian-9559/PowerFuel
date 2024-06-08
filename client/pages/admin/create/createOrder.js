@@ -52,7 +52,6 @@ const CreateOrder = () => {
     const getOrder = async () => {
         if(id) {
             const orderDetails = await OrderService.getOrderById(id);
-            console.log(orderDetails);
             setOrder(orderDetails);
             formatForm(orderDetails); 
             setLoading(false);
@@ -101,7 +100,6 @@ const CreateOrder = () => {
             setLoading(true);
             getOrder();
             formatForm();
-            console.log(order);
         }
     }, [id]);
 

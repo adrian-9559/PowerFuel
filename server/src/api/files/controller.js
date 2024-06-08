@@ -15,7 +15,6 @@ const appRoot = path.dirname(require.main.filename);
 const uploadProduct = (productId, files) => {
     const newPath = path.join(appRoot, '/../public/images/product/', productId);
 
-    console.log("files: ", files);
     let fileIndex = 1;
 
     try {
@@ -128,53 +127,36 @@ const deleteProductImages = (productId, imageId=null) => {
  * @throws {Error} Si hay un error al intentar crear el directorio o leer los archivos existentes. | If there is an error trying to create the directory or read the existing files.
  * @throws {Error} Si hay un error al intentar mover las imágenes del usuario. | If there is an error trying to move the user images.
  */
-const uploadUser = (productId, files) => {
-    const newPath = path.join(appRoot, '/../public/images/product/', productId);
+const uploadUser = (userId, files) => {
+    const newPath = path.join(appRoot, `/../public/images/user/${userId}`);
 
-    console.log("files: ", files);
-    let fileIndex = 1;
-
-    try {
+    try{
+        // Crear el directorio si no existe
         if (!fs.existsSync(newPath)) {
             fs.mkdirSync(newPath, { recursive: true });
-        } else {
-            const existingFiles = fs.readdirSync(newPath);
-            fileIndex = existingFiles.length + 1;
-
-            const totalFilesAfterUpload = existingFiles.length + (Array.isArray(files) ? files.length : 1);
-            if (totalFilesAfterUpload > 5) {
-                console.log(`El número máximo de imágenes permitidas es 5. Actualmente hay ${existingFiles.length} imágenes y estás intentando subir ${totalFilesAfterUpload - existingFiles.length}.`);
-            }
         }
-    } catch (error) {
-        console.error(error);
-        console.log(`Error al intentar crear el directorio o leer los archivos existentes ${errorDisplay}`, error);
-    }
 
-    if(Array.isArray(files)) {
-        files.slice(0, 5).forEach((file, index) => {
-            const filename = `${fileIndex + index}.png`;
-            try{
-                if (file.mv) {
-                    file.mv(path.join(newPath, filename));
+        // Si 'files' es un array, subir todos los archivos. Si no, subir el único archivo.
+        if (Array.isArray(files)) {
+            files.forEach((file, index) => {
+                if (file && file.data && file.name) {
+                    const newFilePath = path.join(newPath, `${index}_${file.name}`);
+                    fs.writeFileSync(newFilePath, file.data);
                 } else {
-                    console.log('El archivo no tiene un método mv');
+                    console.error('Archivo inválido:', file);
                 }
-            }catch(error) {
-                console.log(`Error al intentar mover las imagenes del producto ${errorDisplay}`, error);
-            }
-        });
-    } else {
-        const filename = `${fileIndex}.png`;
-        try{
-            if (files.mv) {
-                files.mv(path.join(newPath, filename));
+            });
+        } else {
+            if (files && files.data && files.name) {
+                const newFilePath = path.join(newPath,'1.png');
+                fs.writeFileSync(newFilePath, files.data);
             } else {
-                console.log('El archivo no tiene un método mv');
+                console.error('Archivo inválido:', files);
             }
-        }catch(error) {
-            console.log(`Error al intentar mover la imagen del producto ${errorDisplay}`, error);
         }
+    }catch(error) {
+        console.log(error)
+        console.log(`Error al intentar mover las imágenes del usuario ${errorDisplay}`, error);
     }
 };
 

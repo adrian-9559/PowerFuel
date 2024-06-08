@@ -38,8 +38,6 @@ const CreateProduct = () => {
         if (name === 'category_id') {
             setParentCategory(value);
         }
-    
-        console.log(formState);
     };
 
     const handleRegister = async (e) => {

@@ -8,6 +8,7 @@ const { isOldPassword, saveOldPassword } = require('./../oldPassword/controller'
 const { sendMailPassReset } = require('./../mail/controller');
 const { verifyCode } = require('./../codesPasswordReset/controller');
 const errorDisplay = "(Error en el controlador de Usuarios)";
+const saltNumber = 10;
 
 /**
  * Función para registrar un nuevo usuario.
@@ -31,7 +32,7 @@ const registerUser = async (user) => {
         if (!email || !current_password || !first_name || !last_name || !dni)
             return null;
 
-        const salt = await bcrypt.genSalt(10);
+        const salt = await bcrypt.genSalt(saltNumber);
         user.current_password = await bcrypt.hash(user.current_password, salt);
 
         user.stripeCustomer = await createStripeCustomer(email, first_name + ' ' + last_name);
@@ -53,9 +54,9 @@ const registerUser = async (user) => {
  */
 const deleteUserById = async (userId) => {
     try {
+        const user = await model.getUsers(null, null, userId);
+        await deleteStripeCustomer(user[0].stripe_customer_id);
         const deletedUser = await model.deleteUser(userId);
-        const user = await model.getUsers(null, null, userId);  
-        await deleteStripeCustomer(user.stripe_customer_id);
         return deletedUser;
     } catch (error) {
         console.log(`Error al intentar eliminar el usuario ${errorDisplay}`, error);
@@ -261,40 +262,38 @@ const changePassword = async (email, code, newPassword, confirmPassword) => {
 
 const changePasswordUser = async (userId, oldPassword, newPassword, confirmPassword) => {
     try{
+        const salt = await bcrypt.genSalt(saltNumber);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+        let message = '';
         const user = await model.getUserId(userId);
 
         if(!await bcrypt.compare(oldPassword, user.current_password)){
-            console.error('La contraseña no coincide con al contraseña actual');
-            return null;
+            message = 'La contraseña actual es incorrecta';
         }
 
         // Check if the new password is the same as the current password
-        if (newPassword === user.current_password) {
-            console.error('La nueva contraseña es igual a la contraseña actual');
+        if (newPassword === await bcrypt.compare(oldPassword, user.current_password)) {
+            message = 'La nueva contraseña es igual a la contraseña actual';
             return null;
         }
 
         // Check if the new password has already been used by the user
-        const isOld = await isOldPassword(user.user_id, newPassword);
+        const isOld = await isOldPassword(user.user_id, hashedPassword);
         if (isOld) {
-            console.error('La nueva contraseña ya ha sido registrada con este usuario');
-            return null;
+            message = 'La nueva contraseña ya ha sido registrada con este usuario';
         }
         
         // Check if the new password and confirmation match
         if (newPassword !== confirmPassword) {
-            console.error('La nueva contraseña y la confirmación no coinciden');
-            return null;
+            message = 'La nueva contraseña y la confirmación no coinciden';
         }
         // Generate a new hashed password
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(newPassword, salt);
 
         // Save the new password as an old password
         await saveOldPassword(user.user_id, user.current_password);
-
         // Update the user's password
-        return await model.updateUserPassword(user.user_id, hashedPassword);
+        await model.updateUserPassword(user.user_id, hashedPassword);
+        return message;
     } catch (error) {
         console.log(`Error al intentar cambiar la contraseña ${errorDisplay}`, error);
     }

@@ -25,6 +25,7 @@ router.route('/')
             }
             res.status(200).json({role,  message: 'Rol añadido correctamente' });
         } catch (error) {
+            console.log(error);
             res.status(500).json({ message: 'Error al añadir el rol' });
         }
     })
@@ -43,6 +44,7 @@ router.route('/')
             const roles = await getRoles(req.query.limit, req.query.page);
             res.status(200).json(roles);
         } catch (error) {
+            console.log(error);
             res.status(500).json({ message: 'Error al obtener los roles' });
         }
     });
@@ -53,6 +55,7 @@ router.route('/allRoles')
             const roles = await getAllRoles();
             res.status(200).json(roles);
         } catch (error) {
+            console.log(error);
             res.status(500).json({ message: 'Error al obtener los roles' });
         }
     });
@@ -76,6 +79,7 @@ router.route('/:roleId')
             }
             res.status(200).json({ message: 'Rol eliminado correctamente' });
         } catch (error) {
+            console.log(error);
             res.status(500).json({ message: 'Error al borrar el rol' });
         }
     })
@@ -92,12 +96,15 @@ router.route('/:roleId')
      */
     .put(async (req, res) => {
         try {
+            const roleId = req.params.roleId;
+            const role_name = req.body.role_name;
             const role = await updateRoleById(roleId, role_name);
             if (!role) {
                 return res.status(404).json({ message: 'Rol no encontrado' });
             }
             res.status(200).json({ message: 'Rol modificado correctamente' });
         } catch (error) {
+            console.log(error);
             res.status(500).json({ message: 'Error al modificar el rol' });
         }
     })
@@ -120,6 +127,7 @@ router.route('/:roleId')
             }
             res.status(200).json(response);
         } catch (error) {
+            console.log(error);
             res.status(500);
         }
     });
@@ -143,6 +151,7 @@ router.route('/user/:userId')
             }
             res.status(200).json(role);
         } catch (error) {
+            console.log(error);
             res.status(500).json({ message: 'Error al obtener el rol del usuario' });
         }
     });
@@ -166,6 +175,7 @@ router.route('/user')
             }
             res.status(200).json(role);
         } catch (error) {
+            console.log(error);
             res.status(500).json({ message: 'Error al obtener el rol del usuario' });
         }
     });

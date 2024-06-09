@@ -51,8 +51,8 @@ const CategoryGroup = () => {
             categoria && (
                 <Card key={categoria.category_id} className="hover:scale-105 h-40" isPressable onPress={() => router.push(`/category/${categoria.category_id}`)} style={{backgroundColor: colores.colorFondo}}>
                     <CardHeader className="absolute z-10 top-1 flex-col !items-start">
-                        <p className="text-tiny uppercase font-bold text-shadow-sm text-left">Categoria</p>
-                        <h4 className="font-bold text-large text-shadow-sm text-left ">{categoria.category_name}</h4>
+                        <p className="text-tiny uppercase text-default-900 font-bold text-shadow-md text-left">Categoria</p>
+                        <h4 className="font-bold text-large text-default-900 text-shadow-lg text-left ">{categoria.category_name}</h4>
                     </CardHeader>
                 </Card>
             )
@@ -75,7 +75,7 @@ const CategoryGroup = () => {
 
     return (
         !isLoading ? (
-            <section className='flex flex-col gap-3 max-w-[85rem]'>
+            <section className='flex flex-col gap-3 max-w-[85rem] '>
                 <section className="grid grid-flow-col gap-3">
                     {seleccionarCategoriasYGenerarCards(rand[0])}
                 </section>

@@ -6,7 +6,7 @@ const InformationComponent = () => {
 
     useTitle('Información');
     return (
-        <section className="grid my-5 mx-16 justify-center gap-5">
+        <section className="grid my-5 mx-4 sm:mx-16 justify-center gap-5">
             <section className="flex justify-center">
                 <h1 className="text-5xl">Información</h1>
             </section>

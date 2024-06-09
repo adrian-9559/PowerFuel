@@ -469,6 +469,24 @@ class model {
             console.log(`Error al intentar actualizar el stock del producto ${errorDisplay}`, error);
         }
     };
+
+    /**
+     * Función para obtener el último ID de producto en la base de datos.
+     * Function to get the last product ID in the database.
+     * 
+     * @returns {string|null} - El último ID de producto o null si no hay productos en la base de datos. | The last product ID or null if there are no products in the database.
+     * @throws {Error} - Error al intentar obtener el último ID de producto. | Error when trying to get the last product ID.
+     */
+    getLastProductId = async () => {
+        try {
+            const lastProduct = await Product.findOne({
+                order: [['product_id', 'DESC']],
+            });
+            return lastProduct ? lastProduct.product_id : null;
+        } catch (error) {
+            console.log(`Error al obtener el último ID de producto ${errorDisplay}`, error);
+        }
+    };
 }
 
 module.exports = new model();

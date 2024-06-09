@@ -14,17 +14,19 @@ const ProductCard = ({ product }) => {
     const { addToCart } = useCart();
 
     useEffect(() => {
-        const checkMobile = () => setIsMobile(window.innerWidth <= 640);
+        const checkMobile = () => {
+            if (window.innerWidth <= 640) {
+                setIsHovered(true);
+            } else {
+                setIsHovered(false);
+            }
+        };
     
-        // Check mobile on mount
         checkMobile();
     
-        // Add resize event listener
         window.addEventListener('resize', checkMobile);
     
-        // Cleanup function
         return () => {
-            // Remove resize event listener
             window.removeEventListener('resize', checkMobile);
         };
     }, []);
@@ -57,7 +59,7 @@ const ProductCard = ({ product }) => {
                 onKeyDown={handleKeyDown} 
                 onMouseEnter={() => !isMobile && setIsHovered(true)} 
                 onMouseLeave={() => !isMobile && !isLoading && setIsHovered(false)} 
-                className={`w-32 sm:w-64 h-40 sm:h-80 shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 }`}
+                className={`w-32 sm:w-64 h-40 sm:h-80 shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500}`}
             >
                 <CardBody className="overflow-visible p-0 relative h-full">
                     <section className='bg-cover bg-center h-full w-full relative' style={{ backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/product/${product.product_id}/1.png)` }}> 
@@ -74,12 +76,12 @@ const ProductCard = ({ product }) => {
                                 <p className="font-bold">{product.price} €</p>
                             </Chip>
                             <motion.section 
-                                initial={{ y: 20, opacity: 0 }}
-                                animate={{ y: 0, opacity: isHovered ? 1 : 0 }}
+                                initial={{ y: 24}}
+                                animate={{ y: 1 }}
                                 transition={{ duration: 0.2 }}
                             >
                                 <p 
-                                    className="overflow-hidden whitespace-nowrap text-overflow-ellipsis max-w-[150px] text-sm font-bold bg-default-200 border-gray-600 bg-opacity-50 mt-2 rounded" 
+                                    className="overflow-hidden whitespace-nowrap text-overflow-ellipsis max-w-[150px] text-sm font-bold bg-default-200 border-gray-600 bg-opacity-50 mt-2 rounded " 
                                     style={{textOverflow: 'ellipsis', paddingLeft: '2px'}}
                                 >
                                     {product.product_name}
@@ -94,7 +96,7 @@ const ProductCard = ({ product }) => {
                         >
                             <Button 
                                 radius="full" 
-                                className={`text-black transition-opacity duration-2000`} 
+                                className={`text-black transition-opacity duration-2000 hidden sm:block`} 
                                 isIconOnly 
                                 disabled={product ? 1 > product.stock_quantity : true}
                                 onClick={(e) => handleAddToCart(e)}

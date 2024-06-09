@@ -35,7 +35,7 @@ const createStripeCustomer = async (email, name) => {
  **/
 const deleteStripeCustomer = async (customerId) => {
     try {
-        await stripe.customers.deleteStripeCustomer(customerId);
+        await stripe.customers.del(customerId);
     } catch (error) {
         console.log(`Error al intentar eliminar el cliente Stripe ${errorDisplay}`, error);
     }
@@ -135,12 +135,15 @@ const createProduct = async (name, description, price) => {
         });
 
         const priceObject = await stripe.prices.create({
-            unit_amount: price*100,
+            unit_amount: parseInt(price)*100,
             currency: 'eur',
             product: product.id
         });
 
-        return { productId: product.id, priceId: priceObject.id };
+        console.log('priceObject', priceObject);
+        console.log('product', product);
+
+        return { stripe_product_id: product.id, stripe_price_id: priceObject.id };
     } catch (error) {
         console.log(`Error al intentar crear el producto ${errorDisplay}`, error);
     }
@@ -185,7 +188,7 @@ const updateProduct = async (productId, product) => {
 
         // Crea un nuevo precio y lo asigna al producto
         const newPrice = await stripe.prices.create({
-            unit_amount: product.price * 100, // Stripe maneja los precios en centavos
+            unit_amount: product.price * 100,
             currency: 'eur',
             product: productId,
         });

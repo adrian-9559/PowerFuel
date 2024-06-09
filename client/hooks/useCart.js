@@ -4,10 +4,26 @@ import ProductService from '@services/productService';
 export const useCart = () => {
     const { cart, setCart ,onOpenCartChange} = useAppContext();
     
-    const addToCart = (product_id, quantity = 1) => {
+    const addToCart = async (product_id, quantity = 1) => {
+        const fetchProduct = async () => {
+            const product = await ProductService.getProductById(product_id, null);
+            return product;
+        }
+        const product = await fetchProduct();
         product_id = parseInt(product_id);
         const existingItem = cart.find(item => item.product_id === product_id);
+    
+        if (product.stock_quantity < quantity) {
+            alert('No hay suficiente stock');
+            return;
+        }
+    
         if (existingItem) {
+            if (existingItem.quantity + quantity > product.stock_quantity) {
+                alert('No hay suficiente stock');
+                return;
+            }
+    
             const updatedCart = cart.map(item => {
                 if (item.product_id === product_id) {
                     return { ...item, quantity: item.quantity + quantity };

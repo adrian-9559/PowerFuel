@@ -81,20 +81,20 @@ const UserAdministration = () => {
                     onSelectionChange={setSelectedKeys}
                     topContent={
                         <section className='flex flex-col sm:flex-row w-full justify-between items-start sm:items-center'>
-                            <section className="flex justify-start gap-2 w-full sm:w-auto mb-3 sm:mb-0">
-                                <Tooltip color="danger" content="Eliminar Usuario/s">
+                            <section className="flex justify-left gap-2 sm:absolute">
+                                <Tooltip color="danger" content="Eliminar Rol/es">
                                     <Button isIconOnly color="danger" className="text-lg cursor-pointer active:opacity-50" onClick={deleteSelectedUsers}>
                                         <DeleteIcon color="white" />
                                     </Button>
                                 </Tooltip>
-                                <Tooltip color="success" content="Añadir Usuario" className='text-white'>
-                                    <Button isIconOnly color="success" className="text-lg cursor-pointer active:opacity-50" onClick={() => router.push('/admin/create/createUser')}>
+                                <Tooltip color="success" content="Añadir Rol" className='text-white'>
+                                    <Button isIconOnly color="success" className="text-lg  cursor-pointer active:opacity-50" onClick={() => router.push('/admin/create/createUser')}>
                                         <PlusIcon color="white" />
                                     </Button>
                                 </Tooltip>
                             </section>
-                            <section className='w-full sm:w-auto flex justify-center items-center mb-3 sm:mb-0'>
-                                <h1 className="text-center text-2xl sm:text-2xl font-bold">Listado de Usuarios</h1>
+                            <section className='flex justify-center items-center h-auto w-full'>
+                                <h1 className="text-center text-2xl font-bold">Listado de Usuarios</h1>
                             </section>
                         </section>
                     }

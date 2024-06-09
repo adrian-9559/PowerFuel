@@ -20,7 +20,7 @@ class CategoryService {
        }
     };
 
-     async addCategory(category) {
+     async createCategory(category) {
         try {
             const response = await api.post('/categories', category);
             return response.data;

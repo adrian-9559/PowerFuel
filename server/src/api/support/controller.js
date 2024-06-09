@@ -1,4 +1,4 @@
-const model = require('../../model');
+const model = require('./supportTicketsModel');
 
 const errorDisplay = "(Error en el controlador de Support Tickets)";
 
@@ -30,6 +30,7 @@ const getSupportTicketById = async (ticketId) => {
  */
 const createSupportTicket = async (ticketData) => {
     try {
+        console.log(ticketData);
         return await model.createSupportTicket(ticketData);
     } catch (error) {
         console.log(`Error al crear el ticket de soporte ${errorDisplay}`, error);

@@ -52,8 +52,8 @@ const ProductListCategory = () => {
                 <Spinner />
             </div>
         ) : (
-            <main className="flex flex-col p-6 gap-4 w-full h-full">
-                <Card className="w-full h-full max-w-[140rem] shadow-lg bg-gray-200 bg-opacity-50" >
+            <main className="flex flex-col p-6 gap-4 items-center justify-center">
+                <Card className="sm:w-full max-w-[85rem] shadow-lg bg-gray-200 bg-opacity-50" >
                     <CardHeader className="flex-col !items-start">
                         {category && category.category_name &&
                             <h1 className="font-bold text-2xl bg-blue-800 bg-opacity-50 text-white w-full p-2 pl-4 shadow-lg rounded-lg">
@@ -61,7 +61,7 @@ const ProductListCategory = () => {
                             </h1>
                         }
                     </CardHeader>
-                    <CardBody className='w-full h-full flex flex-row gap-3 items-center justify-center'>
+                    <CardBody className='flex flex-row gap-3 items-center justify-center'>
                         {loading ? (
                             <Spinner />
                         ) : productos && productos.length > 0 ? (
@@ -71,7 +71,7 @@ const ProductListCategory = () => {
                                 ))}
                             </section>
                         ) : (
-                            <div className="w-full h-full flex items-center justify-center">
+                            <div className="flex items-center justify-center">
                                 <p>No hay productos</p>
                             </div>
                         )}

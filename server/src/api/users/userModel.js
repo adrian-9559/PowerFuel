@@ -84,8 +84,8 @@ class model {
      */
     deleteUser = async (userId) => {
         try {
-            await UserCredentials.destroy({ where: { user_id: userId } });
-            return await UserCredentials.findOne({ where: { user_id: userId } });
+            const deletedUser = await UserCredentials.destroy({ where: { user_id: userId } });
+            return deletedUser;
         } catch (error) {
             console.log(`Error al eliminar el usuario ${errorDisplay}`, error);
         }

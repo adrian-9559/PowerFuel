@@ -29,24 +29,23 @@ const OrderItem = ({ order }) => {
         return 'default';
     }
   };
+  const fetchProduct = async () => {
+    let total = 0;
+    const detailsAux = JSON.parse(order.details);
+    const detailsTemp = [];
+    for (const item of detailsAux) {
+      const productData = await ProductService.getProductById(item.product_id, null);
+      if(productData){
+        detailsTemp.push({ ...productData, quantity: item.quantity });
+        total += productData.price * item.quantity;
+      }
+    }
+    setDetails(detailsTemp);
+    order.total = total.toFixed(2);
+    setShippingAddress(JSON.parse(order.shipping_address));
+  };
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      let total = 0;
-      const detailsAux = JSON.parse(order.details);
-      const detailsTemp = [];
-      for (const item of detailsAux) {
-        const productData = await ProductService.getProductById(item.product_id, null);
-        if(productData){
-          detailsTemp.push({ ...productData, quantity: item.quantity });
-          total += productData.price * item.quantity;
-        }
-      }
-      setDetails(detailsTemp);
-      order.total = total.toFixed(2);
-      setShippingAddress(JSON.parse(order.shipping_address));
-    };
-    
     fetchProduct();
   }, [order]);
 
@@ -77,7 +76,7 @@ const OrderItem = ({ order }) => {
       {!isAdminPage && order.status !== 'cancelado' && order.status !== 'fallido' && order.status !== 'devuelto' && order.status !== 'entregado' && order.status !== 'en proceso de devolucion' && (
         <section className='w-full flex justify-end items-center'>
           <Button color='danger'
-            onClick={() => OrderService.cancelOrder(order.order_id)}
+            onClick={() => {OrderService.cancelOrder(order.order_id); window.location.reload();;}}
           >
             Cancelar
           </Button>
@@ -85,7 +84,7 @@ const OrderItem = ({ order }) => {
       )}
       {!isAdminPage && order.status === 'entregado' && (
         <Button color='primary'
-          onClick={() => OrderService.returnOrder(order.order_id)}
+          onClick={() =>{OrderService.returnOrder(order.order_id); window.location.reload();;}}
         >
           Devolver
         </Button>

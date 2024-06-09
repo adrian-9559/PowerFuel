@@ -3,43 +3,49 @@ import {Input, Button} from '@nextui-org/react';
 import AddressService from '@services/addressService';
 
 const AddressForm = ({setShowForm, editAddress ,setEditAddress}) => {
-    const [street, setStreet] = useState(editAddress ? editAddress.street : '');
-    const [city, setCity] = useState(editAddress ? editAddress.city : '');
-    const [country, setCountry] = useState(editAddress ? editAddress.country : '');
-    const [zip, setZip] = useState(editAddress ? editAddress.zip : '');
-    const [province, setProvince] = useState(editAddress ? editAddress.province : '');
-    const [phone_number, setPhone] = useState(editAddress ? editAddress.phone_number : '');
+    const [formState, setFormState] = useState({
+        street: '',
+        city: '',
+        country: '',
+        zip: '',
+        province: '',
+        phone_number: ''
+    });
+    
+    const [errors, setErrors] = useState({});
 
-    useEffect(() => {
-        if (editAddress) {
-            setStreet(editAddress.street);
-            setCity(editAddress.city);
-            setCountry(editAddress.country);
-            setZip(editAddress.zip);
-            setProvince(editAddress.province);
-            setPhone(editAddress.phone_number);
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setFormState({ ...formState, [name]: value });
+    
+        let formErrors = { ...errors };
+    
+        switch (name) {
+            case 'street':
+            case 'city':
+            case 'country':
+            case 'province':
+                if (!value.trim()) formErrors[name] = "Este campo es requerido";
+                else delete formErrors[name];
+                break;
+            case 'zip':
+                if (!/^\d+$/.test(value)) formErrors.zip = "Código Postal no válido. Debe ser un número entero";
+                else delete formErrors.zip;
+                break;
+            case 'phone_number':
+                if (!/^\d+$/.test(value)) formErrors.phone_number = "Número de teléfono no válido. Debe ser un número entero";
+                else delete formErrors.phone_number;
+                break;
+            default:
+                break;
         }
-    }, [editAddress]);
-
-    const stateSetters = {
-        street: setStreet,
-        city: setCity,
-        country: setCountry,
-        zip: setZip,
-        province: setProvince,
-        phone_number: setPhone
-    };
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        const setState = stateSetters[name];
-        if (setState) {
-            setState(value);
-        }
+    
+        setErrors(formErrors);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const { street, city, country, zip, province, phone_number } = formState;
         const address = {
             street,
             city,
@@ -64,21 +70,41 @@ const AddressForm = ({setShowForm, editAddress ,setEditAddress}) => {
         }
     }
 
+    useEffect(() => {
+        
+        if (editAddress) {
+            setFormState({
+                street: editAddress.street,
+                city: editAddress.city,
+                country: editAddress.country,
+                zip: editAddress.zip,
+                province: editAddress.province,
+                phone_number: editAddress.phone_number
+            });
+        }
+    }
+    , [editAddress]);
+
     return (
         <section className="w-full">
             <h2 className="text-2xl font-bold">Añadir dirección</h2>
-            <form onSubmit={handleSubmit} className='flex flex-col gap-4 justify-content w-full'>
-                <section className="flex flex-row justify-center gap-4 items-center w-full">
-                    <section className="flex flex-col justify-center gap-4 items-center w-full">
-                        <Input name="street" label="Dirección:" defaultValue={street} onChange={handleChange} />
-                        <Input name="city" label="Ciudad:" defaultValue={city} onChange={handleChange} />
-                        <Input name="zip" label="Código Postal:" defaultValue={zip} onChange={handleChange}/>
+            <form onSubmit={handleSubmit} className='flex flex-col gap-3 justify-content w-full'>
+                <section className="flex flex-row justify-center gap-3 items-center w-full">
+                    <section className="flex flex-col justify-center gap-3 items-center w-full">
+                        <Input name="street" label="Dirección:" value={formState.street} onChange={handleChange}  isInvalid={errors.street}/>
+                        <Input name="city" label="Ciudad:" value={formState.city} onChange={handleChange}  isInvalid={errors.city}/>
+                        <Input name="zip" label="Código Postal:" value={formState.zip} onChange={handleChange}  isInvalid={errors.zip}/>
                     </section>
-                    <section className="flex flex-col justify-center gap-4 items-center w-full">
-                        <Input name="province" label="Provincia/Estado:" defaultValue={province} onChange={handleChange} />
-                        <Input name="country" label="País:" defaultValue={country} onChange={handleChange} />
-                        <Input name="phone_number" label="Teléfono:" defaultValue={phone_number} onChange={handleChange} />
+                    <section className="flex flex-col justify-center gap-3 items-center w-full">
+                        <Input name="province" label="Provincia/Estado:" value={formState.province} onChange={handleChange}  isInvalid={errors.province}/>
+                        <Input name="country" label="País:" value={formState.country} onChange={handleChange}  isInvalid={errors.country}/>
+                        <Input name="phone_number" label="Teléfono:" value={formState.phone_number} onChange={handleChange}  isInvalid={errors.phone_number}/>
                     </section>
+                </section>
+                <section>
+                    {Object.keys(errors).map((key, index) => (
+                        <p key={index} className="text-red-500">{errors[key]}</p>
+                    ))}
                 </section>
                 <Button color="primary" auto onClick={handleSubmit}>
                     {editAddress ? 'Guardar cambios' : 'Añadir dirección'}

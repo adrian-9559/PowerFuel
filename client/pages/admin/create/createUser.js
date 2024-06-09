@@ -29,12 +29,13 @@ const CreateUser = () => {
     useTitle(id ? 'Editar Usuario' : 'Crear Usuario');
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
-    const nameRegex = /^[A-Za-z\s]+$/;
+    const passwordRegex = /^(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
+    const nameRegex = /^[A-Za-záéíóúÁÉÍÓÚñÑüÜ\s]+$/;
     const dniRegex = /^\d{8}[A-Za-z]$/;
 
     useEffect(() => {
         setisLoading(true);
+        console.log(readOnly);
 
         if (id) {
             const fetchUser = async () => {
@@ -132,22 +133,21 @@ const CreateUser = () => {
             toast.error('Por favor, rellene correctamente el formulario');
         } else {
             try {
-                if (id) {
-                    if (changePassword) {
+                if (id)
+                    if (changePassword)
                         await UserService.changePasswordUser(formState.current_password, formState.new_password, formState.confirm_new_password);
-                    } else {
+                    else
                         await UserService.updateUser(id, formState);
-                    }
-                } else {
+                else
                     await UserService.registerUser(formState);
-                }
+                
                 toast.success('Usuario guardado correctamente');
                 router.push('/admin/Usuarios');
             } catch (error) {
                 console.log(error);
             }
         }
-
+        console.log(formState);
         setisLoading(false);
     }
 
@@ -181,6 +181,7 @@ const CreateUser = () => {
                                     type="email"
                                     isInvalid={errors.email?.length > 0 && formState.email.length > 0}
                                     errorMessage={errors.email}
+                                    isDisabled={readOnly === "true"}
                                 />
                             </section>
                             {!id && (
@@ -196,6 +197,7 @@ const CreateUser = () => {
                                         type="password"
                                         isInvalid={errors.current_password?.length > 0 && formState.current_password.length > 0}
                                         errorMessage={errors.current_password}
+                                        isDisabled={readOnly === "true"}
                                     />
                                     <Input
                                         label="Confirmar contraseña actual"
@@ -206,6 +208,7 @@ const CreateUser = () => {
                                         type="password"
                                         isInvalid={errors.confirm_current_password?.length > 0 && formState.confirm_current_password.length > 0}
                                         errorMessage={errors.confirm_current_password}
+                                        isDisabled={readOnly === "true"}
                                     />
                                 </section>
                             )}
@@ -221,6 +224,7 @@ const CreateUser = () => {
                                 type="text"
                                 isInvalid={errors.first_name?.length > 0 && formState.first_name.length > 0}
                                 errorMessage={errors.first_name}
+                                isDisabled={readOnly === "true"}
                             />
                             <Input
                                 label="Apellidos"
@@ -234,6 +238,7 @@ const CreateUser = () => {
                                 type="text"
                                 isInvalid={errors.last_name?.length > 0 && formState.last_name.length > 0}
                                 errorMessage={errors.last_name}
+                                isDisabled={readOnly === "true"}
                             />
                             <Input
                                 label="DNI"
@@ -247,6 +252,7 @@ const CreateUser = () => {
                                 type="text"
                                 isInvalid={errors?.dni?.length > 0 && formState.dni.length > 0}
                                 errorMessage={errors.dni}
+                                isDisabled={readOnly === "true"}
                             />
                             <Select
                                 label="Rol"
@@ -260,6 +266,7 @@ const CreateUser = () => {
                                 isRequired
                                 isInvalid={errors.role_id?.length > 0 && formState.role_id.length > 0}
                                 errorMessage={errors.role_id}
+                                isDisabled={readOnly === "true"}
                             >
                                 {roles && roles.map((role) => (
                                     <SelectItem key={role.role_id.toString()} value={role.role_id}>
@@ -279,12 +286,13 @@ const CreateUser = () => {
                                 isRequired
                                 isInvalid={errors.status?.length > 0 && formState.status.length > 0}
                                 errorMessage={errors.status}
+                                isDisabled={readOnly === "true"}
                             >
                                 <SelectItem key="Activo" value="Activo">Activo</SelectItem>
                                 <SelectItem key="Inactivo" value="Inactivo">Inactivo</SelectItem>
                                 <SelectItem key="Suspendido" value="Suspendido">Suspendido</SelectItem>
                             </Select>
-                            {id && (
+                            {id && readOnly !== "true" && (
                                 <section className="flex flex-col items-start gap-3 w-full">
                                     <Checkbox
                                         isSelected={changePassword}
@@ -337,7 +345,7 @@ const CreateUser = () => {
                             )}
                         </CardBody>
                         <Divider />
-                        <CardFooter className="flex flex-col sm:flex-row justify-between">
+                        <CardFooter className="flex flex-col gap-3 sm:flex-row justify-between">
                             <Button
                                 color="danger"
                                 onClick={() => router.push('/admin/Usuarios')}
@@ -345,10 +353,10 @@ const CreateUser = () => {
                             >
                                 Cancelar
                             </Button>
-                            {readOnly === "true" && (
+                            {readOnly !== "true" && (
                                 <Button
                                     color="primary"
-                                    onClick={() => router.push('/admin/Usuarios')}
+                                    type="submit"
                                     className="w-full sm:w-1/4"
                                 >
                                     {isLoading ? 'Cargando...' : id ? 'Guardar cambios' : 'Crear'}

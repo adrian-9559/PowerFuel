@@ -21,14 +21,18 @@ const errorDisplay = "(Error en el controlador de Productos)";
  */
 const addProduct = async (productData) => {
     try {
-        const {productId, priceId} = await createProduct(productData.product_name, productData.description, productData.price);
+        console.log('productData', productData);
+        const product = await createProduct(productData.product_name, productData.description, parseInt(productData.price));
 
-        productData.stripe_product_id = productId;
-        productData.stripe_price_id = priceId;
+        productData.stripe_product_id = product.stripe_product_id;
+        productData.stripe_price_id = product.stripe_price_id;
+
+        await model.insertProduct(productData);
+        const productId = await model.getLastProductId();
 
         uploadProduct(productId, productData.images);
 
-        return await model.insertProduct(productData);
+        return 
     } catch (error) {
         console.log(`Error al intentar añadir el producto ${errorDisplay}`, error);
     }

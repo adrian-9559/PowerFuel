@@ -141,7 +141,7 @@ const CreateOrder = () => {
                             onChange={handleChange('status')}
                         >
                             <SelectItem key={"pendiente"} value="pendiente">Pendiente</SelectItem>
-                            <SelectItem key="en proceso" value="en proceso">En Proceso</SelectItem>
+                            <SelectItem key={"en proceso"} value="en proceso">En Proceso</SelectItem>
                             <SelectItem key="enviado" value="enviado">Enviado</SelectItem>
                             <SelectItem key="entregado" value="entregado">Entregado</SelectItem>
                             <SelectItem key="cancelado" value="cancelado">Cancelado</SelectItem>

@@ -1,95 +1,124 @@
-import { Button, Input, Select, SelectItem, Textarea, Card, Image } from '@nextui-org/react';
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import ProductService from '@services/productService';
+import { useRouter } from 'next/router';
+import useTitle from '@hooks/useTitle';
+import { Button, Card, Image, Input, Select, SelectItem, Textarea } from '@nextui-org/react';
 import CategoryService from '@services/categoryService';
 import BrandService from '@services/brandService';
-import { useRouter } from 'next/router';
-import DeleteIcon from '@icons/DeleteIcon';
-import useTitle from '@hooks/useTitle'; 
+import DeleteIcon from '@icons/deleteIcon';
+
 
 const CreateProduct = () => {
-    const [formState, setFormState] = useState({
-        product_name: '',
-        description: '',
-        stock_quantity: 1,
-        price: 1,
-        category_id: '',
-        id_brand: 1,
-        images: null,
-        status: 'Enabled'
-    });
-    const [loading, setLoading] = useState(false);
-    const [brands, setBrands] = useState([]);
+    const [isLoading, setisLoading] = useState(false);
     const [categories, setCategories] = useState([]);
-    const [isFormValid, setIsFormValid] = useState(false);
+    const [brands, setBrands] = useState([]);
     const [imageCount, setImageCount] = useState(0);
     const router = useRouter();
-    const {id} = router.query;
-    useTitle(id?'Editar Producto':'Crear Producto');
+    const { id } = router.query;
+    console.log(imageCount);
+    const [formState, setFormState] = useState({
+        name: '',
+        description: '',
+        price: '',
+        quantity: '',
+        status: 'Activo'
+    });
+    const [isFormValid, setIsFormValid] = useState(false);
+    const [errors, setErrors] = useState({});
+    useTitle(id ? 'Editar Producto' : 'Crear Producto');
 
-    const handleChange = (name) => (value) => {
-        setFormState({
-            ...formState,
-            [name]: value
-        });
-    };
-    const handleSubmit = async (e) => {
-        try {
-            e.preventDefault();
-            setLoading(true);
-            if (id) {
-                await UserService.updateUser(id, formState);
-            } else {
-                await UserService.registerUser(formState);
-            }
-            setLoading(false);
-            router.push('/admin/Usuarios');
-        } catch (error) {
-            console.log(error);
-            setLoading(false);
-        }
-    }
+    const nameRegex = /^[A-Za-záéíóúÁÉÍÓÚñÑüÜ\s]+$/;
+    const priceRegex = /^\d+(\.\d{1,2})?$/;
+    const quantityRegex = /^\d+$/;
 
     useEffect(() => {
-        const fetchData = async () => {
-    
-            if (id) {
-                const product = await ProductService.getProductById(id, null);
-                setFormState({
-                    product_name: product.product_name,
-                    description: product.description,
-                    stock_quantity: product.stock_quantity,
-                    price: product.price,
-                    category_id: product.category_id,
-                    id_brand: product.id_brand,
-                    status: product.status
-                });
-
-            }
-        };
-
         if (id) {
-            ProductService.getImageCount(id).then(count => {
-                setImageCount(count);
-            });
+            const fetchProduct = async () => {
+                try {
+                    const product = await ProductService.getProductById(id);
+                    setFormState({
+                        product_name: product.product_name,
+                        description: product.description,
+                        price: product.price,
+                        stock_quantity: product.stock_quantity,
+                        status: product.status,
+                        category_id: product.category_id,
+                        id_brand: product.id_brand,
+                    });
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+
+            const fetchProductImages = async () => {
+                try {
+                    const imageCount = await ProductService.getImageCount(id);
+                    setImageCount(imageCount);
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+            fetchProduct();
         }
         
-        fetchData();
     }, [id]);
 
-    useEffect(() => {
-        const validateForm = () => {
-            const { product_name, description, stock_quantity, price, category_id, id_brand, images } = formState;
-            if (product_name && description && stock_quantity > 0 && price > 0 && category_id && id_brand && (images && images.length > 0 || imageCount > 0)) {
-                setIsFormValid(true);
-            } else {
-                setIsFormValid(false);
-            }
-        };
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setFormState({ ...formState, [name]: value });
 
-        validateForm();
-    }, [formState, imageCount]);
+        let formErrors = { ...errors };
+
+        switch (name) {
+            case 'product_name':
+                if (!nameRegex.test(value)) formErrors.name = "Nombre no válido. Solo se permiten letras y espacios";
+                else delete formErrors.name;
+                break;
+            case 'price':
+                if (!priceRegex.test(value)) formErrors.price = "Precio no válido. Debe ser un número con hasta dos decimales";
+                else delete formErrors.price;
+                break;
+            case 'stock_quantity':
+                    if (!quantityRegex.test(value)) formErrors.stock_quantity = "Cantidad no válida. Debe ser un número entero";
+                    else delete formErrors.stock_quantity; 
+                    break;
+            case 'status':
+                if (!value) formErrors.status = "Estado es requerido";
+                else delete formErrors.status;
+                break;
+            default:
+                break;
+        }
+
+        setErrors(formErrors);
+        setIsFormValid(Object.keys(formErrors).length === 0);
+    };  
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        setisLoading(true);
+        if (!isFormValid) {
+            setisLoading(false); 
+            alert('Por favor, corrija los errores en el formulario antes de enviar.');
+            return;
+        }
+        if (id) {
+            try {
+                await ProductService.updateProduct(id, formState);
+                router.push('/admin/Productos');
+            } catch (error) {
+                console.error(error);
+            }
+        } else {
+            try {
+                await ProductService.createProduct(formState);
+                router.push('/admin/Productos');
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        setisLoading(false);
+    };
 
     useEffect(() => {
         const fetchParentCategories = async () => {
@@ -148,57 +177,75 @@ const CreateProduct = () => {
                             label='Nombre del Producto' 
                             name="product_name" 
                             value={formState.product_name} 
-                            onValueChange={handleChange('product_name')}
+                            onChange={handleChange}
+                            errorMessage={errors.product_name}
+                            isRequired
                         />
                     </section>
                     <section className="mb-4">
                         <Textarea 
+                            name='description'
                             label='Descripción del Producto' 
                             value={formState.description} 
-                            onValueChange={handleChange('description')}
+                            onChange={handleChange}
+                            isRequired
                         />
                     </section>
                     <section className="mb-4">
                     <Select 
-                        name='brand' 
+                        name='id_brand' 
                         label='Marca' 
-                        defaultSelectedKeys={[formState.id_brand.toString()]}
-                        onValueChange={handleChange('id_brand')}
+                        defaultSelectedKeys={[formState?.id_brand?.toString()]}
+                        onChange={handleChange}
+                        isRequired
                     >
                         {brands.map((brand) => (<SelectItem key={brand.id_brand.toString()} value={brand.id_brand}>{brand.brand_name}</SelectItem>))}
                     </Select>
                     </section>
                     <section className="mb-4">
                         <Input 
+                            name='stock_quantity'
                             type='number' 
                             label='Cantidad en Stock' 
                             value={formState.stock_quantity} 
-                            onValueChange={handleChange('stock_quantity')}
+                            onChange={handleChange}
+                            errorMessage={errors.stock_quantity}
+                            isInvalid={errors.stock_quantity}
+                            isRequired
                         />
                     </section>
                     <section className="mb-4">
                         <Input 
+                            name='price'
                             type='number' 
                             label='Precio del Producto' 
                             value={formState.price} 
-                            onValueChange={handleChange('price')}
+                            onChange={handleChange}
+                            errorMessage={errors.price}
+                            isInvalid={errors.price||errors.price === ''}
+                            isRequired
                         />
                     </section>
                     <section className="mb-4">
                         <Select 
                             name='category_id' 
                             label='Categoría' 
-                            defaultSelectedKeys={[formState.category_id.toString()]}
-                            onValueChange={handleChange('category_id')}
+                            defaultSelectedKeys={[formState?.category_id?.toString()]}
+                            onChange={handleChange}
+                            isRequired
                         >
                             {categories.map((category) => (<SelectItem key={category.category_id.toString()} value={category.category_id}>{category.category_name}</SelectItem>))}
                         </Select>
-                    </section><section className="mb-4">
+                    </section>
+                    <section className="mb-4">
                         <Select 
                             name='status' 
                             label='Estado del Producto' 
                             defaultSelectedKeys={[formState.status.toString()]}
-                            onValueChange={handleChange('id_brand')}
+                            onChange={handleChange}
+                            errorMessage={errors.status}
+                            isInvalid={errors.status}
+                            isRequired
                         >
                             <SelectItem key="Enabled" value="Enabled">Enabled</SelectItem>
                             <SelectItem key="Disabled" value="Disabled">Disabled</SelectItem>
@@ -219,7 +266,7 @@ const CreateProduct = () => {
                             type='file' 
                             multiple 
                             id='images' 
-                            className="w-full px-4 py-2 border rounded-lg" 
+                            hidden
                             onChange={(e) => {
                                 if (e.target.files.length > 5) {
                                     alert('No puedes subir más de 5 imágenes');
@@ -228,16 +275,18 @@ const CreateProduct = () => {
                                 }
                             }}
                         />  
+                        <label htmlFor='images' className="text-sm text-default-500 p-4 bg-default rounded-xl hover:bg-default-300 cursor-pointer">
+                                Añadir imágenes del producto (máximo 5)
+                        </label>
                     </section>
                     <section className="grid w-full sm:flex sm:justify-between gap-2">
                         <Button type='button' color="danger" onClick={() => router.push('/admin/Productos')} className="w-full sm:w-1/4">Cancelar</Button>
                         <Button 
                             type='submit' 
-                            disabled={loading || !isFormValid}
                             className="w-full sm:w-1/4"
                             color='primary' 
                         >
-                            {loading ? 'Cargando...' : (id ? 'Guardar cambios' : 'Crear Producto')}
+                            {isLoading ? 'Cargando...' : (id ? 'Guardar cambios' : 'Crear Producto')}
                         </Button>
                     </section>
                 </form>

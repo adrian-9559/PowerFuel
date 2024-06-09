@@ -34,7 +34,7 @@ const Search = () => {
             <Card className="w-full shadow-lg" >
                 <CardHeader className="flex-col !items-start">
                     <h1 className="font-bold text-2xl bg-blue-800 bg-opacity-50 text-white w-full p-2 pl-4 shadow-lg rounded-lg">
-                        Resultados para: {query}
+                        Resultados para: "{query}"
                     </h1>
                 </CardHeader>
                 <CardBody className='w-full flex flex-row gap-3 items-center justify-center'>

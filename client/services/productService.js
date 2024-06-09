@@ -41,7 +41,7 @@ class ProductService {
         }
     }
 
-    async addProduct(product) {
+    async createProduct(product) {
 
         try {
             const formData = new FormData();

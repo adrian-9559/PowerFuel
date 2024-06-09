@@ -38,6 +38,7 @@ const CartMenu = () => {
             }  
             color="primary" 
             isInvisible={cart && cart.length === 0}
+            style={{ zIndex: 1 }}
             >
                 <DropdownTrigger style={{ zIndex: 1 }}>
                     <Button

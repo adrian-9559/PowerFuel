@@ -74,13 +74,13 @@ const HomeComponent = () => {
                 <Spinner />
             </div>
         ) : (
-            <main className="flex flex-col p-6 gap-4">
+            <main className="flex flex-col p-6 gap-4 m-4">
                 <section >
                     <h1 className="font-bold text-4xl">Bienvenido a <span className='text-blue-500'>PowerFuel!</span></h1>
                 </section>
                 <section>
                     <section className="flex flex-row gap-3 h-60 w-full">
-                        <Card className='w-full h-full shadow-lg' isPressable onPress={() => router.push(`/search/novedades`)}> 
+                        <Card className='w-full h-full shadow-lg hover:scale-105' isPressable onPress={() => router.push(`/search/novedades`)}> 
                             <CardHeader className="absolute z-10 top-1 flex-col !items-start">
                                 <p className="text-tiny text-white/60 uppercase font-bold">Productos</p>
                                 <h4 className="text-white font-medium text-large">Novedades</h4>
@@ -92,7 +92,7 @@ const HomeComponent = () => {
                                 src={`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/web/home/novedades.webp`}
                             />
                         </Card>
-                        <Card className='w-full h-full shadow-lg' isPressable onPress={() => router.push(`/search/antiguos`)}>
+                        <Card className='w-full h-full shadow-lg hover:scale-105' isPressable onPress={() => router.push(`/search/antiguos`)}>
                             <CardHeader className="absolute z-10 top-1 flex-col !items-start">
                                 <p className="text-tiny text-white/60 uppercase font-bold">Productos</p>
                                 <h4 className="text-white font-medium text-large">Más antiguos</h4>
@@ -107,7 +107,7 @@ const HomeComponent = () => {
                     </section>
                 </section>
                     <CategoryGroup/>
-                <section className='flex flex-col sm:flex-row'>
+                <section className='flex flex-col sm:flex-row justify-center items-center'>
                     <Card className="shadow-lg max-w-[85rem]">
                         <CardHeader className="flex-col !items-start">
                             <h1 className="font-bold text-2xl bg-blue-800 bg-opacity-50 text-white w-full p-2 pl-4 shadow-lg rounded-lg">
@@ -117,7 +117,7 @@ const HomeComponent = () => {
                         <CardBody className='w-full'>
                                 <Carousel
                                     swipeable={true}
-                                    draggable={true}
+                                    draggable={false}
                                     arrows={false}
                                     showDots={false}
                                     responsive={responsive}
@@ -125,11 +125,11 @@ const HomeComponent = () => {
                                     infinite={true}
                                     autoPlay={true}
                                     autoPlaySpeed={1300}
-                                    minimumTouchDrag={40}
                                     keyBoardControl={false}
                                     transitionDuration={1000}
                                     removeArrowOnDeviceType={["tablet", "mobile"]}
                                     dotListClass="custom-dot-list-style"
+                                    containerClass='p-4'
                                     itemClass="carousel-item-padding-40-px mr-4"
                                     
                                 >

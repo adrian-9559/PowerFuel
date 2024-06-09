@@ -78,10 +78,10 @@ const ProductAdminPanel = ({ productId }) => {
                             <h1 className='text-3xl font-bold'>{product.product_name}</h1>
                         </section>
                     </section>
-                    <section className='flex flex-col lg:flex-row gap-5'>
-                        <section className='lg:w-auto'>
+                    <section className='flex flex-col sm:flex-row gap-5 justify-center items-center'>
+                        <section className='lg:w-auto '>
                             <section className='w-fit h-auto'>
-                                <section className='w-full max-w-xs'>
+                                <section className='w-full max-w-xs '>
                                     <Carousel
                                         additionalTransfrom={0}
                                         arrows={imageCount > 1}

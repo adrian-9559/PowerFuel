@@ -16,7 +16,7 @@ router.route('/')
     .post(async (req, res) => {
         try {
             const ticket = await createSupportTicket(req.body);
-            res.status(200).json(ticket);
+            res.status(200).json({message: 'El mensaje de soporte ha sido creado exitosamente'});
         } catch (error) {
             res.status(500).json({ message: 'Error al crear el ticket de soporte' });
         }

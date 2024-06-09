@@ -17,14 +17,16 @@ const BrandAdministration = () => {
     const [selectedKeys, setSelectedKeys] = useState([]);
     useTitle('Administración de Marcas');
 
+    
+    const fetchBrandData = async () => {
+        const response = await BrandService.getBrands(page);
+        setBrands(response.brands??[]);
+        setTotalPages(response.pages);
+        setIsLoading(false);
+    }
+
     useEffect(() => {
         setIsLoading(true);
-        const fetchBrandData = async () => {
-            const response = await BrandService.getBrands(page);
-            setBrands(response.brands??[]);
-            setTotalPages(response.pages);
-            setIsLoading(false);
-        }
 
         
         fetchBrandData();
@@ -59,6 +61,8 @@ const BrandAdministration = () => {
         if (Brands.length === 1 && page > 1) {
             setPage(page - 1);
         }
+        
+        fetchBrandData();
     
     };
 

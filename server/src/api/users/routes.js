@@ -23,6 +23,7 @@ router.route('/')
             }
             res.status(200).json(user);
         } catch (error) {
+            console.log(error);
             res.status(500).json({ message: 'Error registering the user' });
         }
     })
@@ -39,6 +40,7 @@ router.route('/')
             const data = await getUsers(req.query.limit, req.query.page);
             res.send(data);
         } catch (error) {
+            console.log(error);
             res.status(500).json({ message: 'Error getting the users' });
         }
     });
@@ -56,12 +58,14 @@ router.route('/:userId')
      */
     .delete(isAdmin, async (req, res) => {
         try {
-            const deletedUser = await deleteUserById(req.params.userId);
+            const userId = req.params.userId;
+            const deletedUser = await deleteUserById(userId);
             if (!deletedUser) {
                  res.status(404).json({ message: 'Usuario no encontrado' });
             }
             res.status(200).json({ message: 'Usuario eliminado correctamente' });
         } catch (error) {
+            console.log(error);
             res.status(500).json({ message: 'Error al eliminar el usuario' });
         }
     })
@@ -78,12 +82,15 @@ router.route('/:userId')
      */
     .put( async (req, res) => {
         try {
-            const user = await updateUserById(req.params.userId, req.body.user);
+            const userId = req.params.userId;
+            const userData = await updateUserById(userId, req.body.user);
+            const user = await updateUserById(userId, userData);
             if (!user) {
                  res.status(404).json({ message: 'Usuario no encontrado' });
             }
             res.status(200).json({ message: 'Usuario modificado correctamente' });
         } catch (error) {
+            console.log(error);
             res.status(500).json({ message: 'Error al modificar el usuario' });
         }
     })
@@ -106,6 +113,7 @@ router.route('/:userId')
             }
              res.status(200).json(user); 
         } catch (error) {
+            console.log(error);
             if (!res.headersSent) {
                  res.status(500).json({ message: 'Error al obtener el usuario' });
             }
@@ -132,7 +140,7 @@ router.route('/login')
             }
             res.status(200).json({ message: 'Inicio de sesión correcto', auth_token: token});
         } catch (error) {
-            console.error(error);
+            console.log(error);
             res.status(500).json({ message: 'Error al iniciar sesión' });
         }
     });
@@ -154,6 +162,7 @@ router.route('/usersByRegistrationDate')
             const users = await getUsersByRegistrationDate(startDate, endDate);
             res.status(200).json(users);
         } catch (error) {
+            console.log(error);
             res.status(500).json({ message: 'Error al obtener los usuarios por fecha de registro' });
         }
     });
@@ -178,6 +187,7 @@ router.route('/info')
             }
              res.status(200).json(user); 
         } catch (error) {
+            console.log(error);
             if (!res.headersSent) {
                  res.status(500).json({ message: 'Error al obtener el usuario' });
             }
@@ -204,6 +214,7 @@ router.route('/resetPasswordCode')
             else
                 res.status(404).json({ message: 'Usuario no encontrado' });
         } catch (error) {
+            console.log(error);
             res.status(500).json({ message: 'Error al obtener el código de reseteo de contraseña' });
         }
     });
@@ -222,6 +233,7 @@ router.route('/verifyPasswordResetCode')
              res.status(400).json({ message: 'Código de reseteo de contraseña inválido' });
 
         } catch (error) {
+            console.log(error);
              res.status(500).json({ message: 'Error al verificar el código de reseteo de contraseña' });
         }
     });
@@ -247,7 +259,7 @@ router.route('/resetPassword')
             const response = await changePassword(email, code, currentPassword, newPassword, confirmPassword);
             res.status(200).json(response);
         } catch (error) {
-            console.log("error", error);
+            console.log(error);
              res.status(500).json({ message: 'Error al restablecer la contraseña del usuario' });
         }
     });
@@ -256,10 +268,16 @@ router.route('/changePasswordUser')
     .post(async (req, res) => {
         const { oldPassword, newPassword, confirmPassword } = req.body;
         try {
-            const response = await changePasswordUser(req.user.userId, oldPassword, newPassword, confirmPassword);
-            res.status(200).json(response);
+            const message = await changePasswordUser(req.user.userId, oldPassword, newPassword, confirmPassword);
+            if(!message)
+                res.status(200).json({ message: 'Contraseña cambiada correctamente' });
+            else{
+                console.log(message);
+                res.status(500).json({ message: message });
+            }
+            
         } catch (error) {
-             res.status(500).json({ message: 'Error al cambiar la contraseña del usuario' });
+             res.status(500).json({ message: "Ha ocurrido un error al cambiar la contraseña" });
         }
     });
     
@@ -269,6 +287,7 @@ router.route('/generalPanelInfo')
             const response = await getGeneralPanelInfo();
              res.status(200).json(response);
         } catch (error) {
+            console.log(error);
              res.status(500).json({ message: 'Error al obtener la información general del panel' });
         }
     });

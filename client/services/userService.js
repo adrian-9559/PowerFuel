@@ -89,7 +89,7 @@ class UserService {
             confirmPassword: confirmPassword,
         });
 
-        return response.data;
+    return response?true:false;
     }
 }
 

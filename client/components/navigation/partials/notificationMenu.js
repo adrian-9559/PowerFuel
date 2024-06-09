@@ -49,6 +49,7 @@ const NotificationMenu = () => {
             aria-label="Cart Actions"
             className="min-w-16 max-h-48 overflow-y-auto pb-8"
             closeOnSelect={false}
+            emptyContent="No hay notificaciones"
           >
             {notifications.map((notification) => (
               <DropdownItem key={notification.notification_id} textValue={notification.title} onClick={() => { setSelectedNotification(notification); onOpen(); }}>

@@ -69,7 +69,7 @@ const AddressMenu = ({setSelectedAddress}) => {
                         </section>
                     )}
                     {showForm &&(
-                        <section className="flex flex-col items-center gap-4">
+                        <section className="flex flex-col items-center ">
                             <AddressForm setShowForm={setShowForm} editAddress={editAddress} setEditAddress={setEditAddress}/>
                             {UserAddress?.length !== 0 && (
                                 <Button onPress={() => setShowForm(false)} className="w-full">Cancelar</Button>

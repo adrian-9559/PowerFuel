@@ -74,4 +74,10 @@ router.use('/api/orders', require('./api/orders/routes'));
  */
 router.use('/api/notifications', require('./api/notifications/routes'));
 
+/**
+ * @route /api/support
+ * Rutas para la gestión de soporte. | Routes for support management.
+ */
+router.use('/api/support', require('./api/support/routes'));
+
 module.exports = router;

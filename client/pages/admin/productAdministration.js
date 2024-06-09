@@ -81,8 +81,8 @@ const ProductoAdministration = () => {
                     selectedKeys={selectedKeys}
                     onSelectionChange={setSelectedKeys}
                     topContent={
-                        <section className='flex flex-col sm:flex-row w-full justify-between items-start sm:items-center'>
-                            <section className="flex justify-start gap-2 w-full sm:w-auto mb-3 sm:mb-0">
+                        <section className='grid flex-row w-full lg:flex sm:justify-between gap-2'>
+                        <section className="relative flex justify-start items-center gap-2 ">
                                 <Tooltip color="danger" content="Eliminar Producto/s">
                                     <Button isIconOnly color="danger" className="text-lg cursor-pointer active:opacity-50" onClick={deleteSelectedProducts}>
                                         <DeleteIcon color="white" />
@@ -198,9 +198,9 @@ const ProductoAdministration = () => {
                         ), [])}
                     </TableBody>
                 </Table>
-                <Modal isOpen={isOpen} onOpenChange={onOpenChange} className='p-6 overflow-hidden w-full' backdrop="blur">
+                <Modal isOpen={isOpen} onOpenChange={onOpenChange} className='p-6 overflow-hidden w-full sm:max-w-[50%] max-h-[80%]' backdrop="blur">
                     <ModalContent className='w-full'>
-                        <ScrollShadow className="h-[35rem]">
+                        <ScrollShadow className="h-[35rem] sm:h-auto">
                             {selectedProduct && <ProductAdminPanel productId={selectedProduct.product_id} key={selectedProduct.product_id} />}
                         </ScrollShadow>
                     </ModalContent>

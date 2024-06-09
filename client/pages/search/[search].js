@@ -58,28 +58,26 @@ const SearchComponent = () => {
             </div>
         ) : (
             <main className="flex flex-col p-6 gap-4">
-                <section className='w-full'>
-                    <Card className="w-full shadow-lg" >
+                <Card className="w-full shadow-lg" >
                         <CardHeader className="flex-col !items-start">
-                            {search &&
-                                <h1 className="font-bold text-2xl bg-blue-800 bg-opacity-50 text-white w-full p-2 pl-4 shadow-lg rounded-lg">
-                                    {search.charAt(0).toUpperCase() + search.slice(1)}
-                                </h1>
-                            }
+                            <h1 className="font-bold text-2xl bg-blue-800 bg-opacity-50 text-white w-full p-2 pl-4 shadow-lg rounded-lg">
+                                Productos
+                            </h1>
                         </CardHeader>
                         <CardBody className='w-full flex flex-row gap-3 items-center justify-center'>
-                            {loading ? (
-                                <Spinner />
-                            ) : productos && (
-                                <section key={productos} className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5 gap-10">
-                                    {productos.map((product) => (
-                                        <ProductCard key={product.id} product={product} />
-                                    ))}
-                                </section>
-                            )}
+                        {loading ? (
+                            <Spinner />
+                        ) : productos ? (
+                            <section className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-5 gap-3">
+                                {productos.map((product) => (
+                                    <ProductCard key={product.product_id} product={product} />
+                                ))}
+                            </section>
+                        ) : (
+                            <p>No hay productos disponibles.</p>
+                        )}
                         </CardBody>
                     </Card>
-                </section>
             </main>
         )
     );

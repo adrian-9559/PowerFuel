@@ -14,15 +14,14 @@ const CreateProduct = () => {
         description: '',
         stock_quantity: 1,
         price: 1,
-        category_id: 1,
+        category_id: '',
         id_brand: 1,
-        images: null
+        images: null,
+        status: 'Enabled'
     });
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
     const [brands, setBrands] = useState([]);
     const [categories, setCategories] = useState([]);
-    const [parentCategory, setParentCategory] = useState('');
     const [isFormValid, setIsFormValid] = useState(false);
     const [imageCount, setImageCount] = useState(0);
     const router = useRouter();
@@ -34,47 +33,23 @@ const CreateProduct = () => {
             ...formState,
             [name]: value
         });
-    
-        if (name === 'category_id') {
-            setParentCategory(value);
-        }
     };
-
-    const handleRegister = async (e) => {
-        e.preventDefault();
-        setLoading(true);
+    const handleSubmit = async (e) => {
         try {
-            await ProductService.addProduct(formState);
-            router.push('/admin/Productos');
+            e.preventDefault();
+            setLoading(true);
+            if (id) {
+                await UserService.updateUser(id, formState);
+            } else {
+                await UserService.registerUser(formState);
+            }
+            setLoading(false);
+            router.push('/admin/Usuarios');
         } catch (error) {
-            setError(error.message);
-        } finally {
+            console.log(error);
             setLoading(false);
         }
-    };
-
-    const handleUpdate = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        try {
-            await ProductService.updateProduct(id, formState);
-            router.push('/admin/Productos');
-        } catch (error) {
-            setError(error.message);
-        } finally {
-            setLoading(false);
-        }
-    };
-        
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (id) {
-            handleUpdate(e);
-        } else {
-            handleRegister(e);
-        }
-    };
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -87,7 +62,8 @@ const CreateProduct = () => {
                     stock_quantity: product.stock_quantity,
                     price: product.price,
                     category_id: product.category_id,
-                    id_brand: product.id_brand
+                    id_brand: product.id_brand,
+                    status: product.status
                 });
 
             }
@@ -97,15 +73,6 @@ const CreateProduct = () => {
             ProductService.getImageCount(id).then(count => {
                 setImageCount(count);
             });
-        }
-
-        
-        if (id) {
-            const fetchCategory = async () => {
-                const category = await CategoryService.getCategoryById(formState.category_id);
-                setParentCategory(category.parent_category_id);
-            };
-            fetchCategory();
         }
         
         fetchData();
@@ -174,7 +141,6 @@ const CreateProduct = () => {
         <main className="max-w-4xl mx-auto mt-10 p-6">
             <Card shadow className="p-5">
                 <h1 className="text-2xl font-bold mb-4">{id ? 'Editar Producto' : 'Crear Producto'}</h1>
-                {error && <p className="mb-4 text-red-500">{error}</p>}
                 <form onSubmit={handleSubmit}>
                     <section className="mb-4">
                         <Input 
@@ -196,10 +162,10 @@ const CreateProduct = () => {
                     <Select 
                         name='brand' 
                         label='Marca' 
-                        value={formState.id_brand} 
+                        defaultSelectedKeys={[formState.id_brand.toString()]}
                         onValueChange={handleChange('id_brand')}
                     >
-                        {brands.map((brand) => (<SelectItem key={brand.id_brand} value={brand.id_brand}>{brand.brand_name}</SelectItem>))}
+                        {brands.map((brand) => (<SelectItem key={brand.id_brand.toString()} value={brand.id_brand}>{brand.brand_name}</SelectItem>))}
                     </Select>
                     </section>
                     <section className="mb-4">
@@ -219,16 +185,25 @@ const CreateProduct = () => {
                         />
                     </section>
                     <section className="mb-4">
-                    <Select 
-                        name='category' 
-                        label='Categoría del Producto' 
-                        onValueChange={handleChange('category_id')} 
-                        defaultSelectedKeys={[`${parentCategory}`]}
-                    >
-                        {categories.map((category) => (<SelectItem key={category.category_id.toString()} value={category.category_id.toString()}>{category.category_name}</SelectItem>))}
-                    </Select>
-                    <p>formState.category_id: {parentCategory}</p>
-                </section>
+                        <Select 
+                            name='category_id' 
+                            label='Categoría' 
+                            defaultSelectedKeys={[formState.category_id.toString()]}
+                            onValueChange={handleChange('category_id')}
+                        >
+                            {categories.map((category) => (<SelectItem key={category.category_id.toString()} value={category.category_id}>{category.category_name}</SelectItem>))}
+                        </Select>
+                    </section><section className="mb-4">
+                        <Select 
+                            name='status' 
+                            label='Estado del Producto' 
+                            defaultSelectedKeys={[formState.status.toString()]}
+                            onValueChange={handleChange('id_brand')}
+                        >
+                            <SelectItem key="Enabled" value="Enabled">Enabled</SelectItem>
+                            <SelectItem key="Disabled" value="Disabled">Disabled</SelectItem>
+                        </Select>
+                    </section>
                     {id && (    
                         <section className="mb-4">
                             <h2 className="text-xl font-bold mb-2">Imágenes del Producto</h2>
@@ -254,15 +229,16 @@ const CreateProduct = () => {
                             }}
                         />  
                     </section>
-                    <section>
+                    <section className="grid w-full sm:flex sm:justify-between gap-2">
+                        <Button type='button' color="danger" onClick={() => router.push('/admin/Productos')} className="w-full sm:w-1/4">Cancelar</Button>
                         <Button 
                             type='submit' 
                             disabled={loading || !isFormValid}
-                            className="w-full" 
+                            className="w-full sm:w-1/4"
+                            color='primary' 
                         >
                             {loading ? 'Cargando...' : (id ? 'Guardar cambios' : 'Crear Producto')}
                         </Button>
-                        <Button type='button' color="danger" onClick={() => router.push('/admin/Productos')} className="w-full mt-4">Cancelar</Button>
                     </section>
                 </form>
             </Card>

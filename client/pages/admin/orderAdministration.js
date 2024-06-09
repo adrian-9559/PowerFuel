@@ -78,7 +78,7 @@ const OrderAdministration = () => {
     return(
         isLoading ? (
             <div className='w-[20rem] h-[20rem] flex justify-center items-center'>
-                <Spinner />
+                <Spinner aria-label="Loading" />
             </div>
         ) : (
             <section className='h-full w-full'>
@@ -88,10 +88,10 @@ const OrderAdministration = () => {
                     onSelectionChange={setSelectedKeys}
                     className="w-full h-full "
                     topContent={
-                        <section className='grid flex-row w-full h-full lg:flex gap-2'>
-                            <section className="relative lg:absolute flex justify-left gap-2">
-                                <Tooltip color="danger" content="Eliminar Pedidos/s">
-                                    <Button isIconOnly color="danger" className="text-lg cursor-pointer active:opacity-50" onClick={deleteSelectedOrders}>
+                        <section className='grid flex-row w-full lg:flex gap-2'>
+                            <section className="relative lg:absolute flex justify-left gap-2 sm:absolute">
+                                <Tooltip color="danger" content="Eliminar Categoría/s">
+                                    <Button isIconOnly color="danger" className="text-lg cursor-pointer active:opacity-50"  onClick={deleteSelectedOrders}>
                                         <DeleteIcon color="white" />
                                     </Button>
                                 </Tooltip>
@@ -148,8 +148,8 @@ const OrderAdministration = () => {
                                     <p>{format(new Date(order.order_date), 'dd-MM-yyyy HH:mm')}</p>
                                 </TableCell>
                                 <TableCell>
-                                    <Chip className="capitalize" color={statusColorMap[order.order_status]} size="sm" variant="flat">
-                                        {order.order_status}
+                                    <Chip className="capitalize" color={statusColorMap[order.status]} size="sm" variant="flat">
+                                        {order.status}
                                     </Chip>
                                 </TableCell>
                                 <TableCell>
@@ -175,7 +175,7 @@ const OrderAdministration = () => {
                         ), )}
                     </TableBody>
                 </Table>
-                <Modal isOpen={isOpen} onOpenChange={onOpenChange} className='p-6 overflow-hidden max-w-[60%] max-h-[80%]' backdrop="blur">
+                <Modal isOpen={isOpen} onOpenChange={onOpenChange} className='p-6 overflow-hidden max-w-[90%] max-h-[95%]' backdrop="blur">
                     <ModalContent className='w-full'>
                         {selectedOrder && <OrderItem order={selectedOrder} key={selectedOrder.order_id} />}
                     </ModalContent>

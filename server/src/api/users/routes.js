@@ -262,7 +262,7 @@ router.route('/changePasswordUser')
              res.status(500).json({ message: 'Error al cambiar la contraseña del usuario' });
         }
     });
-
+    
 router.route('/generalPanelInfo')
     .post(async (req, res) => {
         try {

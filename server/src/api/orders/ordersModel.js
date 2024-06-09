@@ -66,6 +66,7 @@ class OrderModel {
      */
     updateOrder = async (orderId, orderData) => {
         try {
+            orderData.shipping_address = JSON.stringify(orderData.shipping_address);
             return await Order.update(orderData, {
                 where: { order_id: orderId }
             });
@@ -139,6 +140,17 @@ class OrderModel {
         }
     };
 
+
+    /**
+     * Función para obtener todas las órdenes con paginación.
+     * Function to get all orders with pagination.
+     * 
+     * @param {number} skip - El número de órdenes a saltar. | The number of orders to skip.
+     * @param {number} limit - El límite de órdenes por página. | The limit of orders per page.
+     * @param {string} orderId - El ID de la orden que se quiere obtener. | The ID of the order to be obtained.
+     * @returns {Promise<Object[]>} - Una promesa que se resuelve en un array de objetos de órdenes. | A promise that resolves into an array of order objects.
+     * @throws {Error} - Lanza un error si hay un problema al obtener las órdenes. | Throws an error if there is a problem getting the orders.
+     */
     getAllOrders = async (skip = 0, limit = 10, orderId) => {
         try {
             skip = parseInt(skip);
@@ -155,6 +167,16 @@ class OrderModel {
         }
     };
 
+    /**
+     * Función para obtener el conteo de órdenes por semana.
+     * Function to get the count of orders by week.
+     * 
+     * @param {string} startDate - La fecha de inicio de la semana. | The start date of the week.
+     * @param {string} endDate - La fecha de fin de la semana. | The end date of the week.
+     * @returns {Promise<number>} - Una promesa que se resuelve en el número de órdenes en la semana especificada. | A promise that resolves into the number of orders in the specified week.
+     * @throws {Error} - Lanza un error si hay un problema al obtener el conteo de pedidos por semana. | Throws an error if there is a problem getting the count of orders by week.
+     *  
+     */
     getCountOrdersWeek = async (startDate, endDate) => {
         try{
             return await Order.count({
@@ -169,17 +191,64 @@ class OrderModel {
         }
     }
 
+    /**
+     * Función para obtener el conteo de órdenes por estado.
+     * Function to get the count of orders by status.
+     * 
+     * @param {string} status - El estado de la orden. | The status of the order.
+     * @returns {Promise<number>} - Una promesa que se resuelve en el número de órdenes con el estado especificado. | A promise that resolves into the number of orders with the specified status.
+     * @throws {Error} - Lanza un error si hay un problema al obtener el conteo de pedidos por estado. | Throws an error if there is a problem getting the count of orders by status.
+     */
     getCountStatusOrder = async (status) => {
         try{
             return await Order.count({
                 where: {
-                    order_status: status
+                    status: status
                 }
             });
         }catch (error) {
             console.log(`Error al obtener el conteo de pedidos por estado ${errorDisplay}`, error);
         }
     }
+
+    /**
+     * Función para cancelar un pedido existente.
+     * Function to cancel an existing order.
+     * 
+     * @param {string} orderId - El ID del pedido que se desea cancelar. | The ID of the order to be canceled.
+     * @returns {Promise<boolean>} - Una promesa que se resuelve en un booleano que indica si el pedido fue cancelado (true) o no (false). | A promise that resolves into a boolean indicating whether the order was canceled (true) or not (false).
+     * @throws {Error} - Lanza un error si hay un problema al cancelar el pedido. | Throws an error if there is a problem canceling the order.
+     */
+    cancelOrder = async (orderId) => {
+        try {
+            const result = await Order.update({ status: 'cancelado' }, {
+                where: { order_id: orderId }
+            });
+            return result > 0;
+        } catch (error) {
+            console.log(`Error al cancelar el pedido ${errorDisplay}`, error);
+        }
+    };
+
+    /**
+     * Función para devolver una orden existente.
+     * Function to return an existing order.
+     * 
+     * @param {string} orderId - El ID de la orden que se desea devolver. | The ID of the order to be returned.
+     * @returns {Promise<boolean>} - Una promesa que se resuelve en un booleano que indica si la orden fue devuelta (true) o no (false). | A promise that resolves into a boolean indicating whether the order was returned (true) or not (false).
+     * @throws {Error} - Lanza un error si hay un problema al devolver la orden. | Throws an error if there is a problem returning the order.
+     */
+    returnOrder = async (orderId) => {
+        try {
+            console.log('orderId', orderId);
+            const result = await Order.update({ status: 'en proceso de devolucion' }, {
+                where: { order_id: orderId }
+            });
+            return result > 0;
+        } catch (error) {
+            console.log(`Error al devolver la orden ${errorDisplay}`, error);
+        }
+    };
     
 }
 

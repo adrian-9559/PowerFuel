@@ -18,7 +18,8 @@ class model {
                 email: user.email, 
                 current_password: user.current_password,
                 stripe_customer_id: user.stripeCustomer.id,
-                time_register: user.time_register
+                status: user.status,
+                registration_date: user.registration_date
             });
             
             await UserInfo.create({
@@ -57,9 +58,9 @@ class model {
      */
     updateUser = async (userId, user) => {
         try {
-            const { email, current_password, first_name, last_name, dni, role_id } = user;
+            const { email, current_password, first_name, last_name, dni, role_id, status } = user;
 
-            await UserCredentials.update({ email, current_password }, { where: { user_id: userId } });
+            await UserCredentials.update({ email, current_password ,status }, { where: { user_id: userId } });
             await UserInfo.update({ first_name, last_name, dni }, { where: { user_id: userId } });
 
             if (role_id) {

@@ -94,6 +94,24 @@ class OrderService {
             throw error;
         }
     }
+
+    async cancelOrder(orderId) {
+        try {
+            const response = await api.post(`/orders/cancel/${orderId}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async returnOrder(orderId) {
+        try {
+            const response = await api.post(`/orders/return/${orderId}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 const orderService = new OrderService();

@@ -49,7 +49,7 @@ const CategoryGroup = () => {
         const colores = generarColorAleatorio();
         return (
             categoria && (
-                <Card key={categoria.category_id} className="hover:scale-10 h-40" isPressable onPress={() => router.push(`/category/${categoria.category_id}`)} style={{backgroundColor: colores.colorFondo}}>
+                <Card key={categoria.category_id} className="hover:scale-105 h-40" isPressable onPress={() => router.push(`/category/${categoria.category_id}`)} style={{backgroundColor: colores.colorFondo}}>
                     <CardHeader className="absolute z-10 top-1 flex-col !items-start">
                         <p className="text-tiny uppercase font-bold text-shadow-sm text-left">Categoria</p>
                         <h4 className="font-bold text-large text-shadow-sm text-left ">{categoria.category_name}</h4>

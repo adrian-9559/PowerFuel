@@ -32,10 +32,10 @@ const isAdmin = async (req, res, next) => {
                 if (role_id !== 10) {
                     next();
                 } else {
-                    res.status(403).json({ error: 'Unauthorized' });
+                    res.status(403).json({ message: 'Unauthorized' });
                 }
             } catch (error) {
-                res.status(500).json({ error: 'Internal server error' });
+                res.status(500).json({ message: 'Internal server error' });
             }
         });
     } else {

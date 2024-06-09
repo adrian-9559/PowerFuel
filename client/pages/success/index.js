@@ -28,7 +28,7 @@ const SuccessPage = () => {
                 const order = {
                     order_id: lastPayment.id,
                     order_date: new Date(),
-                    order_status: 'pendiente',
+                    status: 'pendiente',
                     details: JSON.stringify(cart),
                     shipping_address: JSON.stringify(shipping), 
                 };
@@ -42,17 +42,17 @@ const SuccessPage = () => {
     }, [success]);
 
     return (
-        <main className='flex justify-center items-center h-full p-20'>
-            <Card className='shadow-md px-8 pt-6 pb-8 mb-4 items-center justify-center'>
-                <section className='mb-4 text-center'>
-                    <h1 className='font-bold text-xl mb-2'>¡Pedido completado con éxito!</h1> 
-                    <PartyIcon className="w-16 h-16 mx-auto"/>
-                </section>
-                <p className='mb-6 text-center w-96'>Gracias por tu compra. Tu pedido está siendo procesado y te llegará pronto.</p>
-                <section className='flex flex-col justify-center items-center gap-2 w-full'>
-                    <Button color='primary' block onPress={() => router.push('/')} className='w-64'>Seguir comprando</Button>
-                    <Button color='primary' block onPress={() => router.push('/users/config/OrderList')} className='w-64'>Ver mis pedidos</Button>
-                </section>
+        <main className='flex justify-center items-center h-full p-8 sm:p-20'>
+            <Card className='shadow-md px-8 pt-6 pb-8 mb-4 w-full sm:w-96'>
+            <section className='mb-4 text-center'>
+                <h1 className='font-bold text-xl mb-2'>¡Pedido completado con éxito!</h1> 
+                <PartyIcon className="w-16 h-16 mx-auto"/>
+            </section>
+            <p className='mb-6 text-center'>Gracias por tu compra. Tu pedido está siendo procesado y te llegará pronto.</p>
+            <section className='flex flex-col gap-4'>
+                <Button color='primary' block onPress={() => router.push('/')} className='w-full'>Seguir comprando</Button>
+                <Button color='primary' block onPress={() => router.push('/users/config/OrderList')} className='w-full'>Ver mis pedidos</Button>
+            </section>
             </Card>
         </main>
     );

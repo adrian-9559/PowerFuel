@@ -141,6 +141,16 @@ const getOrdersByDate = async (startDate, endDate) => {
     }
 };
 
+/**
+ * Función para obtener todos los pedidos con paginación.
+ * Function to get all orders with pagination.
+ *      
+ * @param {number} page - La página actual. | The current page.
+ * @param {number} limit - El límite de pedidos por página. | The limit of orders per page.
+ * @returns {Object} - Los pedidos obtenidos. | The obtained orders.
+ * @throws {Error} - Error al intentar obtener todos los pedidos. | Error when trying to get all orders.
+ */
+
 const getAllOrders = async (page, limit) => {
     try {
         page = parseInt(page) || 1;
@@ -157,6 +167,14 @@ const getAllOrders = async (page, limit) => {
         console.log(`Error al intentar obtener todos los pedidos ${errorDisplay}`, error);
     }
 };
+
+/**
+ * Función para obtener la información general del panel.
+ * Function to get the general panel information.
+ * 
+ * @returns {Object} - La información general del panel. | The general panel information.
+ * @throws {Error} - Error al intentar obtener la información general del panel. | Error when trying to get the general panel information.
+ */
 
 const getGeneralPanelInfo = async () => {
     try {
@@ -179,6 +197,39 @@ const getGeneralPanelInfo = async () => {
     }
 };
 
+/**
+ * Función para cancelar una orden.
+ * Function to cancel an order.
+ * 
+ * @param {string} orderId - El ID de la orden que se quiere cancelar. | The ID of the order to be cancelled.
+ * @returns {Object} - La respuesta de la cancelación de la orden. | The response of the order cancellation.
+ * @throws {Error} - Error al intentar cancelar el pedido. | Error when trying to cancel the order.
+ */
+
+const cancelOrder = async (orderId) => {
+    try {
+        return await OrderModel.cancelOrder(orderId);
+    } catch (error) {
+        console.log(`Error al intentar cancelar el pedido ${errorDisplay}`, error);
+    }
+};
+
+/**
+ * Función para devolver una orden.
+ * Function to return an order.
+ * 
+ * @param {string} orderId - El ID de la orden que se quiere devolver. | The ID of the order to be returned.
+ * @returns {Object} - La respuesta de la devolución de la orden. | The response of the order return.
+ * @throws {Error} - Error al intentar devolver el pedido. | Error when trying to return the order.
+ */
+const returnOrder = async (orderId) => {
+    try {
+        return await OrderModel.returnOrder(orderId);
+    } catch (error) {
+        console.log(`Error al intentar devolver el pedido ${errorDisplay}`, error);
+    }
+}
+
 module.exports = {
     getOrdersByUser,
     getOrderById,
@@ -188,5 +239,7 @@ module.exports = {
     getOrdersCount,
     getOrdersByDate,
     getGeneralPanelInfo,
-    getAllOrders
+    getAllOrders,
+    cancelOrder,
+    returnOrder
 };

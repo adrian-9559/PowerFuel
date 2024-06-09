@@ -75,14 +75,14 @@ const BrandAdministration = () => {
                     onSelectionChange={setSelectedKeys}
                     className="w-full h-full"
                     topContent={
-                        <section className='grid flex-row w-full h-full lg:flex gap-2'>
-                            <section className="relative lg:absolute flex justify-left gap-2">
-                                <Tooltip color="danger" content="Eliminar Marca/s">
+                        <section className='grid flex-row w-full lg:flex gap-2'>
+                            <section className="relative lg:absolute flex justify-left gap-2 sm:absolute">
+                                <Tooltip color="danger" content="Eliminar Categoría/s">
                                     <Button isIconOnly color="danger" className="text-lg cursor-pointer active:opacity-50" onClick={deleteSelectedBrands}>
                                         <DeleteIcon color="white" />
                                     </Button>
                                 </Tooltip>
-                                <Tooltip color="success" content="Añadir Marca" className='text-white'>
+                                <Tooltip color="success" content="Añadir Categoría" className='text-white'>
                                     <Button isIconOnly color="success" className="text-lg  cursor-pointer active:opacity-50" onClick={() => router.push('/admin/create/createBrand')}>
                                         <PlusIcon color="white" />
                                     </Button>

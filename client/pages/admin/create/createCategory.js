@@ -12,7 +12,10 @@ const CreateCategory = () => {
     const {id} = router.query;
     useTitle(id?'Editar Categoría':'Crear Categoría');
 
-    const isNameValid = () => nameCategory && nameCategory.trim() !== '';
+    const isNameValid = () => {
+        const regex = /^[a-zA-Z0-9\s]{1,50}$/;
+        return nameCategory && regex.test(nameCategory);
+    };
     const isFormValid = () => isNameValid();
 
     const handleRegister = async (e) => {
@@ -84,21 +87,21 @@ const CreateCategory = () => {
                         </Select>
                     </section>
                     <section className="mb-4">
-                        <Input 
-                            isRequired
-                            type='text' 
-                            label='Nombre de la categoría' 
-                            value={nameCategory}
-                            onChange={(e) => setName(e.target.value.trim())} 
-                            onClear={() => setName('')}
-                            defaultValue={nameCategory}
-                            isInvalid={!isNameValid()}
-                            errorMessage='Formato inválido. Solo se permiten letras, números y espacios. Máximo 50 caracteres.'
-                        />
+                    <Input 
+                        isRequired
+                        type='text' 
+                        label='Nombre de la categoría' 
+                        value={nameCategory}
+                        onChange={(e) => setName(e.target.value)} 
+                        onClear={() => setName('')}
+                        defaultValue={nameCategory}
+                        isInvalid={!isNameValid() && nameCategory !== ''}
+                        errorMessage='Formato inválido. Solo se permiten letras, números y espacios. Máximo 50 caracteres.'
+                    />
                     </section>
-                    <section>
-                        <Button type='submit' className="w-full">Guardar cambios</Button>
-                        <Button type='button' color="danger" onClick={() => router.push('/admin/Categorias')} className="w-full mt-4">Cancelar</Button>
+                    <section className="grid w-full sm:flex sm:justify-between gap-2">
+                        <Button type='button' color="danger" onClick={() => router.push('/admin/Categorias')} className="w-full sm:w-1/4">Cancelar</Button>
+                        <Button type='submit' color="primary" className="w-full sm:w-1/4">Guardar cambios</Button>
                     </section>
                 </form>
             </Card>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import {Card, CardHeader, CardBody, CardFooter, Button, Calendar, Spinner, CircularProgress, ScrollShadow, Listbox, ListboxItem} from "@nextui-org/react";
-import {today, getLocalTimeZone} from "@internationalized/date";
+import { Card, CardHeader, CardBody, CardFooter, Button, Calendar, Spinner, CircularProgress, ScrollShadow, Listbox, ListboxItem } from "@nextui-org/react";
+import { today, getLocalTimeZone } from "@internationalized/date";
 import UserService from '@services/userService';
 import OrderService from '@services/orderService';
 import ProductService from '@services/productService';
@@ -8,7 +8,7 @@ import serverService from '@services/serverService';
 import CategoryService from '@services/categoryService';
 import RoleService from '@services/roleService';
 import BrandService from '@services/brandService';
-import useTitle from '@hooks/useTitle'; 
+import useTitle from '@hooks/useTitle';
 
 const GeneralAdministration = () => {
     const [numUsersRegisterWeek, setNumUsersRegisterWeek] = useState(0);
@@ -60,7 +60,7 @@ const GeneralAdministration = () => {
         return () => clearInterval(interval);
     })
 
-    function colores(data){
+    function colores(data) {
         if (data > 80) {
             return "danger";
         } else if (data > 50) {
@@ -191,9 +191,6 @@ const GeneralAdministration = () => {
                                     </ul>
                                 </ScrollShadow>
                             </CardBody>
-                            <CardFooter className="pt-0">
-                                <Button isFullWidth color="primary">Ver todas las marcas</Button>
-                            </CardFooter>
                         </Card>
                         <Card className="col-span-12 sm:col-span-4 h-auto w-full">
                             <CardHeader className="flex-col !items-start pb-0">
@@ -213,9 +210,6 @@ const GeneralAdministration = () => {
                                     </ul>
                                 </ScrollShadow>
                             </CardBody>
-                            <CardFooter className="pt-0">
-                                <Button isFullWidth color="primary">Ver todos los roles</Button>
-                            </CardFooter>
                         </Card>
                     </section>
 
@@ -268,7 +262,7 @@ const GeneralAdministration = () => {
                             <CardBody className="justify-center h-auto w-full grid grid-cols-2 grid-row-2 gap-2">
                                 <Card className='bg-yellow-500 w-auto bg-opacity-50 h-auto flex flex-col rounded-[0.375rem]'>
                                     <CardHeader className="z-10 flex-col !items-start pb-0">
-                                        <h4 className="font-medium text-2xs text-tiny">Número total de productos</h4>
+                                        <h4 className="font-medium text-2xs text-tiny">Productos Totales</h4>
                                     </CardHeader>
                                     <CardBody>
                                         <p className="uppercase text-6xl">{numTotalProducts}</p>
@@ -311,13 +305,14 @@ const GeneralAdministration = () => {
                             <CardBody className="justify-center h-auto w-full grid grid-cols-2 grid-row-2 gap-2">
                                 <section className='w-full h-full flex flex-col justify-center items-center'>
                                     <h3 className='text-center text-xl font-bold'>Uso de Procesador</h3>
-                                    <CircularProgress 
-                                        value={usoCPUPorcentaje} 
+                                    <CircularProgress
+                                        aria-label="Loading data..."
+                                        value={usoCPUPorcentaje}
                                         color={colorCPU}
                                         classNames={{
                                             svg: "w-36 h-36 drop-shadow-md",
                                             track: "stroke-white/10",
-                                            value: "text-3xl font-semibold text-white",
+                                            value: "text-3xl font-semibold",
                                         }}
                                         showValueLabel={true}
                                     >
@@ -325,39 +320,32 @@ const GeneralAdministration = () => {
                                 </section>
                                 <section className='w-full h-full flex flex-col justify-center items-center'>
                                     <h3 className='text-center text-xl font-bold'>Uso de RAM</h3>
-                                    <CircularProgress value={usoRAMPorcentaje} color={colorRAM} classNames={{
+                                    <CircularProgress 
+                                        aria-label="Loading data..."
+                                        value={usoRAMPorcentaje}
+                                        color={colorRAM}
+                                        classNames={{
                                             svg: "w-36 h-36 drop-shadow-md",
                                             track: "stroke-white/10",
-                                            value: "text-3xl font-semibold text-white",
+                                            value: "text-3xl font-semibold",
                                         }}
                                         showValueLabel={true}
                                     />
                                 </section>
                                 <section className='w-full h-full flex flex-col justify-center items-center'>
                                     <h3 className='text-center text-xl font-bold'>Uso de Disco</h3>
-                                    <CircularProgress 
+                                    <CircularProgress
+                                        aria-label="Loading data..."
                                         value={usoDiskPorcentaje}
                                         color={colorDisk}
                                         classNames={{
                                             svg: "w-36 h-36 drop-shadow-md",
                                             track: "stroke-white/10",
-                                            value: "text-3xl font-semibold text-white",
+                                            value: "text-3xl font-semibold ",
                                         }}
                                         showValueLabel={true}
                                     />
                                 </section>
-                                {/* <section className='w-full h-full flex flex-col justify-center items-center'>
-                                    <CircularProgress 
-                                        value={temperatureCPU}
-                                        color={colorTemperature}
-                                        classNames={{
-                                            svg: "w-36 h-36 drop-shadow-md",
-                                            track: "stroke-white/10",
-                                            value: "text-3xl font-semibold text-white",
-                                        }}
-                                        showValueLabel={true}
-                                    />
-                                </section> */}
                             </CardBody>
                         </Card>
                         <Card className="col-span-12 sm:col-span-6 h-auto w-full">
@@ -379,9 +367,6 @@ const GeneralAdministration = () => {
                                     </ul>
                                 </ScrollShadow>
                             </CardBody>
-                            <CardFooter className="pt-0">
-                                <Button isFullWidth color="primary">Ver todas las categorías</Button>
-                            </CardFooter>
                         </Card>
                     </section>
 

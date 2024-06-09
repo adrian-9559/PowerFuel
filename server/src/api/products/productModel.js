@@ -89,9 +89,13 @@ class model {
                 offset: skip,
                 limit: limit,
                 include: [{
-                    model: Category
+                    model: Category,
+                    attributes: ['category_name'],
+                    as : 'Category' // Usa el alias definido en tu asociación
                 }, {
-                    model: Brand
+                    model: Brand,
+                    attributes: ['brand_name'],
+                    as : 'Brand' // Usa el alias definido en tu asociación
                 }],
                 subQuery: false
             });
@@ -100,30 +104,6 @@ class model {
             console.log(`Error al obtener los productos ${errorDisplay}`, error);
         }
     };
-
-    /**
-     * Función para obtener los IDs de los productos.
-     * Function to get the IDs of the products.
-     * 
-     * @returns {Array} - Los productos con sus IDs. | The products with their IDs.
-     * @throws {Error} - Error al intentar obtener los IDs de los productos. | Error when trying to get the IDs of the products.
-     */
-    async getProductsId() {
-        try {
-            const products = await Product.findAll({
-                attributes: ['product_id'],
-                include: [{
-                    model: Category
-                }, {
-                    model: Brand
-                }],
-                subQuery: false
-            });
-            return products;
-        } catch (error) {
-            console.log(`Error al obtener los IDs de los productos ${errorDisplay}`, error);
-        }
-    }
     
     /**
      * Función para obtener las categorías hijas de una lista de categorías.
@@ -269,6 +249,7 @@ class model {
                     id_brand: productData.id_brand,
                     category_id: productData.category_id,
                     stripe_product_id: productData.stripe_product_id,
+                    status: productData.status
                 }, {
                     where: {
                         product_id: parseInt(productId)

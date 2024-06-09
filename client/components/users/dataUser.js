@@ -78,12 +78,12 @@ const DataUser = () => {
     }
 
     return (
-        <main className='grid pt-3 pb-20 w-64 sm:w-full gap-6 mx-auto'>
+        <main className='grid sm:p-10 w-64 sm:w-full gap-6 mx-auto'>
             <section className='flex flex-raw pb-5 gap-3 lg:gap-5 items-center'>
                 <section className='rounded'>
                     <Skeleton isLoaded={!isLoading} className="rounded-full">
                         {user &&
-                            <EditUserImage>
+                            <EditUserImage >
                                 <UserImage user={user} className="rounded-full object-cover"/>
                             </EditUserImage>
                         }
@@ -93,18 +93,12 @@ const DataUser = () => {
                     <p className="font-bold text-center sm:text-left">{user ? user.email : ''}</p>
                 </Skeleton>
             </section>
-            <section className='w-full grid gap-3 sm:flex'>
+            <section className='w-full grid gap-3 md:flex'>
                 <section className='w-full flex flex-col gap-5'>
                     <Input type='text' className='w-full' value={user ? user.email : ''} onChange={handdleChange} disabled={!isEditing} label="Email:" name="email" />
-                    <Skeleton isLoaded={!isLoading} className="rounded-lg h-auto py-2">
-                        <Input type='text' className='w-full' value={user ? user.first_name : ''} onChange={handdleChange} disabled={!isEditing} label="Nombre:" name="first_name" />
-                    </Skeleton>
-                    <Skeleton isLoaded={!isLoading} className="rounded-lg h-auto py-2">
-                        <Input type='text' className='w-full' value={user ? user.last_name : ''} onChange={handdleChange} disabled={!isEditing} label="Apellido:" name="last_name" />
-                    </Skeleton>
-                    <Skeleton isLoaded={!isLoading} className="rounded-lg h-auto py-2">
-                        <Input type='text' className='w-full' value={user ? user.dni : ''} onChange={handdleChange} disabled={!isEditing} label="DNI:" name="dni" />
-                    </Skeleton>
+                    <Input type='text' className='w-full' value={user ? user.first_name : ''} onChange={handdleChange} disabled={!isEditing} label="Nombre:" name="first_name" />
+                    <Input type='text' className='w-full' value={user ? user.last_name : ''} onChange={handdleChange} disabled={!isEditing} label="Apellido:" name="last_name" />
+                    <Input type='text' className='w-full' value={user ? user.dni : ''} onChange={handdleChange} disabled={!isEditing} label="DNI:" name="dni" />
                     <Button color={isEditing ? 'primary' : 'default'} onClick={toggleEdit} className='w-full'>{isEditing ? 'Guardar' : 'Editar'}</Button>
                 </section>
                 <Divider orientation='vertical' />

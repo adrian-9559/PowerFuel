@@ -163,7 +163,7 @@ class ProductService {
         }
     }
 
-    async getAllProductsSearch(query, limit = 10, page = 1, status = 'Enabled') {
+    async getProductsSearch(query, limit = 10, page = 1, status = 'Enabled') {
         try {
             const response = await api.post(`/products/search?page=${page}&limit=${limit}&status=${status}`, {
                 query

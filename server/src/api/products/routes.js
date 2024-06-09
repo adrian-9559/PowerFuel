@@ -146,13 +146,11 @@ router.route('/search')
      */
     .post(async (req, res) => {
         try {
-            const { page } = req.body;
-            let {query, limit} = req.query
+            let {query} = req.body;
+            let {limit, status, page} = req.query
             limit = parseInt(limit);
-
-            console.log(query, limit, page);
              
-            const products = await getProductsSearch(query, limit, page, req.query.status);
+            const products = await getProductsSearch(query, limit, page, status);
             if (!products) {
                 return res.status(404).json({ message: 'Productos no encontrados' });
             }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip, Button, Pagination, Select, SelectItem, Spinner } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip, Button, Pagination, Select, SelectItem, Spinner, ScrollShadow } from "@nextui-org/react";
 import { useRouter } from 'next/router';
 import { Modal, useDisclosure, ModalContent } from '@nextui-org/react';
 import ProductAdminPanel from '@components/product/productAdminPanel';
@@ -8,7 +8,7 @@ import DeleteIcon from '@icons/DeleteIcon';
 import EyeIcon from '@icons/EyeIcon';
 import EditIcon from '@icons/EditIcon';
 import PlusIcon from '@icons/PlusIcon';
-import useTitle from '@hooks/useTitle'; 
+import useTitle from '@hooks/useTitle';
 
 const statusColorMap = {
     Enabled: "success",
@@ -23,7 +23,7 @@ const ProductoAdministration = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [selectedKeys, setSelectedKeys] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState(null);
-    const {isOpen, onOpenChange, onOpen } = useDisclosure();
+    const { isOpen, onOpenChange, onOpen } = useDisclosure();
     const [statusProducts, setStatusProducts] = useState();
     useTitle('Administración de Productos');
 
@@ -49,7 +49,7 @@ const ProductoAdministration = () => {
 
     const deleteSelectedProducts = async () => {
 
-        if (selectedKeys ===  "all") {
+        if (selectedKeys === "all") {
             for (const product of Products) {
                 await deleteProduct(product.product_id);
             }
@@ -75,12 +75,11 @@ const ProductoAdministration = () => {
                 <Spinner />
             </div>
         ) : (
-            <section className='h-full w-full'>
+            <section className='h-full'>
                 <Table aria-label='Tabla de roles'
                     selectionMode="multiple"
                     selectedKeys={selectedKeys}
                     onSelectionChange={setSelectedKeys}
-                    className="w-full h-full"
                     topContent={
                         <section className='flex flex-col sm:flex-row w-full justify-between items-start sm:items-center'>
                             <section className="flex justify-start gap-2 w-full sm:w-auto mb-3 sm:mb-0">
@@ -142,19 +141,19 @@ const ProductoAdministration = () => {
                             <p>Acciones</p>
                         </TableColumn>
                     </TableHeader>
-                    <TableBody 
+                    <TableBody
                         emptyContent="No hay productos disponibles"
                     >
                         {Products.map((product) => (
                             <TableRow key={product.product_id} >
-                                <TableCell>
+                                <TableCell className='flex flex-row'>
                                     <User
                                         avatarProps={{ radius: "lg", src: `${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/product/${product.product_id}/1.png` }}
-                                        description={`Id del Producto: ${product.product_id}`}
-                                        name={product.product_name}
-                                    >
-                                        {product.product_name}
-                                    </User>
+                                    />
+                                    <section className="flex flex-col">
+                                        <p className="text-bold text-sm capitalize">{`Id del Producto: ${product.product_id}`}</p>
+                                        <p className="text-bold text-sm capitalize text-default-400">{product.product_name}</p>
+                                    </section>
                                 </TableCell>
                                 <TableCell>
                                     <section className="flex flex-col">
@@ -199,9 +198,11 @@ const ProductoAdministration = () => {
                         ), [])}
                     </TableBody>
                 </Table>
-                <Modal isOpen={isOpen} onOpenChange={onOpenChange} className='p-6 overflow-hidden max-w-[60%] max-h-[80%]' backdrop="blur">
+                <Modal isOpen={isOpen} onOpenChange={onOpenChange} className='p-6 overflow-hidden w-full' backdrop="blur">
                     <ModalContent className='w-full'>
-                        {selectedProduct && <ProductAdminPanel productId={selectedProduct.product_id} key={selectedProduct.product_id} />}
+                        <ScrollShadow className="h-[35rem]">
+                            {selectedProduct && <ProductAdminPanel productId={selectedProduct.product_id} key={selectedProduct.product_id} />}
+                        </ScrollShadow>
                     </ModalContent>
                 </Modal>
             </section>

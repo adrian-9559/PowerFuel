@@ -2,7 +2,6 @@
 const model = require('./productModel');
 const path = require('path');
 const appRoot = path.dirname(require.main.filename);
-const fs = require('fs');
 const { createProduct, deleteProduct, updateProduct} = require('../stripe/controller');
 const { deleteProductImages, getImageCount, uploadProduct } = require('../files/controller');
 const e = require('express');
@@ -123,15 +122,6 @@ const getProducts = async (page, limit, status) => {
         const skip = (page - 1) * limit;
         let products = await model.getProducts(skip, limit, null, status);
         const total = await model.getProductsCount();
-
-        if (products.length > 0) {
-            
-            products = products.map(product => {
-                product.brand_name = product.Brand.brand_name;
-                product.category_name = product.Category.category_name;
-                return product;
-            });
-        }
 
         return {
             total,

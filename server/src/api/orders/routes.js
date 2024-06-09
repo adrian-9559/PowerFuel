@@ -1,5 +1,17 @@
 const express = require('express');
-const {getOrdersByDate, getOrdersByUser, getOrderById, createOrder, updateOrder, deleteOrder, getOrdersCount, getAllOrders, getGeneralPanelInfo} = require('./controller');
+const {
+    getOrdersByDate, 
+    getOrdersByUser, 
+    getOrderById, 
+    createOrder, 
+    updateOrder, 
+    deleteOrder, 
+    getOrdersCount, 
+    getAllOrders, 
+    getGeneralPanelInfo, 
+    cancelOrder,
+    returnOrder
+} = require('./controller');
 const router = express.Router();
 
 router.route('/user/:userId')
@@ -18,6 +30,7 @@ router.route('/user/:userId')
             const orders = await getOrdersByUser(userId);
             res.status(200).json(orders);
         } catch (error) {
+            console.log(error);
             res.status(500).json({ message: 'Hubo un problema al obtener los pedidos' });
         }
     });
@@ -38,6 +51,7 @@ router.route('/user')
             const orders = await getOrdersByUser(userId);
             res.status(200).json(orders);
         } catch (error) {
+            console.log(error);
             res.status(500).json({ message: 'Hubo un problema al obtener los pedidos' });
         }
     });
@@ -58,6 +72,7 @@ router.route('/:orderId')
             const order = await getOrderById(orderId);
             res.status(200).json(order);
         } catch (error) {
+            console.log(error);
             res.status(500).json({ message: 'Hubo un problema al obtener el pedido' });
         }
     })
@@ -76,8 +91,9 @@ router.route('/:orderId')
             const orderId = req.params.orderId;
             const order = req.body;
             const updatedOrder = await updateOrder(orderId, order);
-            res.status(200).json(updatedOrder, { message: 'Pedido modificado correctamente' });
+            res.status(200).json({updatedOrder, message: 'Pedido modificado correctamente' });
         } catch (error) {
+            console.log(error);
             res.status(500).json({ message: 'Hubo un problema al modificar el pedido' });
         }
     })
@@ -96,6 +112,7 @@ router.route('/:orderId')
             const result = await deleteOrder(orderId);
             res.status(200).json({ success: result });
         } catch (error) {
+            console.log(error);
             res.status(500).json({ message: 'Hubo un problema al eliminar el pedido' });
         }
     });
@@ -125,6 +142,7 @@ router.route('/')
             const orders = await getAllOrders(req.query.page, req.query.limit);
             res.status(200).json(orders);
         } catch (error) {
+            console.log(error);
             res.status(500).json({ message: 'Hubo un problema al obtener los pedidos' });
         }
     });
@@ -144,6 +162,7 @@ router.route('/count')
             const count = await getOrdersCount();
             res.status(200).json({ count });
         } catch (error) {
+            console.log(error);
             res.status(500);
         }
     });
@@ -166,18 +185,71 @@ router.route('/date')
             const orders = await getOrdersByDate(startDate, endDate);
             res.json(orders);
         } catch (error) {
+            console.log(error);
             res.status(500).json({ message: 'Hubo un problema al obtener los pedidos' });
         }
     });
 
 router.route('/generalPanelInfo')
+    /**
+     * @route POST /generalPanelInfo
+     * Endpoint para obtener la información general del panel.
+     * Endpoint to get the general information of the panel.
+     * 
+     * @returns {Object} 200 - La información general del panel. | The general information of the panel.
+     * @returns {Error} 500 - Error al obtener la información general del panel. | Error when getting the general information of the panel.
+     */
     .post(async (req, res) => {
         try {
             const info = await getGeneralPanelInfo();
             res.status(200).json(info);
         } catch (error) {
+            console.log(error);
             res.status(500).json({ message: 'Hubo un problema al obtener la información general del panel' });
         }
     });
+
+router.route('/cancel/:orderId')
+    /**
+     * @route POST /cancel/:orderId
+     * Endpoint para cancelar una orden especificada por su ID en los parámetros de la ruta.
+     * Endpoint to cancel an order specified by its ID in the route parameters.
+     * 
+     * @param {string} req.params.orderId - El ID de la orden que se quiere cancelar. | The ID of the order to be cancelled.
+     * @returns {Object} 200 - Resultado de la operación de cancelación. | Result of the cancellation operation.
+     * @returns {Error} 500 - Error al cancelar la orden. | Error when cancelling the order.
+     */
+    .post(async (req, res) => {
+        try {
+            const orderId = req.params.orderId;
+            const result = await cancelOrder(orderId);
+            res.status(200).json({ message: 'Pedido cancelado correctamente' });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ message: 'Hubo un problema al cancelar el pedido' });
+        }
+    });
+
+router.route('/return/:orderId')
+    /**
+     * @route POST /return/:orderId
+     * Endpoint para devolver una orden especificada por su ID en los parámetros de la ruta.
+     * Endpoint to return an order specified by its ID in the route parameters.
+     * 
+     * @param {string} req.params.orderId - El ID de la orden que se quiere devolver. | The ID of the order to be returned.
+     * @returns {Object} 200 - Resultado de la operación de devolución. | Result of the return operation.
+     * @returns {Error} 500 - Error al devolver la orden. | Error when returning the order.
+     */
+    .post(async (req, res) => {
+        try {
+            const orderId = req.params.orderId;
+            const result = await returnOrder(orderId);
+            res.status(200).json({ message: 'Pedido devuelto correctamente' });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ message: 'Hubo un problema al devolver el pedido' });
+        }
+    });
+    
 
 module.exports = router;

@@ -67,9 +67,9 @@ const CreateBrand = () => {
                             errorMessage='Formato inválido. Solo se permiten letras, números y espacios. Máximo 50 caracteres.'
                         />
                     </section>
-                    <section>
-                        <Button type='submit' className="w-full">{isLoading ? 'Cargando...' : id ? 'Editar' : 'Crear'}</Button>
-                        <Button type='button' color="danger" onClick={() => router.push('/admin/Marcas')} className="w-full mt-4">Cancelar</Button>
+                    <section className="grid w-full sm:flex sm:justify-between gap-2">
+                        <Button type='button' color="danger" onClick={() => router.push('/admin/Marcas')} className="w-full sm:w-1/4">Cancelar</Button>
+                        <Button type='submit' color="primary" className="w-full sm:w-1/4">{isLoading ? 'Cargando...' : id ? 'Guardar cambios' : 'Crear'}</Button>
                     </section>
                 </form>
             </Card>

@@ -39,6 +39,9 @@ const AppContext = createContext({
   setNotifications: (() => {}) as React.Dispatch<React.SetStateAction<NotificationItem[]>>,
   webTitle: 'POWERFUEL',
   setWebTitle: (value: string) => {},
+  isAuthOpen: false,
+  setIsAuthOpen: (value: boolean) => {},
+  onOpenAuthMenu: (value: boolean) => {}
 });
 
 // Crear el proveedor de contexto
@@ -50,8 +53,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [webTitle, setWebTitle] = useState('POWERFUEL');
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
 
-  
+  const onOpenAuthMenu = (value: boolean = !isAuthOpen) => {
+    setIsAuthOpen(value);
+  }
 
   const onOpenCartChange = (value: boolean) => {
     setIsCartOpen(value);
@@ -90,6 +96,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
             setNotifications(notificationResponse);
             setUser(userInfo);
             setIsAdmin(roleResponse.data.role_id !== 10);
+            onOpenAuthMenu(false);
         };
 
         fetchUserInfo();
@@ -128,7 +135,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           notifications,
           setNotifications,
           webTitle,
-          setWebTitle
+          setWebTitle,
+          isAuthOpen,
+          setIsAuthOpen,
+          onOpenAuthMenu
         }
       }
     >

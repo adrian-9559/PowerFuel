@@ -10,9 +10,9 @@ import useTitle from '@hooks/useTitle';
 
 
 const statusColorMap = {
-    Active: "success",
-    Inactive: "danger",
-    Suspended: "warning",
+    "Activo": "success",
+    "Inactivo": "danger",
+    "Suspendido": "warning",
 };  
 
 const UserAdministration = () => {
@@ -94,7 +94,7 @@ const UserAdministration = () => {
                                 </Tooltip>
                             </section>
                             <section className='w-full sm:w-auto flex justify-center items-center mb-3 sm:mb-0'>
-                                <h1 className="text-center text-xl sm:text-2xl font-bold">Listado de Usuarios</h1>
+                                <h1 className="text-center text-2xl sm:text-2xl font-bold">Listado de Usuarios</h1>
                             </section>
                         </section>
                     }

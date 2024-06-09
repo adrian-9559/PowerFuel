@@ -11,12 +11,13 @@ Order.init({
         type: DataTypes.INTEGER,
         references: {
             model: 'UserCredentials',
-            key: 'user_id'
+            key: 'user_id',
+            onDelete: 'CASCADE'
         }
     },
     order_date: DataTypes.DATE,
-    order_status: {
-        type: DataTypes.ENUM('pendiente','en proceso','enviado','entregado','cancelado','devuelto','fallido'),
+    status: {
+        type: DataTypes.ENUM('pendiente','en proceso','enviado','entregado','cancelado','devuelto','fallido','en proceso de devolucion'),
         defaultValue: 'pendiente'
     },
     details: DataTypes.STRING,

@@ -1,48 +1,53 @@
-import { Button, Input, Select, SelectItem, Divider, Card, CardHeader, CardBody, CardFooter, Spinner } from "@nextui-org/react";
+import { Button, Input, Select, SelectItem, Divider, Card, CardHeader, CardBody, CardFooter, Spinner, Checkbox } from "@nextui-org/react";
 import { useState, useEffect } from 'react';
 import UserService from '@services/userService';
 import RoleService from '@services/roleService';
 import { useRouter } from 'next/router';
 import UserIcon2 from "@icons/UserIcon2";
-import useTitle from '@hooks/useTitle'; 
+import useTitle from '@hooks/useTitle';
+import toast from 'toastr';
 
 const CreateUser = () => {
     const router = useRouter();
     const [roles, setRoles] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [password2, setPassword2] = useState('');
-    const {id, readOnly} = router.query;
-    const [user, setUser] = useState({
-        email:  '',
-        current_password:  '',
-        first_name:  '',
-        last_name:  '',
+    const [isLoading, setisLoading] = useState(false);
+    const [changePassword, setChangePassword] = useState(false);
+    const { id, readOnly } = router.query;
+    const [formState, setFormState] = useState({
+        email: '',
+        current_password: '',
+        new_password: '',
+        confirm_new_password: '',
+        first_name: '',
+        last_name: '',
         dni: '',
-        role: '',
-        status: 'Activo' // New state field
+        role_id: '10',
+        status: 'Activo'
     });
-    useTitle(id?'Editar Usuario':'Crear Usuario');
+    const [isFormValid, setIsFormValid] = useState(false);
+    const [errors, setErrors] = useState({});
+    useTitle(id ? 'Editar Usuario' : 'Crear Usuario');
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    const nameRegex = /^[A-Za-z\s]+$/;
+    const dniRegex = /^\d{8}[A-Za-z]$/;
 
     useEffect(() => {
-        setLoading(true);
-    
-        if(id){
+        setisLoading(true);
+
+        if (id) {
             const fetchUser = async () => {
                 try {
-                    const response = await UserService.getUserById(id);
-                    const { email, current_password, UserInfo, Roles } = response.data[0];
-                    const { first_name, last_name, dni } = UserInfo;
-                    const role = Roles[0].role_id;
-                    setUser(prevUser => ({
-                        ...prevUser,
-                        email,
-                        current_password,
-                        first_name,
-                        last_name,
-                        dni,
-                        role
-                    }));
-                    setPassword2(current_password)
+                    const user = await UserService.getUserById(id);
+                    setFormState({
+                        email: user.email,
+                        first_name: user.first_name,
+                        last_name: user.last_name,
+                        dni: user.dni,
+                        role_id: user.role_id,
+                        status: user.status
+                    });
                 } catch (error) {
                     console.error(error);
                 }
@@ -53,7 +58,7 @@ const CreateUser = () => {
             try {
                 const response = await RoleService.getAllRoles();
                 setRoles(response);
-                setLoading(false);
+                setisLoading(false);
             } catch (error) {
                 console.error(error);
             }
@@ -63,25 +68,91 @@ const CreateUser = () => {
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        setUser({ ...user, [name]: value });
+        setFormState({ ...formState, [name]: value });
+
+        let formErrors = { ...errors };
+
+        switch (name) {
+            case 'email':
+                if (!emailRegex.test(value)) formErrors.email = "Email no válido. Debe ser de la forma 'nombre@dominio.com'";
+                else delete formErrors.email;
+                break;
+            case 'first_name':
+                if (!nameRegex.test(value)) formErrors.first_name = "Nombre no válido. Solo se permiten letras y espacios";
+                else delete formErrors.first_name;
+                break;
+            case 'last_name':
+                if (!nameRegex.test(value)) formErrors.last_name = "Apellidos no válidos. Solo se permiten letras y espacios";
+                else delete formErrors.last_name;
+                break;
+            case 'dni':
+                if (!dniRegex.test(value)) formErrors.dni = "DNI no válido. Debe ser un número de 8 dígitos";
+                else delete formErrors.dni;
+                break;
+            case 'role_id':
+                if (!value) formErrors.role = "Rol es requerido";
+                else delete formErrors.role;
+                break;
+            case 'status':
+                if (!value) formErrors.status = "Estado es requerido";
+                else delete formErrors.status;
+                break;
+            case 'current_password':
+                if (!passwordRegex.test(value)) formErrors.current_password = "Contraseña no válida. Debe tener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un número";
+                else delete formErrors.current_password;
+                break;
+            case 'confirm_current_password':
+                if (value !== formState.current_password) formErrors.confirm_current_password = "Las contraseñas no coinciden";
+                else delete formErrors.confirm_current_password;
+                break;
+            case 'new_password':
+                if (!passwordRegex.test(value)) formErrors.new_password = "Contraseña no válida. Debe tener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un número";
+                else delete formErrors.new_password;
+                break;
+
+            case 'confirm_new_password':
+                if (value !== formState.new_password) formErrors.confirm_new_password = "Las contraseñas no coinciden";
+                else delete formErrors.confirm_new_password;
+                break;
+            default:
+                break;
+        }
+
+        setErrors(formErrors);
+        setIsFormValid(Object.keys(formErrors).length === 0);
+    };
+    const handleCheckboxChange = (event) => {
+        setChangePassword(event.target.checked);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (id) {
-            await UserService.updateUser(id, user);
+        setisLoading(true);
+        if (!isFormValid) {
+            toast.error('Por favor, rellene correctamente el formulario');
         } else {
-            await UserService.registerUser(user);
+            try {
+                if (id) {
+                    if (changePassword) {
+                        await UserService.changePasswordUser(formState.current_password, formState.new_password, formState.confirm_new_password);
+                    } else {
+                        await UserService.updateUser(id, formState);
+                    }
+                } else {
+                    await UserService.registerUser(formState);
+                }
+                toast.success('Usuario guardado correctamente');
+                router.push('/admin/Usuarios');
+            } catch (error) {
+                console.log(error);
+            }
         }
-        router.push('/admin/Usuarios');
+
+        setisLoading(false);
     }
 
-    const handleChangePassword2 = (event) => {
-        setPassword2(event.target.value);
-    };
-
     return (
-        loading ? (
+        isLoading ? (
             <div className='w-[20rem] h-[20rem] flex justify-center items-center'>
                 <Spinner />
             </div>
@@ -92,110 +163,203 @@ const CreateUser = () => {
                         <CardHeader className="flex flex-col sm:flex-row justify-between items-center gap-2">
                             <h1 className="text-2xl sm:text-3xl font-bold">{id ? 'Editar Usuario' : 'Crear Usuario'}</h1>
                             <section className="w-10">
-                                <UserIcon2 />   
+                                <UserIcon2 />
                             </section>
                         </CardHeader>
                         <Divider />
-                        <CardBody className="grid gap-4 sm:gap-6">
+                        <CardBody className="grid gap-3 sm:gap-3">
                             <section>
                                 <Input
+                                    label="Email"
                                     name="email"
                                     placeholder="Email"
-                                    value={user.email}
+                                    value={formState.email}
                                     onChange={handleChange}
                                     aria-label="Email"
                                     fullWidth
-                                    required
+                                    isRequired
+                                    type="email"
+                                    isInvalid={errors.email?.length > 0 && formState.email.length > 0}
+                                    errorMessage={errors.email}
                                 />
                             </section>
-                            <section className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                                <Input
-                                    name="current_password"
-                                    placeholder="Contraseña"
-                                    value={user.current_password}
-                                    onChange={handleChange}
-                                    aria-label="Contraseña"
-                                    required
-                                />
-                                <Input
-                                    name="current_password2"
-                                    placeholder="Repite Contraseña"
-                                    value={password2}
-                                    onChange={handleChangePassword2}
-                                    aria-label="Repite Contraseña"
-                                    required
-                                />
-                            </section>
+                            {!id && (
+                                <section className="flex flex-row gap-3">
+                                    <Input
+                                        label="Contraseña"
+                                        name="current_password"
+                                        placeholder="Contraseña"
+                                        value={formState.current_password}
+                                        onChange={handleChange}
+                                        aria-label="Contraseña"
+                                        isRequired
+                                        type="password"
+                                        isInvalid={errors.current_password?.length > 0 && formState.current_password.length > 0}
+                                        errorMessage={errors.current_password}
+                                    />
+                                    <Input
+                                        label="Confirmar contraseña actual"
+                                        name="confirm_current_password"
+                                        value={formState.confirm_current_password}
+                                        isRequired
+                                        onChange={handleChange}
+                                        type="password"
+                                        isInvalid={errors.confirm_current_password?.length > 0 && formState.confirm_current_password.length > 0}
+                                        errorMessage={errors.confirm_current_password}
+                                    />
+                                </section>
+                            )}
                             <Input
+                                label="Nombre"
                                 name="first_name"
                                 placeholder="Nombre"
-                                value={user.first_name}
+                                value={formState.first_name}
                                 onChange={handleChange}
                                 aria-label="Nombre"
                                 fullWidth
-                                required
+                                isRequired
+                                type="text"
+                                isInvalid={errors.first_name?.length > 0 && formState.first_name.length > 0}
+                                errorMessage={errors.first_name}
                             />
                             <Input
+                                label="Apellidos"
                                 name="last_name"
                                 placeholder="Apellidos"
-                                value={user.last_name}
+                                value={formState.last_name}
                                 onChange={handleChange}
                                 aria-label="Apellidos"
                                 fullWidth
-                                required
+                                isRequired
+                                type="text"
+                                isInvalid={errors.last_name?.length > 0 && formState.last_name.length > 0}
+                                errorMessage={errors.last_name}
                             />
                             <Input
+                                label="DNI"
                                 name="dni"
                                 placeholder="DNI"
-                                value={user.dni}
+                                value={formState.dni}
                                 onChange={handleChange}
                                 aria-label="DNI"
                                 fullWidth
-                                required
+                                isRequired
+                                type="text"
+                                isInvalid={errors?.dni?.length > 0 && formState.dni.length > 0}
+                                errorMessage={errors.dni}
                             />
                             <Select
-                                name="role"
+                                label="Rol"
+                                name="role_id"
                                 placeholder="Role"
-                                value={user.role}
+                                value={formState.role_id}
                                 onChange={handleChange}
                                 aria-label="Role"
+                                defaultSelectedKeys={[formState.role_id.toString()]}
                                 fullWidth
-                                required
+                                isRequired
+                                isInvalid={errors.role_id?.length > 0 && formState.role_id.length > 0}
+                                errorMessage={errors.role_id}
                             >
                                 {roles && roles.map((role) => (
-                                    <SelectItem key={role.role_id} value={role.role_id}>
+                                    <SelectItem key={role.role_id.toString()} value={role.role_id}>
                                         {role.role_name}
                                     </SelectItem>
                                 ))}
                             </Select>
-                            <Select // New Select for status
+                            <Select
+                                label="Estado"
                                 name="status"
                                 placeholder="Status"
-                                value={user.status}
+                                value={formState.status}
                                 onChange={handleChange}
                                 aria-label="Status"
+                                defaultSelectedKeys={[formState.status ? formState.status : "Activo"]}
                                 fullWidth
-                                required
+                                isRequired
+                                isInvalid={errors.status?.length > 0 && formState.status.length > 0}
+                                errorMessage={errors.status}
                             >
-                                <SelectItem value="Activo">Activo</SelectItem>
-                                <SelectItem value="Inactivo">Inactivo</SelectItem>
-                                <SelectItem value="Suspendido">Suspendido</SelectItem>
+                                <SelectItem key="Activo" value="Activo">Activo</SelectItem>
+                                <SelectItem key="Inactivo" value="Inactivo">Inactivo</SelectItem>
+                                <SelectItem key="Suspendido" value="Suspendido">Suspendido</SelectItem>
                             </Select>
+                            {id && (
+                                <section className="flex flex-col items-start gap-3 w-full">
+                                    <Checkbox
+                                        isSelected={changePassword}
+                                        onChange={handleCheckboxChange}
+                                        color="primary"
+                                    >
+                                        Cambiar contraseña
+                                    </Checkbox>
+                                    {changePassword && (
+                                        <section className="flex flex-col w-full gap-3">
+                                            <Input
+                                                label="Contraseña Actual"
+                                                name="current_password"
+                                                placeholder="Contraseña Actual"
+                                                value={formState.current_password}
+                                                onChange={handleChange}
+                                                aria-label="Contraseña Actual"
+                                                isRequired
+                                                type="password"
+                                                isInvalid={errors.current_password?.length > 0 && formState.current_password?.length > 0}
+                                                errorMessage={errors.current_password}
+                                            />
+                                            <Input
+                                                label="Nueva Contraseña"
+                                                name="new_password"
+                                                placeholder="Nueva Contraseña"
+                                                value={formState.new_password}
+                                                onChange={handleChange}
+                                                aria-label="Nueva Contraseña"
+                                                isRequired
+                                                type="password"
+                                                isInvalid={errors.new_password?.length > 0 && formState.new_password?.length > 0}
+                                                errorMessage={errors.new_password}
+                                            />
+                                            <Input
+                                                label="Confirma Nueva Contraseña"
+                                                name="confirm_new_password"
+                                                placeholder="Confirma Nueva Contraseña"
+                                                value={formState.confirm_new_password}
+                                                onChange={handleChange}
+                                                aria-label="Confirma Nueva Contraseña"
+                                                isRequired
+                                                type="password"
+                                                isInvalid={errors.confirm_new_password?.length > 0 && formState.confirm_new_password?.length > 0}
+                                                errorMessage={errors.confirm_new_password}
+                                            />
+                                        </section>
+                                    )}
+                                </section>
+                            )}
                         </CardBody>
                         <Divider />
-                        <CardFooter className="flex flex-col sm:flex-row justify-between items-center gap-4">
-                            {!readOnly && readOnly !== "true" && (
-                                <Button type='submit' color="primary" disabled={user.current_password !== password2 || loading} className="w-full sm:w-1/4">
-                                    {loading ? 'Cargando...' : id ? 'Guardar cambios' : 'Crear Usuario'}
+                        <CardFooter className="flex flex-col sm:flex-row justify-between">
+                            <Button
+                                color="danger"
+                                onClick={() => router.push('/admin/Usuarios')}
+                                className="w-full sm:w-1/4"
+                            >
+                                Cancelar
+                            </Button>
+                            {readOnly === "true" && (
+                                <Button
+                                    color="primary"
+                                    onClick={() => router.push('/admin/Usuarios')}
+                                    className="w-full sm:w-1/4"
+                                >
+                                    {isLoading ? 'Cargando...' : id ? 'Guardar cambios' : 'Crear'}
                                 </Button>
                             )}
-                            <Button type='button' color="danger" className="w-full sm:w-1/4" onClick={() => router.push('/admin/Usuarios')}>Cancelar</Button>
                         </CardFooter>
                     </form>
                 </Card>
             </main>
         )
     );
-}
+};
 
 export default CreateUser;

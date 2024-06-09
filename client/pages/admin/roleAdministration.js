@@ -73,8 +73,8 @@ const RoleAdministration = () => {
                     onSelectionChange={setSelectedKeys}
                     className="w-full h-full "
                     topContent={
-                        <section className='flex flex-row w-full h-full gap-2'>
-                            <section className="flex justify-left gap-2 lg:absolute">
+                        <section className='flex flex-col sm:flex-row w-full justify-between items-start sm:items-center'>
+                            <section className="flex justify-left gap-2 sm:absolute">
                                 <Tooltip color="danger" content="Eliminar Rol/es">
                                     <Button isIconOnly color="danger" className="text-lg cursor-pointer active:opacity-50" onClick={deleteSelectedRoles}>
                                         <DeleteIcon color="white" />

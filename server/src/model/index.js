@@ -10,6 +10,7 @@ const Category = require('./category');
 const Order = require('./orders');
 const Notification = require('./notification');
 const PasswordResetCode = require('./passwordResetCodes');
+const SupportTicket = require('./supportTickets');
 
 // Relaciones
 UserCredentials.hasOne(UserInfo, { foreignKey: 'user_id' });
@@ -58,5 +59,6 @@ module.exports = {
     Category,
     Order,
     Notification,
-    PasswordResetCode
+    PasswordResetCode,
+    SupportTicket
 };

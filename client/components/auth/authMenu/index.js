@@ -1,16 +1,17 @@
 import React, { useEffect } from 'react';
-import { Button, Modal, ModalContent, useDisclosure } from "@nextui-org/react";
+import { Button, Modal, ModalContent, User, useDisclosure } from "@nextui-org/react";
 import AuthTabs from './partials/authTabs';
 import { motion } from 'framer-motion';
+import UserIcon from '@icons/UserIcon';
+import { useAppContext } from '@context/AppContext';
 
 const AuthMenu = () => {
-
-    const {isOpen, onOpen, onClose } = useDisclosure();
+    const { isAuthOpen , onOpenAuthMenu } = useAppContext();
 
     useEffect(() => {
         const handleKeyDown = (event) => {
             if (event.key === 'Enter') {
-                onOpen();
+                onOpenAuthMenu(true)
             }
         };
     
@@ -25,8 +26,11 @@ const AuthMenu = () => {
 
     return (
         <motion.section layout className="flex flex-col gap-2">
-            <Button onClick={onOpen} >Iniciar sesión</Button>
-            <Modal isOpen={isOpen} onClose={onClose} className='p-8 overflow-hidden' backdrop="blur" >
+            <Button onClick={onOpenAuthMenu} className='hidden sm:flex'>Iniciar sesión</Button>
+            <Button onClick={onOpenAuthMenu} isIconOnly className='flex sm:hidden'>
+                <UserIcon/>
+            </Button>
+            <Modal isOpen={isAuthOpen} onClose={() => {onOpenAuthMenu(false)}} className='p-8 overflow-hidden' backdrop="blur" >
                 <ModalContent className="w-12/12">
                     <AuthTabs/>
                 </ModalContent>

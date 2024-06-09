@@ -20,8 +20,8 @@ class UserService {
         return response.data;
     }
 
-    async updateUser(user) {
-        return api.put(`/users/${user.user_id}`, { user });
+    async updateUser(id, user) {
+        return api.put(`/users/${id}`, { user });
     }
 
     async getAllUsersInfo(page = 1, limit = 10) {
@@ -34,7 +34,8 @@ class UserService {
     }
 
     async getUserById(id) {
-        return await api.get(`/users/${id}`);
+        const response =  await api.get(`/users/${id}`);
+        return response.data;
     }
 
     async getUserInfo() {

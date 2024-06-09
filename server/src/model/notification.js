@@ -24,7 +24,8 @@ Notification.init({
     },
     reference: {
       type: DataTypes.STRING(200),
-      allowNull: true
+      allowNull: true,
+      onDelete: 'CASCADE',
     },
     notification_user: {
       type: DataTypes.INTEGER,

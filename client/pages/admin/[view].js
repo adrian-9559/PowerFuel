@@ -16,7 +16,6 @@ const Administrador = () => {
     const router = useRouter();
     const { user } = useAppContext();
     const [selectedOption, setSelectedOption] = useState('General');
-    const [isMobile, setIsMobile] = useState(false);
 
     const components = {
         'General': <GeneralAdministration />,
@@ -32,6 +31,7 @@ const Administrador = () => {
         if (router.isReady) {
             const view = router.asPath.split('/')[2] || 'General';
             setSelectedOption(view);
+            console.log(view);
         }
     }, [router.isReady]);
 
@@ -41,31 +41,12 @@ const Administrador = () => {
         }
     }, [selectedOption, router]);
 
-    useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth <= 640);
-        };
-
-        window.addEventListener('resize', handleResize);
-        handleResize();
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
-
     return (
-        <section className="h-full flex flex-col sm:flex-row w-full gap-0 ">
-            {isMobile ? (
-                <div className="p-4 w-full">
-                    <SideMenuAdministrador setSelectedOption={setSelectedOption} />
-                </div>
-            ) : (
-                <section className='h-full'>
-                    <SideMenuAdministrador setSelectedOption={setSelectedOption} />
-                </section>
-            )}
-            <section className='w-full p-4  h-full'>
+        <section className="h-full flex flex-col sm:flex-row w-full gap-3 p-3">
+            <section>
+                <SideMenuAdministrador setSelectedOption={setSelectedOption} selectedOption={selectedOption} />
+            </section>
+            <section className='w-full h-full '>
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={selectedOption}

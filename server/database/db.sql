@@ -87,23 +87,16 @@ CREATE TABLE IF NOT EXISTS `notification` (
   PRIMARY KEY (`notification_id`),
   KEY `reference` (`reference`),
   KEY `notification_user` (`notification_user`),
-  CONSTRAINT `FK_Order_Notification` FOREIGN KEY (`reference`) REFERENCES `orders` (`order_id`) ON UPDATE CASCADE,
+  CONSTRAINT `FK_Order_Notification` FOREIGN KEY (`reference`) REFERENCES `orders` (`order_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_User_Notification` FOREIGN KEY (`notification_user`) REFERENCES `user_credentials` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla database_web.notification: ~5 rows (aproximadamente)
+-- Volcando datos para la tabla database_web.notification: ~10 rows (aproximadamente)
 DELETE FROM `notification`;
 INSERT INTO `notification` (`notification_id`, `title`, `description`, `notification_date`, `viewed`, `reference`, `notification_user`, `type`) VALUES
-	(34, 'Pedido creado', 'Se ha creado un nuevo pedido con el número de orden: py_3PORIHIqj90TtX550roCD3f6', '2024-06-05 23:23:04', '1', 'py_3PORIHIqj90TtX550roCD3f6', 76, 'Order'),
-	(35, 'Pedido creado', 'Se ha creado un nuevo pedido con el número de orden: py_3PORIcIqj90TtX553MdxwoAD', '2024-06-05 23:23:25', '1', 'py_3PORIcIqj90TtX553MdxwoAD', 74, 'Order'),
-	(36, 'Pedido creado', 'Se ha creado un nuevo pedido con el número de orden: py_3PORMlIqj90TtX550HSWZrYM', '2024-06-05 23:27:42', '1', 'py_3PORMlIqj90TtX550HSWZrYM', 76, 'Order'),
-	(37, 'Pedido creado', 'Se ha creado un nuevo pedido con el número de orden: py_3POS5aIqj90TtX550nvJjgvn', '2024-06-06 00:14:01', '1', 'py_3POS5aIqj90TtX550nvJjgvn', 74, 'Order'),
-	(38, 'Pedido creado', 'Se ha creado un nuevo pedido con el número de orden: py_3POSMCIqj90TtX552o3hnyaf', '2024-06-06 00:31:38', '1', 'py_3POSMCIqj90TtX552o3hnyaf', 76, 'Order'),
-	(39, 'Pedido py_3POlF1Iqj90TtX552KrGaxyP creado', 'Se ha creado un nuevo pedido con el número de orden: py_3POlF1Iqj90TtX552KrGaxyP', '2024-06-06 20:41:05', '1', 'py_3POlF1Iqj90TtX552KrGaxyP', 76, 'Order'),
-	(40, 'Pedido py_3POlI7Iqj90TtX552EabdIHd creado', 'Se ha creado un nuevo pedido con el número de orden: py_3POlI7Iqj90TtX552EabdIHd', '2024-06-06 20:44:16', '1', 'py_3POlI7Iqj90TtX552EabdIHd', 76, 'Order'),
-	(41, 'Pedido py_3POlJ6Iqj90TtX5527n0jKgY creado', 'Se ha creado un nuevo pedido con el número de orden: py_3POlJ6Iqj90TtX5527n0jKgY', '2024-06-06 20:45:17', '1', 'py_3POlJ6Iqj90TtX5527n0jKgY', 76, 'Order'),
-	(42, 'Pedido py_3POlKOIqj90TtX553boLjbhE creado', 'Se ha creado un nuevo pedido con el número de orden: py_3POlKOIqj90TtX553boLjbhE', '2024-06-06 20:46:37', '1', 'py_3POlKOIqj90TtX553boLjbhE', 76, 'Order'),
-	(43, 'Pedido py_3POooFIqj90TtX552pNNkmpN creado', 'Se ha creado un nuevo pedido con el número de orden: py_3POooFIqj90TtX552pNNkmpN', '2024-06-07 00:29:42', '1', 'py_3POooFIqj90TtX552pNNkmpN', 76, 'Order');
+	(44, 'Pedido py_3PPRkRIqj90TtX551dF7BIY6 creado', 'Se ha creado un nuevo pedido con el número de orden: py_3PPRkRIqj90TtX551dF7BIY6', '2024-06-08 18:04:23', '1', 'py_3PPRkRIqj90TtX551dF7BIY6', 79, 'Order'),
+	(46, 'Pedido py_3PPSDUIqj90TtX553Sh9BMpd creado', 'Se ha creado un nuevo pedido con el número de orden: py_3PPSDUIqj90TtX553Sh9BMpd', '2024-06-08 18:34:24', '1', 'py_3PPSDUIqj90TtX553Sh9BMpd', 79, 'Order'),
+	(49, 'Pedido py_3PPZugIqj90TtX552DwlbOku creado', 'Se ha creado un nuevo pedido con el número de orden: py_3PPZugIqj90TtX552DwlbOku', '2024-06-09 02:47:22', '1', 'py_3PPZugIqj90TtX552DwlbOku', 78, 'Order');
 
 -- Volcando estructura para tabla database_web.old_passwords
 CREATE TABLE IF NOT EXISTS `old_passwords` (
@@ -114,37 +107,32 @@ CREATE TABLE IF NOT EXISTS `old_passwords` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `old_passwords_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_credentials` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Volcando datos para la tabla database_web.old_passwords: ~0 rows (aproximadamente)
 DELETE FROM `old_passwords`;
+INSERT INTO `old_passwords` (`id`, `user_id`, `old_password`, `change_date`) VALUES
+	(4, 78, '$2b$10$ZgCO3QMiRBp0JLuy9zaEm.npQjjF9naJuR42Ebkv1wyUWxGJg1ogG', '2024-06-08 20:15:03');
 
 -- Volcando estructura para tabla database_web.orders
 CREATE TABLE IF NOT EXISTS `orders` (
   `order_id` varchar(50) NOT NULL,
-  `user_id` int NOT NULL,
+  `user_id` int DEFAULT NULL,
   `order_date` datetime NOT NULL,
-  `order_status` enum('pendiente','en proceso','enviado','entregado','cancelado','devuelto','fallido') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'pendiente',
+  `status` enum('pendiente','en proceso','enviado','entregado','cancelado','devuelto','fallido','en proceso de devolucion') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `details` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `shipping_address` varchar(255) NOT NULL,
   PRIMARY KEY (`order_id`),
   KEY `user_id` (`user_id`),
-  CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_credentials` (`user_id`) ON DELETE CASCADE
+  CONSTRAINT `FK_orders_database_web.user_credentials` FOREIGN KEY (`user_id`) REFERENCES `user_credentials` (`user_id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla database_web.orders: ~5 rows (aproximadamente)
+-- Volcando datos para la tabla database_web.orders: ~10 rows (aproximadamente)
 DELETE FROM `orders`;
-INSERT INTO `orders` (`order_id`, `user_id`, `order_date`, `order_status`, `details`, `shipping_address`) VALUES
-	('py_3POlF1Iqj90TtX552KrGaxyP', 76, '2024-06-06 20:41:04', 'pendiente', '[{"product_id":105,"quantity":3}]', '{"address_id":66,"user_id":76,"street":"Plaza de Uruguay nº 7","city":"Coslada","province":"Madrid","country":"España","zip":"28822","phone_number":654203319,"is_default":0}'),
-	('py_3POlI7Iqj90TtX552EabdIHd', 76, '2024-06-06 20:44:16', 'pendiente', '[{"product_id":105,"quantity":21}]', '{"address_id":66,"user_id":76,"street":"Plaza de Uruguay nº 7","city":"Coslada","province":"Madrid","country":"España","zip":"28822","phone_number":654203319,"is_default":0}'),
-	('py_3POlJ6Iqj90TtX5527n0jKgY', 76, '2024-06-06 20:45:16', 'pendiente', '[{"product_id":105,"quantity":10}]', '{"address_id":65,"user_id":76,"street":"Plaza de Uruguay nº 7","city":"Coslada","province":"Madrid","country":"España","zip":"28822","phone_number":654203319,"is_default":1}'),
-	('py_3POlKOIqj90TtX553boLjbhE', 76, '2024-06-06 20:46:37', 'pendiente', '[{"product_id":105,"quantity":1}]', '{"address_id":66,"user_id":76,"street":"Plaza de Uruguay nº 7","city":"Coslada","province":"Madrid","country":"España","zip":"28822","phone_number":654203319,"is_default":0}'),
-	('py_3POooFIqj90TtX552pNNkmpN', 76, '2024-06-07 00:29:42', 'pendiente', '[{"product_id":105,"quantity":10}]', '{"address_id":66,"user_id":76,"street":"Plaza de Uruguay nº 7","city":"Coslada","province":"Madrid","country":"España","zip":"28822","phone_number":654203319,"is_default":0}'),
-	('py_3PORIcIqj90TtX553MdxwoAD', 74, '2024-06-05 23:23:19', 'pendiente', '[{"product_id":109,"quantity":1}]', '{"address_id":51,"user_id":74,"street":"c/ Doctor Fleming 6 3ºA","city":"Coslada","province":"Madrid","country":"España","zip":"28821","phone_number":602240748,"is_default":1}'),
-	('py_3PORIHIqj90TtX550roCD3f6', 76, '2024-06-05 23:23:04', 'en proceso', '[{"product_id":109,"quantity":1}]', '{"address_id":66,"user_id":76,"street":"Plaza de Uruguay nº 7","city":"Coslada","province":"Madrid","country":"España","zip":"28822","phone_number":654203319,"is_default":0}'),
-	('py_3PORMlIqj90TtX550HSWZrYM', 76, '2024-06-05 23:27:42', 'entregado', '[{"product_id":108,"quantity":1}]', '{"address_id":66,"user_id":76,"street":"Plaza de Uruguay nº 7","city":"Coslada","province":"Madrid","country":"España","zip":"28822","phone_number":654203319,"is_default":0}'),
-	('py_3POS5aIqj90TtX550nvJjgvn', 74, '2024-06-06 00:13:55', 'pendiente', '[{"product_id":110,"quantity":1},{"product_id":107,"quantity":1},{"product_id":108,"quantity":1},{"product_id":106,"quantity":1}]', '{"address_id":51,"user_id":74,"street":"c/ Doctor Fleming 6 3ºA","city":"Coslada","province":"Madrid","country":"España","zip":"28821","phone_number":602240748,"is_default":1}'),
-	('py_3POSMCIqj90TtX552o3hnyaf', 76, '2024-06-06 00:31:38', 'pendiente', '[{"product_id":105,"quantity":1}]', '{"address_id":65,"user_id":76,"street":"Plaza de Uruguay nº 7","city":"Coslada","province":"Madrid","country":"España","zip":"28822","phone_number":654203319,"is_default":1}');
+INSERT INTO `orders` (`order_id`, `user_id`, `order_date`, `status`, `details`, `shipping_address`) VALUES
+	('py_3PPRkRIqj90TtX551dF7BIY6', 79, '2024-06-08 18:04:14', 'devuelto', '[{"product_id":110,"quantity":1}]', '{"street":"C/Doctor Fleming","city":"Coslada","zip":"28821","province":"Comunidad de Madrid","country":"España","phone_number":602240748}'),
+	('py_3PPSDUIqj90TtX553Sh9BMpd', NULL, '2024-06-08 18:34:16', 'pendiente', '[{"product_id":107,"quantity":1}]', '{"street":"C/Doctor Fleming","city":"Coslada","zip":"28821","province":"Comunidad de Madrid","country":"España","phone_number":602240748}'),
+	('py_3PPZugIqj90TtX552DwlbOku', 78, '2024-06-09 02:47:21', 'en proceso', '[{"product_id":107,"quantity":1}]', '{"address_id":68,"user_id":78,"street":"Plaza de Uruguay, 8 28822 Coslada Madrid, España, 9° C","city":"Coslada","province":"Madrid","country":"España","zip":"28822","phone_number":654203319,"is_default":1}');
 
 -- Volcando estructura para tabla database_web.password_reset_codes
 CREATE TABLE IF NOT EXISTS `password_reset_codes` (
@@ -160,8 +148,6 @@ CREATE TABLE IF NOT EXISTS `password_reset_codes` (
 
 -- Volcando datos para la tabla database_web.password_reset_codes: ~0 rows (aproximadamente)
 DELETE FROM `password_reset_codes`;
-INSERT INTO `password_reset_codes` (`id`, `user_id`, `code`, `created_at`, `used`) VALUES
-	(2, 74, '134614', '2024-06-04 23:04:32', '0');
 
 -- Volcando estructura para tabla database_web.products
 CREATE TABLE IF NOT EXISTS `products` (
@@ -187,12 +173,12 @@ CREATE TABLE IF NOT EXISTS `products` (
 DELETE FROM `products`;
 INSERT INTO `products` (`product_id`, `product_name`, `description`, `price`, `stock_quantity`, `id_brand`, `status`, `category_id`, `stripe_product_id`, `stripe_price_id`, `registration_date`) VALUES
 	(105, '12 x Protein Snack 30g Chocolate belga ', 'Cuando falta demasiado tiempo para la siguiente comida\r\n¿Estás todo el día sentado trabajando? Pruébalo y disfruta de tu dosis de proteínas sin calorías extra. ¡Es deliciosamente equilibrado!\r\n\r\n¿Sabes ese momento en que te apetece algo realmente bueno y te sientes tentado de hincarle el diente a algo apetitoso? ¡Pues es hora de que conozcas Protein Snack de Prozis! Una sabrosa barrita para disfrutar a cualquier hora del día siempre que sientas deseos de algo dulce y delicioso.\r\n\r\nEl aperitivo perfecto para completar tu dieta.\r\n\r\n¿Proteínas extra? ¡Claro!\r\nUna buena fuente de proteínas para satisfacer tus deseos a lo largo del día. ¡La mejor manera de hacer cada día un poquito más dulce!\r\n\r\nA tener en cuenta:\r\n- Fomenta el crecimiento muscular.\r\n- Perfecto para tus objetivos de fitness.\r\n- Sin conservantes.\r\n- Sin edulcorantes.\r\n- Sin aspartamo.', 10.68, 4, 1, 'Enabled', 76, 'prod_QENho9lppwYX6t', 'price_1PNuwDIqj90TtX55JPHelWqz', '2024-06-04 10:49:57'),
-	(106, '12 x Protein Snack 30g Chocolate blanco con frambuesas ', 'Cuando falta demasiado tiempo para la siguiente comida\r\n¿Estás todo el día sentado trabajando? Pruébalo y disfruta de tu dosis de proteínas sin calorías extra. ¡Es deliciosamente equilibrado!\r\n\r\n¿Sabes ese momento en que te apetece algo realmente bueno y te sientes tentado de hincarle el diente a algo apetitoso? ¡Pues es hora de que conozcas Protein Snack de Prozis! Una sabrosa barrita para disfrutar a cualquier hora del día siempre que sientas deseos de algo dulce y delicioso.\r\n\r\nEl aperitivo perfecto para completar tu dieta.\r\n\r\n¿Proteínas extra? ¡Claro!\r\nUna buena fuente de proteínas para satisfacer tus deseos a lo largo del día. ¡La mejor manera de hacer cada día un poquito más dulce!\r\n\r\nA tener en cuenta:\r\n- Fomenta el crecimiento muscular.\r\n- Perfecto para tus objetivos de fitness.\r\n- Sin conservantes.\r\n- Sin edulcorantes.\r\n- Sin aspartamo.', 10.68, 1, 1, 'Enabled', 77, 'prod_QENqAA3MBCprlk', 'price_1PNv4TIqj90TtX552fcfKqo9', '2024-06-04 10:58:29'),
-	(107, '12 x Protein Snack 30g Chocolate-Avellana', 'Cuando falta demasiado tiempo para la siguiente comida\r\n¿Estás todo el día sentado trabajando? Pruébalo y disfruta de tu dosis de proteínas sin calorías extra. ¡Es deliciosamente equilibrado!\r\n\r\n¿Sabes ese momento en que te apetece algo realmente bueno y te sientes tentado de hincarle el diente a algo apetitoso? ¡Pues es hora de que conozcas Protein Snack de Prozis! Una sabrosa barrita para disfrutar a cualquier hora del día siempre que sientas deseos de algo dulce y delicioso.\r\n\r\nEl aperitivo perfecto para completar tu dieta.\r\n\r\n¿Proteínas extra? ¡Claro!\r\nUna buena fuente de proteínas para satisfacer tus deseos a lo largo del día. ¡La mejor manera de hacer cada día un poquito más dulce!\r\n\r\nA tener en cuenta:\r\n- Fomenta el crecimiento muscular.\r\n- Perfecto para tus objetivos de fitness.\r\n- Sin conservantes.\r\n- Sin edulcorantes.\r\n- Sin aspartamo.', 10.68, 1124, 1, 'Enabled', 77, 'prod_QENwUDJVe6DUhp', 'price_1PNvApIqj90TtX55Tvtdc0L0', '2024-06-04 11:05:03'),
-	(108, '12 x Protein Snack 30g Chocolate-Coco', 'Cuando falta demasiado tiempo para la siguiente comida\r\n¿Estás todo el día sentado trabajando? Pruébalo y disfruta de tu dosis de proteínas sin calorías extra. ¡Es deliciosamente equilibrado!\r\n\r\n¿Sabes ese momento en que te apetece algo realmente bueno y te sientes tentado de hincarle el diente a algo apetitoso? ¡Pues es hora de que conozcas Protein Snack de Prozis! Una sabrosa barrita para disfrutar a cualquier hora del día siempre que sientas deseos de algo dulce y delicioso.\r\n\r\nEl aperitivo perfecto para completar tu dieta.\r\n\r\n¿Proteínas extra? ¡Claro!\r\nUna buena fuente de proteínas para satisfacer tus deseos a lo largo del día. ¡La mejor manera de hacer cada día un poquito más dulce!\r\n\r\nA tener en cuenta:\r\n- Fomenta el crecimiento muscular.\r\n- Perfecto para tus objetivos de fitness.\r\n- Sin conservantes.\r\n- Sin edulcorantes.\r\n- Sin aspartamo.', 10.68, 1, 1, 'Enabled', 78, 'prod_QENzHVIwUcK85A', 'price_1PNvDNIqj90TtX55dfzqej0R', '2024-06-04 11:07:41'),
+	(106, '12 x Protein Snack 30g Chocolate blanco con frambuesas ', 'Cuando falta demasiado tiempo para la siguiente comida\r\n¿Estás todo el día sentado trabajando? Pruébalo y disfruta de tu dosis de proteínas sin calorías extra. ¡Es deliciosamente equilibrado!\r\n\r\n¿Sabes ese momento en que te apetece algo realmente bueno y te sientes tentado de hincarle el diente a algo apetitoso? ¡Pues es hora de que conozcas Protein Snack de Prozis! Una sabrosa barrita para disfrutar a cualquier hora del día siempre que sientas deseos de algo dulce y delicioso.\r\n\r\nEl aperitivo perfecto para completar tu dieta.\r\n\r\n¿Proteínas extra? ¡Claro!\r\nUna buena fuente de proteínas para satisfacer tus deseos a lo largo del día. ¡La mejor manera de hacer cada día un poquito más dulce!\r\n\r\nA tener en cuenta:\r\n- Fomenta el crecimiento muscular.\r\n- Perfecto para tus objetivos de fitness.\r\n- Sin conservantes.\r\n- Sin edulcorantes.\r\n- Sin aspartamo.', 10.68, 0, 1, 'Enabled', 77, 'prod_QENqAA3MBCprlk', 'price_1PNv4TIqj90TtX552fcfKqo9', '2024-06-04 10:58:29'),
+	(107, '12 x Protein Snack 30g Chocolate-Avellana', 'Cuando falta demasiado tiempo para la siguiente comida\r\n¿Estás todo el día sentado trabajando? Pruébalo y disfruta de tu dosis de proteínas sin calorías extra. ¡Es deliciosamente equilibrado!\r\n\r\n¿Sabes ese momento en que te apetece algo realmente bueno y te sientes tentado de hincarle el diente a algo apetitoso? ¡Pues es hora de que conozcas Protein Snack de Prozis! Una sabrosa barrita para disfrutar a cualquier hora del día siempre que sientas deseos de algo dulce y delicioso.\r\n\r\nEl aperitivo perfecto para completar tu dieta.\r\n\r\n¿Proteínas extra? ¡Claro!\r\nUna buena fuente de proteínas para satisfacer tus deseos a lo largo del día. ¡La mejor manera de hacer cada día un poquito más dulce!\r\n\r\nA tener en cuenta:\r\n- Fomenta el crecimiento muscular.\r\n- Perfecto para tus objetivos de fitness.\r\n- Sin conservantes.\r\n- Sin edulcorantes.\r\n- Sin aspartamo.', 10.68, 1112, 1, 'Enabled', 77, 'prod_QENwUDJVe6DUhp', 'price_1PNvApIqj90TtX55Tvtdc0L0', '2024-06-04 11:05:03'),
+	(108, '12 x Protein Snack 30g Chocolate-Coco', 'Cuando falta demasiado tiempo para la siguiente comida\r\n¿Estás todo el día sentado trabajando? Pruébalo y disfruta de tu dosis de proteínas sin calorías extra. ¡Es deliciosamente equilibrado!\r\n\r\n¿Sabes ese momento en que te apetece algo realmente bueno y te sientes tentado de hincarle el diente a algo apetitoso? ¡Pues es hora de que conozcas Protein Snack de Prozis! Una sabrosa barrita para disfrutar a cualquier hora del día siempre que sientas deseos de algo dulce y delicioso.\r\n\r\nEl aperitivo perfecto para completar tu dieta.\r\n\r\n¿Proteínas extra? ¡Claro!\r\nUna buena fuente de proteínas para satisfacer tus deseos a lo largo del día. ¡La mejor manera de hacer cada día un poquito más dulce!\r\n\r\nA tener en cuenta:\r\n- Fomenta el crecimiento muscular.\r\n- Perfecto para tus objetivos de fitness.\r\n- Sin conservantes.\r\n- Sin edulcorantes.\r\n- Sin aspartamo.', 10.68, 0, 1, 'Enabled', 78, 'prod_QENzHVIwUcK85A', 'price_1PNvDNIqj90TtX55dfzqej0R', '2024-06-04 11:07:41'),
 	(109, '12 x Protein Snack 30g Chocolate-Galletas de Crema', 'Cuando falta demasiado tiempo para la siguiente comida\r\n¿Estás todo el día sentado trabajando? Pruébalo y disfruta de tu dosis de proteínas sin calorías extra. ¡Es deliciosamente equilibrado!\r\n\r\n¿Sabes ese momento en que te apetece algo realmente bueno y te sientes tentado de hincarle el diente a algo apetitoso? ¡Pues es hora de que conozcas Protein Snack de Prozis! Una sabrosa barrita para disfrutar a cualquier hora del día siempre que sientas deseos de algo dulce y delicioso.\r\n\r\nEl aperitivo perfecto para completar tu dieta.\r\n\r\n¿Proteínas extra? ¡Claro!\r\nUna buena fuente de proteínas para satisfacer tus deseos a lo largo del día. ¡La mejor manera de hacer cada día un poquito más dulce!\r\n\r\nA tener en cuenta:\r\n- Fomenta el crecimiento muscular.\r\n- Perfecto para tus objetivos de fitness.\r\n- Sin conservantes.\r\n- Sin edulcorantes.\r\n- Sin aspartamo.', 10.68, 1, 1, 'Enabled', 77, 'prod_QEO3X72ujJXrhl', 'price_1PNvHcIqj90TtX55qj6wSTO0', '2024-06-04 11:12:04'),
-	(110, '12 x Protein Snack 30g Chocolate-Helado de Vainilla', 'Cuando falta demasiado tiempo para la siguiente comida\r\n¿Estás todo el día sentado trabajando? Pruébalo y disfruta de tu dosis de proteínas sin calorías extra. ¡Es deliciosamente equilibrado!\r\n\r\n¿Sabes ese momento en que te apetece algo realmente bueno y te sientes tentado de hincarle el diente a algo apetitoso? ¡Pues es hora de que conozcas Protein Snack de Prozis! Una sabrosa barrita para disfrutar a cualquier hora del día siempre que sientas deseos de algo dulce y delicioso.\r\n\r\nEl aperitivo perfecto para completar tu dieta.\r\n\r\n¿Proteínas extra? ¡Claro!\r\nUna buena fuente de proteínas para satisfacer tus deseos a lo largo del día. ¡La mejor manera de hacer cada día un poquito más dulce!\r\n\r\nA tener en cuenta:\r\n- Fomenta el crecimiento muscular.\r\n- Perfecto para tus objetivos de fitness.\r\n- Sin conservantes.\r\n- Sin edulcorantes.\r\n- Sin aspartamo.', 10.68, 1, 1, 'Enabled', 77, 'prod_QEO6RJbyub4ttR', 'price_1PNvKYIqj90TtX5584LNVgJ2', '2024-06-04 11:15:06'),
-	(111, '12 x Protein Snack 30g Chocolate-Tofe', 'Cuando falta demasiado tiempo para la siguiente comida\r\n¿Estás todo el día sentado trabajando? Pruébalo y disfruta de tu dosis de proteínas sin calorías extra. ¡Es deliciosamente equilibrado!\r\n\r\n¿Sabes ese momento en que te apetece algo realmente bueno y te sientes tentado de hincarle el diente a algo apetitoso? ¡Pues es hora de que conozcas Protein Snack de Prozis! Una sabrosa barrita para disfrutar a cualquier hora del día siempre que sientas deseos de algo dulce y delicioso.\r\n\r\nEl aperitivo perfecto para completar tu dieta.\r\n\r\n¿Proteínas extra? ¡Claro!\r\nUna buena fuente de proteínas para satisfacer tus deseos a lo largo del día. ¡La mejor manera de hacer cada día un poquito más dulce!\r\n\r\nA tener en cuenta:\r\n- Fomenta el crecimiento muscular.\r\n- Perfecto para tus objetivos de fitness.\r\n- Sin conservantes.\r\n- Sin edulcorantes.\r\n- Sin aspartamo.', 10.68, 1, 1, 'Enabled', 77, 'prod_QEO97ItjjoQa0b', 'price_1PNvNNIqj90TtX55OX04nZCp', '2024-06-04 11:18:02');
+	(110, '12 x Protein Snack 30g Chocolate-Helado de Vainilla', 'Cuando falta demasiado tiempo para la siguiente comida\r\n¿Estás todo el día sentado trabajando? Pruébalo y disfruta de tu dosis de proteínas sin calorías extra. ¡Es deliciosamente equilibrado!\r\n\r\n¿Sabes ese momento en que te apetece algo realmente bueno y te sientes tentado de hincarle el diente a algo apetitoso? ¡Pues es hora de que conozcas Protein Snack de Prozis! Una sabrosa barrita para disfrutar a cualquier hora del día siempre que sientas deseos de algo dulce y delicioso.\r\n\r\nEl aperitivo perfecto para completar tu dieta.\r\n\r\n¿Proteínas extra? ¡Claro!\r\nUna buena fuente de proteínas para satisfacer tus deseos a lo largo del día. ¡La mejor manera de hacer cada día un poquito más dulce!\r\n\r\nA tener en cuenta:\r\n- Fomenta el crecimiento muscular.\r\n- Perfecto para tus objetivos de fitness.\r\n- Sin conservantes.\r\n- Sin edulcorantes.\r\n- Sin aspartamo.', 10.68, 0, 1, 'Enabled', 77, 'prod_QEO6RJbyub4ttR', 'price_1PNvKYIqj90TtX5584LNVgJ2', '2024-06-04 11:15:06'),
+	(111, '12 x Protein Snack 30g Chocolate-Tofe', 'Cuando falta demasiado tiempo para la siguiente comida\r\n¿Estás todo el día sentado trabajando? Pruébalo y disfruta de tu dosis de proteínas sin calorías extra. ¡Es deliciosamente equilibrado!\r\n\r\n¿Sabes ese momento en que te apetece algo realmente bueno y te sientes tentado de hincarle el diente a algo apetitoso? ¡Pues es hora de que conozcas Protein Snack de Prozis! Una sabrosa barrita para disfrutar a cualquier hora del día siempre que sientas deseos de algo dulce y delicioso.\r\n\r\nEl aperitivo perfecto para completar tu dieta.\r\n\r\n¿Proteínas extra? ¡Claro!\r\nUna buena fuente de proteínas para satisfacer tus deseos a lo largo del día. ¡La mejor manera de hacer cada día un poquito más dulce!\r\n\r\nA tener en cuenta:\r\n- Fomenta el crecimiento muscular.\r\n- Perfecto para tus objetivos de fitness.\r\n- Sin conservantes.\r\n- Sin edulcorantes.\r\n- Sin aspartamo.', 10.68, 0, 1, 'Enabled', 77, 'prod_QEO97ItjjoQa0b', 'price_1PNvNNIqj90TtX55OX04nZCp', '2024-06-04 11:18:02');
 
 -- Volcando estructura para tabla database_web.roles
 CREATE TABLE IF NOT EXISTS `roles` (
@@ -200,7 +186,7 @@ CREATE TABLE IF NOT EXISTS `roles` (
   `role_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`role_id`),
   UNIQUE KEY `role_name` (`role_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=126 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=128 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Volcando datos para la tabla database_web.roles: ~7 rows (aproximadamente)
 DELETE FROM `roles`;
@@ -212,6 +198,19 @@ INSERT INTO `roles` (`role_id`, `role_name`) VALUES
 	(95, 'Manager de Soporte'),
 	(98, 'Manager de Usuarios'),
 	(10, 'Usuario');
+
+-- Volcando estructura para tabla database_web.support_tickets
+CREATE TABLE IF NOT EXISTS `support_tickets` (
+  `ticket_id` int NOT NULL AUTO_INCREMENT,
+  `email` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `type` enum('Problema de Pago','Problema de Envío','Producto Dañado','Producto Incorrecto','Consulta de Producto','Solicitud de Reembolso','Problema de Inicio de Sesión','Problema de Cuenta','Otro') NOT NULL,
+  `message` text NOT NULL,
+  PRIMARY KEY (`ticket_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Volcando datos para la tabla database_web.support_tickets: ~0 rows (aproximadamente)
+DELETE FROM `support_tickets`;
 
 -- Volcando estructura para tabla database_web.user_address
 CREATE TABLE IF NOT EXISTS `user_address` (
@@ -227,16 +226,13 @@ CREATE TABLE IF NOT EXISTS `user_address` (
   PRIMARY KEY (`address_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `user_address_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_credentials` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Volcando datos para la tabla database_web.user_address: ~5 rows (aproximadamente)
 DELETE FROM `user_address`;
 INSERT INTO `user_address` (`address_id`, `user_id`, `street`, `city`, `country`, `zip`, `province`, `phone_number`, `is_default`) VALUES
-	(51, 74, 'c/ Doctor Fleming 6 3ºA', 'Coslada', 'España', '28821', 'Madrid', 602240748, 1),
-	(64, 74, 'c/ Doctor Fleming', 'a', 'España', '28821', 'Madrid', 602222222, 0),
-	(65, 76, 'Plaza de Uruguay nº 7', 'Coslada', 'España', '28822', 'Madrid', 654203319, 1),
-	(66, 76, 'Plaza de Uruguay nº 7', 'Coslada', 'España', '28822', 'Madrid', 654203319, 0),
-	(67, 76, 'Plaza de Uruguay nº 7', 'Coslada', 'España', '28822', 'Madrid', 654203319, 0);
+	(68, 78, 'Plaza de Uruguay, 8 28822 Coslada Madrid, España, 9° C', 'Coslada', 'España', '28822', 'Madrid', 654203319, 1),
+	(69, 79, 'C/Doctor Fleming', 'Coslada', 'España', '28821', 'Comunidad de Madrid', 602240748, 1);
 
 -- Volcando estructura para tabla database_web.user_credentials
 CREATE TABLE IF NOT EXISTS `user_credentials` (
@@ -244,17 +240,17 @@ CREATE TABLE IF NOT EXISTS `user_credentials` (
   `email` varchar(50) NOT NULL,
   `current_password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `stripe_customer_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `status` enum('Active','Inactive','Suspended') NOT NULL DEFAULT 'Active',
+  `status` enum('Activo','Inactivo','Suspendido') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'Activo',
   `registration_date` datetime NOT NULL,
   PRIMARY KEY (`user_id`,`email`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla database_web.user_credentials: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla database_web.user_credentials: ~3 rows (aproximadamente)
 DELETE FROM `user_credentials`;
 INSERT INTO `user_credentials` (`user_id`, `email`, `current_password`, `stripe_customer_id`, `status`, `registration_date`) VALUES
-	(74, 'adrian.escribano3@gmail.com', '$2b$10$HXHGnAqfSS0Ol0E3uL0QJO56iWDFgd1.bS5kMyXrks43JuQleMvl.', 'cus_QCI0KGiumt3oRZ', 'Active', '2024-05-29 20:49:15'),
-	(76, 'adrigar250503@gmail.com', '$2b$10$OAi36395/5qSpyr9UApVgOmi.mrbkH0e40pHCSIoKNwTNepaOTjI.', 'cus_QEY0k1Thubiz8y', 'Active', '2024-06-04 23:29:22');
+	(78, 'adrigar250503@gmail.com', '$2b$10$MmDOlYGHCvdKoopIz.l.j.Wb2UyABqUKIIxV1c1k98sz0farfXJYq', 'cus_QFtSI0obB5PLDZ', 'Activo', '2024-06-08 13:42:35'),
+	(79, 'adrian.escribano3@gmail.com', '$2b$10$EXAyHVw3qdSjqOEFRdi8WeIhHnLx.wRzIumRWEZ7nGPzNTSZQAhue', 'cus_QFu3HwQHZVhzWb', 'Activo', '2024-06-08 14:20:02');
 
 -- Volcando estructura para tabla database_web.user_info
 CREATE TABLE IF NOT EXISTS `user_info` (
@@ -266,11 +262,11 @@ CREATE TABLE IF NOT EXISTS `user_info` (
   CONSTRAINT `user_info_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_credentials` (`user_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla database_web.user_info: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla database_web.user_info: ~3 rows (aproximadamente)
 DELETE FROM `user_info`;
 INSERT INTO `user_info` (`user_id`, `first_name`, `last_name`, `dni`) VALUES
-	(74, 'Adrián', 'Escribano', '49814242z'),
-	(76, 'Adrian', 'Garcia', '49815997k');
+	(78, 'Adrián', 'García Torrente', '49815997k'),
+	(79, 'Adrián', 'Escribano Pérez', '49814242z');
 
 -- Volcando estructura para tabla database_web.user_roles
 CREATE TABLE IF NOT EXISTS `user_roles` (
@@ -282,11 +278,22 @@ CREATE TABLE IF NOT EXISTS `user_roles` (
   CONSTRAINT `user_roles_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla database_web.user_roles: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla database_web.user_roles: ~3 rows (aproximadamente)
 DELETE FROM `user_roles`;
 INSERT INTO `user_roles` (`user_id`, `role_id`) VALUES
-	(74, 99),
-	(76, 99);
+	(78, 99),
+	(79, 99);
+
+-- Volcando estructura para disparador database_web.update_order_status_on_delete
+SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+DELIMITER //
+CREATE TRIGGER `update_order_status_on_delete` BEFORE DELETE ON `user_credentials` FOR EACH ROW BEGIN
+    UPDATE orders
+    SET order_status = 'cancelado'
+    WHERE user_id = OLD.user_id;
+END//
+DELIMITER ;
+SET SQL_MODE=@OLDTMP_SQL_MODE;
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

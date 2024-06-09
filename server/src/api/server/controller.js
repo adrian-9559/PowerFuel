@@ -1,4 +1,3 @@
-const pidusage = require('pidusage');
 const fs = require('fs');
 const os = require('os');
 const { exec } = require('child_process');

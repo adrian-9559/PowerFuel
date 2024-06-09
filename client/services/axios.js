@@ -19,8 +19,6 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(response => {
     return response;
 }, async error => {
-    const originalRequest = error.config;
-    localStorage.removeItem('auth_token');
     if (error.response && (error.response.status === 401 || error.response.status === 403) && localStorage.getItem('auth_token')) {
         toastr.error(error);
         localStorage.removeItem('auth_token');

@@ -22,7 +22,7 @@ const AuthMenu = () => {
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
         };
-    }, []);
+    }, [onOpenAuthMenu]);
 
     return (
         <motion.section layout className="flex flex-col gap-2">

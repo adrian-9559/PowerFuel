@@ -59,7 +59,7 @@ const SearchBar = () => {
 
     return (
         <div className='w-full relative'>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={(e)=>{handleSubmit(e)}}>
                 <Input 
                     className="w-full bg-transparent" variant='faded' placeholder="Buscar..." type="text" 
                     onChange={(e) => setSearchTerm(e.target.value)}

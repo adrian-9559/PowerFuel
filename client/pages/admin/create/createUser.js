@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import UserIcon2 from "@icons/UserIcon2";
 import useTitle from '@hooks/useTitle';
 import toast from 'toastr';
+import withAuth from '@hoc/withAuth'
 
 const CreateUser = () => {
     const router = useRouter();
@@ -65,7 +66,7 @@ const CreateUser = () => {
             }
         }
         fetchRoles();
-    }, [id]);
+    }, [id, readOnly]);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -370,4 +371,4 @@ const CreateUser = () => {
     );
 };
 
-export default CreateUser;
+export default withAuth(CreateUser,[99,96,95,98]);

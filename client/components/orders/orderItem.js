@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Button, Card, Chip, Image, ScrollShadow } from '@nextui-org/react';
 import ProductService from '@services/productService';
 import { format } from 'date-fns';
@@ -29,7 +29,7 @@ const OrderItem = ({ order }) => {
         return 'default';
     }
   };
-  const fetchProduct = async () => {
+  const fetchProduct = useCallback(async () => {
     let total = 0;
     const detailsAux = JSON.parse(order.details);
     const detailsTemp = [];
@@ -43,11 +43,11 @@ const OrderItem = ({ order }) => {
     setDetails(detailsTemp);
     order.total = total.toFixed(2);
     setShippingAddress(JSON.parse(order.shipping_address));
-  };
+  }, [order]);
 
   useEffect(() => {
     fetchProduct();
-  }, [order]);
+  }, [fetchProduct]);
 
   return (
     <Card shadow className="p-6 shadow-lg flex flex-col gap-2">

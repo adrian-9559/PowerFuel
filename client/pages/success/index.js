@@ -39,7 +39,7 @@ const SuccessPage = () => {
         }
         handleSuccess();
 
-    }, [success]);
+    }, [success, cart, setCart]);
 
     return (
         <main className='flex justify-center items-center h-full p-8 sm:p-20'>

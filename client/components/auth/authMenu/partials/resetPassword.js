@@ -3,7 +3,7 @@ import { Input, Button, Spinner } from '@nextui-org/react';
 import { useRouter } from 'next/router';
 import UserService from '@services/userService';
 
-const resetPassword = () => {
+const ResetPassword = () => {
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [code, setCode] = useState('');
@@ -139,6 +139,7 @@ const resetPassword = () => {
     );
 };
 
-export default resetPassword;
+
+export default ResetPassword;
 
     

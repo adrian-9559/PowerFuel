@@ -27,7 +27,7 @@ const TermsConditions = () => {
                             </CardHeader>
                             <Divider />
                             <CardBody>
-                                <p>Este sitio web es operado por PowerFuel. En todo el sitio, los términos "nosotros", "nos" y "nuestro" se refieren a PowerFuel.</p>
+                                <p>Este sitio web es operado por PowerFuel. En todo el sitio, los términos &quot;nosotros&quot;, &quot;nos&quot; y &quot;nuestro&quot; se refieren a PowerFuel.</p>
                             </CardBody>
                         </Card>
                         <Card>

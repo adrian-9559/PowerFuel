@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useAppContext } from '@context/AppContext';
@@ -10,7 +10,8 @@ import ProductoAdministration from "./productAdministration";
 import CategoryAdministration from "./categoryAdministration";
 import BrandAdministration from './brandAdministration';
 import OrderAdministration from "./orderAdministration"
-import {Divider} from '@nextui-org/react';
+import withAuth from '../../hoc/withAuth';
+
 
 const Administrador = () => {
     const router = useRouter();
@@ -27,17 +28,26 @@ const Administrador = () => {
         'Pedidos': <OrderAdministration />,
     };
 
+    const asPathRef = useRef('');
+    if (router.isReady) {
+        asPathRef.current = router.asPath;
+    }
+
     useEffect(() => {
         if (router.isReady) {
-            const view = router.asPath.split('/')[2] || 'General';
+            const view = asPathRef.current.split('/')[2] || 'General';
             setSelectedOption(view);
             console.log(view);
         }
     }, [router.isReady]);
 
     useEffect(() => {
-        if (selectedOption && router.asPath.split('/')[2] !== selectedOption) {
-            router.replace(`/admin/${selectedOption}`, undefined, { shallow: true });
+        if (selectedOption && asPathRef.current.split('/')[2] !== selectedOption) {
+            if (components[selectedOption]) {
+                router.replace(`/admin/${selectedOption}`, undefined, { shallow: true });
+            } else {
+                router.replace('/');
+            }
         }
     }, [selectedOption, router]);
 
@@ -63,4 +73,4 @@ const Administrador = () => {
     );
 }
 
-export default Administrador;
+export default withAuth(Administrador, [99,97,96,94,98,95]);

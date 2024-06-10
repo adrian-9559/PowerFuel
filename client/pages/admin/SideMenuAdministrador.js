@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAppContext } from '@context/AppContext';
 import { Button, Select, SelectItem, Divider, Card, CardHeader, CardBody } from '@nextui-org/react';
+import withAuth from '@hoc/withAuth';
 
 const SideMenuAdministrador = ({ selectedOption,setSelectedOption }) => {
     const { user } = useAppContext();
@@ -73,4 +74,4 @@ const SideMenuAdministrador = ({ selectedOption,setSelectedOption }) => {
     );
 }
 
-export default SideMenuAdministrador;
+export default withAuth(SideMenuAdministrador, [99,97,96,94,98,95]);

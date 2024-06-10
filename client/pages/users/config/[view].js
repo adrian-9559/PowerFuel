@@ -7,6 +7,7 @@ import DataUser from '@components/users/dataUser';
 import AddressList from '@components/address/addressList';
 import NotificationList from '@components/notification/NotificationList';
 import OrderList from '@components/orders/orderList';
+import withAuth from '@hoc/withAuth';
 
 const Config = () => {
     const router = useRouter();
@@ -21,18 +22,6 @@ const Config = () => {
         'NotificationList': <NotificationList />,
         'OrderList': <OrderList />,
     };
-
-    useEffect(() => {
-        const checkLoginStatus = setTimeout(() => {
-            if (!isLoggedIn) {
-                routerRef.current.push('/');
-            } else {
-                setIsLoading(false);
-            }
-        }, 1000);
-    
-        return () => clearTimeout(checkLoginStatus);
-    }, [isLoggedIn]);
 
     useEffect(() => {
         if (router.isReady) {
@@ -73,4 +62,4 @@ const Config = () => {
         </section>
     );
 }
-export default Config;
+export default withAuth(Config);

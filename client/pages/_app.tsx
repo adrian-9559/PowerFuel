@@ -28,7 +28,7 @@ export default function App({ Component, pageProps }: AppProps) {
 		if (!cookies) {
 			onOpen();
 		}
-	}, []);
+	}, [onOpen]);
 
 	const handleAccept = () => {
 		localStorage.setItem('cookies', 'true');

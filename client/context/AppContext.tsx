@@ -41,7 +41,9 @@ const AppContext = createContext({
   setWebTitle: (value: string) => {},
   isAuthOpen: false,
   setIsAuthOpen: (value: boolean) => {},
-  onOpenAuthMenu: (value: boolean) => {}
+  onOpenAuthMenu: (value: boolean) => {},
+  isLoading: false,
+  setIsLoading: (value: boolean) => {},
 });
 
 // Crear el proveedor de contexto
@@ -54,6 +56,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [webTitle, setWebTitle] = useState('POWERFUEL');
   const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
 
   const onOpenAuthMenu = (value: boolean = !isAuthOpen) => {
     setIsAuthOpen(value);
@@ -90,9 +94,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     if (token && token != "" && !user) {
         setIsLoggedIn(true);
         const fetchUserInfo = async () => {
+            setIsLoading(true);
             const userInfo = await UserService.getUserInfo();
             const roleResponse = await RoleService.getRoleByUserId();
             const notificationResponse = await NotificationService.getNotificationsByUser();
+            setIsLoading(false);
             setNotifications(notificationResponse);
             setUser(userInfo);
             setIsAdmin(roleResponse.data.role_id !== 10);
@@ -114,6 +120,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         setIsLoggedIn(false);
         setUser(null);
         setIsAdmin(false);
+        
     }
     
 
@@ -138,7 +145,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           setWebTitle,
           isAuthOpen,
           setIsAuthOpen,
-          onOpenAuthMenu
+          onOpenAuthMenu,
+          isLoading,
+          setIsLoading,
         }
       }
     >

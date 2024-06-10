@@ -36,7 +36,7 @@ const CheckOut = () => {
             onOpenChange(false);
             onOpenAuthMenu(true);
         }
-    }, [isLoggedIn, isOpen]);
+    }, [isLoggedIn, isOpen, onOpenChange, onOpenAuthMenu]);
     
     return (
         <section className='w-full flex justify-center'>

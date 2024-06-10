@@ -9,6 +9,7 @@ import EyeIcon from '@icons/EyeIcon';
 import EditIcon from '@icons/EditIcon';
 import PlusIcon from '@icons/PlusIcon';
 import useTitle from '@hooks/useTitle';
+import withAuth from '@hoc/withAuth';
 
 const statusColorMap = {
     Enabled: "success",
@@ -71,7 +72,7 @@ const ProductoAdministration = () => {
 
     return (
         isLoading ? (
-            <div className='w-[20rem] h-[20rem] flex justify-center items-center'>
+            <div className='w-full h-[50rem] flex justify-center items-center'>
                 <Spinner />
             </div>
         ) : (
@@ -210,4 +211,4 @@ const ProductoAdministration = () => {
     );
 };
 
-export default ProductoAdministration;
+export default withAuth(ProductoAdministration, [99,94,97,96]);

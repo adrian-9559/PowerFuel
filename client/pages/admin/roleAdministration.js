@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Tooltip, Button, Pagination, Spinner } from "@nextui-org/react";
 import { useRouter } from 'next/router';
 import RoleService from '@services/roleService';
 import DeleteIcon from '@icons/DeleteIcon';
-import EyeIcon from '@icons/EyeIcon';
 import EditIcon from '@icons/EditIcon';
 import PlusIcon from '@icons/PlusIcon'; 
 import useTitle from '@hooks/useTitle'; 
+import withAuth from '@hoc/withAuth';
 const RoleAdministration = () => {
     const router = useRouter();
     const [Roles, setRoles] = useState([]);
@@ -15,18 +15,18 @@ const RoleAdministration = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [selectedKeys, setSelectedKeys] = useState([]);
     useTitle('Administración de Roles');
-    
-    const fetchRoleData = async () => {
+
+    const fetchRoleData = useCallback(async () => {
         const response = await RoleService.getRoles(page);
         setRoles(response.roles ?? []);
         setIsLoading(false);
         setTotalPages(response.pages);
-    }
-    
+    }, [page]);
+        
     useEffect(() => {
         setIsLoading(true);
         fetchRoleData();
-    }, [page]);
+    }, [fetchRoleData]);
 
     const deleteRole = async (roleId) => {
         await RoleService.deleteRole(roleId);
@@ -62,7 +62,7 @@ const RoleAdministration = () => {
 
     return (
         isLoading ? (
-            <div className='w-[20rem] h-[20rem] flex justify-center items-center'>
+            <div className='w-full h-[50rem] flex justify-center items-center'>
                 <Spinner />
             </div>
         ) : (
@@ -151,4 +151,4 @@ const RoleAdministration = () => {
     );
 };
 
-export default RoleAdministration;
+export default withAuth(RoleAdministration, [99,95,96]);

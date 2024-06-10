@@ -49,7 +49,7 @@ const SearchComponent = () => {
                 break;
         }
 
-    }, [search, page])
+    }, [search, page, setTitle])
 
     return (
         loading ? (

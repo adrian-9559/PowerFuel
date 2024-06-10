@@ -9,6 +9,7 @@ import CategoryService from '@services/categoryService';
 import RoleService from '@services/roleService';
 import BrandService from '@services/brandService';
 import useTitle from '@hooks/useTitle';
+import withAuth from '@hoc/withAuth';
 
 const GeneralAdministration = () => {
     const [numUsersRegisterWeek, setNumUsersRegisterWeek] = useState(0);
@@ -126,7 +127,7 @@ const GeneralAdministration = () => {
 
     return (
         isLoading ? (
-            <div className='w-[20rem] h-[20rem] flex justify-center items-center'>
+            <div className='w-full h-[50rem] flex justify-center items-center'>
                 <Spinner />
             </div>
         ) : (
@@ -418,4 +419,4 @@ const GeneralAdministration = () => {
     )
 }
 
-export default GeneralAdministration;
+export default withAuth(GeneralAdministration,[99,96,94,97,95,98]);

@@ -7,6 +7,7 @@ import EyeIcon from '@icons/EyeIcon';
 import EditIcon from '@icons/EditIcon';
 import PlusIcon from '@icons/PlusIcon';
 import useTitle from '@hooks/useTitle'; 
+import withAuth from '@hoc/withAuth';
 
 
 const statusColorMap = {
@@ -69,7 +70,7 @@ const UserAdministration = () => {
 
     return (
         isLoading ? (
-            <div className='w-[20rem] h-[20rem] flex justify-center items-center'>
+            <div className='w-full h-[50rem] flex justify-center items-center'>
                 <Spinner />
             </div>
         ) : (
@@ -186,4 +187,4 @@ const UserAdministration = () => {
     );
 };
 
-export default UserAdministration;
+export default withAuth(UserAdministration, [99,96,95,98]);

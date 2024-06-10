@@ -3,6 +3,7 @@ import { Input, Button, Card } from "@nextui-org/react";
 import RoleService from '@services/roleService';
 import { useRouter } from 'next/router';
 import useTitle from '@hooks/useTitle'; 
+import withAuth from '@hoc/withAuth'
 
 const CreateRole = () => {
     const router = useRouter();
@@ -80,4 +81,4 @@ const CreateRole = () => {
     );
 }
 
-export default CreateRole;
+export default withAuth(CreateRole, [99,95,96]);

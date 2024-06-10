@@ -31,7 +31,7 @@ const Product = () => {
         };
     
         fetchProducto();
-    }, [id]);
+    }, [id, setTitle]);
 
     return (
         <main className='flex flex-col items-center justify-center p-6'>

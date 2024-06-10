@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import CategoryService from '@services/categoryService';
 import { useRouter } from 'next/router';
 import useTitle from '@hooks/useTitle'; 
+import withAuth from '@hoc/withAuth'
 
 const CreateCategory = () => {
     const [nameCategory, setName] = useState('');
@@ -109,4 +110,4 @@ const CreateCategory = () => {
     );
 }
 
-export default CreateCategory;
+export default withAuth(CreateCategory, [99,96,94,97]);

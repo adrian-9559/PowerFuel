@@ -35,7 +35,7 @@ const ProductListCategory = () => {
         if(id){
             fetchProductos();
         }
-    }, [id]);
+    }, [id, setTitle]);
 
     const addUniqueProducts = (existingProducts, newProducts) => {
         const productIds = new Set(existingProducts.map(product => product.product_id));

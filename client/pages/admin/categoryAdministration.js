@@ -7,6 +7,7 @@ import DeleteIcon from '@icons/DeleteIcon';
 import PlusIcon from '@icons/PlusIcon';
 import EyeIcon from '@icons/EyeIcon';
 import useTitle from '@hooks/useTitle'; 
+import withAuth from '@hoc/withAuth';
 
 const CategoryAdministration = () => {
     const router = useRouter();
@@ -18,6 +19,7 @@ const CategoryAdministration = () => {
     useTitle('Administración de Categorías');
 
     const fetchCategoryData = async () => {
+        setIsLoading(true);
         const response = await CategoryService.getCategories(page);
         setCategories(response.categories??[]);
         setTotalPages(response.pages);
@@ -25,7 +27,13 @@ const CategoryAdministration = () => {
     }
 
     useEffect(() => {
-        setIsLoading(true);
+        const fetchCategoryData = async () => {
+            setIsLoading(true);
+            const response = await CategoryService.getCategories(page);
+            setCategories(response.categories??[]);
+            setTotalPages(response.pages);
+            setIsLoading(false);
+        }
         fetchCategoryData();
     }, [page]);
 
@@ -69,7 +77,7 @@ const CategoryAdministration = () => {
 
     return (
         isLoading ? (
-            <div className='w-[20rem] h-[20rem] flex justify-center items-center'>
+            <div className='w-full h-[50rem] flex justify-center items-center'>
                 <Spinner />
             </div>
         ) : (
@@ -159,4 +167,4 @@ const CategoryAdministration = () => {
     );
 };
 
-export default CategoryAdministration;
+export default withAuth(CategoryAdministration, [99,96,94,97]);

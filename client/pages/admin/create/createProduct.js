@@ -6,6 +6,7 @@ import { Button, Card, Image, Input, Select, SelectItem, Textarea } from '@nextu
 import CategoryService from '@services/categoryService';
 import BrandService from '@services/brandService';
 import DeleteIcon from '@icons/deleteIcon';
+import withAuth from '@hoc/withAuth'
 
 
 const CreateProduct = () => {
@@ -295,4 +296,4 @@ const CreateProduct = () => {
     );
 }
 
-export default CreateProduct;
+export default withAuth(CreateProduct, [99,94,97,96]);

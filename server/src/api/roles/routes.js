@@ -169,7 +169,8 @@ router.route('/user')
      */
     .post(async (req, res) => {
         try {
-            const role = await getRoleByUserId(req.user.userId);
+            const userId = req.user.userId;
+            const role = await getRoleByUserId(userId);
             if (!role) {
                 return res.status(404).json({ message: 'Rol no encontrado para este usuario' });
             }

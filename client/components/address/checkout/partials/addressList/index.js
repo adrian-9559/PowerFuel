@@ -11,7 +11,7 @@ const AddressList = ({addressList, handleDelete, handleEdit, setSelectedAddress}
             setSelectedRadio(defaultAddress.address_id);
             setSelectedAddress(defaultAddress.address_id);
         }
-    }, [addressList]);
+    }, [addressList, setSelectedAddress]);
 
     const handleValueChange = (value) => {
         setSelectedRadio(value);

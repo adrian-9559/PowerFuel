@@ -9,6 +9,7 @@ import DeleteIcon from '@icons/DeleteIcon';
 import EyeIcon from '@icons/EyeIcon';
 import EditIcon from '@icons/EditIcon';
 import useTitle from '@hooks/useTitle'; 
+import withAuth from '@hoc/withAuth';
 
 const statusColorMap = {
     'entregado': 'success',
@@ -77,7 +78,7 @@ const OrderAdministration = () => {
 
     return(
         isLoading ? (
-            <div className='w-[20rem] h-[20rem] flex justify-center items-center'>
+            <div className='w-full h-[50rem] flex justify-center items-center'>
                 <Spinner aria-label="Loading" />
             </div>
         ) : (
@@ -185,4 +186,4 @@ const OrderAdministration = () => {
     )
 };
 
-export default OrderAdministration;
+export default withAuth(OrderAdministration, [99,94,97,96]);

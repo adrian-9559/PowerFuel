@@ -3,6 +3,7 @@ import { Input, Button, Card } from "@nextui-org/react";
 import BrandService from '@services/brandService';
 import { useRouter } from 'next/router';
 import useTitle from '@hooks/useTitle'; 
+import withAuth from '@hoc/withAuth'
 
 const CreateBrand = () => {
     const router = useRouter();
@@ -77,4 +78,4 @@ const CreateBrand = () => {
     );
 }
 
-export default CreateBrand;
+export default  withAuth(CreateBrand, [99,94]);

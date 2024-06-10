@@ -1,9 +1,10 @@
 import { Button, Input, Select, SelectItem, Card, Image, ScrollShadow } from '@nextui-org/react';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import OrderService from '@services/orderService';
 import ProductService from '@services/productService';
 import useTitle from '@hooks/useTitle';
+import withAuth from '@hoc/withAuth'
 
 const CreateOrder = () => {
     const router = useRouter();
@@ -28,14 +29,16 @@ const CreateOrder = () => {
     const [products, setProducts] = useState([]);
     useTitle(id ? 'Editar Pedido' : 'Crear Pedido');
 
-    const getOrder = async () => {
+    const getOrder = useCallback(async() => {
         if (id) {
             const orderDetails = await OrderService.getOrderById(id);
-            setOrder(orderDetails);
-            formatForm(orderDetails);
+            if (JSON.stringify(order) !== JSON.stringify(orderDetails)) {
+                setOrder(orderDetails);
+                formatForm(orderDetails);
+            }
             setLoading(false);
         }
-    }
+    }, [id, order]);
 
     const formatForm = (order) => {
         if (!order || !order.shipping_address) return;
@@ -80,7 +83,7 @@ const CreateOrder = () => {
             getOrder();
             formatForm();
         }
-    }, [id]);
+    }, [id, getOrder]);
 
     const handleChange = (name) => (value) => {
 
@@ -228,4 +231,4 @@ const CreateOrder = () => {
     );
 }
 
-export default CreateOrder;
+export default withAuth(CreateOrder, [99,94,97,96]);

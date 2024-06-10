@@ -5,6 +5,7 @@ import UserService from '@services/userService';
 import { Input, Button, Image, Link , Skeleton, Card, Divider, CardHeader, CardBody, CardFooter, Avatar } from "@nextui-org/react";
 import { useAppContext } from '@context/AppContext';
 import useTitle from '@hooks/useTitle';
+import withAuth from '@hoc/withAuth';
 
 const DataUser = () => {
     const [isEditing, setIsEditing] = useState(false);

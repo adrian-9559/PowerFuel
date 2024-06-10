@@ -11,6 +11,12 @@ const LoginForm = () => {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const  { setIsLoggedIn } = useAppContext();
+    const [errors, setErrors] = useState({ email: '', password: '' });
+    const validateEmail = (email) => {
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+
 
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -18,6 +24,7 @@ const LoginForm = () => {
             const emailInput = email;
             const passwordInput = password;
             try {
+                setLoading(true);
                 await UserService.loginUser(emailInput, passwordInput);
                 setIsLoggedIn(true);
                 router.push('/');
@@ -25,9 +32,31 @@ const LoginForm = () => {
                 console.error("Error during login: ", error);
                 setIsLoggedIn(false);
               }
+              
+              setLoading(false);
 
         } catch (error) {
             console.error(error);
+        }
+    };
+
+    const handlePasswordChange = (e) => {
+        setPassword(e.target.value);
+        if (!e.target.value) {
+            setErrors({ ...errors, password: 'La contraseña es requerida.' });
+        } else {
+            setErrors({ ...errors, password: '' });
+        }
+    };
+
+    const handleEmailChange = (e) => {
+        setEmail(e.target.value);
+        if (!e.target.value) {
+            setErrors({ ...errors, email: 'El correo electrónico es requerido.' });
+        } else if (!validateEmail(e.target.value)) {
+            setErrors({ ...errors, email: 'El correo electrónico no es válido.' });
+        } else {
+            setErrors({ ...errors, email: '' });
         }
     };
 
@@ -43,16 +72,20 @@ const LoginForm = () => {
                         type="email"
                         label="Email"
                         defaultValue={email}
-                        onChange={(e) => setEmail(e.target.value)}
                         autoComplete="email"
+                        onChange={handleEmailChange}
+                        isInvalid={errors.email ? true : false}
+                        errorMessage={errors.email}
                     />
                     <Input
                         name="password"
                         type="password"
                         label="Password"
                         defaultValue={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={handlePasswordChange}
+                        isInvalid={errors.password ? true : false}
                         autoComplete="current-password"
+                        errorMessage={errors.password}
                     />
                 <Button type='submit' disabled={loading} className="w-full">{loading ? 'Cargando...' : 'Iniciar sesión'}</Button>
             </form>

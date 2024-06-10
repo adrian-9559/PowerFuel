@@ -93,17 +93,32 @@ const verifyCode = async (code, userId) => {
         if (!code ||!userId) {
             console.log(`No se ha recibido toda la información necesaria ${errorDisplay}`);
         }
-
-        console.log("code", code);
-        console.log("userId", userId);
         try {
             const result = await searchUserCodeReset(userId);
-            console.log("result", result);
+
+            if(result.used === 1){
+                console.log(`El código de reseteo de contraseña ya ha sido utilizado ${errorDisplay}`);
+                return false;
+            }
+
+            
+            await model.updateCodeUser(code, userId, new Date(), 1);
     
             if (!result || result.length < 1) {
                 return false;
             }
-    
+
+            // Verificar que no han pasado más de 15 minutos
+            const now = new Date();
+            const timeDifference = now - new Date(result.created_at); // Diferencia en milisegundos
+            const timeDifferenceInMinutes = timeDifference / 1000 / 60; // Convertir a minutos
+
+            if (timeDifferenceInMinutes > 1) {
+                console.log(`El código de reseteo de contraseña ha expirado ${errorDisplay}`);
+                return false;
+            }
+
+
             return result.code === code;
         } catch (error) {
             console.log(`Error al verificar un código de reseteo de contraseñas dentro de la base de datos (codeError: 1) ${errorDisplay}`, error);

@@ -60,7 +60,7 @@ const HomeComponent = () => {
     };
 
     const renderProductosNovedades = () => {
-        return productosNovedades.map((product) => (
+        return productosNovedades?.map((product) => (
             <ProductCard product={product} key={product.product_id} />
         ));
     }
@@ -133,7 +133,7 @@ const HomeComponent = () => {
                                     itemClass="carousel-item-padding-40-px mr-4"
                                     
                                 >
-                                    {renderProductosNovedades()}
+                                    {renderProductosNovedades() || <p>No hay productos disponibles.</p>}
                                 </Carousel>
                         </CardBody>
                     </Card>

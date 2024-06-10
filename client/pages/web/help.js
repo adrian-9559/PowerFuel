@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { Card, CardBody, Textarea, Button, Input, Select, SelectItem } from '@nextui-org/react';
 import useTitle from '@hooks/useTitle';
 import SupportService from '@services/supportService';
+import { useRouter } from 'next/router';
 
 const Help = () => {
 
     useTitle('Ayuda');
+    const router = useRouter();
     const [errors, setErrors] = useState({});
     const [formState , setFormState] = useState({
         name: '',
@@ -39,7 +41,8 @@ const Help = () => {
 
         const data = { name, email, message, type };
         const response = await SupportService.createTicket(data);
-        console.log(response);
+        if(response)
+            router.push('/');
     }
 
     return (
@@ -53,19 +56,31 @@ const Help = () => {
                         <form method="post" className='grid gap-8' onSubmit={handleSubmit}>
                             <section className='grid'>
                                 <label htmlFor="name">Nombre</label>
-                                <Input type="text" id="name" name="name" label='Nombre' value={formState.name} onChange={onChange}/>
+                                <Input type="text" id="name" name="name" label='Nombre' value={formState.name} onChange={onChange} required errorMessage="El nombre es obligatorio" isInvalid={formState.name ? false : true} />
                             </section>
                             <section  className='grid'>
                                 <label htmlFor="email">Correo</label>
-                                <Input type="email" id="email" name="email" label='Correo electrónico' value={formState.email} onChange={onChange}/>
+                                <Input type="email" id="email" name="email" label='Correo electrónico' value={formState.email} onChange={onChange}
+                                    errorMessage={errors.email}
+                                    isInvalid={errors.email ? true : false}
+                                    required
+                                />
                             </section>
                             <section  className='grid'>
                                 <label htmlFor="message">Mensaje</label>
-                                <Textarea id="message" name="message" label='Descripción del problema' value={formState.message} onChange={onChange}></Textarea>
+                                <Textarea id="message" name="message" label='Descripción del problema' value={formState.message} onChange={onChange} 
+                                    errorMessage="El mensaje es obligatorio"
+                                    isInvalid={formState.message ? false : true} 
+                                >
+
+                                </Textarea>
                             </section>
                             <section className='grid'>
                                 <label htmlFor="type">Tipo de problema</label>
-                                <Select id="type" name="type" defaultSelectedKeys={["Otro"]} value={formState.type} onChange={onChange}>
+                                <Select id="type" name="type" defaultSelectedKeys={["Otro"]} value={formState.type} onChange={onChange} required
+                                    errorMessage="El tipo es obligatorio"
+                                    isInvalid={formState.type ? false : true} 
+                                >
                                     <SelectItem key="Problema de Pago" value="Problema de Pago">Problema de Pago</SelectItem>
                                     <SelectItem key="Problema de Envío" value="Problema de Envío">Problema de Envío</SelectItem>
                                     <SelectItem key="Producto Dañado" value="Producto Dañado">Producto Dañado</SelectItem>
@@ -76,9 +91,6 @@ const Help = () => {
                                     <SelectItem key="Problema de Cuenta" value="Problema de Cuenta">Problema de Cuenta</SelectItem>
                                     <SelectItem key="Otro" value="Otro">Otro</SelectItem>
                                 </Select>
-                            </section>
-                            <section className='grid'>
-                                <span className='text-red-500'>{errors.all}</span>
                             </section>
                             <section className='w-full flex justify-center'>
                                 <Button type="submit">Enviar</Button>

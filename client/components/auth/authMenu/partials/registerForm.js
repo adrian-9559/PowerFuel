@@ -23,7 +23,19 @@ const RegisterForm = () => {
 
     const handleRegister = async (e) => {
         e.preventDefault();
-        if (Object.keys(errors).length === 0) {
+        let newErrors = { ...errors };
+    
+        // Comprobar si todos los campos del formulario están llenos
+        for (let key in formState) {
+            if (!formState[key]) {
+                newErrors[key] = 'Este campo es requerido.';
+            }
+        }
+    
+        setErrors(newErrors);
+    
+        // Si no hay errores y todos los campos están llenos, proceder con el registro
+        if (Object.keys(errors).length === 0 && !Object.values(formState).includes('')) {
             try {
                 setLoading(true);
                 const user = {
@@ -94,7 +106,7 @@ const RegisterForm = () => {
                         onChange={onChange}
                         className="w-full mb-4"
                         autoComplete="username"
-                        isInvalid={errors.email}
+                        isInvalid={errors.email? true : false}
                     />
                     <Input
                         name='current_password'
@@ -105,7 +117,7 @@ const RegisterForm = () => {
                         onChange={onChange}
                         className="w-full mb-4"
                         autoComplete="current-password"
-                        isInvalid={errors.current_password}
+                        isInvalid={errors.current_password? true : false}
                     />
                     <Input
                         name='confirm_new_password'
@@ -116,7 +128,7 @@ const RegisterForm = () => {
                         onChange={onChange}
                         className="w-full mb-4"
                         autoComplete="new-password"
-                        isInvalid={errors.confirm_new_password}
+                        isInvalid={errors.confirm_new_password? true : false}
                     />
                 </div>
                 <div className="flex flex-col w-full">
@@ -128,7 +140,7 @@ const RegisterForm = () => {
                         defaultValue={formState.first_name}
                         onChange={onChange}
                         className="w-full mb-4"
-                        isInvalid={errors.first_name}
+                        isInvalid={errors.first_name? true : false}
                     />
                     <Input
                         name='last_name'
@@ -138,7 +150,7 @@ const RegisterForm = () => {
                         defaultValue={formState.last_name}
                         onChange={onChange}
                         className="w-full mb-4"
-                        isInvalid={errors.last_name}
+                        isInvalid={errors.last_name? true : false}
                     />
                     <Input
                         name='dni'
@@ -148,7 +160,7 @@ const RegisterForm = () => {
                         defaultValue={formState.dni}
                         onChange={onChange}
                         className="w-full mb-4"
-                        isInvalid={errors.dni}
+                        isInvalid={errors.dni? true : false}
                     />
                 </div>
             </div>

@@ -41,7 +41,7 @@ class model {
         }
     }
 
-    updateCodeUser = async (code, user_id, dateRegister) => {
+    updateCodeUser = async (code, user_id, dateRegister, used='0') => {
         let dateRegisterFormat = new Date(dateRegister);
         try {
             return await PasswordResetCode.update({

@@ -44,7 +44,7 @@ const UserImage = ({user}) => {
             <Image 
                 src={`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/user/${user.user_id}/1.png`} 
                 alt={`${user.first_name.charAt(0)}${user.last_name.charAt(0)}`}
-                layout='fill'
+                layout='fill'   
                 className='w-full h-full object-cover rounded-full'
                 onError={(e) => {
                     e.target.onerror = null; 

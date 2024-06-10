@@ -13,12 +13,10 @@ const ProductListCategory = () => {
     const [productos, setProductos] = useState([]);
     const [loading, setLoading] = useState(true);
     const {setTitle} = useTitle("Página de Categoría");
-
     useEffect(() => {
         const fetchProductos = async () => {
             const dataCategory = await CategoryService.getCategoryById(id);
             setCategory(dataCategory);
-            setTitle(dataCategory.category_name);
             const data = await ProductService.getAllProductsByCategory(id);
             const newChildCategories = await CategoryService.getChildCategories(id);
             if (newChildCategories.length > 0) {
@@ -35,7 +33,13 @@ const ProductListCategory = () => {
         if(id){
             fetchProductos();
         }
-    }, [id, setTitle]);
+    }, [id]);
+
+    useEffect(() => {
+        if (category && category.category_name) {
+            setTitle(category.category_name);
+        }
+    }, [category, setTitle]);
 
     const addUniqueProducts = (existingProducts, newProducts) => {
         const productIds = new Set(existingProducts.map(product => product.product_id));

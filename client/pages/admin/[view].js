@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useAppContext } from '@context/AppContext';
@@ -18,7 +18,7 @@ const Administrador = () => {
     const { user } = useAppContext();
     const [selectedOption, setSelectedOption] = useState('General');
 
-    const components = {
+    const components = useMemo(() => ({
         'General': <GeneralAdministration />,
         'Usuarios': <UserAdministration />,
         'Roles': <RoleAdministration />,
@@ -26,7 +26,7 @@ const Administrador = () => {
         'Categorias': <CategoryAdministration />,
         'Marcas': <BrandAdministration />,
         'Pedidos': <OrderAdministration />,
-    };
+    }), []);
 
     const asPathRef = useRef('');
     if (router.isReady) {
@@ -37,7 +37,6 @@ const Administrador = () => {
         if (router.isReady) {
             const view = asPathRef.current.split('/')[2] || 'General';
             setSelectedOption(view);
-            console.log(view);
         }
     }, [router.isReady]);
 
@@ -49,7 +48,7 @@ const Administrador = () => {
                 router.replace('/');
             }
         }
-    }, [selectedOption, router]);
+    }, [selectedOption, router, components]);
 
     return (
         <section className="h-full flex flex-col sm:flex-row w-full gap-3 p-3">

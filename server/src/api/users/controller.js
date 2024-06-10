@@ -221,39 +221,32 @@ const changePassword = async (email, code, newPassword, confirmPassword) => {
     try {
         
         const user = await model.getUserByEmail(email);
-        // Verify the code and email
         const isCodeValid = await verifyPasswordResetCode(email, code);
         if (!isCodeValid) {
             console.error('Código de restablecimiento de contraseña inválido');
             return null;
         }
 
-        // Check if the new password is the same as the current password
         if (newPassword === user.current_password) {
             console.error('La nueva contraseña es igual a la contraseña actual');
             return null;
         }
 
-        // Check if the new password has already been used by the user
         const isOld = await isOldPassword(user.user_id, newPassword);
         if (isOld) {
             console.error('La nueva contraseña ya ha sido registrada con este usuario');
             return null;
         }
         
-        // Check if the new password and confirmation match
         if (newPassword !== confirmPassword) {
             console.error('La nueva contraseña y la confirmación no coinciden');
             return null;
         }
-        // Generate a new hashed password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(newPassword, salt);
 
-        // Save the new password as an old password
         await saveOldPassword(user.user_id, user.current_password);
 
-        // Update the user's password
         return await model.updateUserPassword(user.user_id, hashedPassword);
     } catch (error) {
         console.log(`Error al intentar cambiar la contraseña ${errorDisplay}`, error);
@@ -271,27 +264,21 @@ const changePasswordUser = async (userId, oldPassword, newPassword, confirmPassw
             message = 'La contraseña actual es incorrecta';
         }
 
-        // Check if the new password is the same as the current password
         if (newPassword === await bcrypt.compare(oldPassword, user.current_password)) {
             message = 'La nueva contraseña es igual a la contraseña actual';
             return null;
         }
 
-        // Check if the new password has already been used by the user
         const isOld = await isOldPassword(user.user_id, hashedPassword);
         if (isOld) {
             message = 'La nueva contraseña ya ha sido registrada con este usuario';
         }
         
-        // Check if the new password and confirmation match
         if (newPassword !== confirmPassword) {
             message = 'La nueva contraseña y la confirmación no coinciden';
         }
-        // Generate a new hashed password
 
-        // Save the new password as an old password
         await saveOldPassword(user.user_id, user.current_password);
-        // Update the user's password
         await model.updateUserPassword(user.user_id, hashedPassword);
         return message;
     } catch (error) {

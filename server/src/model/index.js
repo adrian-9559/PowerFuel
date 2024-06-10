@@ -12,7 +12,6 @@ const Notification = require('./notification');
 const PasswordResetCode = require('./passwordResetCodes');
 const SupportTicket = require('./supportTickets');
 
-// Relaciones
 UserCredentials.hasOne(UserInfo, { foreignKey: 'user_id' });
 UserCredentials.hasMany(UserAddress, { foreignKey: 'user_id' });
 UserCredentials.hasMany(UserRoles, { foreignKey: 'user_id' });
@@ -42,7 +41,6 @@ UserCredentials.hasMany(Order, { foreignKey: 'user_id' });
 Notification.belongsTo(Order, { foreignKey: 'reference', onUpdate: 'CASCADE', onDelete: 'NO ACTION' });
 Notification.belongsTo(UserCredentials, { foreignKey: 'notification_user', onUpdate: 'CASCADE', onDelete: 'CASCADE' });
 
-// Relaciones
 UserCredentials.hasMany(PasswordResetCode, { foreignKey: 'user_id' });
 PasswordResetCode.belongsTo(UserCredentials, { foreignKey: 'user_id' });
 

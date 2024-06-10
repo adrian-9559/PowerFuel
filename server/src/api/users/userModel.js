@@ -137,7 +137,7 @@ class model {
                         model: Role, 
                         required: true, 
                         attributes: ['role_id', 'role_name'],
-                        through: { model: UserRoles, attributes: [] } // Include the UserRoles model in the through option
+                        through: { model: UserRoles, attributes: [] } 
                     }
                 ]
             });

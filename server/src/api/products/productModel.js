@@ -91,11 +91,11 @@ class model {
                 include: [{
                     model: Category,
                     attributes: ['category_name'],
-                    as : 'Category' // Usa el alias definido en tu asociación
+                    as : 'Category' 
                 }, {
                     model: Brand,
                     attributes: ['brand_name'],
-                    as : 'Brand' // Usa el alias definido en tu asociación
+                    as : 'Brand'
                 }],
                 subQuery: false
             });
@@ -274,7 +274,6 @@ class model {
      * @throws {Error} - Error al intentar eliminar el producto. | Error when trying to delete the product.
      */
     deleteProduct = async (productId) => {
-        // Verifica si el producto está en algún pedido
         const orderExists = await Order.findOne({
             where: {
                 details: {
@@ -283,12 +282,10 @@ class model {
             }
         });
     
-        // Si el producto está en algún pedido, no permitas la eliminación
         if (orderExists) {
             return 3;
         }
     
-        // Si el producto no está en ningún pedido, procede a eliminarlo
         const deletedProduct = await Product.destroy({
             where: {
                 product_id: productId

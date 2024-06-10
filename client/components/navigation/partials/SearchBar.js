@@ -9,7 +9,7 @@ const SearchBar = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [debouncedTerm, setDebouncedTerm] = useState(searchTerm);
     const [results, setResults] = useState([]);
-    const [searched, setSearched] = useState(false); // Nueva variable de estado
+    const [searched, setSearched] = useState(false); 
     const router = useRouter();
 
     useEffect(() => {
@@ -28,13 +28,13 @@ const SearchBar = () => {
                 const response = await ProductService.getProductsSearch(data, 4, 1, "Enabled");
                 if (response && Array.isArray(response.products)) {
                     setResults(response.products);
-                    setSearched(true); // Se ha realizado una búsqueda
+                    setSearched(true); 
                 } else {
                     console.error('Response does not contain an array of products:', response);
                 }
             } else {
                 setResults([]);
-                setSearched(false); // No se ha realizado una búsqueda
+                setSearched(false); a
             }
         }
 
@@ -42,7 +42,7 @@ const SearchBar = () => {
             searchProduct(debouncedTerm);
         } else {
             setResults([]);
-            setSearched(false); // No se ha realizado una búsqueda
+            setSearched(false); 
         }
     }, [debouncedTerm]);
 
@@ -53,7 +53,7 @@ const SearchBar = () => {
             setSearchTerm('');
             setDebouncedTerm('');
             setResults([]);
-            setSearched(false); // No se ha realizado una búsqueda
+            setSearched(false); 
         }
     }
 
@@ -94,7 +94,7 @@ const SearchBar = () => {
                                 </Card>
                             ))
                         ) : (
-                            searched && <p>No se encontraron resultados</p> // Solo mostrar si se ha realizado una búsqueda
+                            searched && <p>No se encontraron resultados</p> 
                         )}
                     </section>
                 )}

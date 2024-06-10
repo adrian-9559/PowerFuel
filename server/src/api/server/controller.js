@@ -3,10 +3,8 @@ const os = require('os');
 const { exec } = require('child_process');
 const errorDisplay = "(Error en el controlador de Server)";
 
-// Obtener la cantidad de CPUs disponibles en el sistema
 const numCPUs = os.cpus().length;
 
-// Función para calcular el uso de la CPU
 function getCpuInfo() {
   const cpus = os.cpus();
   let totalIdle = 0, totalTick = 0;
@@ -21,7 +19,6 @@ function getCpuInfo() {
   return { idle: totalIdle, total: totalTick };
 }
 
-// Variables para almacenar las estadísticas anteriores de la CPU
 let startMeasure = getCpuInfo();
 
 function getUseServerCPU() {
@@ -32,7 +29,6 @@ function getUseServerCPU() {
 
     const percentageCpu = 100 - ~~(100 * idleDifference / totalDifference);
 
-    // Actualizar las estadísticas anteriores de la CPU
     startMeasure = endMeasure;
 
     return percentageCpu.toFixed(2);

@@ -15,10 +15,8 @@ const AuthMenu = () => {
             }
         };
     
-        // Agregar el event listener
         window.addEventListener('keydown', handleKeyDown);
     
-        // Devolver una función para limpiar el event listener
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
         };

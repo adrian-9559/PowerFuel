@@ -108,10 +108,9 @@ const verifyCode = async (code, userId) => {
                 return false;
             }
 
-            // Verificar que no han pasado más de 15 minutos
             const now = new Date();
-            const timeDifference = now - new Date(result.created_at); // Diferencia en milisegundos
-            const timeDifferenceInMinutes = timeDifference / 1000 / 60; // Convertir a minutos
+            const timeDifference = now - new Date(result.created_at); 
+            const timeDifferenceInMinutes = timeDifference / 1000 / 60; 
 
             if (timeDifferenceInMinutes > 1) {
                 console.log(`El código de reseteo de contraseña ha expirado ${errorDisplay}`);

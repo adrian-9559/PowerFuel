@@ -67,7 +67,7 @@ const AuthTabs = () => {
                             variants={pageVariants}
                             transition={{
                                 x: { type: "spring", stiffness: 300, damping: 30, mass: 0.3 },
-                                opacity: { duration: 0.1 } // Reduced duration
+                                opacity: { duration: 0.1 }
                             }}
                         >
                             <h2 className='font-bold text-xl'>Iniciar sesión</h2>
@@ -90,7 +90,7 @@ const AuthTabs = () => {
                             variants={pageVariants}
                             transition={{
                                 x: { type: "spring", stiffness: 300, damping: 30, mass: 0.3 },
-                                opacity: { duration: 0.1 } // Reduced duration
+                                opacity: { duration: 0.1 }
                             }}
                         >
                             <h2 className='font-bold text-xl'>Registrarse</h2>
@@ -107,7 +107,7 @@ const AuthTabs = () => {
                             variants={pageVariants}
                             transition={{
                                 x: { type: "spring", stiffness: 300, damping: 30, mass: 0.3 },
-                                opacity: { duration: 0.1 } // Reduced duration
+                                opacity: { duration: 0.1 } 
                             }}
                         >
                             <h2 className='font-bold text-xl'>Restablecer contraseña</h2>

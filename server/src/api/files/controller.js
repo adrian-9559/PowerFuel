@@ -131,12 +131,10 @@ const uploadUser = (userId, files) => {
     const newPath = path.join(appRoot, `/../public/images/user/${userId}`);
 
     try{
-        // Crear el directorio si no existe
         if (!fs.existsSync(newPath)) {
             fs.mkdirSync(newPath, { recursive: true });
         }
 
-        // Si 'files' es un array, subir todos los archivos. Si no, subir el único archivo.
         if (Array.isArray(files)) {
             files.forEach((file, index) => {
                 if (file && file.data && file.name) {

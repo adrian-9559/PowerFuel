@@ -26,13 +26,11 @@ const Help = () => {
         e.preventDefault();
         const { name, email, message, type } = formState;
         setErrors({});
-        // Validación de los campos
         if (!name || !email || !message) {
             setErrors({ ...errors, all: 'Todos los campos son obligatorios' });
             return;
         }
 
-        // Validación del formato del correo electrónico
         const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
         if (!emailRegex.test(email)) {
             setErrors({ ...errors, email: 'El correo debe ser un correo válido (ejemplo: usuario@dominio.com)' });

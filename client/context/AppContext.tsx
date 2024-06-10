@@ -1,11 +1,10 @@
-// En tu archivo AppContext.tsx
+
 
 import React, { createContext, useState, useEffect, useContext, ReactNode } from 'react';
 import UserService from '@services/userService';
 import RoleService from '@services/roleService';
 import NotificationService from '@services/notificationService';
 
-// Definir la forma de la información del usuario y del carrito
 interface User {
   id: string;
   name: string;
@@ -22,7 +21,6 @@ interface NotificationItem {
   id: number;
 }
 
-// Crear el contexto con un valor predeterminado
 const AppContext = createContext({
   isLoggedIn: false,
   setIsLoggedIn: (value: boolean) => {},
@@ -46,7 +44,6 @@ const AppContext = createContext({
   setIsLoading: (value: boolean) => {},
 });
 
-// Crear el proveedor de contexto
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -156,5 +153,4 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-// Crear un hook personalizado para usar el contexto
 export const useAppContext = () => useContext(AppContext);

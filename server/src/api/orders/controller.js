@@ -62,10 +62,8 @@ const createOrder = async (orderData) => {
 
             await insertNotification(notificationData);
 
-            // Parse details to get products and quantities
             const details = JSON.parse(orderData.details);
             for (let detail of details) {
-                // Update stock for each product
                 await updateProductStock(detail.product_id, -detail.quantity);
             }
         }

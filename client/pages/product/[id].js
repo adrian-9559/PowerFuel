@@ -19,14 +19,14 @@ const Product = () => {
     useEffect(() => {
         const fetchProducto = async () => {
             try {
-                setIsLoaded(false); // Muestra el esqueleto
+                setIsLoaded(false); 
                 const productData = await ProductService.getProductById(id);
                     setProduct(productData);
                     setTitle(productData.product_name);
                     setIsLoaded(true); 
             } catch (error) {
                 console.error('Error fetching product:', error.message);
-                setIsLoaded(true); // Muestra el contenido del esqueleto
+                setIsLoaded(true); 
             }
         };
     

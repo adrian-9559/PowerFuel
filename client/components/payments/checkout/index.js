@@ -6,7 +6,7 @@ import {
   EmbeddedCheckout
 } from '@stripe/react-stripe-js';
 import { useAppContext } from '@context/AppContext';
-import PaymentService from '@services/paymentService'; // Asegúrate de usar la ruta correcta
+import PaymentService from '@services/paymentService';
 
 const stripePromise = loadStripe('pk_test_51P5QR3Iqj90TtX55bRu7F6whFW26fRauivAnkLbY1T2DznQWrJIsETlHhYwtKOwj4kIhCZ4joaJQ5DicdSDV1RkS00YqYPtqr4');
 

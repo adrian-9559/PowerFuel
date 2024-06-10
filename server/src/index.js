@@ -62,8 +62,6 @@ if (cluster.isMaster) {
         cluster.fork();
     }
 
-    // Reinicio de trabajadores en caso de fallo
-    // Worker restart in case of failure
     cluster.on('exit', (worker, code, signal) => {
         cluster.fork();
     });

@@ -25,7 +25,6 @@ const RegisterForm = () => {
         e.preventDefault();
         let newErrors = { ...errors };
     
-        // Comprobar si todos los campos del formulario están llenos
         for (let key in formState) {
             if (!formState[key]) {
                 newErrors[key] = 'Este campo es requerido.';
@@ -34,7 +33,6 @@ const RegisterForm = () => {
     
         setErrors(newErrors);
     
-        // Si no hay errores y todos los campos están llenos, proceder con el registro
         if (Object.keys(errors).length === 0 && !Object.values(formState).includes('')) {
             try {
                 setLoading(true);
@@ -71,7 +69,7 @@ const RegisterForm = () => {
                 if (!passwordRegex.test(value)) error = 'La contraseña debe tener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un número';
                 break;
             case 'confirm_new_password':
-                if (value !== formState.current_password) error = 'Asegúrate de que las contraseñas sean iguales'; // Cambia formState.new_password a formState.current_password
+                if (value !== formState.current_password) error = 'Asegúrate de que las contraseñas sean iguales';
                 break;
             case 'first_name':
                 if (!nameRegex.test(value)) error = 'El nombre debe contener solo letras y espacios';

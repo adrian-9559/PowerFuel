@@ -180,13 +180,11 @@ const deleteProduct = async (productId) => {
  */
 const updateProduct = async (productId, product) => {
     try {
-        // Actualiza el producto
         await stripe.products.update(productId, {
             name: product.product_name,
             description: product.description
         });
 
-        // Crea un nuevo precio y lo asigna al producto
         const newPrice = await stripe.prices.create({
             unit_amount: product.price * 100,
             currency: 'eur',
@@ -194,7 +192,6 @@ const updateProduct = async (productId, product) => {
         });
         console.log('newPrice', newPrice);
 
-        // Devuelve el nuevo precio
         return newPrice.id;
     } catch (error) {
         console.log(`Error al intentar actualizar el producto: ${error}`);

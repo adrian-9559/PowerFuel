@@ -13,7 +13,7 @@ const appRoot = path.dirname(require.main.filename);
  * @throws {Error} Si hay un error al intentar mover las imágenes del producto. | If there is an error trying to move the product images.
  */
 const uploadProduct = (productId, files) => {
-    const newPath = path.join(appRoot, '/../public/images/product/', productId);
+    const newPath = path.join(appRoot, '/../public/images/product/', productId.toString());
 
     let fileIndex = 1;
 

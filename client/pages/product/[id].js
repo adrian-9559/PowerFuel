@@ -22,7 +22,6 @@ const Product = () => {
                 setIsLoaded(false); 
                 const productData = await ProductService.getProductById(id);
                     setProduct(productData);
-                    setTitle(productData.product_name);
                     setIsLoaded(true); 
             } catch (error) {
                 console.error('Error fetching product:', error.message);
@@ -31,7 +30,10 @@ const Product = () => {
         };
     
         fetchProducto();
-    }, [id, setTitle]);
+    }, [id]);
+
+    
+    setTitle(product?.product_name);
 
     return (
         <main className='flex flex-col items-center justify-center p-6'>

@@ -45,7 +45,7 @@ const CheckOut = () => {
             </Button>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} className='' backdrop="blur">
                 <ModalHeader className="flex flex-col gap-1">Pagar</ModalHeader>
-                <ModalContent className='flex flex-col items-center'>
+                <ModalContent className='flex flex-col items-center p-10'>
                     {isLoggedIn && currentStep === 1 && (
                         <AddressMenu 
                             setSelectedAddress={setSelectedAddress}

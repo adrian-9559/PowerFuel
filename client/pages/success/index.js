@@ -1,4 +1,4 @@
-import React, { use, useEffect } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import PaymentService from '@services/paymentService';
 import OrderService from '@services/orderService';
@@ -12,34 +12,36 @@ const SuccessPage = () => {
     const router = useRouter();
     let success = router.query.success;
     const {cart, setCart} = useAppContext();
+    const cartRef = useRef(cart);
     useTitle('Pedido Completado');
 
-    useEffect(() => {
-        const handleSuccess = async () => {
-            if (success) {
-                const addressId = await localStorage.getItem('shipping_address');
-                let shipping = null;
-                if (addressId) 
-                    shipping = await AddressService.getAddressById(addressId);
-                else
-                    shipping = await AddressService.getDefaultAddress();
     
-                const lastPayment = await PaymentService.getLastPayment();
-                const order = {
-                    order_id: lastPayment.id,
-                    order_date: new Date(),
-                    status: 'pendiente',
-                    details: JSON.stringify(cart),
-                    shipping_address: JSON.stringify(shipping), 
-                };
-                
-                setCart([]);
-                await OrderService.createOrder(order);
-            }
+    const handleSuccess = useCallback(async () => {
+        if (success) {
+            const addressId = await localStorage.getItem('shipping_address');
+            let shipping = null;
+            if (addressId) 
+                shipping = await AddressService.getAddressById(addressId);
+            else
+                shipping = await AddressService.getDefaultAddress();
+    
+            const lastPayment = await PaymentService.getLastPayment();
+            const order = {
+                order_id: lastPayment.id,
+                order_date: new Date(),
+                status: 'pendiente',
+                details: JSON.stringify(cartRef),
+                shipping_address: JSON.stringify(shipping), 
+            };
+            
+            await OrderService.createOrder(order);
         }
+    }, [success, cartRef]);
+    
+    useEffect(() => {
         handleSuccess();
-
-    }, [success, cart, setCart]);
+        setCart([]);
+    }, [handleSuccess, setCart]);
 
     return (
         <main className='flex justify-center items-center h-full p-8 sm:p-20'>

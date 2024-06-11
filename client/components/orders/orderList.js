@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { ScrollShadow } from '@nextui-org/react';
 import { useAppContext } from '@context/AppContext';
 import OrderService from '@services/orderService';
@@ -11,18 +11,19 @@ const OrdersList = () => {
   const {isOpen, onOpenChange, onOpen } = useDisclosure();
   const [selectedOrder, setSelectedOrder] = useState(null);
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await OrderService.getUserOrders();
-        setUserOrders(response || []);
-      } catch (error) {
-        setUserOrders([]);
-      }
-    };
   
+  const fetchOrders =useCallback( async () => {
+    try {
+      const response = await OrderService.getUserOrders();
+      setUserOrders(response || []);
+    } catch (error) {
+      setUserOrders([]);
+    }
+  },[user, isLoggedIn]);
+
+  useEffect(() => {
     fetchOrders();
-  }, [user, isLoggedIn]);
+  }, [fetchOrders]);
 
   return (
     <section className="flex flex-col space-y-4">
@@ -32,7 +33,7 @@ const OrdersList = () => {
       {userOrders.length > 0 ? (
         userOrders.map((order, index) => (
           <section className='w-full cursor-pointer' key={order.order_id} onClick={() => { setSelectedOrder(order); onOpen(); }}>
-            <OrderItem order={order} />
+            <OrderItem order={order} fetchOrders={fetchOrders}/>
           </section>
         ))
       ) : (

@@ -13,6 +13,8 @@ const SearchComponent = () => {
     const [loading, setLoading] = useState(true);
     const { setTitle } = useTitle(`Productos`);
 
+    
+
     useEffect(() => {
         const searchNovedades = async () => {
             const data = await ProductService.getProductsNovedades(20, page, 'DESC');
@@ -36,20 +38,20 @@ const SearchComponent = () => {
 
         switch (search) {
             case 'novedades':
-                setTitle(search.charAt(0).toUpperCase() + search.slice(1));
                 searchNovedades();
                 break;
             case 'antiguos':
-                setTitle(search.charAt(0).toUpperCase() + search.slice(1));
                 searchAntiguos();
                 break;
             case 'all':
-                setTitle(search.charAt(0).toUpperCase() + search.slice(1));
                 searchTodos();
                 break;
         }
 
-    }, [search, page, setTitle])
+    }, [search, page])
+
+    
+    setTitle(search?.charAt(0).toUpperCase() + search?.slice(1));
 
     return (
         loading ? (

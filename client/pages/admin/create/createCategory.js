@@ -14,7 +14,7 @@ const CreateCategory = () => {
     useTitle(id?'Editar Categoría':'Crear Categoría');
 
     const isNameValid = () => {
-        const regex = /^[a-zA-Z0-9\s]{1,50}$/;
+        const regex = /^[a-zA-ZáéíóúÁÉÍÓÚ0-9\s]{1,50}$/;
         return nameCategory && regex.test(nameCategory);
     };
     const isFormValid = () => isNameValid();

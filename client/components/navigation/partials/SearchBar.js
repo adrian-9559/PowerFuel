@@ -46,8 +46,7 @@ const SearchBar = () => {
         }
     }, [debouncedTerm]);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = () => {
         if (searchTerm && searchTerm != null && searchTerm != undefined && searchTerm != '') {
             router.push(`/product/search/${searchTerm}`);
             setSearchTerm('');
@@ -59,7 +58,7 @@ const SearchBar = () => {
 
     return (
         <div className='w-full relative'>
-            <form onSubmit={(e)=>{handleSubmit(e)}}>
+            <form onSubmit={handleSubmit}>
                 <Input 
                     className="w-full bg-transparent" variant='faded' placeholder="Buscar..." type="text" 
                     onChange={(e) => setSearchTerm(e.target.value)}

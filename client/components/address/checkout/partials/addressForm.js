@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import {Input, Button} from '@nextui-org/react';
+import React, { useState, useEffect, use } from 'react';
+import {Input, Button, Spinner} from '@nextui-org/react';
 import AddressService from '@services/addressService';
 
 const AddressForm = ({setShowForm, editAddress ,setEditAddress}) => {
+    const [isLoading, setIsLoading] = useState(false);
     const [formState, setFormState] = useState({
         street: '',
         city: '',
@@ -73,6 +74,7 @@ const AddressForm = ({setShowForm, editAddress ,setEditAddress}) => {
     useEffect(() => {
         
         if (editAddress) {
+            setIsLoading(true);
             setFormState({
                 street: editAddress.street,
                 city: editAddress.city,
@@ -81,12 +83,28 @@ const AddressForm = ({setShowForm, editAddress ,setEditAddress}) => {
                 province: editAddress.province,
                 phone_number: editAddress.phone_number
             });
+            const time = setTimeout(() => {
+                
+            setIsLoading(false)
+
+            }, 500);
+
+            return () => clearTimeout(time);
         }
     }
     , [editAddress]);
 
+
+
+    if(isLoading)
+        return (
+            <section className='flex justify-center items-center w-full h-32'>
+                <Spinner/>
+            </section>
+        );
+
     return (
-        <section className="w-full">
+            <section className="w-full">
             <h2 className="text-2xl font-bold">Añadir dirección</h2>
             <form onSubmit={handleSubmit} className='flex flex-col gap-3 justify-content w-full'>
                 <section className="flex flex-row justify-center gap-3 items-center w-full">
@@ -106,7 +124,7 @@ const AddressForm = ({setShowForm, editAddress ,setEditAddress}) => {
                         <p key={index} className="text-red-500">{errors[key]}</p>
                     ))}
                 </section>
-                <Button color="primary" auto onClick={handleSubmit}>
+                <Button color="primary" className='mb-6' auto onClick={handleSubmit}>
                     {editAddress ? 'Guardar cambios' : 'Añadir dirección'}
                 </Button>
             </form>

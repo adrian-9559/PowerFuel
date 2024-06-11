@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Button, Card, Chip, Image, ScrollShadow } from '@nextui-org/react';
 import ProductService from '@services/productService';
-import { format } from 'date-fns';
+import { format, set } from 'date-fns';
 import OrderService from '@services/orderService';
 import { useRouter } from 'next/router';
+import toartr from 'toastr';
 
-const OrderItem = ({ order }) => {
+const OrderItem = ({ order, fetchOrders }) => {
   const router = useRouter();
   const [details, setDetails] = useState([]);
   const [shippingAddress, setShippingAddress] = useState(null);
@@ -33,17 +34,39 @@ const OrderItem = ({ order }) => {
     let total = 0;
     const detailsAux = JSON.parse(order.details);
     const detailsTemp = [];
-    for (const item of detailsAux) {
-      const productData = await ProductService.getProductById(item.product_id, null);
-      if(productData){
-        detailsTemp.push({ ...productData, quantity: item.quantity });
-        total += productData.price * item.quantity;
+    if(detailsAux && detailsAux.length > 0) {
+      for (const item of detailsAux) {
+        const productData = await ProductService.getProductById(item.product_id, null);
+        if(productData){
+          detailsTemp.push({ ...productData, quantity: item.quantity });
+          total += productData.price * item.quantity;
+        }
       }
     }
     setDetails(detailsTemp);
     order.total = total.toFixed(2);
     setShippingAddress(JSON.parse(order.shipping_address));
   }, [order]);
+
+  const handleCancelOrder = async () => {
+    try {
+      await OrderService.cancelOrder(order.order_id);
+      fetchOrders();
+    } catch (error) {
+      console.error('Error al cancelar el pedido:', error);
+      toartr.error('Error al cancelar el pedido');
+    }
+  }
+
+  const handleReturnOrder = async () => {
+    try {
+      await OrderService.returnOrder(order.order_id);
+      fetchOrders();
+    } catch (error) {
+      console.error('Error al devolver el pedido:', error);
+      toartr.error('Error al devolver el pedido');
+    }
+  }
 
   useEffect(() => {
     fetchProduct();
@@ -76,7 +99,7 @@ const OrderItem = ({ order }) => {
       {!isAdminPage && order.status !== 'cancelado' && order.status !== 'fallido' && order.status !== 'devuelto' && order.status !== 'entregado' && order.status !== 'en proceso de devolucion' && (
         <section className='w-full flex justify-end items-center'>
           <Button color='danger'
-            onClick={() => {OrderService.cancelOrder(order.order_id); window.location.reload();;}}
+            onClick={handleCancelOrder}
           >
             Cancelar
           </Button>
@@ -84,7 +107,7 @@ const OrderItem = ({ order }) => {
       )}
       {!isAdminPage && order.status === 'entregado' && (
         <Button color='primary'
-          onClick={() =>{OrderService.returnOrder(order.order_id); window.location.reload();;}}
+          onClick={handleReturnOrder}
         >
           Devolver
         </Button>

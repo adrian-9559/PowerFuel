@@ -266,9 +266,10 @@ router.route('/resetPassword')
 
 router.route('/changePasswordUser')
     .post(async (req, res) => {
-        const { oldPassword, newPassword, confirmPassword } = req.body;
+        const { oldPassword, newPassword, confirmPassword, id } = req.body;
+        const userId = id??req.user.userId;
         try {
-            const message = await changePasswordUser(req.user.userId, oldPassword, newPassword, confirmPassword);
+            const message = await changePasswordUser(userId, oldPassword, newPassword, confirmPassword);
             if(!message)
                 res.status(200).json({ message: 'Contraseña cambiada correctamente' });
             else{

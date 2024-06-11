@@ -25,6 +25,7 @@ const SideMenuAdministrador = ({ selectedOption,setSelectedOption }) => {
     }, [user]);
 
     const handleSelectChange = (value) => {
+        console.log(value);
         setSelectedOption(value);
     };
 

@@ -136,7 +136,7 @@ const CreateUser = () => {
             try {
                 if (id)
                     if (changePassword)
-                        await UserService.changePasswordUser(formState.current_password, formState.new_password, formState.confirm_new_password);
+                        await UserService.changePasswordUser(formState.current_password, formState.new_password, formState.confirm_new_password, id);
                     else
                         await UserService.updateUser(id, formState);
                 else

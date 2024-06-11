@@ -21,46 +21,9 @@ const RegisterForm = () => {
     const nameRegex = /^[A-Za-záéíóúÁÉÍÓÚñÑüÜ\s]+$/;
     const dniRegex = /^\d{8}[A-Za-z]$/;
 
-    const handleRegister = async (e) => {
-        e.preventDefault();
-        let newErrors = { ...errors };
-    
-        for (let key in formState) {
-            if (!formState[key]) {
-                newErrors[key] = 'Este campo es requerido.';
-            }
-        }
-    
-        setErrors(newErrors);
-    
-        if (Object.keys(errors).length === 0 && !Object.values(formState).includes('')) {
-            try {
-                setLoading(true);
-                const user = {
-                    email: formState.email,
-                    current_password: formState.current_password,
-                    first_name: formState.first_name,
-                    last_name: formState.last_name,
-                    dni: formState.dni
-                };
-                const response = await UserService.registerUser(user);
-                if (response) {
-                    router.reload();
-                }
-            } catch (error) {
-                console.error(error);
-            }
-            setLoading(false);
-        }
-    };
-
-    const onChange = (e) => {
-        const { name, value } = e.target;
+    const validateField = (name, value) => {
         let error = '';
-        let newErrors = { ...errors };
-        
-        setFormState({ ...formState, [name]: value });
-    
+
         switch (name) {
             case 'email':
                 if (!emailRegex.test(value)) error = 'El correo debe ser un correo válido (ejemplo: usuario@dominio.com)';
@@ -83,10 +46,52 @@ const RegisterForm = () => {
             default:
                 break;
         }
-    
+
+        return error;
+    };
+
+    const handleRegister = async (e) => {
+        e.preventDefault();
+        let newErrors = {};
+
+        for (let key in formState) {
+            const error = validateField(key, formState[key]);
+            if (error) newErrors[key] = error;
+        }
+
+        setErrors(newErrors);
+
+        if (Object.keys(newErrors).length === 0) {
+            setLoading(true);
+            try {
+                const user = {
+                    email: formState.email,
+                    current_password: formState.current_password,
+                    first_name: formState.first_name,
+                    last_name: formState.last_name,
+                    dni: formState.dni
+                };
+                const response = await UserService.registerUser(user);
+                if (response) {
+                    router.reload();
+                }
+            } catch (error) {
+                console.error(error);
+            }
+            setLoading(false);
+        }
+    };
+
+    const onChange = (e) => {
+        const { name, value } = e.target;
+        let newErrors = { ...errors };
+
+        setFormState({ ...formState, [name]: value });
+
+        const error = validateField(name, value);
         newErrors[name] = error;
         setErrors(newErrors);
-    }
+    };
 
     return (
         <form
@@ -100,33 +105,33 @@ const RegisterForm = () => {
                         isRequired
                         type="email"
                         label="Email"
-                        defaultValue={formState.email}
+                        value={formState.email}
                         onChange={onChange}
                         className="w-full mb-4"
                         autoComplete="username"
-                        isInvalid={errors.email? true : false}
+                        isInvalid={!!errors.email}
                     />
                     <Input
                         name='current_password'
                         isRequired
                         type="password"
                         label="Password"
-                        defaultValue={formState.current_password}
+                        value={formState.current_password}
                         onChange={onChange}
                         className="w-full mb-4"
                         autoComplete="current-password"
-                        isInvalid={errors.current_password? true : false}
+                        isInvalid={!!errors.current_password}
                     />
                     <Input
                         name='confirm_new_password'
                         isRequired
                         type="password"
                         label="Confirm Password"
-                        defaultValue={formState.confirm_new_password}
+                        value={formState.confirm_new_password}
                         onChange={onChange}
                         className="w-full mb-4"
                         autoComplete="new-password"
-                        isInvalid={errors.confirm_new_password? true : false}
+                        isInvalid={!!errors.confirm_new_password}
                     />
                 </div>
                 <div className="flex flex-col w-full">
@@ -135,30 +140,30 @@ const RegisterForm = () => {
                         isRequired
                         type="text"
                         label="First Name"
-                        defaultValue={formState.first_name}
+                        value={formState.first_name}
                         onChange={onChange}
                         className="w-full mb-4"
-                        isInvalid={errors.first_name? true : false}
+                        isInvalid={!!errors.first_name}
                     />
                     <Input
                         name='last_name'
                         isRequired
                         type="text"
                         label="Last Name"
-                        defaultValue={formState.last_name}
+                        value={formState.last_name}
                         onChange={onChange}
                         className="w-full mb-4"
-                        isInvalid={errors.last_name? true : false}
+                        isInvalid={!!errors.last_name}
                     />
                     <Input
                         name='dni'
                         isRequired
                         type="text"
                         label="DNI"
-                        defaultValue={formState.dni}
+                        value={formState.dni}
                         onChange={onChange}
                         className="w-full mb-4"
-                        isInvalid={errors.dni? true : false}
+                        isInvalid={!!errors.dni}
                     />
                 </div>
             </div>

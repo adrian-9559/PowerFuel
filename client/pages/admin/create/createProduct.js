@@ -28,9 +28,21 @@ const CreateProduct = () => {
     const [errors, setErrors] = useState({});
     useTitle(id ? 'Editar Producto' : 'Crear Producto');
 
-    const nameRegex = /^[A-Za-záéíóúÁÉÍÓÚñÑüÜ\s]+$/;
+    const nameRegex = /^[A-Za-záéíóúÁÉÍÓÚñÑüÜ0-9\s]+$/;
     const priceRegex = /^\d+(\.\d{1,2})?$/;
     const quantityRegex = /^\d+$/;
+
+    const validateForm = (formState) => {
+        let formErrors = {};
+    
+        if (!nameRegex.test(formState.product_name)) formErrors.name = "Nombre no válido. Solo se permiten letras y espacios";
+        if (!priceRegex.test(formState.price)) formErrors.price = "Precio no válido. Debe ser un número con hasta dos decimales";
+        if (!quantityRegex.test(formState.stock_quantity)) formErrors.stock_quantity = "Cantidad no válida. Debe ser un número entero";
+        if (!formState.status) formErrors.status = "Estado es requerido";
+    
+        setErrors(formErrors);
+        setIsFormValid(Object.keys(formErrors).length === 0);
+    };
 
     useEffect(() => {
         if (id) {
@@ -38,6 +50,15 @@ const CreateProduct = () => {
                 try {
                     const product = await ProductService.getProductById(id);
                     setFormState({
+                        product_name: product.product_name,
+                        description: product.description,
+                        price: product.price,
+                        stock_quantity: product.stock_quantity,
+                        status: product.status,
+                        category_id: product.category_id,
+                        id_brand: product.id_brand,
+                    });
+                    validateForm({
                         product_name: product.product_name,
                         description: product.description,
                         price: product.price,
@@ -59,6 +80,7 @@ const CreateProduct = () => {
                     console.error(error);
                 }
             }
+            fetchProductImages();
             fetchProduct();
         }
         
@@ -180,6 +202,7 @@ const CreateProduct = () => {
                             value={formState.product_name} 
                             onChange={handleChange}
                             errorMessage={errors.product_name}
+                            isInvalid={errors.product_name?true:false}
                             isRequired
                         />
                     </section>
@@ -189,6 +212,8 @@ const CreateProduct = () => {
                             label='Descripción del Producto' 
                             value={formState.description} 
                             onChange={handleChange}
+                            errorMessage={errors.description}
+                            isInvalid={errors.description}
                             isRequired
                         />
                     </section>
@@ -198,6 +223,8 @@ const CreateProduct = () => {
                         label='Marca' 
                         defaultSelectedKeys={[formState?.id_brand?.toString()]}
                         onChange={handleChange}
+                        errorMessage={errors.id_brand}
+                        isInvalid={errors.id_brand?true:false}
                         isRequired
                     >
                         {brands.map((brand) => (<SelectItem key={brand.id_brand.toString()} value={brand.id_brand}>{brand.brand_name}</SelectItem>))}
@@ -211,7 +238,7 @@ const CreateProduct = () => {
                             value={formState.stock_quantity} 
                             onChange={handleChange}
                             errorMessage={errors.stock_quantity}
-                            isInvalid={errors.stock_quantity}
+                            isInvalid={errors.stock_quantity?true:false}
                             isRequired
                         />
                     </section>
@@ -223,7 +250,7 @@ const CreateProduct = () => {
                             value={formState.price} 
                             onChange={handleChange}
                             errorMessage={errors.price}
-                            isInvalid={errors.price||errors.price === ''}
+                            isInvalid={errors.price?true:false}
                             isRequired
                         />
                     </section>
@@ -233,6 +260,8 @@ const CreateProduct = () => {
                             label='Categoría' 
                             defaultSelectedKeys={[formState?.category_id?.toString()]}
                             onChange={handleChange}
+                            errorMessage={errors.category_id}
+                            isInvalid={errors.category_id?true:false}
                             isRequired
                         >
                             {categories.map((category) => (<SelectItem key={category.category_id.toString()} value={category.category_id}>{category.category_name}</SelectItem>))}
@@ -245,7 +274,7 @@ const CreateProduct = () => {
                             defaultSelectedKeys={[formState.status.toString()]}
                             onChange={handleChange}
                             errorMessage={errors.status}
-                            isInvalid={errors.status}
+                            isInvalid={errors.status?true:false}
                             isRequired
                         >
                             <SelectItem key="Enabled" value="Enabled">Enabled</SelectItem>
@@ -279,6 +308,11 @@ const CreateProduct = () => {
                         <label htmlFor='images' className="text-sm text-default-500 p-4 bg-default rounded-xl hover:bg-default-300 cursor-pointer">
                                 Añadir imágenes del producto (máximo 5)
                         </label>
+                    </section>
+                    <section>
+                        {Object.keys(errors).length > 0 && (
+                            <p className="text-red-500">{Object.values(errors)[Object.values(errors).length - 1]}</p>
+                        )}
                     </section>
                     <section className="grid w-full sm:flex sm:justify-between gap-2">
                         <Button type='button' color="danger" onClick={() => router.push('/admin/Productos')} className="w-full sm:w-1/4">Cancelar</Button>

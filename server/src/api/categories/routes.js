@@ -98,7 +98,10 @@ router.route('/:categoryId')
      */
     .put(async (req, res) => {
         try {
-            const category = await updateCategoryById(req.params.categoryId, req.body);
+            const body = req.body;
+            const categoryId = req.params.categoryId;
+            console.log('body', body);
+            const category = await updateCategoryById(categoryId, body);
             if (!category) {
                 return res.status(404).json({ message: 'Categoría no encontrada' });
             }

@@ -82,11 +82,12 @@ class UserService {
         return response.data;
     }
 
-    async changePasswordUser(oldPassword, newPassword, confirmPassword) {
+    async changePasswordUser(oldPassword, newPassword, confirmPassword, id=null) {
         const response = api.post(`/users/changePasswordUser`, {
             oldPassword: oldPassword,
             newPassword: newPassword,
             confirmPassword: confirmPassword,
+            id: id
         });
 
     return response?true:false;

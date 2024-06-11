@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Select, SelectItem, Card, CardHeader, CardBody, Divider } from '@nextui-org/react';
 import UserIcon3 from '@icons/UserIcon3';
 import IdentifyTargetIcon from '@icons/IdentifyTargetIcon';
-import PaymentTargetIcon from '@icons/PaymentTargetIcon';
+import NotificationIcon from '@icons/NotificationIcon';
 import OrderIcon from '@icons/OrderIcon';
 
 const SideMenu = ({selectedOption, setSelectedOption }) => {
@@ -24,7 +24,7 @@ const SideMenu = ({selectedOption, setSelectedOption }) => {
                 >
                     <SelectItem value="DataUser" key="DataUser" onClick={() => handleSelectChange('DataUser')} startContent={<UserIcon3 />}>Mis datos</SelectItem>
                     <SelectItem value="AddressList" key="AddressList" onClick={() => handleSelectChange('AddressList')} startContent={<IdentifyTargetIcon />}>Mis direcciones</SelectItem>
-                    <SelectItem value="NotificationList" key="NotificationList" onClick={() => handleSelectChange('NotificationList')} startContent={<PaymentTargetIcon />}>Mis notificaciones</SelectItem>
+                    <SelectItem value="NotificationList" key="NotificationList" onClick={() => handleSelectChange('NotificationList')} startContent={<NotificationIcon />}>Mis notificaciones</SelectItem>
                     <SelectItem value="OrderList" key="OrderList" onClick={() => handleSelectChange('OrderList')} startContent={<OrderIcon />}>Mis pedidos</SelectItem>
                 </Select>
                 <ul className="hidden sm:flex items-center gap-2 w-full h-full flex-col ">
@@ -65,7 +65,7 @@ const SideMenu = ({selectedOption, setSelectedOption }) => {
                                     : ''
                                 }`}
                             onClick={() => handleSelectChange('NotificationList')}
-                            startContent={<PaymentTargetIcon />}
+                            startContent={<NotificationIcon />}
                         >
                             Mis notificaciones
                         </Button>

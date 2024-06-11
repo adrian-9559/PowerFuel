@@ -12,6 +12,7 @@ import DefaultLayout from '@layouts/default';
 import toastr from 'toastr';
 import 'toastr/build/toastr.min.css';
 import CookieConsent from 'react-cookie-consent';
+import Head from 'next/head';
 
 toastr.options = {
 	positionClass: "toast-bottom-right",
@@ -44,6 +45,13 @@ export default function App({ Component, pageProps }: AppProps) {
 		  <NextThemesProvider>
 			<AppProvider>
 				<DefaultLayout>
+					<Head>
+						<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+						<meta charSet="UTF-8"/>
+						<meta name="description" content="Página de compra de productos online."/>
+						<meta name="keywords" content="compra, producto, productos, online, ofertas"/>
+						<meta name="author" content="Adrián García Torrente y Adrián Escribano Pérez"/>
+					</Head>
 			  		<Component {...pageProps} />
 						<Modal isOpen={isOpen} hideCloseButton backdrop='blur'>
 							<ModalContent>

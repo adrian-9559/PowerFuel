@@ -5,7 +5,7 @@ import { useAppContext } from '@context/AppContext';
 import SideMenu from '@components/users/sideMenu';
 import DataUser from '@components/users/dataUser';
 import AddressList from '@components/address/addressList';
-import NotificationList from '@components/notification/NotificationList';
+import NotificationList from '@components/notification/notificationList';
 import OrderList from '@components/orders/orderList';
 import withAuth from '@hoc/withAuth';
 

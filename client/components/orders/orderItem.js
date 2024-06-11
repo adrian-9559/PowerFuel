@@ -64,9 +64,9 @@ const OrderItem = ({ order }) => {
       </ScrollShadow>
       {shippingAddress && (
         <div>
-          <p>Dirección de envío:</p>
+          <p className='font-bold'>Dirección de envío:</p>
           <p>{shippingAddress.street}, {shippingAddress.city}, {shippingAddress.province}, {shippingAddress.country}, {shippingAddress.zip}</p>
-          <p>Teléfono: {shippingAddress.phone_number}</p>
+          <p><span className='font-bold'>Teléfono:</span> {shippingAddress.phone_number}</p>
         </div>
       )}
       <section className='flex flex-col sm:flex-row justify-between items-center'>

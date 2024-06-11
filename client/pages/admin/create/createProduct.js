@@ -5,7 +5,7 @@ import useTitle from '@hooks/useTitle';
 import { Button, Card, Image, Input, Select, SelectItem, Textarea } from '@nextui-org/react';
 import CategoryService from '@services/categoryService';
 import BrandService from '@services/brandService';
-import DeleteIcon from '@icons/deleteIcon';
+import DeleteIcon from '@icons/DeleteIcon';
 import withAuth from '@hoc/withAuth'
 
 

@@ -4,7 +4,6 @@ import UserIcon3 from '@icons/UserIcon3';
 import IdentifyTargetIcon from '@icons/IdentifyTargetIcon';
 import PaymentTargetIcon from '@icons/PaymentTargetIcon';
 import OrderIcon from '@icons/OrderIcon';
-import NotificationIcon from '@icons/NotificationIcon';
 
 const SideMenu = ({selectedOption, setSelectedOption }) => {
     const handleSelectChange = (value) => {
@@ -66,7 +65,7 @@ const SideMenu = ({selectedOption, setSelectedOption }) => {
                                     : ''
                                 }`}
                             onClick={() => handleSelectChange('NotificationList')}
-                            startContent={<NotificationIcon />}
+                            startContent={<PaymentTargetIcon />}
                         >
                             Mis notificaciones
                         </Button>

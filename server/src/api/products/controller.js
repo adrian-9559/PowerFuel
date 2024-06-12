@@ -30,9 +30,7 @@ const addProduct = async (productData) => {
         await model.insertProduct(productData);
         const productId = await model.getLastProductId();
 
-        uploadProduct(productId, productData.images);
-
-        return 
+        return productId;
     } catch (error) {
         console.log(`Error al intentar añadir el producto ${errorDisplay}`, error);
     }

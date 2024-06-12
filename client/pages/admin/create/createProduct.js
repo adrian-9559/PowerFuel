@@ -16,12 +16,12 @@ const CreateProduct = () => {
     const [imageCount, setImageCount] = useState(0);
     const router = useRouter();
     const { id } = router.query;
-    console.log(imageCount);
     const [formState, setFormState] = useState({
         name: '',
         description: '',
         price: '',
         quantity: '',
+        images: [],
         status: 'Activo'
     });
     const [isFormValid, setIsFormValid] = useState(false);
@@ -125,6 +125,7 @@ const CreateProduct = () => {
             alert('Por favor, corrija los errores en el formulario antes de enviar.');
             return;
         }
+        console.log(formState);
         if (id) {
             try {
                 await ProductService.updateProduct(id, formState);
@@ -170,7 +171,7 @@ const CreateProduct = () => {
                             isIconOnly 
                             radius='full' 
                             onClick={() => ProductService.deleteImage(id, i)}
-                            className='absolute z-50 m-1 h-auto p-1'
+                            className='absolute z-50 m-1 h-auto p-1 rounded-full bg-red'
                         >
                             <DeleteIcon/>
                         </Button>
@@ -291,7 +292,7 @@ const CreateProduct = () => {
                             </section>
                         </section>
                     )}
-                    <section className="mb-4">
+                    <section className="mb-4 py-4">
                         <input 
                             type='file' 
                             multiple 
@@ -304,7 +305,7 @@ const CreateProduct = () => {
                                     setFormState({...formState, images: e.target.files})
                                 }
                             }}
-                        />  
+                        /> 
                         <label htmlFor='images' className="text-sm text-default-500 p-4 bg-default rounded-xl hover:bg-default-300 cursor-pointer">
                                 Añadir imágenes del producto (máximo 5)
                         </label>

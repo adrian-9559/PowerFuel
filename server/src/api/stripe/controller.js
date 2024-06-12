@@ -139,10 +139,6 @@ const createProduct = async (name, description, price) => {
             currency: 'eur',
             product: product.id
         });
-
-        console.log('priceObject', priceObject);
-        console.log('product', product);
-
         return { stripe_product_id: product.id, stripe_price_id: priceObject.id };
     } catch (error) {
         console.log(`Error al intentar crear el producto ${errorDisplay}`, error);

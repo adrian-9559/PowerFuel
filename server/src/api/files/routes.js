@@ -16,8 +16,8 @@ router.route('/uploadProduct/:id')
      */
     .post(async (req, res) => {
         try {
-            const { id } = req.params;
-            const { images } = req.files;
+            const id = req.params.id;
+            const images = req.files.images;
             await uploadProduct(id, images);
             res.status(200).send({message: 'Imágenes subidas correctamente'});
         } catch (error) {

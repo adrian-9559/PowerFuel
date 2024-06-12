@@ -152,8 +152,8 @@ const ProductoAdministration = () => {
                                         avatarProps={{ radius: "lg", src: `${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/product/${product.product_id}/1.png` }}
                                     />
                                     <section className="flex flex-col">
-                                        <p className="text-bold text-sm capitalize">{`Id del Producto: ${product.product_id}`}</p>
-                                        <p className="text-bold text-sm capitalize text-default-400">{product.product_name}</p>
+                                        <p className="text-bold text-sm capitalize">{product.product_name}</p>
+                                        <p className="text-bold text-sm capitalize text-default-400">{`Id del Producto: ${product.product_id}`}</p>
                                     </section>
                                 </TableCell>
                                 <TableCell>

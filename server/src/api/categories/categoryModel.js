@@ -32,9 +32,11 @@ class model {
      */
     updateCategory = async (categoryId, category) => {
         try {
+            const name = category.category_name;
+            const parent = category.parent_category_id;
             await Category.update({
-                category_name: category.category_name,
-                parent_category_id: category.parent_category_id
+                category_name: name,
+                parent_category_id: parent
             }, {
                 where: {
                     category_id: categoryId

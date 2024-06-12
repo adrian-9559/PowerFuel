@@ -57,7 +57,6 @@ class ProductService {
                     'Content-Type': 'multipart/form-data'
                 },
             });
-
             this.uploadImages(response.data, product.images);
         
             return response.data;

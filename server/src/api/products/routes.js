@@ -29,8 +29,9 @@ router.route('/')
      */
     .post(async (req, res) => {
         try {
-            
-            const product = await addProduct(req.body);
+            const body = req.body;
+            console.log(body);
+            const product = await addProduct(body);
             res.status(200).json(product);
         } catch (error) {
             res.status(500).json({ message: 'Error al agregar el producto' });

@@ -209,6 +209,7 @@ class model {
      */
     insertProduct = async (product) => {
         try {
+            console.log(product);
             const newProduct = await Product.create({
                 product_name: product.product_name,
                 description: product.description,
@@ -218,7 +219,8 @@ class model {
                 category_id: product.category_id,
                 stripe_product_id: product.stripe_product_id,
                 stripe_price_id: product.stripe_price_id,
-                resgistration_date: product.resgistration_date
+                resgistration_date: product.resgistration_date,
+                status: product.status
             });
     
             return newProduct.product_id;

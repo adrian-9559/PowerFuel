@@ -45,7 +45,6 @@ const getCategories = async (page, limit) => {
                     "parent_category_name": parentCategory.category_name ?? null
                 };
 
-                console.log(categoryWithParentName);
                 return categoryWithParentName;
             })
         );

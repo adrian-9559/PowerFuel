@@ -29,7 +29,7 @@ const CreateCategory = () => {
         try {
             const category = {
                 category_name: nameCategory,
-                parent_category_id: parentCategory === null ? '' : parentCategory,
+                parent_category_id: parentCategory === "null" ? null : parentCategory,
             };
 
     
@@ -72,16 +72,15 @@ const CreateCategory = () => {
                 <form onSubmit={handleRegister}>
                     <section className="mb-4">
                         <Select 
-                            key={parentCategory}
                             name='category' 
                             label='Categoría padre' 
                             onChange={(e) => setParentCategory(e.target.value)} 
-                            defaultSelectedKeys={[`${parentCategory}`]}
+                            defaultSelectedKeys={[`${parentCategory?.toString()}`]}
                             data-filled
                         >
-                            <SelectItem value={null}>Ninguna</SelectItem>
+                            <SelectItem key={"null"} value={"null"}>Ninguna</SelectItem>
                             {categories.map((category) => (
-                                <SelectItem key={category.category_id} value={category.category_name}>
+                                <SelectItem key={category.category_id.toString()} value={category.category_id}>
                                     {category.category_name}
                                 </SelectItem>
                             ))}

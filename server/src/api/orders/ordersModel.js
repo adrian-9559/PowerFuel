@@ -240,7 +240,6 @@ class OrderModel {
      */
     returnOrder = async (orderId) => {
         try {
-            console.log('orderId', orderId);
             const result = await Order.update({ status: 'en proceso de devolucion' }, {
                 where: { order_id: orderId }
             });

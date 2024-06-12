@@ -113,12 +113,6 @@ const AuthTabs = () => {
                             <h2 className='font-bold text-xl'>Restablecer contraseña</h2>
                             <section className='w-full flex flex-col gap-3 justify-center items-center'>
                                 <ResetPassword />
-                                <Button 
-                                    className="text-center text-sm text-gray-500 bg-transparent h-fit w-fit"
-                                    onPress={() => setSelectedTab('login')}
-                                >
-                                    Iniciar sesión
-                                </Button>
                             </section>
                         </motion.div>
                     )}

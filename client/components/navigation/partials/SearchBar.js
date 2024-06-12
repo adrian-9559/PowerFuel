@@ -34,7 +34,7 @@ const SearchBar = () => {
                 }
             } else {
                 setResults([]);
-                setSearched(false); a
+                setSearched(false);
             }
         }
 
@@ -46,7 +46,7 @@ const SearchBar = () => {
         }
     }, [debouncedTerm]);
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
         if (searchTerm && searchTerm != null && searchTerm != undefined && searchTerm != '') {
             router.push(`/product/search/${searchTerm}`);
             setSearchTerm('');
@@ -58,7 +58,7 @@ const SearchBar = () => {
 
     return (
         <div className='w-full relative'>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={()=>handleSubmit()}>
                 <Input 
                     className="w-full bg-transparent" variant='faded' placeholder="Buscar..." type="text" 
                     onChange={(e) => setSearchTerm(e.target.value)}
@@ -77,7 +77,7 @@ const SearchBar = () => {
                                 <Card key={index} 
                                     className="flex flex-row items-center space-x-2 p-2 focus:bg-default-100 hover:bg-default-100" 
                                     isPressable
-                                    onPress={() => router.push(`/product/${result.product_id}`)}
+                                    onPress={() => {router.push(`/product/${result.product_id}`); setSearched(false); setSearchTerm(''); setResults([]); setDebouncedTerm('');}}
                                 >
                                     <Image 
                                         src={`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/product/${result.product_id}/1.png`} 

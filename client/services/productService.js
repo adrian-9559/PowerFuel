@@ -49,6 +49,7 @@ class ProductService {
             formData.append('description', product.description);
             formData.append('stock_quantity', product.stock_quantity);
             formData.append('price', product.price);
+            formData.append('status', product.status);
             formData.append('category_id', product.category_id);
             formData.append('id_brand', product.id_brand);
 
@@ -95,6 +96,7 @@ class ProductService {
             formData.append('stock_quantity', product.stock_quantity);
             formData.append('price', product.price);
             formData.append('category_id', product.category_id);
+            formData.append('status', product.status);
             formData.append('id_brand', product.id_brand);
 
             const response = await api.put(`/products/${id}`, formData, {

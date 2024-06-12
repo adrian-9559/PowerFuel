@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Input, Button, Spinner } from '@nextui-org/react';
 import { useRouter } from 'next/router';
 import UserService from '@services/userService';
+import {useAppContext} from '@context/AppContext';
 
 const ResetPassword = () => {
     const router = useRouter();
@@ -13,6 +14,7 @@ const ResetPassword = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const {onOpenAuthMenu} = useAppContext();
 
     const passwordRegex = /^(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
 
@@ -21,10 +23,21 @@ const ResetPassword = () => {
         return re.test(String(email).toLowerCase());
     }
 
+    const handleCancel = () => {
+        if(!email || email === ''){
+            router.reload();
+
+        }else{
+                setCodeSent(false);
+                setCodeVerified(false);
+                setEmail('');
+            }
+    };
+
     const handleResetPassword = async (e) => {
         e.preventDefault();
         try{
-            if (!codeSent && email) {
+            if (!codeSent) {
                 const emailInput = email;
                 if (!emailInput || !validateEmail(emailInput)) {
                     console.error("El correo electrónico es requerido o no es válido.");
@@ -40,7 +53,7 @@ const ResetPassword = () => {
                     setIsLoading(false);
                     console.error("Error al enviar el correo de reseteo de contraseña: ", error);
                 }
-            } else if (!codeVerified){
+            } else if (!codeVerified && codeSent){
                 try{
                     setIsLoading(true);
                     await UserService.verifyPasswordResetCode(email, code);
@@ -48,6 +61,7 @@ const ResetPassword = () => {
                     setCodeVerified(true);
                 } catch (error) {
                     setIsLoading(false);
+                    setCodeVerified(false);
                     console.error("Error al verificar el código de reseteo de contraseña", error);
                 }
             } else if (codeVerified) {
@@ -60,6 +74,7 @@ const ResetPassword = () => {
                     setIsLoading(true);
                     await UserService.resetPassword(email, code, newPassword, confirmPassword);
                     setIsLoading(false);
+                    onOpenAuthMenu();
                     router.push('/');
                 } catch (error) {
                     setIsLoading(false);
@@ -73,10 +88,22 @@ const ResetPassword = () => {
         }
     };
 
+    const resendCode = async (e) => {
+        e.preventDefault();
+        try {
+            setIsLoading(true);
+            await UserService.getPasswordResetCode(email);
+            setIsLoading(false);
+        } catch (error) {
+            setIsLoading(false);
+            console.error("Error al reenviar el código de verificación", error);
+        }
+    };
+
     const renderFormContent = () => {
         if (isLoading) {
             return <Spinner />;
-        } else if (!codeSent && !email) {
+        } else if (!codeSent ) {
             return (
                 <Input 
                     className="w-full mt-16"
@@ -99,7 +126,7 @@ const ResetPassword = () => {
                         errorMessage="El código de verificación es requerido."
                         isInvalid={code.length === 0}
                     />
-                    <Button type='button' onClick={(e) => {setCodeSent(false); handleResetPassword(e);}} className="w-full">
+                    <Button type='button' onClick={resendCode} className="w-full">
                         Enviar de nuevo
                     </Button>
                 </>
@@ -134,6 +161,15 @@ const ResetPassword = () => {
             >
                 {renderFormContent()}
                 <Button type='submit' disabled={isLoading} className="w-full">{isLoading ? 'Cargando...' : 'Enviar'}</Button>
+                
+                <section className='w-full flex flex-col gap-3 justify-center items-center'>
+                    <Button 
+                        className="text-center text-sm text-gray-500 bg-transparent h-fit w-fit"
+                        onPress={handleCancel}
+                    >
+                        Volver
+                    </Button>
+                </section>
             </form>
         </section>
     );
@@ -141,5 +177,3 @@ const ResetPassword = () => {
 
 
 export default ResetPassword;
-
-    

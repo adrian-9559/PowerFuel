@@ -22,7 +22,6 @@ const Search = () => {
                     setLoading(false);
                 }
             } catch (error) {
-                console.error(error);
                 setLoading(false);
             }
         };

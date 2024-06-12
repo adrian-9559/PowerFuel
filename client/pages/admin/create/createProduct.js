@@ -45,6 +45,7 @@ const CreateProduct = () => {
     };
 
     useEffect(() => {
+        setisLoading(true);
         if (id) {
             const fetchProduct = async () => {
                 try {
@@ -67,8 +68,10 @@ const CreateProduct = () => {
                         category_id: product.category_id,
                         id_brand: product.id_brand,
                     });
+                    setisLoading(false);
                 } catch (error) {
                     console.error(error);
+                    setisLoading(false);
                 }
             }
 
@@ -125,7 +128,6 @@ const CreateProduct = () => {
             alert('Por favor, corrija los errores en el formulario antes de enviar.');
             return;
         }
-        console.log(formState);
         if (id) {
             try {
                 await ProductService.updateProduct(id, formState);
@@ -272,7 +274,7 @@ const CreateProduct = () => {
                         <Select 
                             name='status' 
                             label='Estado del Producto' 
-                            defaultSelectedKeys={[formState.status.toString()]}
+                            defaultSelectedKeys={[`${formState.status}`]}
                             onChange={handleChange}
                             errorMessage={errors.status}
                             isInvalid={errors.status?true:false}

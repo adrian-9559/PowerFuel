@@ -104,7 +104,7 @@ const AddressForm = ({setShowForm, editAddress ,setEditAddress}) => {
         );
 
     return (
-            <section className="w-full">
+        <section className="w-full p-10 grid gap-3">
             <h2 className="text-2xl font-bold">Añadir dirección</h2>
             <form onSubmit={handleSubmit} className='flex flex-col gap-3 justify-content w-full'>
                 <section className="flex flex-row justify-center gap-3 items-center w-full">

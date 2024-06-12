@@ -41,7 +41,7 @@ const UserImage = ({user}) => {
 
     return (
         <section style={style} className='w-full h-full rounded-full'>
-            <Image 
+            <img 
                 src={`${process.env.NEXT_PUBLIC_BASE_BACKEND_URL}/public/images/user/${user.user_id}/1.png`} 
                 alt={`${user.first_name.charAt(0)}${user.last_name.charAt(0)}`}
                 layout='fill'   

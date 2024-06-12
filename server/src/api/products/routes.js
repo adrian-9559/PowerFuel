@@ -30,7 +30,6 @@ router.route('/')
     .post(async (req, res) => {
         try {
             const body = req.body;
-            console.log(body);
             const product = await addProduct(body);
             res.status(200).json(product);
         } catch (error) {

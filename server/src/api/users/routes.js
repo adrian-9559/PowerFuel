@@ -254,9 +254,9 @@ router.route('/resetPassword')
      * @returns {Error} 500 - Error interno del servidor al restablecer la contraseña del usuario. | Internal server error when resetting the user's password.
      */
     .post(async (req, res) => {
-        const { email, code, currentPassword, newPassword, confirmPassword } = req.body;
+        const { email, code, newPassword, confirmPassword } = req.body;
         try {
-            const response = await changePassword(email, code, currentPassword, newPassword, confirmPassword);
+            const response = await changePassword(email, code, newPassword, confirmPassword);
             res.status(200).json(response);
         } catch (error) {
             console.log(error);

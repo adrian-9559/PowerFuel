@@ -20,6 +20,7 @@ const errorDisplay = "(Error en el controlador de Productos)";
  * @throws {Error} - Error al intentar añadir el producto. | Error when trying to add the product.
  */
 const addProduct = async (productData) => {
+    console.log("producto", productData)
     try {
         console.log('productData', productData);
         const product = await createProduct(productData.product_name, productData.description, parseInt(productData.price));

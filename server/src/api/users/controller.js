@@ -221,6 +221,7 @@ const changePassword = async (email, code, newPassword, confirmPassword) => {
     try {
         
         const user = await model.getUserByEmail(email);
+        console.log(email, code, newPassword, confirmPassword, user);
         const isCodeValid = await verifyPasswordResetCode(email, code);
         if (!isCodeValid) {
             console.error('Código de restablecimiento de contraseña inválido');

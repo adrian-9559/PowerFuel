@@ -75,7 +75,6 @@ class UserService {
         const response = await api.post(`/users/resetPassword`, {
             email: email,
             code: code,
-            currentPassword: currentPassword,
             newPassword: newPassword,
             confirmPassword: confirmPassword
         });

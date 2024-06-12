@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useState} from 'react';
 import { useRouter } from 'next/router';
 import PaymentService from '@services/paymentService';
 import OrderService from '@services/orderService';
@@ -11,8 +11,8 @@ import useTitle from '@hooks/useTitle';
 const SuccessPage = () => {
     const router = useRouter();
     let success = router.query.success;
+    const [orderCreated, setOrderCreated] = useState(false);
     const {cart, setCart} = useAppContext();
-    const cartRef = useRef(cart);
     useTitle('Pedido Completado');
 
     
@@ -30,18 +30,25 @@ const SuccessPage = () => {
                 order_id: lastPayment.id,
                 order_date: new Date(),
                 status: 'pendiente',
-                details: JSON.stringify(cartRef),
+                details: JSON.stringify(cart),
                 shipping_address: JSON.stringify(shipping), 
             };
             
             await OrderService.createOrder(order);
+            localStorage.removeItem('cart');
+            setOrderCreated(true);
         }
-    }, [success, cartRef]);
+    }, [success, cart, setOrderCreated]);
     
     useEffect(() => {
         handleSuccess();
-        setCart([]);
-    }, [handleSuccess, setCart]);
+    }, [handleSuccess]);
+
+    useEffect(() => {
+        if (orderCreated===true) {
+            setCart([]);
+        }
+    }, [orderCreated, setCart]);
 
     return (
         <main className='flex justify-center items-center h-full p-8 sm:p-20'>

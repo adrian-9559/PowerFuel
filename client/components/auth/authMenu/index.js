@@ -23,13 +23,13 @@ const AuthMenu = () => {
     }, [onOpenAuthMenu]);
 
     return (
-        <motion.section layout className="flex flex-col gap-2">
+        <motion.section layout className="flex flex-col gap-2 h-auto">
             <Button onClick={onOpenAuthMenu} className='hidden sm:flex'>Iniciar sesión</Button>
             <Button onClick={onOpenAuthMenu} isIconOnly className='flex sm:hidden'>
                 <UserIcon/>
             </Button>
             <Modal isOpen={isAuthOpen} onClose={() => {onOpenAuthMenu(false)}} className='p-8 overflow-hidden' backdrop="blur" >
-                <ModalContent className="w-12/12">
+                <ModalContent className="w-12/12 h-[27rem]">
                     <AuthTabs/>
                 </ModalContent>
             </Modal>

@@ -9,8 +9,6 @@ PowerFuel es una plataforma de comercio electrónico para la venta de suplemento
 - [Estructura del Proyecto](#estructura-del-proyecto)
 - [Tecnologías Utilizadas](#tecnologías-utilizadas)
 - [Características](#características)
-- [Contribuciones](#contribuciones)
-- [Licencia](#licencia)
 
 ## Instalación
 
